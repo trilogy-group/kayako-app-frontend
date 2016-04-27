@@ -1,4 +1,4 @@
-define('frontend-cp/tests/acceptance/admin/automation/businesshours/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+define('frontend-cp/tests/acceptance/admin/automation/businesshours/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/automation/businesshours Edit', {
     beforeEach: function beforeEach() {
@@ -58,7 +58,7 @@ define('frontend-cp/tests/acceptance/admin/automation/businesshours/edit-test', 
     });
 
     andThen(function () {
-      fillIn('.ko-simple-list_cell .input-text', 'My Birthday');
+      fillIn('.ko-form_field input', 'My Birthday');
     });
 
     andThen(function () {
@@ -66,11 +66,11 @@ define('frontend-cp/tests/acceptance/admin/automation/businesshours/edit-test', 
     });
 
     andThen(function () {
-      assert.equal(find('.ko-simple-list--actionable').length, 1);
+      assert.equal(find('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1);
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/automation/case-triggers/index-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+define('frontend-cp/tests/acceptance/admin/automation/case-triggers/index-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles) {
 
   var originalConfirm = undefined;
 
@@ -113,7 +113,11 @@ define('frontend-cp/tests/acceptance/admin/automation/case-triggers/index-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/case-triggers');
-      click('div[class*="ko-simple-list_row"]:contains("test trigger") a:contains(Delete)');
+      triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("test trigger")', 'mouseenter');
+    });
+
+    andThen(function () {
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("test trigger") a:contains(Delete)');
     });
 
     andThen(function () {
@@ -131,7 +135,7 @@ define('frontend-cp/tests/acceptance/admin/automation/case-triggers/index-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/case-triggers');
-      assert.notOk(find('div[class*="ko-simple-list_row"]:contains("test trigger") a:contains(Delete)').length > 0);
+      assert.notOk(find('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("test trigger") a:contains(Delete)').length > 0);
     });
   });
 
@@ -146,7 +150,8 @@ define('frontend-cp/tests/acceptance/admin/automation/case-triggers/index-test',
       assert.equal(currentURL(), '/admin/automation/case-triggers');
       assert.ok(find('.qa-admin_case-tiggers--enabled li').length === 0);
       assert.ok(find('.qa-admin_case-tiggers--disabled').length === 1);
-      click('div[class*="ko-simple-list_row"]:contains("test trigger") a:contains(Enable)');
+      triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("test trigger")', 'mouseenter');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("test trigger") a:contains(Enable)');
     });
 
     andThen(function () {
@@ -167,7 +172,8 @@ define('frontend-cp/tests/acceptance/admin/automation/case-triggers/index-test',
       assert.equal(currentURL(), '/admin/automation/case-triggers');
       assert.ok(find('.qa-admin_case-tiggers--enabled li').length === 1);
       assert.ok(find('.qa-admin_case-tiggers--disabled').length === 0);
-      click('div[class*="ko-simple-list_row"]:contains("test trigger") a:contains(Disable)');
+      triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("test trigger")', 'mouseenter');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("test trigger") a:contains(Disable)');
     });
 
     andThen(function () {
@@ -193,8 +199,8 @@ define('frontend-cp/tests/acceptance/admin/automation/case-triggers/index-test',
       assert.equal(find('.qa-admin_case-tiggers--enabled li:nth-of-type(1) .t-bold').text().trim(), 'test trigger 2');
       assert.equal(find('.qa-admin_case-tiggers--enabled li:nth-of-type(2) .t-bold').text().trim(), 'test trigger 3');
       assert.equal(find('.qa-admin_case-tiggers--enabled li:nth-of-type(3) .t-bold').text().trim(), 'test trigger 4');
-      assert.equal(find('.qa-admin_case-tiggers--disabled div.ko-simple-list_row:nth-of-type(2) .t-bold').text().trim(), 'test trigger 1');
-      assert.equal(find('.qa-admin_case-tiggers--disabled div.ko-simple-list_row:nth-of-type(3) .t-bold').text().trim(), 'test trigger 5');
+      assert.equal(find('.qa-admin_case-tiggers--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':eq(0) .t-bold').text().trim(), 'test trigger 1');
+      assert.equal(find('.qa-admin_case-tiggers--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':eq(1) .t-bold').text().trim(), 'test trigger 5');
     });
   });
 
@@ -231,7 +237,7 @@ define('frontend-cp/tests/acceptance/admin/automation/case-triggers/index-test',
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/automation/monitors/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+define('frontend-cp/tests/acceptance/admin/automation/monitors/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles) {
 
   var originalConfirm = undefined;
   var monitor = undefined;
@@ -479,9 +485,9 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/edit-test', ['exp
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
-      assert.equal(find('.qa-admin_monitors--enabled .ko-simple-list_row').length, 1, 'The monitor is still enabled');
-      assert.equal(find('.qa-admin_monitors--disabled .ko-simple-list_row').length, 0, 'There is no disabled monitors');
-      click('.qa-admin_monitors--enabled .ko-simple-list_row');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor is still enabled');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no disabled monitors');
+      click('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row);
     });
 
     andThen(function () {
@@ -495,9 +501,9 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/edit-test', ['exp
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
-      assert.equal(find('.qa-admin_monitors--enabled .ko-simple-list_row').length, 1, 'The monitor is still enabled');
-      assert.equal(find('.qa-admin_monitors--disabled .ko-simple-list_row').length, 0, 'There is no disabled monitors');
-      click('.qa-admin_monitors--enabled .ko-simple-list_row');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor is still enabled');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no disabled monitors');
+      click('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row);
     });
 
     andThen(function () {
@@ -549,7 +555,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/edit-test', ['exp
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/automation/monitors/index-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+define('frontend-cp/tests/acceptance/admin/automation/monitors/index-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles) {
 
   var originalConfirm = undefined;
 
@@ -591,7 +597,8 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/index-test', ['ex
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
-      click('div[class*="ko-simple-list_row"]:contains("test monitor") a:contains(Delete)');
+      triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("test monitor")', 'mouseenter');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("test monitor") a:contains(Delete)');
     });
 
     andThen(function () {
@@ -614,7 +621,11 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/index-test', ['ex
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
-      click('div[class*="ko-simple-list_row"]:contains("test monitor") a:contains(Delete)');
+      triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("test monitor")', 'mouseenter');
+    });
+
+    andThen(function () {
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("test monitor") a:contains(Delete)');
     });
 
     andThen(function () {
@@ -634,7 +645,8 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/index-test', ['ex
       assert.equal(currentURL(), '/admin/automation/monitors');
       assert.equal(find('.qa-admin_monitors--enabled li').length, 0);
       assert.equal(find('.qa-admin_monitors--disabled').length, 1);
-      click('div[class*="ko-simple-list_row"]:contains("test monitor") a:contains(Enable)');
+      triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("test monitor")', 'mouseenter');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("test monitor") a:contains(Enable)');
     });
 
     andThen(function () {
@@ -655,7 +667,8 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/index-test', ['ex
       assert.equal(currentURL(), '/admin/automation/monitors');
       assert.ok(find('.qa-admin_monitors--enabled li').length === 1);
       assert.ok(find('.qa-admin_monitors--disabled').length === 0);
-      click('div[class*="ko-simple-list_row"]:contains("test monitor") a:contains(Disable)');
+      triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("test monitor")', 'mouseenter');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("test monitor") a:contains(Disable)');
     });
 
     andThen(function () {
@@ -681,8 +694,8 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/index-test', ['ex
       assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(1) .t-bold').text().trim(), 'test monitor 2');
       assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(2) .t-bold').text().trim(), 'test monitor 3');
       assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(3) .t-bold').text().trim(), 'test monitor 4');
-      assert.equal(find('.qa-admin_monitors--disabled .ko-simple-list_row:nth-of-type(1) .t-bold').text().trim(), 'test monitor 1');
-      assert.equal(find('.qa-admin_monitors--disabled .ko-simple-list_row:nth-of-type(2) .t-bold').text().trim(), 'test monitor 5');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':eq(0) .t-bold').text().trim(), 'test monitor 1');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':eq(1) .t-bold').text().trim(), 'test monitor 5');
     });
   });
 
@@ -719,7 +732,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/index-test', ['ex
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles) {
 
   var originalConfirm = undefined;
 
@@ -955,8 +968,8 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
-      assert.equal(find('.qa-admin_monitors--disabled .ko-simple-list_row').length, 1, 'The monitor has been created and it is disabled');
-      assert.equal(find('.qa-admin_monitors--enabled .ko-simple-list_row').length, 0, 'There is no enabled monitors');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
     });
   });
 
@@ -1001,7 +1014,176 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/manage/case-fields/delete-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+define('frontend-cp/tests/acceptance/admin/channels/email/list-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles) {
+  var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/channels/email/list', {
+    beforeEach: function beforeEach() {
+      var locale = server.create('locale', { id: 1, locale: 'en-us', isDefault: true });
+      var role = server.create('role', { type: 'ADMIN' });
+      var user = server.create('user', { role: role, locale: locale });
+      var session = server.create('session', { user: user });
+
+      server.create('plan', {
+        limits: [],
+        features: []
+      });
+
+      var brand = server.create('brand', { domain: 'kayako.com', name: 'Main Brand' });
+      server.create('mailbox', { address: 'main@kayako.com', brand: brand, is_system: true });
+      server.create('mailbox', { address: 'support@kayako.com', brand: brand, is_enabled: true, is_default: true });
+      server.create('mailbox', { address: 'sales@kayako.com', brand: brand, is_enabled: true });
+      server.create('mailbox', { address: 'jobs@kayako.com', brand: brand, is_enabled: false });
+
+      login(session.id);
+    },
+
+    afterEach: function afterEach() {
+      logout();
+    }
+  });
+
+  var getEnabledRows = function getEnabledRows() {
+    return find('.qa-mailboxes-enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row);
+  };
+  var getDisabledRows = function getDisabledRows() {
+    return find('.qa-mailboxes-disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row);
+  };
+
+  var assertRow = function assertRow(assert, row, _ref) {
+    var _ref2 = _slicedToArray(_ref, 2);
+
+    var address = _ref2[0];
+    var options = _ref2[1];
+
+    assert.ok(row.text().indexOf(address) !== -1, 'Mailbox address');
+    assert.ok(row.text().indexOf('(Main Brand)') !== -1, address + ' (Main Brand)');
+
+    var isDefault = options.indexOf('isDefault') !== -1;
+    assert[isDefault ? 'ok' : 'notOk'](row.text().indexOf('(Default)') !== -1, address + ' (Default)');
+
+    triggerEvent(row, 'mouseenter');
+    andThen(function () {
+      var canEdit = options.indexOf('canEdit') !== -1;
+      assert[canEdit ? 'ok' : 'notOk'](row.text().indexOf('Edit') !== -1, address + ' Editable');
+
+      var canDisable = options.indexOf('canDisable') !== -1;
+      assert[canDisable ? 'ok' : 'notOk'](row.text().indexOf('Disable') !== -1, address + ' Can be disabled');
+
+      var canMakeDefault = options.indexOf('canMakeDefault') !== -1;
+      assert[canMakeDefault ? 'ok' : 'notOk'](row.text().indexOf('Make default') !== -1, address + ' Can be made default');
+
+      var canEnable = options.indexOf('canEnable') !== -1;
+      assert[canEnable ? 'ok' : 'notOk'](row.text().indexOf('Enable') !== -1, address + ' Can be enabled');
+
+      var canDelete = options.indexOf('canDelete') !== -1;
+      assert[canDelete ? 'ok' : 'notOk'](row.text().indexOf('Delete') !== -1, address + ' Can be deleted`');
+    });
+    triggerEvent(row, 'mouseleave');
+  };
+
+  var assertRows = function assertRows(assert) {
+    var enabled = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
+    var disabled = arguments.length <= 2 || arguments[2] === undefined ? [] : arguments[2];
+
+    var enabledRows = getEnabledRows();
+    var disabledRows = getDisabledRows();
+    assert.equal(enabledRows.length, enabled.length, 'Enabled maibox count');
+    assert.equal(disabledRows.length, disabled.length, 'Disabled maibox count');
+
+    enabled.forEach(function (row, index) {
+      return assertRow(assert, enabledRows.eq(index), row);
+    });
+    disabled.forEach(function (row, index) {
+      return assertRow(assert, disabledRows.eq(index), row);
+    });
+  };
+
+  (0, _frontendCpTestsHelpersQunit.test)('listing mailboxes', function (assert) {
+    visit('/admin/channels/email');
+    andThen(function () {
+      assertRows(assert, [['main@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault']], ['support@kayako.com', ['isDefault', 'canEdit']], ['sales@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']]], [['jobs@kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('disabling a mailbox', function (assert) {
+    visit('/admin/channels/email');
+    andThen(function () {
+      return triggerEvent(getEnabledRows().eq(2), 'mouseenter');
+    });
+    andThen(function () {
+      return click(getEnabledRows().eq(2).find('.qa-mailbox-disable'));
+    });
+    andThen(function () {
+      assertRows(assert, [['main@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault']], ['support@kayako.com', ['isDefault', 'canEdit']]], [['sales@kayako.com', ['canEdit', 'canEnable', 'canDelete']], ['jobs@kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('enabling a mailbox', function (assert) {
+    visit('/admin/channels/email');
+    andThen(function () {
+      return triggerEvent(getDisabledRows().eq(0), 'mouseenter');
+    });
+    andThen(function () {
+      return click(getDisabledRows().eq(0).find('.qa-mailbox-enable'));
+    });
+    andThen(function () {
+      assertRows(assert, [['main@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault']], ['support@kayako.com', ['isDefault', 'canEdit']], ['sales@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']], ['jobs@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']]]);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('deleting a maibox', function (assert) {
+    visit('/admin/channels/email');
+    andThen(function () {
+      return triggerEvent(getEnabledRows().eq(2), 'mouseenter');
+    });
+    andThen(function () {
+      return confirming(true, function () {
+        click(getEnabledRows().eq(2).find('.qa-mailbox-delete'));
+      });
+    });
+    andThen(function () {
+      assertRows(assert, [['main@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault']], ['support@kayako.com', ['isDefault', 'canEdit']]], [['jobs@kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('making mailbox default', function (assert) {
+    visit('/admin/channels/email');
+    andThen(function () {
+      return triggerEvent(getEnabledRows().eq(2), 'mouseenter');
+    });
+    andThen(function () {
+      return click(getEnabledRows().eq(2).find('.qa-mailbox-make-default'));
+    });
+    andThen(function () {
+      assertRows(assert, [['main@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault']], ['support@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']], ['sales@kayako.com', ['isDefault', 'canEdit']]], [['jobs@kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('opening a mailbox edit page by clicking on the row', function (assert) {
+    visit('/admin/channels/email');
+    andThen(function () {
+      return click(getEnabledRows().eq(0));
+    });
+    andThen(function () {
+      return assert.equal(currentURL(), '/admin/channels/email/1');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('opening a mailbox edit page by clicking on the edit link', function (assert) {
+    visit('/admin/channels/email');
+    andThen(function () {
+      return triggerEvent(getEnabledRows().eq(0), 'mouseenter');
+    });
+    andThen(function () {
+      return click(getEnabledRows().eq(0).find('.qa-mailbox-edit'));
+    });
+    andThen(function () {
+      return assert.equal(currentURL(), '/admin/channels/email/1');
+    });
+  });
+});
+define('frontend-cp/tests/acceptance/admin/manage/case-fields/delete-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles) {
 
   var originalConfirm = undefined;
   var fieldTitle = 'test field';
@@ -1060,7 +1242,11 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/delete-test', ['ex
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains("' + fieldTitle + '") a:contains(Delete)');
+      triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("' + fieldTitle + '")', 'mouseenter');
+    });
+
+    andThen(function () {
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("' + fieldTitle + '") a:contains(Delete)');
     });
 
     andThen(function () {
@@ -1069,7 +1255,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/delete-test', ['ex
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-checkbox/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoCheckboxStyles) {
+define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-checkbox/styles', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoCheckboxStyles, _frontendCpComponentsKoSimpleListRowStyles) {
 
   var textFieldTitle = 'text field';
   var textAreaFieldTitle = 'text area field';
@@ -1406,17 +1592,17 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('.ko-simple-list_row:contains("' + textFieldTitle + '")');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("' + textFieldTitle + '")');
     });
 
     andThen(function () {
       assert.equal(find('.qa-admin_case-fields_edit__api-key').length, 1);
       findWithAssert('.qa-admin_case-fields_edit__api-key');
 
-      fillIn('input[name=title]', textFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', textFieldTitle);
 
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
       click('.ko-toggle__container');
@@ -1426,13 +1612,13 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + textFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + textFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), textFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), textFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=false]');
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
@@ -1448,14 +1634,14 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + textAreaFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + textAreaFieldTitle + ')');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', textAreaFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', textAreaFieldTitle);
 
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
       click('.ko-toggle__container');
@@ -1465,13 +1651,13 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + textAreaFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + textAreaFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), textAreaFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), textAreaFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=false]');
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
@@ -1487,14 +1673,14 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + radioFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + radioFieldTitle + ')');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', radioFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', radioFieldTitle);
 
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
@@ -1507,13 +1693,13 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + radioFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + radioFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), radioFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), radioFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=false]');
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
@@ -1531,14 +1717,14 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + normalSelectFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + normalSelectFieldTitle + ')');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', normalSelectFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', normalSelectFieldTitle);
 
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
@@ -1551,13 +1737,13 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + normalSelectFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + normalSelectFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), normalSelectFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), normalSelectFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=false]');
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
@@ -1575,14 +1761,14 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + checkboxFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + checkboxFieldTitle + ')');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', checkboxFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', checkboxFieldTitle);
 
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
@@ -1595,13 +1781,13 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + checkboxFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + checkboxFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), checkboxFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), checkboxFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=false]');
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
@@ -1619,14 +1805,14 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + numericFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + numericFieldTitle + ')');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', numericFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', numericFieldTitle);
 
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
       click('.ko-toggle__container');
@@ -1636,13 +1822,13 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + numericFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + numericFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), numericFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), numericFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=false]');
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
@@ -1658,14 +1844,14 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + decimalFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + decimalFieldTitle + ')');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', decimalFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', decimalFieldTitle);
 
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
       click('.ko-toggle__container');
@@ -1675,13 +1861,13 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + decimalFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + decimalFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), decimalFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), decimalFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=false]');
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
@@ -1697,14 +1883,14 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fileFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fileFieldTitle + ')');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', fileFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fileFieldTitle);
 
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
       click('.ko-toggle__container');
@@ -1714,13 +1900,13 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fileFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fileFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fileFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fileFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=false]');
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
@@ -1736,14 +1922,14 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + yesNoFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + yesNoFieldTitle + ')');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', yesNoFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', yesNoFieldTitle);
 
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
       click('.ko-toggle__container');
@@ -1753,13 +1939,13 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + yesNoFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + yesNoFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), yesNoFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), yesNoFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=false]');
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
@@ -1775,14 +1961,14 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + cascadingSelectFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + cascadingSelectFieldTitle + ')');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', cascadingSelectFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', cascadingSelectFieldTitle);
 
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
@@ -1795,13 +1981,13 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + cascadingSelectFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + cascadingSelectFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), cascadingSelectFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), cascadingSelectFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=false]');
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
@@ -1819,14 +2005,14 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + dateFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + dateFieldTitle + ')');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', dateFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', dateFieldTitle);
 
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
       click('.ko-toggle__container');
@@ -1836,13 +2022,13 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + dateFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + dateFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), dateFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), dateFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=false]');
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
@@ -1858,17 +2044,17 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + regexFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + regexFieldTitle + ')');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', regexFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', regexFieldTitle);
 
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
-      fillIn('input[name=regex]', regEx);
+      fillIn('input.ko-admin_case-fields_edit_regex__input', regEx);
 
       click('.ko-toggle__container');
 
@@ -1877,14 +2063,14 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + regexFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + regexFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), regexFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
-      assert.equal(find('input[name=regex]').val(), regEx);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), regexFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit_regex__input').val(), regEx);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=false]');
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
@@ -1901,14 +2087,14 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('.ko-simple-list_row:contains("' + textFieldTitle + '")');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("' + textFieldTitle + '")');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', 'edited field title');
+      fillIn('input.ko-admin_case-fields_edit__title', 'edited field title');
 
-      fillIn('input[name=customerTitle]', 'edited customer title');
-      fillIn('textarea[name=description]', 'edited description');
+      fillIn('input.ko-admin_case-fields_edit__customer-title', 'edited customer title');
+      fillIn('textarea.ko-admin_case-fields_edit__description', 'edited description');
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
       click('.ko-toggle__container');
@@ -1918,20 +2104,20 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('.ko-simple-list_row:contains("' + textFieldTitle + '")');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("' + textFieldTitle + '")');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), 'text field');
-      assert.equal(find('input[name=customerTitle]').val(), 'locale specific text here');
-      assert.equal(find('textarea[name=description]').val(), 'locale specific text here');
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), 'text field');
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), 'locale specific text here');
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), 'locale specific text here');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
       findWithAssert('div .ko-toggle__container[aria-checked=true]');
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-priorities-test', ['exports', 'ember', 'qunit', 'frontend-cp/tests/helpers/start-app'], function (exports, _ember, _qunit, _frontendCpTestsHelpersStartApp) {
+define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-priorities-test', ['exports', 'ember', 'qunit', 'frontend-cp/tests/helpers/start-app', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _ember, _qunit, _frontendCpTestsHelpersStartApp, _frontendCpComponentsKoSimpleListRowStyles) {
 
   var caseFieldId = 1;
 
@@ -1995,7 +2181,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-priorities-
 
   (0, _qunit.test)('creating a priority', function (assert) {
     visit('/admin/manage/case-fields/' + caseFieldId);
-    click('.priorities__add-priority-message');
+    click('.qa-priorities__add-priority-message');
     fillIn('.qa-custom-priority-label-input', 'New Priority');
     click('.qa-custom-priority-save');
 
@@ -2004,8 +2190,9 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-priorities-
     });
   });
 
-  (0, _qunit.test)('editing a status', function (assert) {
+  (0, _qunit.test)('editing a priority', function (assert) {
     visit('/admin/manage/case-fields/' + caseFieldId);
+    triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':first', 'mouseenter');
     click('.qa-custom-priority-edit:first');
     fillIn('.qa-custom-priority-label-input', 'Edited Priority');
     click('.qa-custom-priority-save');
@@ -2019,6 +2206,8 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-priorities-
   (0, _qunit.test)('deleting a priority', function (assert) {
     visit('/admin/manage/case-fields/' + caseFieldId);
 
+    triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':first', 'mouseenter');
+
     confirming(true, function () {
       click('.qa-custom-priority-delete:first');
     });
@@ -2031,6 +2220,8 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-priorities-
   (0, _qunit.test)('cancelling deletion of a priority', function (assert) {
     visit('/admin/manage/case-fields/' + caseFieldId);
 
+    triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':first', 'mouseenter');
+
     confirming(false, function () {
       click('.qa-custom-priority-delete:first');
     });
@@ -2040,7 +2231,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-priorities-
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-statuses-test', ['exports', 'ember', 'qunit', 'frontend-cp/tests/helpers/start-app'], function (exports, _ember, _qunit, _frontendCpTestsHelpersStartApp) {
+define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-statuses-test', ['exports', 'ember', 'qunit', 'frontend-cp/tests/helpers/start-app', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _ember, _qunit, _frontendCpTestsHelpersStartApp, _frontendCpComponentsKoSimpleListRowStyles) {
 
   var caseFieldId = 1;
 
@@ -2121,6 +2312,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-statuses-te
 
   (0, _qunit.test)('editing a status', function (assert) {
     visit('/admin/manage/case-fields/' + caseFieldId);
+    triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':first', 'mouseenter');
     click('.qa-custom-status-edit:first');
     fillIn('.qa-custom-status-label-input', 'Edited Status');
     click('.qa-custom-status-save');
@@ -2134,6 +2326,8 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-statuses-te
   (0, _qunit.test)('deleting a status', function (assert) {
     visit('/admin/manage/case-fields/' + caseFieldId);
 
+    triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':first', 'mouseenter');
+
     confirming(true, function () {
       click('.qa-custom-status-delete:first');
     });
@@ -2146,6 +2340,8 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-statuses-te
   (0, _qunit.test)('cancelling deletion of a status', function (assert) {
     visit('/admin/manage/case-fields/' + caseFieldId);
 
+    triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':first', 'mouseenter');
+
     confirming(false, function () {
       click('.qa-custom-status-delete:first');
     });
@@ -2155,7 +2351,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-statuses-te
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-types-test', ['exports', 'ember', 'qunit', 'frontend-cp/tests/helpers/start-app'], function (exports, _ember, _qunit, _frontendCpTestsHelpersStartApp) {
+define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-types-test', ['exports', 'ember', 'qunit', 'frontend-cp/tests/helpers/start-app', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _ember, _qunit, _frontendCpTestsHelpersStartApp, _frontendCpComponentsKoSimpleListRowStyles) {
 
   var caseFieldId = 1;
 
@@ -2210,6 +2406,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-types-test'
 
   (0, _qunit.test)('editing a type', function (assert) {
     visit('/admin/manage/case-fields/' + caseFieldId);
+    triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':first', 'mouseenter');
 
     andThen(function () {
       click('.qa-custom-type-edit:first');
@@ -2226,6 +2423,8 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-types-test'
   (0, _qunit.test)('deleting a type', function (assert) {
     visit('/admin/manage/case-fields/' + caseFieldId);
 
+    triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':first', 'mouseenter');
+
     confirming(true, function () {
       click('.qa-custom-type-delete:first');
     });
@@ -2238,6 +2437,8 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-types-test'
   (0, _qunit.test)('cancelling deletion of a type', function (assert) {
     visit('/admin/manage/case-fields/' + caseFieldId);
 
+    triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':first', 'mouseenter');
+
     confirming(false, function () {
       click('.qa-custom-type-delete:first');
     });
@@ -2247,7 +2448,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-types-test'
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/helpers/dom-helpers', 'frontend-cp/components/ko-checkbox/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsHelpersDomHelpers, _frontendCpComponentsKoCheckboxStyles) {
+define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/helpers/dom-helpers', 'frontend-cp/components/ko-checkbox/styles', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsHelpersDomHelpers, _frontendCpComponentsKoCheckboxStyles, _frontendCpComponentsKoSimpleListRowStyles) {
 
   var originalConfirm = window.confirm;
 
@@ -2293,11 +2494,11 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       assert.equal(find('.qa-admin_case-fields_edit__api-key').length, 0);
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / Text / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
     });
 
     andThen(function () {
@@ -2308,14 +2509,14 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
       assert.equal(find('.qa-admin_case-fields_edit__api-key').length, 1);
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
     });
   });
 
@@ -2336,11 +2537,11 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       assert.equal(currentURL(), '/admin/manage/case-fields/new/TEXTAREA');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / Multi-line Text / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
     });
 
     andThen(function () {
@@ -2351,13 +2552,13 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
     });
   });
 
@@ -2382,11 +2583,11 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       assert.equal(currentURL(), '/admin/manage/case-fields/new/RADIO');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / Radio box (single choice) / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('.ko-reorderable-list-item:first input:first', option1Title);
       fillIn('.ko-reorderable-list-item:first input:last', option1Tag);
@@ -2404,13 +2605,13 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
       assert.equal(find('.ko-reorderable-list-item:first input:last').val(), option1Tag);
       assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
@@ -2439,11 +2640,11 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       assert.equal(currentURL(), '/admin/manage/case-fields/new/SELECT');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / Dropdown box (single choice) / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('.ko-reorderable-list-item:first input:first', option1Title);
       fillIn('.ko-reorderable-list-item:first input:last', option1Tag);
@@ -2461,13 +2662,13 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
       assert.equal(find('.ko-reorderable-list-item:first input:last').val(), option1Tag);
       assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
@@ -2496,11 +2697,11 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       assert.equal(currentURL(), '/admin/manage/case-fields/new/CHECKBOX');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / Checkbox (multi choice) / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('.ko-reorderable-list-item:first input:first', option1Title);
       fillIn('.ko-reorderable-list-item:first input:last', option1Tag);
@@ -2518,13 +2719,13 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
       assert.equal(find('.ko-reorderable-list-item:first input:last').val(), option1Tag);
       assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
@@ -2549,11 +2750,11 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       assert.equal(currentURL(), '/admin/manage/case-fields/new/NUMERIC');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / Numeric / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
     });
 
     andThen(function () {
@@ -2564,13 +2765,13 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
     });
   });
 
@@ -2591,11 +2792,11 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       assert.equal(currentURL(), '/admin/manage/case-fields/new/DECIMAL');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / Decimal / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
     });
 
     andThen(function () {
@@ -2606,13 +2807,13 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
     });
   });
 
@@ -2633,11 +2834,11 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       assert.equal(currentURL(), '/admin/manage/case-fields/new/FILE');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / File / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
     });
 
     andThen(function () {
@@ -2648,13 +2849,13 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
     });
   });
 
@@ -2675,11 +2876,11 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       assert.equal(currentURL(), '/admin/manage/case-fields/new/YESNO');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / Yes or no toggle / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
     });
 
     andThen(function () {
@@ -2690,13 +2891,13 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
     });
   });
 
@@ -2721,11 +2922,11 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       assert.equal(currentURL(), '/admin/manage/case-fields/new/CASCADINGSELECT');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / Cascading select / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('.ko-reorderable-list-item:first input:first', option1Title);
       fillIn('.ko-reorderable-list-item:first input:last', option1Tag);
@@ -2743,13 +2944,13 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
       assert.equal(find('.ko-reorderable-list-item:first input:last').val(), option1Tag);
       assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
@@ -2774,11 +2975,11 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       assert.equal(currentURL(), '/admin/manage/case-fields/new/DATE');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / Date / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
     });
 
     andThen(function () {
@@ -2789,13 +2990,13 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
     });
   });
 
@@ -2817,13 +3018,13 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       assert.equal(currentURL(), '/admin/manage/case-fields/new/REGEX');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Case Fields / Regular expression / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
-      fillIn('input[name=regex]', regEx);
+      fillIn('input.ko-admin_case-fields_edit_regex__input', regEx);
     });
 
     andThen(function () {
@@ -2834,18 +3035,18 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
-      assert.equal(find('input[name=regex]').val(), regEx);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit_regex__input').val(), regEx);
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/manage/case-fields/reorder-test', ['exports', 'ember', 'qunit', 'frontend-cp/tests/helpers/start-app'], function (exports, _ember, _qunit, _frontendCpTestsHelpersStartApp) {
+define('frontend-cp/tests/acceptance/admin/manage/case-fields/reorder-test', ['exports', 'ember', 'qunit', 'frontend-cp/tests/helpers/start-app', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _ember, _qunit, _frontendCpTestsHelpersStartApp, _frontendCpComponentsKoSimpleListRowStyles) {
 
   var radioFieldTitle = 'radio field';
   var normalSelectFieldTitle = 'normal select field';
@@ -3047,7 +3248,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/reorder-test', ['e
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('.ko-simple-list_row:contains("' + radioFieldTitle + '")');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("' + radioFieldTitle + '")');
     });
 
     scrollToBottomOfPage();
@@ -3070,7 +3271,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/reorder-test', ['e
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + radioFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + radioFieldTitle + ')');
     });
 
     scrollToBottomOfPage();
@@ -3091,7 +3292,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/reorder-test', ['e
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('.ko-simple-list_row:contains("' + normalSelectFieldTitle + '")');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("' + normalSelectFieldTitle + '")');
     });
 
     scrollToBottomOfPage();
@@ -3114,7 +3315,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/reorder-test', ['e
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + normalSelectFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + normalSelectFieldTitle + ')');
     });
 
     scrollToBottomOfPage();
@@ -3135,7 +3336,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/reorder-test', ['e
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('.ko-simple-list_row:contains("' + checkboxFieldTitle + '")');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("' + checkboxFieldTitle + '")');
     });
 
     scrollToBottomOfPage();
@@ -3158,7 +3359,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/reorder-test', ['e
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + checkboxFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + checkboxFieldTitle + ')');
     });
 
     scrollToBottomOfPage();
@@ -3179,7 +3380,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/reorder-test', ['e
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('.ko-simple-list_row:contains("' + cascadingSelectFieldTitle + '")');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("' + cascadingSelectFieldTitle + '")');
     });
 
     scrollToBottomOfPage();
@@ -3202,7 +3403,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/reorder-test', ['e
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + cascadingSelectFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + cascadingSelectFieldTitle + ')');
     });
 
     scrollToBottomOfPage();
@@ -3237,7 +3438,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/reorder-test', ['e
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'npm:lodash'], function (exports, _frontendCpTestsHelpersQunit, _npmLodash) {
+define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'npm:lodash', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-simple-list/cell/styles'], function (exports, _frontendCpTestsHelpersQunit, _npmLodash, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoSimpleListCellStyles) {
 
   var brand = undefined,
       locale = undefined,
@@ -3424,7 +3625,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
 
     visit('/admin/manage/case-forms');
     andThen(function () {
-      assert.equal(find('.ko-reorderable-list .ko-simple-list_cell:eq(0)').text().trim(), 'The Default Case Form (Default)');
+      assert.equal(find('.ko-reorderable-list .' + _frontendCpComponentsKoSimpleListCellStyles['default'].cell + ':eq(0)').text().trim(), 'The Default Case Form (Default)');
     });
   });
 
@@ -3436,8 +3637,9 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
     });
 
     visit('/admin/manage/case-forms');
+    triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':first', 'mouseenter');
     andThen(function () {
-      assert.deepEqual(_npmLodash['default'].map(find('.ko-reorderable-list .ko-simple-list_cell:eq(1) a'), function (element) {
+      assert.deepEqual(_npmLodash['default'].map(find('.ko-reorderable-list .' + _frontendCpComponentsKoSimpleListCellStyles['default'].cell + ':eq(1) a'), function (element) {
         return $(element).text().trim();
       }), ['Edit', 'Disable', 'Make default', 'Delete']);
     });
@@ -3451,8 +3653,9 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
     });
 
     visit('/admin/manage/case-forms');
+    triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':first', 'mouseenter');
     andThen(function () {
-      assert.deepEqual(_npmLodash['default'].map(find('.ko-reorderable-list .ko-simple-list_cell:eq(1) a'), function (element) {
+      assert.deepEqual(_npmLodash['default'].map(find('.ko-reorderable-list .' + _frontendCpComponentsKoSimpleListCellStyles['default'].cell + ':eq(1) a'), function (element) {
         return $(element).text().trim();
       }), ['Edit']);
     });
@@ -3477,16 +3680,18 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
     });
 
     visit('/admin/manage/case-forms');
+    triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':first', 'mouseenter');
 
     andThen(function () {
       assert.equal(find('.qa-admin_case-forms__enabled-list .qa-admin_case-forms__list-row').length, 1);
-      click('.qa-admin_case-forms__enabled-list .ko-simple-list_cell:eq(1) a:contains("Disable")');
+      click('.qa-admin_case-forms__enabled-list .' + _frontendCpComponentsKoSimpleListCellStyles['default'].cell + ':eq(1) a:contains("Disable")');
     });
 
     andThen(function () {
       assert.equal(find('.qa-admin_case-forms__enabled-list .qa-admin_case-forms__list-row').length, 0);
       assert.equal(find('.qa-admin_case-forms__disabled-list .qa-admin_case-forms__list-row').length, 1);
-      click('.qa-admin_case-forms__disabled-list .ko-simple-list_cell:eq(1) a:contains("Enable")');
+      triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':first', 'mouseenter');
+      click('.qa-admin_case-forms__disabled-list .' + _frontendCpComponentsKoSimpleListCellStyles['default'].cell + ':eq(1) a:contains("Enable")');
     });
 
     andThen(function () {
@@ -3513,6 +3718,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
     });
 
     visit('/admin/manage/case-forms');
+    triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':first', 'mouseenter');
 
     andThen(function () {
       assert.equal(find('.qa-admin_case-forms__enabled-list .qa-admin_case-forms__list-row').length, 2);
@@ -3543,6 +3749,8 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
 
     visit('/admin/manage/case-forms');
 
+    triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':first', 'mouseenter');
+
     andThen(function () {
       assert.equal(find('.qa-admin_case-forms__enabled-list .qa-admin_case-forms__list-row').length, 1);
       click('.qa-admin_case-forms__enabled-list .qa-admin_case-forms__list-row:contains("Form 1") a:contains("Delete")');
@@ -3553,7 +3761,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/manage/facebook/manage-pages-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+define('frontend-cp/tests/acceptance/admin/manage/facebook/manage-pages-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/manage/facebook/pages', {
     beforeEach: function beforeEach() {
@@ -3594,6 +3802,7 @@ define('frontend-cp/tests/acceptance/admin/manage/facebook/manage-pages-test', [
 
   (0, _frontendCpTestsHelpersQunit.test)('disabling a page', function (assert) {
     visit('/admin/channels/facebook');
+    triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':first', 'mouseenter');
     click('.qa-admin-facebook-page__disable');
 
     andThen(function () {
@@ -3603,6 +3812,7 @@ define('frontend-cp/tests/acceptance/admin/manage/facebook/manage-pages-test', [
 
   (0, _frontendCpTestsHelpersQunit.test)('deleting a page', function (assert) {
     visit('/admin/channels/facebook');
+    triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':first', 'mouseenter');
 
     confirming(true, function () {
       click('.qa-admin-facebook-page__delete');
@@ -3719,7 +3929,7 @@ define('frontend-cp/tests/acceptance/admin/manage/macros/new-test', ['exports', 
 
     andThen(function () {
       assert.equal(find('.qa-admin_macros_edit__title-input').val(), 'New Macro');
-      assert.equal(find('.ko-admin-macros-action-reply-contents__textarea').val(), 'Some contents');
+      assert.equal(find('.qa-admin-macros-action-reply-contents__textarea').val(), 'Some contents');
       assert.equal(find(typeOptionFor('reply-type', 'Change to')).length, 1);
       assert.equal(find(typeOptionFor('assignee', 'Change to')).length, 1);
       assert.equal(find(typeOptionFor('status', 'Change to')).length, 1);
@@ -3970,7 +4180,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
   //   andThen(function() {
   //     assert.equal(currentURL(), '/admin/manage/views/new');
   //
-  //     fillIn('input[name=title]', fieldTitle);
+  //     fillIn('input.ko-admin_views_edit__title', fieldTitle);
   //     // click('.ko-toggle__container');
   //     click('.ko-radio__label:contains(Just myself)');
   //     fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
@@ -3985,7 +4195,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
   //
   //   andThen(function() {
   //     assert.equal(currentURL(), '/admin/manage/views/2');
-  //     assert.equal(find('input[name=title]').val(), fieldTitle);
+  //     assert.equal(find('input.ko-admin_views_edit__title').val(), fieldTitle);
   //     // findWithAssert('.ko-toggle__container[aria-checked=true]');
   //     findWithAssert('.qa-just-myself div[aria-checked=true]');
   //   });
@@ -3997,7 +4207,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/views/new');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_views_edit__title', fieldTitle);
       // findWithAssert('.ko-toggle__container[aria-checked=false]');
       click('.ko-radio__label:contains(Just myself)');
 
@@ -4020,7 +4230,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
   //   andThen(function() {
   //     assert.equal(currentURL(), '/admin/manage/views/new');
   //
-  //     fillIn('input[name=title]', fieldTitle);
+  //     fillIn('input.ko-admin_views_edit__title', fieldTitle);
   //     // click('.ko-toggle__container');
   //     click('.ko-radio__label:contains(Just myself)');
   //     fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
@@ -4035,7 +4245,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
   //
   //   andThen(function() {
   //     assert.equal(currentURL(), '/admin/manage/views/2');
-  //     assert.equal(find('input[name=title]').val(), fieldTitle);
+  //     assert.equal(find('input.ko-admin_views_edit__title').val(), fieldTitle);
   //     // findWithAssert('.ko-toggle__container[aria-checked=true]');
   //     findWithAssert('.qa-just-myself div[aria-checked=true]');
   //   });
@@ -4047,7 +4257,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
   //   andThen(function() {
   //     assert.equal(currentURL(), '/admin/manage/views/new');
   //
-  //     fillIn('input[name=title]', fieldTitle);
+  //     fillIn('input.ko-admin_views_edit__title', fieldTitle);
   //     // click('.ko-toggle__container');
   //     click('.ko-radio__label:contains(Every agent)');
   //     fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
@@ -4062,7 +4272,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
   //
   //   andThen(function() {
   //     assert.equal(currentURL(), '/admin/manage/views/2');
-  //     assert.equal(find('input[name=title]').val(), fieldTitle);
+  //     assert.equal(find('input.ko-admin_views_edit__title').val(), fieldTitle);
   //     // findWithAssert('.ko-toggle__container[aria-checked=true]');
   //     findWithAssert('.qa-every-agent div[aria-checked=true]');
   //   });
@@ -4074,7 +4284,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
   //   andThen(function() {
   //     assert.equal(currentURL(), '/admin/manage/views/new');
   //
-  //     fillIn('input[name=title]', fieldTitle);
+  //     fillIn('input.ko-admin_views_edit__title', fieldTitle);
   //     // click('.ko-toggle__container');
   //     click('.ko-radio__label:contains(Specific teams)');
   //     selectChoose('.ko-admin_views_edit_team-selector', 'Human Resources');
@@ -4091,7 +4301,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
   //
   //   andThen(function() {
   //     assert.equal(currentURL(), '/admin/manage/views/2');
-  //     assert.equal(find('input[name=title]').val(), fieldTitle);
+  //     assert.equal(find('input.ko-admin_views_edit__title').val(), fieldTitle);
   //     // findWithAssert('.ko-toggle__container[aria-checked=true]');
   //     findWithAssert('.qa-specific-team div[aria-checked=true]');
   //   });
@@ -4103,7 +4313,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
   //   andThen(function() {
   //     assert.equal(currentURL(), '/admin/manage/views/new');
   //
-  //     fillIn('input[name=title]', fieldTitle);
+  //     fillIn('input.ko-admin_views_edit__title', fieldTitle);
   //     // click('.ko-toggle__container');
   //     click('.ko-radio__label:contains(Just myself)');
   //     selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Subject');
@@ -4120,7 +4330,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
   //
   //   andThen(function() {
   //     assert.equal(currentURL(), '/admin/manage/views/2');
-  //     assert.equal(find('input[name=title]').val(), fieldTitle);
+  //     assert.equal(find('input.ko-admin_views_edit__title').val(), fieldTitle);
   //     // findWithAssert('.ko-toggle__container[aria-checked=true]');
   //     findWithAssert('.qa-just-myself div[aria-checked=true]');
   //     assert.equal(find('.qa-predicate-builder--proposition:first .qa-proposition--column .ember-power-select-trigger').text().trim(), 'Cases: Subject');
@@ -4135,8 +4345,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/views/new');
-
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_views_edit__title', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Subject');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'string does not contain');
@@ -4156,7 +4365,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/views/new');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_views_edit__title', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Status');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'is equal to');
@@ -4176,7 +4385,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
   //   andThen(function() {
   //     assert.equal(currentURL(), '/admin/manage/views/new');
   //
-  //     fillIn('input[name=title]', fieldTitle);
+  //     fillIn('input.ko-admin_views_edit__title', fieldTitle);
   //     click('.ko-radio__label:contains(Just myself)');
   //     selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Assigned Agent');
   //     selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'is equal to');
@@ -4198,7 +4407,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/views/new');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_views_edit__title', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Status');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'is not equal to');
@@ -4218,7 +4427,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/views/new');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_views_edit__title', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Priority');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'is less than');
@@ -4238,7 +4447,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/views/new');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_views_edit__title', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Priority');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'is greater than');
@@ -4258,7 +4467,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/views/new');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_views_edit__title', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Tags');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'contains one of the following');
@@ -4278,7 +4487,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/views/new');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_views_edit__title', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Tags');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'does not contain');
@@ -4298,7 +4507,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/views/new');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_views_edit__title', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Tags');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'contains one of the following');
@@ -4318,7 +4527,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/views/new');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_views_edit__title', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Subject');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'string contains');
@@ -4344,7 +4553,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/views/new');
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_views_edit__title', fieldTitle);
       click('.button[name=cancel]:first');
     });
 
@@ -4353,7 +4562,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/people/organization-fields/delete-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+define('frontend-cp/tests/acceptance/admin/people/organization-fields/delete-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles) {
 
   var originalConfirm = undefined;
   var fieldTitle = 'test field';
@@ -4408,7 +4617,11 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/delete-tes
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains("' + fieldTitle + '") a:contains(Delete)');
+      triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("' + fieldTitle + '")', 'mouseenter');
+    });
+
+    andThen(function () {
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("' + fieldTitle + '") a:contains(Delete)');
     });
 
     andThen(function () {
@@ -4417,7 +4630,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/delete-tes
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles) {
 
   var textFieldTitle = 'text field';
   var textAreaFieldTitle = 'text area field';
@@ -4744,17 +4957,17 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('.ko-simple-list_row:contains("' + textFieldTitle + '")');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("' + textFieldTitle + '")');
     });
 
     andThen(function () {
       assert.equal(find('.qa-admin_case-fields_edit__api-key').length, 1);
       findWithAssert('.qa-admin_case-fields_edit__api-key');
 
-      fillIn('input[name=title]', textFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', textFieldTitle);
 
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       click('.ko-toggle__container');
 
@@ -4763,13 +4976,13 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + textFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + textFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), textFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), textFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
     });
   });
@@ -4783,14 +4996,14 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + textAreaFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + textAreaFieldTitle + ')');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', textAreaFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', textAreaFieldTitle);
 
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       click('.ko-toggle__container');
 
@@ -4799,13 +5012,13 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + textAreaFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + textAreaFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), textAreaFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), textAreaFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
     });
   });
@@ -4819,14 +5032,14 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + radioFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + radioFieldTitle + ')');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', radioFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', radioFieldTitle);
 
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
       fillIn('.ko-reorderable-list-item:first input:last', optionTag);
@@ -4838,13 +5051,13 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + radioFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + radioFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), radioFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), radioFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
       assert.equal(find('.ko-reorderable-list-item:first input:last').val(), optionTag);
@@ -4860,14 +5073,14 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + normalSelectFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + normalSelectFieldTitle + ')');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', normalSelectFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', normalSelectFieldTitle);
 
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
       fillIn('.ko-reorderable-list-item:first input:last', optionTag);
@@ -4879,13 +5092,13 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + normalSelectFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + normalSelectFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), normalSelectFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), normalSelectFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
       assert.equal(find('.ko-reorderable-list-item:first input:last').val(), optionTag);
@@ -4901,14 +5114,14 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + checkboxFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + checkboxFieldTitle + ')');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', checkboxFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', checkboxFieldTitle);
 
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
       fillIn('.ko-reorderable-list-item:first input:last', optionTag);
@@ -4920,13 +5133,13 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + checkboxFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + checkboxFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), checkboxFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), checkboxFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
       assert.equal(find('.ko-reorderable-list-item:first input:last').val(), optionTag);
@@ -4942,14 +5155,14 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + numericFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + numericFieldTitle + ')');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', numericFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', numericFieldTitle);
 
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       click('.ko-toggle__container');
 
@@ -4958,13 +5171,13 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + numericFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + numericFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), numericFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), numericFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
     });
   });
@@ -4978,14 +5191,14 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + decimalFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + decimalFieldTitle + ')');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', decimalFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', decimalFieldTitle);
 
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       click('.ko-toggle__container');
 
@@ -4994,13 +5207,13 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + decimalFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + decimalFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), decimalFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), decimalFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
     });
   });
@@ -5014,14 +5227,14 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fileFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fileFieldTitle + ')');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', fileFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fileFieldTitle);
 
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       click('.ko-toggle__container');
 
@@ -5030,13 +5243,13 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fileFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fileFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fileFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fileFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
     });
   });
@@ -5050,14 +5263,14 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + yesNoFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + yesNoFieldTitle + ')');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', yesNoFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', yesNoFieldTitle);
 
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       click('.ko-toggle__container');
 
@@ -5066,13 +5279,13 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + yesNoFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + yesNoFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), yesNoFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), yesNoFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
     });
   });
@@ -5086,14 +5299,14 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + cascadingSelectFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + cascadingSelectFieldTitle + ')');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', cascadingSelectFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', cascadingSelectFieldTitle);
 
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
       fillIn('.ko-reorderable-list-item:first input:last', optionTag);
@@ -5105,13 +5318,13 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + cascadingSelectFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + cascadingSelectFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), cascadingSelectFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), cascadingSelectFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
       assert.equal(find('.ko-reorderable-list-item:first input:last').val(), optionTag);
@@ -5127,14 +5340,14 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + dateFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + dateFieldTitle + ')');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', dateFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', dateFieldTitle);
 
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       click('.ko-toggle__container');
 
@@ -5143,13 +5356,13 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + dateFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + dateFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), dateFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), dateFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
     });
   });
@@ -5163,16 +5376,16 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + regexFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + regexFieldTitle + ')');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', regexFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', regexFieldTitle);
 
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
-      fillIn('input[name=regex]', regEx);
+      fillIn('input.ko-admin_case-fields_edit_regex__input', regEx);
 
       click('.ko-toggle__container');
 
@@ -5181,14 +5394,14 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + regexFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + regexFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), regexFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
-      assert.equal(find('input[name=regex]').val(), regEx);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), regexFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit_regex__input').val(), regEx);
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
     });
   });
@@ -5203,14 +5416,14 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('.ko-simple-list_row:contains("' + textFieldTitle + '")');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("' + textFieldTitle + '")');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', 'edited field title');
+      fillIn('input.ko-admin_case-fields_edit__title', 'edited field title');
 
-      fillIn('input[name=customerTitle]', 'edited customer title');
-      fillIn('textarea[name=description]', 'edited description');
+      fillIn('input.ko-admin_case-fields_edit__customer-title', 'edited customer title');
+      fillIn('textarea.ko-admin_case-fields_edit__description', 'edited description');
 
       click('.ko-toggle__container');
 
@@ -5219,18 +5432,18 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('.ko-simple-list_row:contains("' + textFieldTitle + '")');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("' + textFieldTitle + '")');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), 'text field');
-      assert.equal(find('input[name=customerTitle]').val(), 'locale specific text here');
-      assert.equal(find('textarea[name=description]').val(), 'locale specific text here');
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), 'text field');
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), 'locale specific text here');
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), 'locale specific text here');
       findWithAssert('div .ko-toggle__container[aria-checked=true]');
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/helpers/dom-helpers', 'frontend-cp/components/ko-checkbox/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsHelpersDomHelpers, _frontendCpComponentsKoCheckboxStyles) {
+define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/helpers/dom-helpers', 'frontend-cp/components/ko-checkbox/styles', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsHelpersDomHelpers, _frontendCpComponentsKoCheckboxStyles, _frontendCpComponentsKoSimpleListRowStyles) {
 
   var originalConfirm = window.confirm;
 
@@ -5276,11 +5489,11 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       assert.equal(find('.qa-admin_case-fields_edit__api-key').length, 0);
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / Text / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
     });
 
     andThen(function () {
@@ -5291,14 +5504,14 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
       assert.equal(find('.qa-admin_case-fields_edit__api-key').length, 1);
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
     });
   });
 
@@ -5319,11 +5532,11 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       assert.equal(currentURL(), '/admin/people/organization-fields/new/TEXTAREA');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / Multi-line Text / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
     });
 
     andThen(function () {
@@ -5334,13 +5547,13 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
     });
   });
 
@@ -5365,11 +5578,11 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       assert.equal(currentURL(), '/admin/people/organization-fields/new/RADIO');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / Radio box (single choice) / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('.ko-reorderable-list-item:first input:first', option1Title);
       fillIn('.ko-reorderable-list-item:first input:last', option1Tag);
@@ -5387,13 +5600,13 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
       assert.equal(find('.ko-reorderable-list-item:first input:last').val(), option1Tag);
       assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
@@ -5422,11 +5635,11 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       assert.equal(currentURL(), '/admin/people/organization-fields/new/SELECT');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / Dropdown box (single choice) / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('.ko-reorderable-list-item:first input:first', option1Title);
       fillIn('.ko-reorderable-list-item:first input:last', option1Tag);
@@ -5444,13 +5657,13 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
       assert.equal(find('.ko-reorderable-list-item:first input:last').val(), option1Tag);
       assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
@@ -5479,11 +5692,11 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       assert.equal(currentURL(), '/admin/people/organization-fields/new/CHECKBOX');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / Checkbox (multi choice) / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('.ko-reorderable-list-item:first input:first', option1Title);
       fillIn('.ko-reorderable-list-item:first input:last', option1Tag);
@@ -5501,13 +5714,13 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
       assert.equal(find('.ko-reorderable-list-item:first input:last').val(), option1Tag);
       assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
@@ -5532,11 +5745,11 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       assert.equal(currentURL(), '/admin/people/organization-fields/new/NUMERIC');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / Numeric / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
     });
 
     andThen(function () {
@@ -5547,13 +5760,13 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
     });
   });
 
@@ -5574,11 +5787,11 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       assert.equal(currentURL(), '/admin/people/organization-fields/new/DECIMAL');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / Decimal / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
     });
 
     andThen(function () {
@@ -5589,13 +5802,13 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
     });
   });
 
@@ -5616,11 +5829,11 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       assert.equal(currentURL(), '/admin/people/organization-fields/new/FILE');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / File / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
     });
 
     andThen(function () {
@@ -5631,13 +5844,13 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
     });
   });
 
@@ -5658,11 +5871,11 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       assert.equal(currentURL(), '/admin/people/organization-fields/new/YESNO');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / Yes or no toggle / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
     });
 
     andThen(function () {
@@ -5673,13 +5886,13 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
     });
   });
 
@@ -5704,11 +5917,11 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       assert.equal(currentURL(), '/admin/people/organization-fields/new/CASCADINGSELECT');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / Cascading select / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('.ko-reorderable-list-item:first input:first', option1Title);
       fillIn('.ko-reorderable-list-item:first input:last', option1Tag);
@@ -5726,13 +5939,13 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
       assert.equal(find('.ko-reorderable-list-item:first input:last').val(), option1Tag);
       assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
@@ -5757,11 +5970,11 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       assert.equal(currentURL(), '/admin/people/organization-fields/new/DATE');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / Date / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
     });
 
     andThen(function () {
@@ -5772,13 +5985,13 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
     });
   });
 
@@ -5800,13 +6013,13 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       assert.equal(currentURL(), '/admin/people/organization-fields/new/REGEX');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'Organization Fields / Regular expression / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
-      fillIn('input[name=regex]', regEx);
+      fillIn('input.ko-admin_case-fields_edit_regex__input', regEx);
     });
 
     andThen(function () {
@@ -5817,18 +6030,18 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
-      assert.equal(find('input[name=regex]').val(), regEx);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit_regex__input').val(), regEx);
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/people/organization-fields/reorder-test', ['exports', 'ember', 'qunit', 'frontend-cp/tests/helpers/start-app'], function (exports, _ember, _qunit, _frontendCpTestsHelpersStartApp) {
+define('frontend-cp/tests/acceptance/admin/people/organization-fields/reorder-test', ['exports', 'ember', 'qunit', 'frontend-cp/tests/helpers/start-app', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _ember, _qunit, _frontendCpTestsHelpersStartApp, _frontendCpComponentsKoSimpleListRowStyles) {
 
   var radioFieldTitle = 'radio field';
   var normalSelectFieldTitle = 'normal select field';
@@ -6008,7 +6221,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/reorder-te
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('.ko-simple-list_row:contains("' + radioFieldTitle + '")');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("' + radioFieldTitle + '")');
     });
 
     scrollToBottomOfPage();
@@ -6031,7 +6244,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/reorder-te
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + radioFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + radioFieldTitle + ')');
     });
 
     scrollToBottomOfPage();
@@ -6052,7 +6265,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/reorder-te
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('.ko-simple-list_row:contains("' + normalSelectFieldTitle + '")');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("' + normalSelectFieldTitle + '")');
     });
 
     scrollToBottomOfPage();
@@ -6075,7 +6288,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/reorder-te
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + normalSelectFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + normalSelectFieldTitle + ')');
     });
 
     scrollToBottomOfPage();
@@ -6096,7 +6309,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/reorder-te
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('.ko-simple-list_row:contains("' + checkboxFieldTitle + '")');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("' + checkboxFieldTitle + '")');
     });
 
     scrollToBottomOfPage();
@@ -6119,7 +6332,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/reorder-te
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + checkboxFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + checkboxFieldTitle + ')');
     });
 
     scrollToBottomOfPage();
@@ -6140,7 +6353,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/reorder-te
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('.ko-simple-list_row:contains("' + cascadingSelectFieldTitle + '")');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("' + cascadingSelectFieldTitle + '")');
     });
 
     scrollToBottomOfPage();
@@ -6163,7 +6376,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/reorder-te
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + cascadingSelectFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + cascadingSelectFieldTitle + ')');
     });
 
     scrollToBottomOfPage();
@@ -6179,7 +6392,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/reorder-te
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/people/roles/form-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-admin/page-header/styles', 'frontend-cp/components/ko-checkbox/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoAdminPageHeaderStyles, _frontendCpComponentsKoCheckboxStyles) {
+define('frontend-cp/tests/acceptance/admin/people/roles/form-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-admin/page/styles', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-checkbox/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoAdminPageStyles, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoCheckboxStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/people/roles form', {
     beforeEach: function beforeEach() {
@@ -6214,8 +6427,8 @@ define('frontend-cp/tests/acceptance/admin/people/roles/form-test', ['exports', 
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new role', function (assert) {
     visit('/admin/people/roles');
-    click('.' + _frontendCpComponentsKoAdminPageHeaderStyles['default'].header + ' button:contains("Add New Role")');
-    fillIn('input[name="title"]', 'Custom Role');
+    click('.' + _frontendCpComponentsKoAdminPageStyles['default'].header + ' button:contains("Add New Role")');
+    fillIn('input.ko-admin_roles_form__title', 'Custom Role');
     selectChoose('.qa-ko-admin_roles_form__role-type', 'Collaborator');
     selectChoose('.qa-ko-admin_roles_form__agent-case-access-type', 'Assigned to agent');
     click('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Create new cases") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
@@ -6229,6 +6442,8 @@ define('frontend-cp/tests/acceptance/admin/people/roles/form-test', ['exports', 
     });
 
     click('button:contains("Save")');
+
+    triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("Custom Role")', 'mouseenter');
     click('.qa-ko-admin_roles__list-item:contains("Custom Role") .qa-ko-admin_roles_list-item__edit');
 
     andThen(function () {
@@ -6242,8 +6457,8 @@ define('frontend-cp/tests/acceptance/admin/people/roles/form-test', ['exports', 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new admin role', function (assert) {
     assert.expect(0);
     visit('/admin/people/roles');
-    click('.' + _frontendCpComponentsKoAdminPageHeaderStyles['default'].header + ' button:contains("Add New Role")');
-    fillIn('input[name="title"]', 'Custom Role');
+    click('.' + _frontendCpComponentsKoAdminPageStyles['default'].header + ' button:contains("Add New Role")');
+    fillIn('input.ko-admin_roles_form__title', 'Custom Role');
     selectChoose('.qa-ko-admin_roles_form__role-type', 'Administrator');
     selectChoose('.qa-ko-admin_roles_form__agent-case-access-type', 'Assigned to agent');
     click('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Create new cases") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
@@ -6253,6 +6468,7 @@ define('frontend-cp/tests/acceptance/admin/people/roles/form-test', ['exports', 
     click('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Manage teams") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
     click('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Manage apps and integrations") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
     click('button:contains("Save")');
+    triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("Custom Role")', 'mouseenter');
     click('.qa-ko-admin_roles__list-item:contains("Custom Role") .qa-ko-admin_roles_list-item__edit');
 
     andThen(function () {
@@ -6266,10 +6482,19 @@ define('frontend-cp/tests/acceptance/admin/people/roles/form-test', ['exports', 
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a role', function (assert) {
+    server.create('permission', { name: 'case.create' });
+    server.create('permission', { name: 'chat.observe' });
+    server.create('permission', { name: 'chat.transfer' });
+    server.create('permission', { name: 'chat.manage' });
+    server.create('permission', { name: 'user.create' });
+    server.create('permission', { name: 'organization.create' });
+    server.create('permission', { name: 'help_center.manage' });
+
     visit('/admin/people/roles');
+    triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("Existing Role")', 'mouseenter');
     click('.qa-ko-admin_roles__list-item:contains("Existing Role") .qa-ko-admin_roles_list-item__edit');
 
-    fillIn('input[name="title"]', 'Edited Role');
+    fillIn('input.ko-admin_roles_form__title', 'Edited Role');
     selectChoose('.qa-ko-admin_roles_form__agent-case-access-type', 'Assigned to agent');
     click('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Create new cases") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
     click('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Accept new chat requests and invitations") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
@@ -6282,6 +6507,7 @@ define('frontend-cp/tests/acceptance/admin/people/roles/form-test', ['exports', 
     });
 
     click('button:contains("Save")');
+    triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("Edited Role")', 'mouseenter');
     click('.qa-ko-admin_roles__list-item:contains("Edited Role") .qa-ko-admin_roles_list-item__edit');
 
     andThen(function () {
@@ -6292,7 +6518,7 @@ define('frontend-cp/tests/acceptance/admin/people/roles/form-test', ['exports', 
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/people/roles/index-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+define('frontend-cp/tests/acceptance/admin/people/roles/index-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/people/roles index', {
     beforeEach: function beforeEach() {
@@ -6363,7 +6589,8 @@ define('frontend-cp/tests/acceptance/admin/people/roles/index-test', ['exports',
         return element.length > 0 ? element.text().trim() : null;
       };
 
-      var rows = find('.qa-ko-admin_roles__list-item').toArray().map(function (item) {
+      var getRowData = function getRowData(index) {
+        var item = find('.qa-ko-admin_roles__list-item:eq(' + index + ')');
         return {
           title: textFor(item, 'title'),
           caption: textFor(item, 'title-caption'),
@@ -6371,45 +6598,73 @@ define('frontend-cp/tests/acceptance/admin/people/roles/index-test', ['exports',
           editLink: textFor(item, 'edit'),
           deleteLink: textFor(item, 'delete')
         };
+      };
+
+      triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':eq(0)', 'mouseenter');
+      andThen(function () {
+        assert.deepEqual(getRowData(0), {
+          title: 'Administrator',
+          caption: '(System)',
+          label: 'Administrator',
+          editLink: 'Edit',
+          deleteLink: null
+        });
       });
 
-      assert.deepEqual(rows, [{
-        title: 'Administrator',
-        caption: '(System)',
-        label: 'Administrator',
-        editLink: 'Edit',
-        deleteLink: null
-      }, {
-        title: 'Agent',
-        caption: '(System)',
-        label: 'Agent',
-        editLink: 'Edit',
-        deleteLink: null
-      }, {
-        title: 'Collaborator',
-        caption: '(System)',
-        label: 'Collaborator',
-        editLink: null,
-        deleteLink: null
-      }, {
-        title: 'Custom Role',
-        caption: null,
-        label: 'Customer',
-        editLink: 'Edit',
-        deleteLink: 'Delete'
-      }, {
-        title: 'Customer',
-        caption: '(System)',
-        label: 'Customer',
-        editLink: null,
-        deleteLink: null
-      }, {
-        title: 'Owner',
-        caption: '(System)',
-        label: 'Owner',
-        editLink: null,
-        deleteLink: null
-      }]);
+      triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':eq(1)', 'mouseenter');
+      andThen(function () {
+        assert.deepEqual(getRowData(1), {
+          title: 'Agent',
+          caption: '(System)',
+          label: 'Agent',
+          editLink: 'Edit',
+          deleteLink: null
+        });
+      });
+
+      triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':eq(2)', 'mouseenter');
+      andThen(function () {
+        assert.deepEqual(getRowData(2), {
+          title: 'Collaborator',
+          caption: '(System)',
+          label: 'Collaborator',
+          editLink: null,
+          deleteLink: null
+        });
+      });
+
+      triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':eq(3)', 'mouseenter');
+      andThen(function () {
+        assert.deepEqual(getRowData(3), {
+          title: 'Custom Role',
+          caption: null,
+          label: 'Customer',
+          editLink: 'Edit',
+          deleteLink: 'Delete'
+        });
+      });
+
+      triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':eq(4)', 'mouseenter');
+      andThen(function () {
+        assert.deepEqual(getRowData(4), {
+          title: 'Customer',
+          caption: '(System)',
+          label: 'Customer',
+          editLink: null,
+          deleteLink: null
+        });
+      });
+
+      triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':eq(5)', 'mouseenter');
+      andThen(function () {
+        assert.deepEqual(getRowData(5), {
+          title: 'Owner',
+          caption: '(System)',
+          label: 'Owner',
+          editLink: null,
+          deleteLink: null
+        });
+      });
     });
   });
 
@@ -6420,6 +6675,7 @@ define('frontend-cp/tests/acceptance/admin/people/roles/index-test', ['exports',
       assert.equal(find('.qa-ko-admin_roles_list-item__title:contains("Custom Role")').length, 1);
     });
 
+    triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("Custom Role")', 'mouseenter');
     confirming(true, function () {
       click('.qa-ko-admin_roles_list-item__delete:first');
     });
@@ -6489,7 +6745,7 @@ define('frontend-cp/tests/acceptance/admin/people/teams-forms-test', ['exports',
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/people/user-fields/delete-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+define('frontend-cp/tests/acceptance/admin/people/user-fields/delete-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles) {
 
   var originalConfirm = undefined;
   var fieldTitle = 'test field';
@@ -6548,7 +6804,11 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/delete-test', ['ex
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains("' + fieldTitle + '") a:contains(Delete)');
+      triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("' + fieldTitle + '")', 'mouseenter');
+    });
+
+    andThen(function () {
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("' + fieldTitle + '") a:contains(Delete)');
     });
 
     andThen(function () {
@@ -6557,7 +6817,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/delete-test', ['ex
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-checkbox/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoCheckboxStyles) {
+define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-checkbox/styles', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoCheckboxStyles, _frontendCpComponentsKoSimpleListRowStyles) {
 
   var textFieldTitle = 'text field';
   var textAreaFieldTitle = 'text area field';
@@ -6882,17 +7142,17 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('.ko-simple-list_row:contains("' + textFieldTitle + '")');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("' + textFieldTitle + '")');
     });
 
     andThen(function () {
       assert.equal(find('.qa-admin_case-fields_edit__api-key').length, 1);
       findWithAssert('.qa-admin_case-fields_edit__api-key');
 
-      fillIn('input[name=title]', textFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', textFieldTitle);
 
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
       click('.ko-toggle__container');
@@ -6902,13 +7162,13 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + textFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + textFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), textFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), textFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
@@ -6924,14 +7184,13 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + textAreaFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + textAreaFieldTitle + ')');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', textAreaFieldTitle);
-
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__title', textAreaFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
       click('.ko-toggle__container');
@@ -6941,13 +7200,13 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + textAreaFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + textAreaFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), textAreaFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), textAreaFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
@@ -6963,14 +7222,14 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + radioFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + radioFieldTitle + ')');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', radioFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', radioFieldTitle);
 
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
@@ -6983,13 +7242,13 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + radioFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + radioFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), radioFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), radioFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
@@ -7007,14 +7266,14 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + normalSelectFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + normalSelectFieldTitle + ')');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', normalSelectFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', normalSelectFieldTitle);
 
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
@@ -7027,13 +7286,13 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + normalSelectFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + normalSelectFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), normalSelectFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), normalSelectFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
@@ -7051,14 +7310,14 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + checkboxFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + checkboxFieldTitle + ')');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', checkboxFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', checkboxFieldTitle);
 
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
@@ -7071,13 +7330,13 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + checkboxFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + checkboxFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), checkboxFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), checkboxFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
@@ -7095,14 +7354,14 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + numericFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + numericFieldTitle + ')');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', numericFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', numericFieldTitle);
 
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
       click('.ko-toggle__container');
@@ -7112,13 +7371,13 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + numericFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + numericFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), numericFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), numericFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
@@ -7134,14 +7393,14 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + decimalFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + decimalFieldTitle + ')');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', decimalFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', decimalFieldTitle);
 
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
       click('.ko-toggle__container');
@@ -7151,13 +7410,13 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + decimalFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + decimalFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), decimalFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), decimalFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
@@ -7173,14 +7432,14 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fileFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fileFieldTitle + ')');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', fileFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fileFieldTitle);
 
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
       click('.ko-toggle__container');
@@ -7190,13 +7449,13 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fileFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fileFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fileFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fileFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
@@ -7212,14 +7471,14 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + yesNoFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + yesNoFieldTitle + ')');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', yesNoFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', yesNoFieldTitle);
 
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
       click('.ko-toggle__container');
@@ -7229,13 +7488,13 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + yesNoFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + yesNoFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), yesNoFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), yesNoFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
@@ -7251,14 +7510,14 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + cascadingSelectFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + cascadingSelectFieldTitle + ')');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', cascadingSelectFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', cascadingSelectFieldTitle);
 
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
@@ -7271,13 +7530,13 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + cascadingSelectFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + cascadingSelectFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), cascadingSelectFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), cascadingSelectFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
@@ -7295,14 +7554,14 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + dateFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + dateFieldTitle + ')');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', dateFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', dateFieldTitle);
 
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
       click('.ko-toggle__container');
@@ -7312,13 +7571,13 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + dateFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + dateFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), dateFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), dateFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
@@ -7334,17 +7593,17 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + regexFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + regexFieldTitle + ')');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', regexFieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', regexFieldTitle);
 
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
-      fillIn('input[name=regex]', regEx);
+      fillIn('input.ko-admin_case-fields_edit_regex__input', regEx);
 
       click('.ko-toggle__container');
 
@@ -7353,14 +7612,14 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + regexFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + regexFieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), regexFieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
-      assert.equal(find('input[name=regex]').val(), regEx);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), regexFieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit_regex__input').val(), regEx);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
@@ -7377,14 +7636,14 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('.ko-simple-list_row:contains("' + textFieldTitle + '")');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("' + textFieldTitle + '")');
     });
 
     andThen(function () {
-      fillIn('input[name=title]', 'edited field title');
+      fillIn('input.ko-admin_case-fields_edit__title', 'edited field title');
 
-      fillIn('input[name=customerTitle]', 'edited customer title');
-      fillIn('textarea[name=description]', 'edited description');
+      fillIn('input.ko-admin_case-fields_edit__customer-title', 'edited customer title');
+      fillIn('textarea.ko-admin_case-fields_edit__description', 'edited description');
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
       click('.ko-toggle__container');
@@ -7394,20 +7653,20 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('.ko-simple-list_row:contains("' + textFieldTitle + '")');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("' + textFieldTitle + '")');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), 'text field');
-      assert.equal(find('input[name=customerTitle]').val(), 'locale specific text here');
-      assert.equal(find('textarea[name=description]').val(), 'locale specific text here');
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), 'text field');
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), 'locale specific text here');
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), 'locale specific text here');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
       findWithAssert('div .ko-toggle__container[aria-checked=true]');
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/helpers/dom-helpers', 'frontend-cp/components/ko-checkbox/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsHelpersDomHelpers, _frontendCpComponentsKoCheckboxStyles) {
+define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/helpers/dom-helpers', 'frontend-cp/components/ko-checkbox/styles', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsHelpersDomHelpers, _frontendCpComponentsKoCheckboxStyles, _frontendCpComponentsKoSimpleListRowStyles) {
 
   var originalConfirm = window.confirm;
 
@@ -7453,11 +7712,11 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       assert.equal(find('.qa-admin_case-fields_edit__api-key').length, 0);
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / Text / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
     });
 
     andThen(function () {
@@ -7468,14 +7727,14 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
       assert.equal(find('.qa-admin_case-fields_edit__api-key').length, 1);
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
     });
   });
 
@@ -7496,11 +7755,11 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       assert.equal(currentURL(), '/admin/people/user-fields/new/TEXTAREA');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / Multi-line Text / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
     });
 
     andThen(function () {
@@ -7511,13 +7770,13 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
     });
   });
 
@@ -7542,11 +7801,11 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       assert.equal(currentURL(), '/admin/people/user-fields/new/RADIO');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / Radio box (single choice) / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('.ko-reorderable-list-item:first input:first', option1Title);
       fillIn('.ko-reorderable-list-item:first input:last', option1Tag);
@@ -7564,13 +7823,13 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
       assert.equal(find('.ko-reorderable-list-item:first input:last').val(), option1Tag);
       assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
@@ -7599,11 +7858,11 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       assert.equal(currentURL(), '/admin/people/user-fields/new/SELECT');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / Dropdown box (single choice) / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('.ko-reorderable-list-item:first input:first', option1Title);
       fillIn('.ko-reorderable-list-item:first input:last', option1Tag);
@@ -7621,13 +7880,13 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
       assert.equal(find('.ko-reorderable-list-item:first input:last').val(), option1Tag);
       assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
@@ -7656,11 +7915,11 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       assert.equal(currentURL(), '/admin/people/user-fields/new/CHECKBOX');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / Checkbox (multi choice) / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('.ko-reorderable-list-item:first input:first', option1Title);
       fillIn('.ko-reorderable-list-item:first input:last', option1Tag);
@@ -7678,13 +7937,13 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
       assert.equal(find('.ko-reorderable-list-item:first input:last').val(), option1Tag);
       assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
@@ -7709,11 +7968,11 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       assert.equal(currentURL(), '/admin/people/user-fields/new/NUMERIC');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / Numeric / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
     });
 
     andThen(function () {
@@ -7724,13 +7983,13 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
     });
   });
 
@@ -7751,11 +8010,11 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       assert.equal(currentURL(), '/admin/people/user-fields/new/DECIMAL');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / Decimal / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
     });
 
     andThen(function () {
@@ -7766,13 +8025,13 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
     });
   });
 
@@ -7793,11 +8052,11 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       assert.equal(currentURL(), '/admin/people/user-fields/new/FILE');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / File / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
     });
 
     andThen(function () {
@@ -7808,13 +8067,13 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
     });
   });
 
@@ -7835,11 +8094,11 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       assert.equal(currentURL(), '/admin/people/user-fields/new/YESNO');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / Yes or no toggle / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
     });
 
     andThen(function () {
@@ -7850,13 +8109,13 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
     });
   });
 
@@ -7881,11 +8140,11 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       assert.equal(currentURL(), '/admin/people/user-fields/new/CASCADINGSELECT');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / Cascading select / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('.ko-reorderable-list-item:first input:first', option1Title);
       fillIn('.ko-reorderable-list-item:first input:last', option1Tag);
@@ -7903,13 +8162,13 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
       assert.equal(find('.ko-reorderable-list-item:first input:last').val(), option1Tag);
       assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
@@ -7934,11 +8193,11 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       assert.equal(currentURL(), '/admin/people/user-fields/new/DATE');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / Date / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
     });
 
     andThen(function () {
@@ -7949,13 +8208,13 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
     });
   });
 
@@ -7977,13 +8236,13 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       assert.equal(currentURL(), '/admin/people/user-fields/new/REGEX');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-admin-content h3'), 'User Fields / Regular expression / New', 'Edit form default title is correct');
 
-      fillIn('input[name=title]', fieldTitle);
+      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input[name=customerTitle]', customerTitle);
-      fillIn('textarea[name=description]', description);
+      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
+      fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
-      fillIn('input[name=regex]', regEx);
+      fillIn('input.ko-admin_case-fields_edit_regex__input', regEx);
     });
 
     andThen(function () {
@@ -7994,18 +8253,18 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + fieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
     });
 
     andThen(function () {
-      assert.equal(find('input[name=title]').val(), fieldTitle);
-      assert.equal(find('input[name=customerTitle]').val(), customerTitle);
-      assert.equal(find('textarea[name=description]').val(), description);
-      assert.equal(find('input[name=regex]').val(), regEx);
+      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
+      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
+      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
+      assert.equal(find('input.ko-admin_case-fields_edit_regex__input').val(), regEx);
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/people/user-fields/reorder-test', ['exports', 'ember', 'qunit', 'frontend-cp/tests/helpers/start-app'], function (exports, _ember, _qunit, _frontendCpTestsHelpersStartApp) {
+define('frontend-cp/tests/acceptance/admin/people/user-fields/reorder-test', ['exports', 'ember', 'qunit', 'frontend-cp/tests/helpers/start-app', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _ember, _qunit, _frontendCpTestsHelpersStartApp, _frontendCpComponentsKoSimpleListRowStyles) {
 
   var radioFieldTitle = 'radio field';
   var normalSelectFieldTitle = 'normal select field';
@@ -8183,7 +8442,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/reorder-test', ['e
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('.ko-simple-list_row:contains("' + radioFieldTitle + '")');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("' + radioFieldTitle + '")');
     });
 
     scrollToBottomOfPage();
@@ -8206,7 +8465,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/reorder-test', ['e
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + radioFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + radioFieldTitle + ')');
     });
 
     scrollToBottomOfPage();
@@ -8227,7 +8486,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/reorder-test', ['e
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('.ko-simple-list_row:contains("' + normalSelectFieldTitle + '")');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("' + normalSelectFieldTitle + '")');
     });
 
     scrollToBottomOfPage();
@@ -8250,7 +8509,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/reorder-test', ['e
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + normalSelectFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + normalSelectFieldTitle + ')');
     });
 
     scrollToBottomOfPage();
@@ -8271,7 +8530,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/reorder-test', ['e
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('.ko-simple-list_row:contains("' + checkboxFieldTitle + '")');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("' + checkboxFieldTitle + '")');
     });
 
     scrollToBottomOfPage();
@@ -8294,7 +8553,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/reorder-test', ['e
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + checkboxFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + checkboxFieldTitle + ')');
     });
 
     scrollToBottomOfPage();
@@ -8315,7 +8574,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/reorder-test', ['e
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('.ko-simple-list_row:contains("' + cascadingSelectFieldTitle + '")');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("' + cascadingSelectFieldTitle + '")');
     });
 
     scrollToBottomOfPage();
@@ -8338,7 +8597,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/reorder-test', ['e
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
-      click('div[class*="ko-simple-list_row"]:contains(' + cascadingSelectFieldTitle + ')');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + cascadingSelectFieldTitle + ')');
     });
 
     scrollToBottomOfPage();
@@ -8354,7 +8613,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/reorder-test', ['e
     });
   });
 });
-define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/session/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpSessionStyles) {
+define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-breadcrumbs/styles', 'frontend-cp/session/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoBreadcrumbsStyles, _frontendCpSessionStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Case | Create case', {
     beforeEach: function beforeEach() {
@@ -8421,7 +8680,7 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
       assert.equal(find('.ko-agent-dropdown__drop').is(':visible'), false, '"+" Dropdown content should be hidden');
 
       assert.equal(find('.ko-layout_advanced__sidebar .ko-info-bar_item:eq(1) input').val(), 'Barney Stinson', 'The recipient of the new case is Barney');
-      assert.ok(find('.breadcrumbs .breadcrumbs__item:eq(0)').text().trim() === 'Barney Stinson' && find('.breadcrumbs .breadcrumbs__item:eq(1)').text().trim() === 'New case', 'Breadcrums are correct');
+      assert.ok(find('.' + _frontendCpComponentsKoBreadcrumbsStyles['default'].item + ':eq(0)').text().trim() === 'Barney Stinson' && find('.' + _frontendCpComponentsKoBreadcrumbsStyles['default'].item + ':eq(1)').text().trim() === 'New case', 'Breadcrums are correct');
       assert.equal(find('.' + _frontendCpSessionStyles['default'].tab).length, 1, 'There is only one tab');
       assert.equal(find('.' + _frontendCpSessionStyles['default'].tab + '.active').length, 1, 'That tab is active');
       assert.equal(find('.' + _frontendCpSessionStyles['default'].tab).text().trim(), 'New case', 'That tab belongs to the case being created');
@@ -9116,7 +9375,7 @@ define('frontend-cp/tests/acceptance/agent/cases/update-test', ['exports', 'fron
     });
   });
 });
-define('frontend-cp/tests/acceptance/agent/cases/user-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+define('frontend-cp/tests/acceptance/agent/cases/user-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-breadcrumbs/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoBreadcrumbsStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Case | User', {
     beforeEach: function beforeEach() {
@@ -9135,7 +9394,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-test', ['exports', 'fronte
     visit('/agent/cases/1/user');
 
     andThen(function () {
-      assert.equal(find('.breadcrumbs__item').length, 2);
+      assert.equal(find('.' + _frontendCpComponentsKoBreadcrumbsStyles['default'].item).length, 2);
     });
   });
 
@@ -10362,7 +10621,7 @@ define('frontend-cp/tests/acceptance/agent/users/change-role-test', ['exports', 
     });
   });
 });
-define('frontend-cp/tests/acceptance/agent/users/create-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/session/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpSessionStyles) {
+define('frontend-cp/tests/acceptance/agent/users/create-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/session/styles', 'frontend-cp/components/ko-breadcrumbs/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpSessionStyles, _frontendCpComponentsKoBreadcrumbsStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | User | Create user', {
     beforeEach: function beforeEach() {
@@ -10403,8 +10662,8 @@ define('frontend-cp/tests/acceptance/agent/users/create-test', ['exports', 'fron
     });
 
     andThen(function () {
-      fillIn('.ko-agent-dropdown__drop input[name=full_name]', 'Barney Stinson');
-      fillIn('.ko-agent-dropdown__drop input[name=email]', 'barney@stin.son');
+      fillIn('.ko-agent-dropdown__drop input.ko-agent-dropdown_create-user__full_name', 'Barney Stinson');
+      fillIn('.ko-agent-dropdown__drop input.ko-agent-dropdown_create-user__email', 'barney@stin.son');
       click('.ko-agent-dropdown__drop .button--primary');
     });
 
@@ -10414,7 +10673,7 @@ define('frontend-cp/tests/acceptance/agent/users/create-test', ['exports', 'fron
       assert.equal(find('.ko-agent-dropdown .ember-basic-dropdown-trigger[aria-expanded="false"]').length, 1, '"+" Dropdown content should be hidden');
 
       assert.equal(find('.ko-layout_advanced_section__subject').text().trim(), 'Barney Stinson', 'The name of the user is vissible in the header');
-      assert.equal(find('.breadcrumbs .breadcrumbs__item:eq(0)').text().trim(), 'Barney Stinson', 'Breadcrumbs are correct');
+      assert.equal(find('.' + _frontendCpComponentsKoBreadcrumbsStyles['default'].item + ':eq(0)').text().trim(), 'Barney Stinson', 'Breadcrumbs are correct');
       assert.equal(find('.' + _frontendCpSessionStyles['default'].tab).length, 1, 'There is only one tab');
       assert.equal(find('.' + _frontendCpSessionStyles['default'].tab + '.active').length, 1, 'That tab is active');
       assert.equal(find('.' + _frontendCpSessionStyles['default'].tab).text().trim(), 'Barney Stinson', 'That tab belongs to the created user');
@@ -11514,7 +11773,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('it renders', function (assert) {
-    assert.expect(10);
+    assert.expect(9);
 
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
@@ -11560,11 +11819,9 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
     })()));
 
     var $formElement = this.$('form');
-    var numFormControls = $formElement.prop('length');
-    assert.equal(numFormControls, ['full_name', 'email', 'submit', 'cancel'].length);
 
-    var $nameInputElement = getFormControl($formElement, 'full_name');
-    var $emailInputElement = getFormControl($formElement, 'email');
+    var $nameInputElement = getFormInput($formElement, 'full_name');
+    var $emailInputElement = getFormInput($formElement, 'email');
     var $cancelButtonElement = getFormControl($formElement, 'cancel');
     var $submitButtonElement = getFormControl($formElement, 'submit');
 
@@ -11635,8 +11892,8 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
 
     var $formElement = this.$('form');
 
-    var $nameInputElement = getFormControl($formElement, 'full_name');
-    var $emailInputElement = getFormControl($formElement, 'email');
+    var $nameInputElement = getFormInput($formElement, 'full_name');
+    var $emailInputElement = getFormInput($formElement, 'email');
 
     var nameErrors = getFieldErrors($formElement, 'full_name');
     var emailErrors = getFieldErrors($formElement, 'email');
@@ -11782,8 +12039,8 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
 
     var $formElement = this.$('form');
 
-    var $nameInputElement = getFormControl($formElement, 'full_name');
-    var $emailInputElement = getFormControl($formElement, 'email');
+    var $nameInputElement = getFormInput($formElement, 'full_name');
+    var $emailInputElement = getFormInput($formElement, 'email');
     var $cancelButtonElement = getFormControl($formElement, 'cancel');
     var $loaderElement = $formElement.find('.' + _frontendCpComponentsKoFormButtonsStyles['default'].loader);
 
@@ -11913,6 +12170,10 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
     assert.equal(onCancel.callCount, 1);
   });
 
+  function getFormInput(formElement, controlName) {
+    return _ember['default'].$(formElement).find('.ko-agent-dropdown_create-user__' + controlName);
+  }
+
   function getFormControl(formElement, controlName) {
     formElement = $(formElement)[0];
     return $(formElement.elements.namedItem(controlName));
@@ -11923,7 +12184,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
   }
 
   function getFieldErrors(formElement, inputName) {
-    var $errorElements = _ember['default'].$(formElement).find('[name="' + inputName + '"] + .ko-form_field__error');
+    var $errorElements = _ember['default'].$(formElement).find('.ko-agent-dropdown_create-user__' + inputName + ' + .ko-form_field__error');
     return $errorElements.map(function (index, element) {
       return _ember['default'].$(element).text().trim();
     }).get();
