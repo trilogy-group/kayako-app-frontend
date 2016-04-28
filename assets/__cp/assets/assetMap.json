@@ -1,10 +1,10 @@
 {
   "assets": {
     "assets/frontend-cp.css": "assets/frontend-cp-144ad0056dc28cae32b09b2fce32dae3.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-78534a4115feb784aa4797d23ea2b238.js",
+    "assets/frontend-cp.js": "assets/frontend-cp-b427aedf58e3a9a9499625ecf020b657.js",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-a989338c151ce330501dd0cd20c7939f.js",
     "assets/intl/intl.js": "assets/intl/intl-fd2f17673f0bd1d7d99e3d13018b4add.js",
-    "assets/intl/intl.min.js": "assets/intl/intl.min-1cf8bd76200e021fb27423fbeedd4938.js",
+    "assets/intl/intl.min.js": "assets/intl/intl.min-df93baa6892233863899470d105bde82.js",
     "assets/intl/locales/en-gb.js": "assets/intl/locales/en-gb-ff033c5437fa01c6b16ed12cbd789970.js",
     "assets/intl/locales/en-us.js": "assets/intl/locales/en-us-2641f81845f4a1adde213301282a52d9.js",
     "assets/vendor.css": "assets/vendor-4f2891f1413e443f02e0fbffb0bc6b61.css",
