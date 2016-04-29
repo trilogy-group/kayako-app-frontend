@@ -1,13 +1,14 @@
 {
   "assets": {
-    "assets/frontend-cp.css": "assets/frontend-cp-b13137fb4a099ff4b375e23aa30e77e8.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-e6070d968651233bb0d86d7a9bf5e9ce.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-20975c760325b0c8e7ae6ed1dcb62690.map",
+    "assets/frontend-cp.css": "assets/frontend-cp-144ad0056dc28cae32b09b2fce32dae3.css",
+    "assets/frontend-cp.js": "assets/frontend-cp-8806fa3bfedd2ef7dad281f76c8980f1.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-81f1fbee5ba2fb46bbd084f999cc3ba9.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-faf5482dfe15f99980683768da777c4c.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-4a978e7501bc135399ba0b7e3bb30054.map",
     "assets/intl/intl.js": "assets/intl/intl-9a9ea679e318aa74641bd11c60f78d0c.js",
     "assets/intl/intl.map": "assets/intl/intl-da7d74249f1a8a370d47b73e17806f31.map",
-    "assets/intl/intl.min.js": "assets/intl/intl.min-1cf8bd76200e021fb27423fbeedd4938.js",
+    "assets/intl/intl.min.js": "assets/intl/intl.min-160699fef8d4e1bcde2a5e19219bd008.js",
+    "assets/intl/intl.min.map": "assets/intl/intl.min-3e32f1f070775e1ff91cffcd304d4f64.map",
     "assets/intl/locales/en-gb.js": "assets/intl/locales/en-gb-de7edcd6df74e4f0440b0c69d10e59cb.js",
     "assets/intl/locales/en-gb.map": "assets/intl/locales/en-gb-42116f3d55feb502f5ab28e6285787ce.map",
     "assets/intl/locales/en-us.js": "assets/intl/locales/en-us-79bccefc1c046278fa9ad839c3b9854f.js",
