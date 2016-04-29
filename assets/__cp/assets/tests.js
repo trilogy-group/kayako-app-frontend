@@ -1014,8 +1014,74 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/index-test', ['ex
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/channels/email/list-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles) {
+define('frontend-cp/tests/acceptance/admin/channels/email/helpers', ['exports', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpComponentsKoSimpleListRowStyles) {
   var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
+
+  var getEnabledRows = function getEnabledRows() {
+    return find('.qa-mailboxes-enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row);
+  };
+  exports.getEnabledRows = getEnabledRows;
+  var getDisabledRows = function getDisabledRows() {
+    return find('.qa-mailboxes-disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row);
+  };
+
+  exports.getDisabledRows = getDisabledRows;
+  var assertRow = function assertRow(assert, row, _ref) {
+    var _ref2 = _slicedToArray(_ref, 3);
+
+    var address = _ref2[0];
+    var _ref2$1 = _ref2[1];
+    var options = _ref2$1 === undefined ? [] : _ref2$1;
+    var _ref2$2 = _ref2[2];
+    var hash = _ref2$2 === undefined ? {} : _ref2$2;
+
+    assert.ok(row.text().indexOf(address) !== -1, 'Mailbox address');
+    var brand = hash.brand || 'Main Brand';
+    assert.ok(row.text().indexOf('(' + brand + ')') !== -1, address + ' (Main Brand)');
+
+    var isDefault = options.indexOf('isDefault') !== -1;
+    assert[isDefault ? 'ok' : 'notOk'](row.text().indexOf('(Default)') !== -1, address + ' (Default)');
+
+    triggerEvent(row, 'mouseenter');
+    andThen(function () {
+      var canEdit = options.indexOf('canEdit') !== -1;
+      assert[canEdit ? 'ok' : 'notOk'](row.text().indexOf('Edit') !== -1, address + ' Editable');
+
+      var canDisable = options.indexOf('canDisable') !== -1;
+      assert[canDisable ? 'ok' : 'notOk'](row.text().indexOf('Disable') !== -1, address + ' Can be disabled');
+
+      var canMakeDefault = options.indexOf('canMakeDefault') !== -1;
+      assert[canMakeDefault ? 'ok' : 'notOk'](row.text().indexOf('Make default') !== -1, address + ' Can be made default');
+
+      var canEnable = options.indexOf('canEnable') !== -1;
+      assert[canEnable ? 'ok' : 'notOk'](row.text().indexOf('Enable') !== -1, address + ' Can be enabled');
+
+      var canDelete = options.indexOf('canDelete') !== -1;
+      assert[canDelete ? 'ok' : 'notOk'](row.text().indexOf('Delete') !== -1, address + ' Can be deleted`');
+    });
+    triggerEvent(row, 'mouseleave');
+  };
+
+  exports.assertRow = assertRow;
+  var assertRows = function assertRows(assert) {
+    var enabled = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
+    var disabled = arguments.length <= 2 || arguments[2] === undefined ? [] : arguments[2];
+
+    var enabledRows = getEnabledRows();
+    var disabledRows = getDisabledRows();
+    assert.equal(enabledRows.length, enabled.length, 'Enabled mailbox count');
+    assert.equal(disabledRows.length, disabled.length, 'Disabled mailbox count');
+
+    enabled.forEach(function (row, index) {
+      return assertRow(assert, enabledRows.eq(index), row);
+    });
+    disabled.forEach(function (row, index) {
+      return assertRow(assert, disabledRows.eq(index), row);
+    });
+  };
+  exports.assertRows = assertRows;
+});
+define('frontend-cp/tests/acceptance/admin/channels/email/list-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/acceptance/admin/channels/email/helpers'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/channels/email/list', {
     beforeEach: function beforeEach() {
@@ -1043,127 +1109,71 @@ define('frontend-cp/tests/acceptance/admin/channels/email/list-test', ['exports'
     }
   });
 
-  var getEnabledRows = function getEnabledRows() {
-    return find('.qa-mailboxes-enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row);
-  };
-  var getDisabledRows = function getDisabledRows() {
-    return find('.qa-mailboxes-disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row);
-  };
-
-  var assertRow = function assertRow(assert, row, _ref) {
-    var _ref2 = _slicedToArray(_ref, 2);
-
-    var address = _ref2[0];
-    var options = _ref2[1];
-
-    assert.ok(row.text().indexOf(address) !== -1, 'Mailbox address');
-    assert.ok(row.text().indexOf('(Main Brand)') !== -1, address + ' (Main Brand)');
-
-    var isDefault = options.indexOf('isDefault') !== -1;
-    assert[isDefault ? 'ok' : 'notOk'](row.text().indexOf('(Default)') !== -1, address + ' (Default)');
-
-    triggerEvent(row, 'mouseenter');
-    andThen(function () {
-      var canEdit = options.indexOf('canEdit') !== -1;
-      assert[canEdit ? 'ok' : 'notOk'](row.text().indexOf('Edit') !== -1, address + ' Editable');
-
-      var canDisable = options.indexOf('canDisable') !== -1;
-      assert[canDisable ? 'ok' : 'notOk'](row.text().indexOf('Disable') !== -1, address + ' Can be disabled');
-
-      var canMakeDefault = options.indexOf('canMakeDefault') !== -1;
-      assert[canMakeDefault ? 'ok' : 'notOk'](row.text().indexOf('Make default') !== -1, address + ' Can be made default');
-
-      var canEnable = options.indexOf('canEnable') !== -1;
-      assert[canEnable ? 'ok' : 'notOk'](row.text().indexOf('Enable') !== -1, address + ' Can be enabled');
-
-      var canDelete = options.indexOf('canDelete') !== -1;
-      assert[canDelete ? 'ok' : 'notOk'](row.text().indexOf('Delete') !== -1, address + ' Can be deleted`');
-    });
-    triggerEvent(row, 'mouseleave');
-  };
-
-  var assertRows = function assertRows(assert) {
-    var enabled = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
-    var disabled = arguments.length <= 2 || arguments[2] === undefined ? [] : arguments[2];
-
-    var enabledRows = getEnabledRows();
-    var disabledRows = getDisabledRows();
-    assert.equal(enabledRows.length, enabled.length, 'Enabled maibox count');
-    assert.equal(disabledRows.length, disabled.length, 'Disabled maibox count');
-
-    enabled.forEach(function (row, index) {
-      return assertRow(assert, enabledRows.eq(index), row);
-    });
-    disabled.forEach(function (row, index) {
-      return assertRow(assert, disabledRows.eq(index), row);
-    });
-  };
-
   (0, _frontendCpTestsHelpersQunit.test)('listing mailboxes', function (assert) {
     visit('/admin/channels/email');
     andThen(function () {
-      assertRows(assert, [['main@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault']], ['support@kayako.com', ['isDefault', 'canEdit']], ['sales@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']]], [['jobs@kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
+      (0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.assertRows)(assert, [['main@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault']], ['support@kayako.com', ['isDefault', 'canEdit']], ['sales@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']]], [['jobs@kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
     });
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('disabling a mailbox', function (assert) {
     visit('/admin/channels/email');
     andThen(function () {
-      return triggerEvent(getEnabledRows().eq(2), 'mouseenter');
+      return triggerEvent((0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.getEnabledRows)().eq(2), 'mouseenter');
     });
     andThen(function () {
-      return click(getEnabledRows().eq(2).find('.qa-mailbox-disable'));
+      return click((0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.getEnabledRows)().eq(2).find('.qa-mailbox-disable'));
     });
     andThen(function () {
-      assertRows(assert, [['main@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault']], ['support@kayako.com', ['isDefault', 'canEdit']]], [['sales@kayako.com', ['canEdit', 'canEnable', 'canDelete']], ['jobs@kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
+      (0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.assertRows)(assert, [['main@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault']], ['support@kayako.com', ['isDefault', 'canEdit']]], [['sales@kayako.com', ['canEdit', 'canEnable', 'canDelete']], ['jobs@kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
     });
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('enabling a mailbox', function (assert) {
     visit('/admin/channels/email');
     andThen(function () {
-      return triggerEvent(getDisabledRows().eq(0), 'mouseenter');
+      return triggerEvent((0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.getDisabledRows)().eq(0), 'mouseenter');
     });
     andThen(function () {
-      return click(getDisabledRows().eq(0).find('.qa-mailbox-enable'));
+      return click((0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.getDisabledRows)().eq(0).find('.qa-mailbox-enable'));
     });
     andThen(function () {
-      assertRows(assert, [['main@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault']], ['support@kayako.com', ['isDefault', 'canEdit']], ['sales@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']], ['jobs@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']]]);
+      (0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.assertRows)(assert, [['main@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault']], ['support@kayako.com', ['isDefault', 'canEdit']], ['sales@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']], ['jobs@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']]]);
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('deleting a maibox', function (assert) {
+  (0, _frontendCpTestsHelpersQunit.test)('deleting a mailbox', function (assert) {
     visit('/admin/channels/email');
     andThen(function () {
-      return triggerEvent(getEnabledRows().eq(2), 'mouseenter');
+      return triggerEvent((0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.getEnabledRows)().eq(2), 'mouseenter');
     });
     andThen(function () {
       return confirming(true, function () {
-        click(getEnabledRows().eq(2).find('.qa-mailbox-delete'));
+        click((0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.getEnabledRows)().eq(2).find('.qa-mailbox-delete'));
       });
     });
     andThen(function () {
-      assertRows(assert, [['main@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault']], ['support@kayako.com', ['isDefault', 'canEdit']]], [['jobs@kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
+      (0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.assertRows)(assert, [['main@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault']], ['support@kayako.com', ['isDefault', 'canEdit']]], [['jobs@kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
     });
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('making mailbox default', function (assert) {
     visit('/admin/channels/email');
     andThen(function () {
-      return triggerEvent(getEnabledRows().eq(2), 'mouseenter');
+      return triggerEvent((0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.getEnabledRows)().eq(2), 'mouseenter');
     });
     andThen(function () {
-      return click(getEnabledRows().eq(2).find('.qa-mailbox-make-default'));
+      return click((0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.getEnabledRows)().eq(2).find('.qa-mailbox-make-default'));
     });
     andThen(function () {
-      assertRows(assert, [['main@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault']], ['support@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']], ['sales@kayako.com', ['isDefault', 'canEdit']]], [['jobs@kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
+      (0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.assertRows)(assert, [['main@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault']], ['support@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']], ['sales@kayako.com', ['isDefault', 'canEdit']]], [['jobs@kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
     });
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('opening a mailbox edit page by clicking on the row', function (assert) {
     visit('/admin/channels/email');
     andThen(function () {
-      return click(getEnabledRows().eq(0));
+      return click((0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.getEnabledRows)().eq(0));
     });
     andThen(function () {
       return assert.equal(currentURL(), '/admin/channels/email/1');
@@ -1173,13 +1183,67 @@ define('frontend-cp/tests/acceptance/admin/channels/email/list-test', ['exports'
   (0, _frontendCpTestsHelpersQunit.test)('opening a mailbox edit page by clicking on the edit link', function (assert) {
     visit('/admin/channels/email');
     andThen(function () {
-      return triggerEvent(getEnabledRows().eq(0), 'mouseenter');
+      return triggerEvent((0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.getEnabledRows)().eq(0), 'mouseenter');
     });
     andThen(function () {
-      return click(getEnabledRows().eq(0).find('.qa-mailbox-edit'));
+      return click((0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.getEnabledRows)().eq(0).find('.qa-mailbox-edit'));
     });
     andThen(function () {
       return assert.equal(currentURL(), '/admin/channels/email/1');
+    });
+  });
+});
+define('frontend-cp/tests/acceptance/admin/channels/email/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/acceptance/admin/channels/email/helpers'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers) {
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/channels/email/list', {
+    beforeEach: function beforeEach() {
+      var locale = server.create('locale', { id: 1, locale: 'en-us', isDefault: true });
+      var role = server.create('role', { type: 'ADMIN' });
+      var user = server.create('user', { role: role, locale: locale });
+      var session = server.create('session', { user: user });
+
+      server.create('plan', {
+        limits: [],
+        features: []
+      });
+
+      var brand = server.create('brand', { domain: 'kayako.com', name: 'Main Brand' });
+      server.create('brand', { domain: 'kayako.com', name: 'Second Brand' });
+      server.create('mailbox', { address: 'main@kayako.com', brand: brand, is_system: true });
+      server.create('mailbox', { address: 'support@kayako.com', brand: brand, is_enabled: true, is_default: true });
+      server.create('mailbox', { address: 'sales@kayako.com', brand: brand, is_enabled: true });
+      server.create('mailbox', { address: 'jobs@kayako.com', brand: brand, is_enabled: false });
+
+      login(session.id);
+    },
+
+    afterEach: function afterEach() {
+      logout();
+    }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('creating a new mailbox', function (assert) {
+    visit('/admin/channels/email');
+    andThen(function () {
+      return click('.qa-admin-email-new-link');
+    });
+    andThen(function () {
+      return assert.equal(currentURL(), '/admin/channels/email/new');
+    });
+    andThen(function () {
+      return fillIn('.qa-email-edit-address', 'hello@kayako.com');
+    });
+    andThen(function () {
+      return selectChoose('.qa-email-edit-brand', 'Second Brand');
+    });
+    andThen(function () {
+      return click('button[type=submit]');
+    });
+    andThen(function () {
+      return assert.equal(currentURL(), '/admin/channels/email');
+    });
+    andThen(function () {
+      return (0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.assertRows)(assert, [['main@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault']], ['support@kayako.com', ['isDefault', 'canEdit']], ['sales@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']], ['hello@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete'], { brand: 'Second Brand' }]], [['jobs@kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
     });
   });
 });
