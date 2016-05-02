@@ -653,33 +653,23 @@ textarea {
   -webkit-transform: translateY(-50%);
           transform: translateY(-50%); }
 
-/*
-	Typography utility classes
-   ========================================================================= */
-
 .t-good {
   color: #89a83b; }
 
-.ko-form_field__error, .ko-form_field_errors__error,
-.t-bad {
+.ko-form_field__error, .ko-form_field_errors__error, .t-bad {
   color: #E86048; }
-
 
 .t-warning {
   color: #ECC645; }
 
-
 .t-open {
   color: #838D94; }
 
-.ko-agent-dropdown__nav-item,
-.t-center {
+.ko-agent-dropdown__nav-item, .t-center {
   text-align: center; }
-
 
 .t-right {
   text-align: right; }
-
 
 .t-left {
   text-align: left; }
