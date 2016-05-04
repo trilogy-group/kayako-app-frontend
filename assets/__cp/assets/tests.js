@@ -6764,7 +6764,6 @@ define('frontend-cp/tests/acceptance/admin/people/teams-forms-test', ['exports',
       server.create('permission', { name: 'admin.team.update', value: true });
       server.create('permission', { name: 'admin.team.update', value: true });
       server.create('permission', { name: 'admin.team.delete', value: true });
-      server.create('permission', { name: 'admin.team.view', value: true });
 
       var locale = server.create('locale', { locale: 'en-us' });
       var user = server.create('user', { emails: emails, locale: locale, role: server.create('role', { roleType: 'ADMIN' }) });
