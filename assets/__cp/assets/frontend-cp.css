@@ -7215,7 +7215,9 @@ span#HW_badge.HW_softHidden {
   border-left: 3px solid transparent; }
 
 ._item_1a61wp.active {
+  /* set by ember :( */
   margin-left: -1px;
+  /* offset its containers border. */
   background-color: #F7F8F9;
   border-left: 3px solid #4EAFCB;
   color: #4EAFCB; }
