@@ -7336,7 +7336,7 @@ span#HW_badge.HW_softHidden {
 
 /* styles for frontend-cp/components/ko-info-bar/field/select-multiple/styles.css */
 ._trigger_1s44wa {
-  border: none;
+  border: none !important;
   background: transparent;
   padding: 0; }
 
