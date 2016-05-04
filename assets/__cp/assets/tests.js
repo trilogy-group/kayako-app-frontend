@@ -9345,7 +9345,7 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
   });
 });
 /* eslint-disable camelcase */
-define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'sinon'], function (exports, _frontendCpTestsHelpersQunit, _sinon) {
+define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'sinon', 'frontend-cp/components/ko-text-editor/mode-selector/styles'], function (exports, _frontendCpTestsHelpersQunit, _sinon, _frontendCpComponentsKoTextEditorModeSelectorStyles) {
 
   var targetCase = undefined,
       identityEmail = undefined,
@@ -9480,7 +9480,7 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
     });
 
     andThen(function () {
-      click('.ko-text-editor-header-group__item__set-note');
+      click('.' + _frontendCpComponentsKoTextEditorModeSelectorStyles['default'].root);
       fillInRichTextEditor('Testing notes');
       click('.button--primary');
     });
@@ -11582,10 +11582,10 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
   };
 });
 define('frontend-cp/tests/helpers/ember-sortable/test-helpers', ['exports', 'ember-sortable/helpers/drag', 'ember-sortable/helpers/reorder'], function (exports, _emberSortableHelpersDrag, _emberSortableHelpersReorder) {});
-define('frontend-cp/tests/helpers/fill-in-rich-text-editor', ['exports', 'ember', 'npm:quill'], function (exports, _ember, _npmQuill) {
+define('frontend-cp/tests/helpers/fill-in-rich-text-editor', ['exports', 'ember', 'npm:quill', 'frontend-cp/components/ko-text-editor/styles'], function (exports, _ember, _npmQuill, _frontendCpComponentsKoTextEditorStyles) {
   exports['default'] = _ember['default'].Test.registerAsyncHelper('fillInRichTextEditor', function (app, html) {
     var editor = _npmQuill['default'].editors.find(function (ed) {
-      return ed.container.classList.contains('js-editor');
+      return ed.container.classList.contains(_frontendCpComponentsKoTextEditorStyles['default']['text-area']);
     });
     editor.setHTML(html);
   });

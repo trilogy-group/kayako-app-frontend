@@ -732,9 +732,10 @@ textarea {
   color: #838D93; }
 
 .i-color-grey--dark,
-.ko-text-editor-header-group__item,
-.ko-text-editor__right-group-item,
-.universal-search_result__icon {
+.universal-search_result__icon,
+._channel-selector_rf3s59,
+._root_qw8yub,
+._icon_1upkxj {
   color: #5F6C73; }
 
 .i-color-grey--light {
@@ -744,8 +745,7 @@ textarea {
    	Sizing
    ========================================================================= */
 .i-size-18,
-.ko-text-editor-header-group__item,
-.ko-text-editor__right-group-item {
+._icon_1upkxj {
   font-size: 18px;
   line-height: 1; }
 
@@ -2984,16 +2984,6 @@ img {
 .ko-case-content_field_forms {
   background: #f8f8f8; }
 
-.ko-text-editor--note .ko-text-editor__dropzone-and-editor-container {
-  background: #FDF8EB; }
-
-.ko-text-editor--reply .ko-text-editor__dropzone-and-editor-container, .ko-text-editor--note .ko-text-editor__dropzone-and-editor-container {
-  max-height: 320px;
-  border-bottom: 1px solid #CFD4D8; }
-
-.ko-text-editor--reply .text-editor--small, .ko-text-editor--note .text-editor--small {
-  max-height: 280px; }
-
 .ko-case-content_field_post__editor-overlay {
   padding: 0 15px 0 15px;
   display: -webkit-box;
@@ -3199,43 +3189,6 @@ img {
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%); }
-
-.ko-channel-selector .ember-power-select {
-  height: 16px; }
-
-.ko-channel-selector .ember-power-select:not([dir=rtl]) .ember-power-select-trigger {
-  padding-right: 0; }
-
-.ko-channel-selector .ember-power-select-trigger {
-  border: none;
-  padding: 0;
-  background-image: none; }
-  .ko-channel-selector .ember-power-select-trigger:focus {
-    outline: none; }
-
-.ko-channel-selector .ember-power-select-dropdown {
-  min-width: 200px;
-  border-top: 1px solid #D1D5D7;
-  border-bottom: 1px solid #D1D5D7; }
-
-.ko-channel-selector .ember-power-select-option {
-  max-width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis; }
-
-.ko-channel-selector .ember-power-select.opened .ember-power-select-trigger {
-  background-image: none; }
-
-.ko-channel-selector .ember-power-select-option {
-  padding-top: 5px;
-  padding-bottom: 5px; }
-
-.ko-channel-selector .ember-basic-dropdown-trigger {
-  line-height: 1; }
-
-.ko-channel-selector .ember-power-select-trigger[aria-disabled="true"] {
-  background: transparent; }
 
 .checkboxWrap {
   display: -webkit-box;
@@ -5317,727 +5270,6 @@ span#HW_badge.HW_softHidden {
     cursor: pointer;
     background-color: rgba(80, 131, 219, 0.05); }
 
-.ko-text-editor.is-errored .ko-text-editor__placeholder {
-  color: #E86048; }
-
-.ko-text-editor__header {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-      -ms-flex-pack: justify;
-          justify-content: space-between; }
-
-.ko-text-editor__placeholder {
-  position: absolute;
-  top: 13.5px;
-  left: 13.5px; }
-
-.ko-text-editor-header {
-  min-height: 51px;
-  position: relative;
-  border-bottom: 1px solid #CFD4D8; }
-
-.ko-text-editor-header-group {
-  display: inline-block;
-  margin-left: 16px; }
-
-.ko-text-editor-header-group--single {
-  margin-left: 0; }
-
-.ko-text-editor__spacer-container {
-  display: inline-block;
-  height: 100%;
-  vertical-align: top;
-  margin-right: 18px;
-  margin-left: 18px; }
-
-.ko-text-editor-header__spacer {
-  height: 100%;
-  position: absolute;
-  top: 0;
-  border-left: 1px solid #CFD4D8;
-  padding: 0 4.5px; }
-  .ko-text-editor-header__spacer + .ko-text-editor-header-group {
-    padding-left: 18px; }
-
-.ko-text-editor-header-group__item {
-  display: inline-block;
-  margin-right: 15px;
-  vertical-align: middle;
-  cursor: pointer;
-  padding: 15px 0 14px 0;
-  margin-top: 3px;
-  margin-bottom: -26px;
-  border-bottom: 2px solid transparent; }
-  .ko-text-editor-header-group__item [class*="ko-dropdown_list"] {
-    left: initial;
-    right: initial; }
-
-.ko-text-editor-header-group__item--single {
-  padding: 15px 5px; }
-
-.ko-text-editor__right-group {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
-  height: 49px; }
-
-.ko-text-editor__right-group-item {
-  margin-right: 20px; }
-
-.ko-text-editor__right-group-item-icon {
-  line-height: 15px;
-  cursor: pointer; }
-  .ko-text-editor__right-group-item-icon:before {
-    line-height: 1; }
-
-.ko-text-editor-header-group__item-text {
-  font-size: 12px;
-  line-height: 1.5;
-  vertical-align: middle;
-  margin-left: 5px; }
-
-.ko-text-editor-header-group__users-item--active {
-  color: #4EAFCB; }
-
-.ko-text-editor__dropzone-and-editor-container {
-  position: relative;
-  z-index: 20; }
-
-.ko-text-editor__dropzone-and-editor-container--small {
-  padding-bottom: 40px;
-  background: #FDF8EB;
-  max-height: 320px;
-  border-bottom: 1px solid #CFD4D8; }
-
-.ko-text-editor__dropzone-and-editor-container--social {
-  padding-bottom: 9px;
-  max-height: 320px;
-  border-bottom: 1px solid #CFD4D8; }
-
-.ko-text-editor__image-upload input {
-  display: none; }
-
-.ko-text-editor__file-upload input {
-  display: none; }
-
-.ko-text-editor__text-area {
-  width: 100%;
-  min-height: 135px;
-  resize: none;
-  border: none;
-  border-radius: 0;
-  padding-top: 0;
-  padding-bottom: 0;
-  max-height: 320px; }
-  .ko-text-editor__text-area .ql-editor {
-    padding: 13.5px 0; }
-
-.ko-text-editor__text-area--small {
-  max-height: 280px; }
-
-.ko-text-editor__text-area--social {
-  max-height: 280px; }
-
-.ko-text-editor-header-group__item--active {
-  border-bottom: 2px solid #4EAFCB; }
-
-/*! Quill Editor v0.19.12
- *  https://quilljs.com/
- *  Copyright (c) 2014, Jason Chen
- *  Copyright (c) 2013, salesforce.com
- */
-.ql-image-tooltip {
-  padding: 10px;
-  width: 300px;
-  top: 20px !important; }
-
-.ql-image-tooltip:after {
-  clear: both;
-  content: "";
-  display: table; }
-
-.ql-image-tooltip a {
-  border: 1px solid #000;
-  box-sizing: border-box;
-  display: inline-block;
-  float: left;
-  padding: 5px;
-  text-align: center;
-  width: 50%; }
-
-.ql-image-tooltip img {
-  bottom: 0;
-  left: 0;
-  margin: auto;
-  max-height: 100%;
-  max-width: 100%;
-  position: absolute;
-  right: 0;
-  top: 0; }
-
-.ql-image-tooltip .input {
-  box-sizing: border-box;
-  width: 100%; }
-
-.ql-image-tooltip .preview {
-  margin: 10px 0;
-  position: relative;
-  border: 1px dashed #000;
-  height: 200px; }
-
-.ql-image-tooltip .preview span {
-  display: inline-block;
-  position: absolute;
-  text-align: center;
-  top: 40%;
-  width: 100%; }
-
-.ql-link-tooltip {
-  padding: 5px 10px; }
-
-.ql-link-tooltip input.input {
-  width: 170px; }
-
-.ql-link-tooltip input.input,
-.ql-link-tooltip a.done {
-  display: none; }
-
-.ql-link-tooltip a.change {
-  margin-right: 4px; }
-
-.ql-link-tooltip.editing input.input,
-.ql-link-tooltip.editing a.done {
-  display: inline-block; }
-
-.ql-link-tooltip.editing a.url,
-.ql-link-tooltip.editing a.change,
-.ql-link-tooltip.editing a.remove {
-  display: none; }
-
-.ql-multi-cursor {
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 1000; }
-
-.ql-multi-cursor .cursor {
-  margin-left: -1px;
-  position: absolute; }
-
-.ql-multi-cursor .cursor-flag {
-  bottom: 100%;
-  position: absolute;
-  white-space: nowrap; }
-
-.ql-multi-cursor .cursor-name {
-  display: inline-block;
-  color: #fff;
-  padding: 2px 8px; }
-
-.ql-multi-cursor .cursor-caret {
-  height: 100%;
-  position: absolute;
-  width: 2px; }
-
-.ql-multi-cursor .cursor.hidden .cursor-flag {
-  display: none; }
-
-.ql-multi-cursor .cursor.top .cursor-flag {
-  bottom: auto;
-  top: 100%; }
-
-.ql-multi-cursor .cursor.right .cursor-flag {
-  right: -2px; }
-
-.ql-paste-manager {
-  left: -100000px;
-  position: absolute;
-  top: 50%; }
-
-.ql-toolbar {
-  box-sizing: border-box; }
-
-.ql-tooltip {
-  background-color: #fff;
-  border: 1px solid #000;
-  box-sizing: border-box;
-  position: absolute;
-  top: 0;
-  white-space: nowrap;
-  z-index: 2000; }
-
-.ql-tooltip a {
-  cursor: pointer;
-  text-decoration: none; }
-
-.ql-container {
-  box-sizing: border-box;
-  cursor: text;
-  font-family: Helvetica, 'Arial', sans-serif;
-  font-size: 14px;
-  line-height: 1.28571;
-  line-height: 1.42;
-  margin: 0;
-  overflow-x: hidden;
-  overflow-y: auto;
-  padding: 12px 15px;
-  padding-bottom: 25px;
-  position: relative; }
-
-.ql-editor {
-  box-sizing: border-box;
-  outline: none;
-  -moz-tab-size: 4;
-    -o-tab-size: 4;
-       tab-size: 4;
-  white-space: pre-wrap; }
-
-.ql-editor div {
-  margin: 0;
-  padding: 0; }
-
-.ql-editor a {
-  text-decoration: underline; }
-
-.ql-editor b {
-  font-weight: bold; }
-
-.ql-editor i {
-  font-style: italic; }
-
-.ql-editor s {
-  text-decoration: line-through; }
-
-.ql-editor u {
-  text-decoration: underline; }
-
-.ql-editor a,
-.ql-editor b,
-.ql-editor i,
-.ql-editor s,
-.ql-editor u,
-.ql-editor span {
-  background-color: inherit; }
-
-.ql-editor img {
-  max-width: 100%; }
-
-.ql-editor blockquote,
-.ql-editor ol,
-.ql-editor ul {
-  margin: 0 0 0 2em;
-  padding: 0; }
-
-.ql-editor ol {
-  list-style-type: decimal; }
-
-.ql-editor ul {
-  list-style-type: disc; }
-
-.ql-editor.ql-ie-9 br,
-.ql-editor.ql-ie-10 br {
-  display: none; }
-
-.ql-snow .ql-image-tooltip a {
-  border: 1px solid #06c; }
-
-.ql-snow .ql-image-tooltip a.insert {
-  background-color: #06c;
-  color: #fff; }
-
-.ql-snow .ql-image-tooltip .preview {
-  border-color: #ccc;
-  color: #ccc; }
-
-.ql-snow .ql-link-tooltip a,
-.ql-snow .ql-link-tooltip span {
-  line-height: 25px; }
-
-.ql-snow .ql-multi-cursor .cursor-name {
-  border-radius: 4px;
-  font-size: 11px;
-  line-height: 1.63636;
-  font-family: Arial;
-  margin-left: -50%;
-  padding: 4px 10px; }
-
-.ql-snow .ql-multi-cursor .cursor-triangle {
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-  height: 0;
-  margin-left: -3px;
-  width: 0; }
-
-.ql-snow .ql-multi-cursor .cursor.left .cursor-name {
-  margin-left: -8px; }
-
-.ql-snow .ql-multi-cursor .cursor.right .cursor-flag {
-  right: auto; }
-
-.ql-snow .ql-multi-cursor .cursor.right .cursor-name {
-  margin-left: -100%;
-  margin-right: -8px; }
-
-.ql-snow .ql-multi-cursor .cursor-triangle.bottom {
-  border-top: 4px solid transparent;
-  display: block;
-  margin-bottom: -1px; }
-
-.ql-snow .ql-multi-cursor .cursor-triangle.top {
-  border-bottom: 4px solid transparent;
-  display: none;
-  margin-top: -1px; }
-
-.ql-snow .ql-multi-cursor .cursor.top .cursor-triangle.bottom {
-  display: none; }
-
-.ql-snow .ql-multi-cursor .cursor.top .cursor-triangle.top {
-  display: block; }
-
-.ql-snow.ql-toolbar {
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none; }
-
-.ql-snow.ql-toolbar .ql-format-group {
-  display: inline-block;
-  margin-right: 15px;
-  vertical-align: middle; }
-
-.ql-snow.ql-toolbar .ql-format-separator {
-  box-sizing: border-box;
-  background-color: #ddd;
-  display: inline-block;
-  height: 14px;
-  margin-left: 4px;
-  margin-right: 4px;
-  vertical-align: middle;
-  width: 1px; }
-
-.ql-snow.ql-toolbar .ql-format-button {
-  box-sizing: border-box;
-  display: inline-block;
-  height: 24px;
-  line-height: 24px;
-  vertical-align: middle;
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: 18px 18px;
-  box-sizing: border-box;
-  cursor: pointer;
-  text-align: center;
-  width: 24px; }
-
-.ql-snow.ql-toolbar .ql-picker {
-  box-sizing: border-box;
-  color: #444;
-  display: inline-block;
-  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
-  font-size: 14px;
-  line-height: 1.28571;
-  font-weight: 500;
-  position: relative; }
-
-.ql-snow.ql-toolbar .ql-picker .ql-picker-label {
-  box-sizing: border-box;
-  display: inline-block;
-  height: 24px;
-  line-height: 24px;
-  vertical-align: middle;
-  background-color: #fff;
-  background-position: right center;
-  background-repeat: no-repeat;
-  background-size: 18px 18px;
-  border: 1px solid transparent;
-  cursor: pointer;
-  position: relative;
-  width: 100%; }
-
-.ql-snow.ql-toolbar .ql-picker .ql-picker-label.ql-active,
-.ql-snow.ql-toolbar .ql-picker .ql-picker-label:hover {
-  color: #06c; }
-
-.ql-snow.ql-toolbar .ql-picker .ql-picker-options {
-  background-color: #fff;
-  border: 1px solid transparent;
-  box-sizing: border-box;
-  display: none;
-  padding: 4px 8px;
-  position: absolute;
-  width: 100%; }
-
-.ql-snow.ql-toolbar .ql-picker .ql-picker-options .ql-picker-item {
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: 18px 18px;
-  box-sizing: border-box;
-  cursor: pointer;
-  display: block;
-  padding-bottom: 5px;
-  padding-top: 5px; }
-
-.ql-snow.ql-toolbar .ql-picker .ql-picker-options .ql-picker-item.ql-selected,
-.ql-snow.ql-toolbar .ql-picker .ql-picker-options .ql-picker-item:hover {
-  color: #06c; }
-
-.ql-snow.ql-toolbar .ql-picker.ql-expanded .ql-picker-label {
-  border-color: #ccc;
-  color: #ccc;
-  z-index: 2; }
-
-.ql-snow.ql-toolbar .ql-picker.ql-expanded .ql-picker-options {
-  border-color: #ccc;
-  box-shadow: rgba(0, 0, 0, 0.2) 0 2px 8px;
-  display: block;
-  margin-top: -1px;
-  z-index: 1; }
-
-.ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-label {
-  background-position: center center;
-  width: 28px; }
-
-.ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-options {
-  padding: 5px;
-  width: 152px; }
-
-.ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-options .ql-picker-item {
-  border: 1px solid transparent;
-  float: left;
-  height: 16px;
-  margin: 2px;
-  padding: 0;
-  width: 16px; }
-
-.ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-options .ql-picker-item.ql-primary-color {
-  margin-bottom: 8px; }
-
-.ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-options .ql-picker-item.ql-selected,
-.ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-options .ql-picker-item:hover {
-  border-color: #000; }
-
-.ql-snow.ql-toolbar .ql-picker.ql-font {
-  width: 105px; }
-
-.ql-snow.ql-toolbar .ql-picker.ql-size {
-  width: 80px; }
-
-.ql-snow.ql-toolbar .ql-picker.ql-font .ql-picker-label,
-.ql-snow.ql-toolbar .ql-picker.ql-size .ql-picker-label {
-  padding-left: 8px;
-  padding-right: 8px; }
-
-.ql-snow.ql-toolbar .ql-picker.ql-align .ql-picker-label {
-  background-position: center center;
-  width: 28px; }
-
-.ql-snow.ql-toolbar .ql-picker.ql-align .ql-picker-item {
-  box-sizing: border-box;
-  display: inline-block;
-  height: 24px;
-  line-height: 24px;
-  vertical-align: middle;
-  padding: 0;
-  width: 28px; }
-
-.ql-snow.ql-toolbar .ql-picker.ql-align .ql-picker-options {
-  padding: 4px 0; }
-
-.ql-snow.ql-toolbar .ql-picker .ql-picker-label {
-  background-image: url("/__apps/frontend/assets/__cp/images/icons/dropdown-triangles.svg"); }
-
-.ql-snow.ql-toolbar .ql-picker.ql-expanded .ql-picker-label {
-  background-image: url("/__apps/frontend/assets/__cp/images/icons/dropdown-triangles.svg"); }
-
-.ql-snow.ql-toolbar .ql-picker.ql-active:not(.ql-expanded) .ql-picker-label,
-.ql-snow.ql-toolbar:not(.ios) .ql-picker:not(.ql-expanded) .ql-picker-label:hover {
-  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASBAMAAACk4JNkAAAAKlBMVEUAAAAAYc4AZMgAZcwAZs0AZs0AZs0AZ8wAZswAZs0AZswAZswAZswAZsx12LPhAAAADXRSTlMAFRzExcbLzM/Q0dLbKbcyLwAAADVJREFUCNdjYCAeMKYJQFnSdzdCWbl3r0NZvnev4tFre/cKlNV79yaUpXP3EJTFtEqBBHcAAHyoDQk0vM/lAAAAAElFTkSuQmCC"); }
-
-.ql-snow.ql-toolbar .ql-format-button.ql-bold,
-.ql-snow.ql-toolbar .ql-picker.ql-bold .ql-picker-label,
-.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=bold],
-.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=bold] {
-  background-image: url("/__apps/frontend/assets/__cp/images/icons/bold.svg"); }
-
-.ql-snow.ql-toolbar .ql-format-button.ql-bold.ql-active,
-.ql-snow.ql-toolbar .ql-picker.ql-bold .ql-picker-label.ql-active,
-.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=bold].ql-active,
-.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=bold].ql-selected,
-.ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-bold:hover,
-.ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-bold .ql-picker-label:hover,
-.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=bold]:hover,
-.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=bold]:hover {
-  background-image: url("/__apps/frontend/assets/__cp/images/icons/bold.svg"); }
-
-.ql-snow.ql-toolbar .ql-format-button.ql-italic,
-.ql-snow.ql-toolbar .ql-picker.ql-italic .ql-picker-label,
-.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=italic],
-.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=italic] {
-  background-image: url("/__apps/frontend/assets/__cp/images/icons/italic.svg"); }
-
-.ql-snow.ql-toolbar .ql-format-button.ql-italic.ql-active,
-.ql-snow.ql-toolbar .ql-picker.ql-italic .ql-picker-label.ql-active,
-.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=italic].ql-active,
-.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=italic].ql-selected,
-.ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-italic:hover,
-.ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-italic .ql-picker-label:hover,
-.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=italic]:hover,
-.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=italic]:hover {
-  background-image: url("/__apps/frontend/assets/__cp/images/icons/italic.svg"); }
-
-.ql-snow.ql-toolbar .ql-format-button.ql-link,
-.ql-snow.ql-toolbar .ql-picker.ql-link .ql-picker-label,
-.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=link],
-.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=link] {
-  background-image: url("/__apps/frontend/assets/__cp/images/icons/link.svg"); }
-
-.ql-snow.ql-toolbar .ql-format-button.ql-link.ql-active,
-.ql-snow.ql-toolbar .ql-picker.ql-link .ql-picker-label.ql-active,
-.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=link].ql-active,
-.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=link].ql-selected,
-.ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-link:hover,
-.ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-link .ql-picker-label:hover,
-.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=link]:hover,
-.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=link]:hover {
-  background-image: url("/__apps/frontend/assets/__cp/images/icons/link.svg"); }
-
-.ql-snow.ql-toolbar .ql-format-button.ql-image,
-.ql-snow.ql-toolbar .ql-picker.ql-image .ql-picker-label,
-.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image],
-.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image] {
-  background-image: url("/__apps/frontend/assets/__cp/images/icons/photos.svg"); }
-
-.ql-snow.ql-toolbar .ql-format-button.ql-image.ql-active,
-.ql-snow.ql-toolbar .ql-picker.ql-image .ql-picker-label.ql-active,
-.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image].ql-active,
-.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image].ql-selected,
-.ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-image:hover,
-.ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-image .ql-picker-label:hover,
-.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=image]:hover,
-.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=image]:hover {
-  background-image: url("/__apps/frontend/assets/__cp/images/icons/photos.svg"); }
-
-.ql-snow.ql-toolbar .ql-format-button.ql-attachment,
-.ql-snow.ql-toolbar .ql-picker.ql-attachment .ql-picker-label,
-.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image],
-.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image] {
-  background-image: url("/__apps/frontend/assets/__cp/images/icons/attach.svg"); }
-
-.ql-snow.ql-toolbar .ql-format-button.ql-attachment.ql-active,
-.ql-snow.ql-toolbar .ql-picker.ql-attachment .ql-picker-label.ql-active,
-.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image].ql-active,
-.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image].ql-selected,
-.ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-attachment:hover,
-.ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-attachment .ql-picker-label:hover,
-.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=image]:hover,
-.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=image]:hover {
-  background-image: url("/__apps/frontend/assets/__cp/images/icons/attach.svg"); }
-
-.ql-snow.ql-toolbar .ql-format-button.ql-cc,
-.ql-snow.ql-toolbar .ql-picker.ql-cc .ql-picker-label,
-.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image],
-.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image] {
-  background-image: url("/__apps/frontend/assets/__cp/images/icons/cc.svg"); }
-
-.ql-snow.ql-toolbar .ql-format-button.ql-cc.ql-active,
-.ql-snow.ql-toolbar .ql-picker.ql-cc .ql-picker-label.ql-active,
-.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image].ql-active,
-.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image].ql-selected,
-.ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-cc:hover,
-.ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-cc .ql-picker-label:hover,
-.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=image]:hover,
-.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=image]:hover {
-  background-image: url("/__apps/frontend/assets/__cp/images/icons/cc.svg"); }
-
-.ql-snow.ql-toolbar .ql-format-button.ql-billing,
-.ql-snow.ql-toolbar .ql-picker.ql-billing .ql-picker-label,
-.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image],
-.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image] {
-  background-image: url("/__apps/frontend/assets/__cp/images/icons/billing.svg"); }
-
-.ql-snow.ql-toolbar .ql-format-button.ql-billing.ql-active,
-.ql-snow.ql-toolbar .ql-picker.ql-billing .ql-picker-label.ql-active,
-.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image].ql-active,
-.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image].ql-selected,
-.ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-billing:hover,
-.ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-billing .ql-picker-label:hover,
-.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=image]:hover,
-.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=image]:hover {
-  background-image: url("/__apps/frontend/assets/__cp/images/icons/billing.svg"); }
-
-.ql-snow.ql-toolbar .ql-format-button.ql-list,
-.ql-snow.ql-toolbar .ql-picker.ql-list .ql-picker-label,
-.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=list],
-.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=list] {
-  background-image: url("/__apps/frontend/assets/__cp/images/icons/list-numeric.svg"); }
-
-.ql-snow.ql-toolbar .ql-format-button.ql-list.ql-active,
-.ql-snow.ql-toolbar .ql-picker.ql-list .ql-picker-label.ql-active,
-.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=list].ql-active,
-.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=list].ql-selected,
-.ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-list:hover,
-.ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-list .ql-picker-label:hover,
-.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=list]:hover,
-.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=list]:hover {
-  background-image: url("/__apps/frontend/assets/__cp/images/icons/list-numeric.svg"); }
-
-.ql-snow.ql-toolbar .ql-format-button.ql-bullet,
-.ql-snow.ql-toolbar .ql-picker.ql-bullet .ql-picker-label,
-.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=bullet],
-.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=bullet] {
-  background-image: url("/__apps/frontend/assets/__cp/images/icons/list-bullet.svg"); }
-
-.ql-snow.ql-toolbar .ql-format-button.ql-bullet.ql-active,
-.ql-snow.ql-toolbar .ql-picker.ql-bullet .ql-picker-label.ql-active,
-.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=bullet].ql-active,
-.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=bullet].ql-selected,
-.ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-bullet:hover,
-.ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-bullet .ql-picker-label:hover,
-.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=bullet]:hover,
-.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=bullet]:hover {
-  background-image: url("/__apps/frontend/assets/__cp/images/icons/list-bullet.svg"); }
-
-.ql-snow.ql-toolbar .ql-format-button.ql-authorship,
-.ql-snow.ql-toolbar .ql-picker.ql-authorship .ql-picker-label,
-.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=authorship],
-.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=authorship] {
-  background-image: url("/__apps/frontend/assets/__cp/images/icons/path-copy.svg"); }
-
-.ql-snow.ql-toolbar .ql-format-button.ql-authorship.ql-active,
-.ql-snow.ql-toolbar .ql-picker.ql-authorship .ql-picker-label.ql-active,
-.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=authorship].ql-active,
-.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=authorship].ql-selected,
-.ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-authorship:hover,
-.ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-authorship .ql-picker-label:hover,
-.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=authorship]:hover,
-.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=authorship]:hover {
-  background-image: url("/__apps/frontend/assets/__cp/images/icons/path-copy.svg"); }
-
-.ql-snow .ql-tooltip {
-  border: 1px solid #ccc;
-  box-shadow: 0 0 5px #ddd;
-  color: #222; }
-
-.ql-snow .ql-tooltip a {
-  color: #06c; }
-
-.ql-snow .ql-tooltip .input {
-  border: 1px solid #ccc;
-  margin: 0;
-  padding: 5px; }
-
-.ql-snow a {
-  color: #06c; }
-
 .ko-toast {
   pointer-events: none; }
 
@@ -7131,6 +6363,61 @@ span#HW_badge.HW_softHidden {
 ._avatar_zybp6x {
   margin-right: 9px; }
 
+/* styles for frontend-cp/components/ko-channel-selector/styles.css */
+._channel-selector_rf3s59 {
+  margin: 0 9px;
+  cursor: pointer;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center; }
+
+._channel-selector--active_rf3s59 {
+  border-top: 2px solid transparent;
+  border-bottom: 2px solid #4EAFCB; }
+
+._channel-selector_rf3s59 .ember-power-select {
+  height: 16px; }
+
+._channel-selector_rf3s59 .ember-power-select:not([dir=rtl]) .ember-power-select-trigger {
+  padding-right: 0; }
+
+._channel-selector_rf3s59 .ember-power-select-trigger {
+  border: none;
+  padding: 0;
+  background-image: none; }
+
+._channel-selector_rf3s59 .ember-power-select-trigger:focus {
+  outline: none; }
+
+._channel-selector_rf3s59 .ember-power-select-dropdown {
+  min-width: 200px;
+  border-top: 1px solid #D1D5D7;
+  border-bottom: 1px solid #D1D5D7; }
+
+._channel-selector_rf3s59 .ember-power-select-option {
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; }
+
+._channel-selector_rf3s59 .ember-power-select.opened .ember-power-select-trigger {
+  background-image: none; }
+
+._channel-selector_rf3s59 .ember-power-select-option {
+  padding-top: 5px;
+  padding-bottom: 5px; }
+
+._channel-selector_rf3s59 .ember-basic-dropdown-trigger {
+  line-height: 1; }
+
+._channel-selector_rf3s59 .ember-power-select-trigger[aria-disabled="true"] {
+  background: transparent; }
+
 /* styles for frontend-cp/components/ko-checkbox/styles.css */
 ._checkboxWrap_va0kgl {
   display: -webkit-box;
@@ -7591,6 +6878,701 @@ span#HW_badge.HW_softHidden {
 
 ._size_yhtkn8 {
   color: #A1AAAF; }
+
+/* styles for frontend-cp/components/ko-text-editor/mode-selector/styles.css */
+._root_qw8yub {
+  margin: 0 9px;
+  cursor: pointer;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center; }
+
+._active_qw8yub {
+  border-top: 2px solid transparent;
+  border-bottom: 2px solid #4EAFCB; }
+
+/* styles for frontend-cp/components/ko-text-editor/styles.css */
+._placeholder_1upkxj {
+  position: absolute;
+  top: 13.5px;
+  left: 13.5px; }
+
+._placeholder--errorer_1upkxj {
+  color: #E86048; }
+
+._header_1upkxj {
+  height: 51px;
+  position: relative;
+  border-bottom: 1px solid #CFD4D8;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
+
+._section_1upkxj {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex; }
+
+._group_1upkxj {
+  padding: 0 10px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: stretch;
+  -webkit-align-items: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch; }
+
+._group_1upkxj + ._group_1upkxj {
+  border-left: 1px solid #CFD4D8; }
+
+._item_1upkxj {
+  margin: 0 9px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center; }
+
+._icon_1upkxj {
+  cursor: pointer; }
+
+._icon-active_1upkxj {
+  color: #4EAFCB; }
+
+._icon-text_1upkxj {
+  font-size: 12px;
+  line-height: 1.5;
+  vertical-align: middle;
+  margin-left: 5px; }
+
+._dropzone-and-editor-container_1upkxj {
+  position: relative;
+  z-index: 20;
+  max-height: 320px;
+  border-bottom: 1px solid #CFD4D8; }
+
+._dropzone-and-editor-container--note_1upkxj {
+  padding-bottom: 40px;
+  background: #FDF8EB; }
+
+._dropzone-and-editor-container--social_1upkxj {
+  padding-bottom: 9px; }
+
+._text-area_1upkxj {
+  width: 100%;
+  min-height: 135px;
+  resize: none;
+  border: none;
+  border-radius: 0;
+  max-height: 320px;
+  box-sizing: border-box;
+  cursor: text;
+  font-family: Helvetica, 'Arial', sans-serif;
+  font-size: 14px;
+  line-height: 1.28571;
+  line-height: 1.42;
+  margin: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 12px 15px;
+  padding-bottom: 25px;
+  position: relative; }
+
+._text-area--small_1upkxj {
+  max-height: 280px; }
+
+._text-area--social_1upkxj {
+  max-height: 280px; }
+
+/*! Quill Editor v0.19.12
+ *  https://quilljs.com/
+ *  Copyright (c) 2014, Jason Chen
+ *  Copyright (c) 2013, salesforce.com
+ */
+.ql-image-tooltip {
+  padding: 10px;
+  width: 300px;
+  top: 20px !important; }
+
+.ql-image-tooltip:after {
+  clear: both;
+  content: "";
+  display: table; }
+
+.ql-image-tooltip a {
+  border: 1px solid #000;
+  box-sizing: border-box;
+  display: inline-block;
+  float: left;
+  padding: 5px;
+  text-align: center;
+  width: 50%; }
+
+.ql-image-tooltip img {
+  bottom: 0;
+  left: 0;
+  margin: auto;
+  max-height: 100%;
+  max-width: 100%;
+  position: absolute;
+  right: 0;
+  top: 0; }
+
+.ql-image-tooltip .input {
+  box-sizing: border-box;
+  width: 100%; }
+
+.ql-image-tooltip .preview {
+  margin: 10px 0;
+  position: relative;
+  border: 1px dashed #000;
+  height: 200px; }
+
+.ql-image-tooltip .preview span {
+  display: inline-block;
+  position: absolute;
+  text-align: center;
+  top: 40%;
+  width: 100%; }
+
+.ql-link-tooltip {
+  padding: 5px 10px; }
+
+.ql-link-tooltip input.input {
+  width: 170px; }
+
+.ql-link-tooltip input.input,
+.ql-link-tooltip a.done {
+  display: none; }
+
+.ql-link-tooltip a.change {
+  margin-right: 4px; }
+
+.ql-link-tooltip.editing input.input,
+.ql-link-tooltip.editing a.done {
+  display: inline-block; }
+
+.ql-link-tooltip.editing a.url,
+.ql-link-tooltip.editing a.change,
+.ql-link-tooltip.editing a.remove {
+  display: none; }
+
+.ql-multi-cursor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1000; }
+
+.ql-multi-cursor .cursor {
+  margin-left: -1px;
+  position: absolute; }
+
+.ql-multi-cursor .cursor-flag {
+  bottom: 100%;
+  position: absolute;
+  white-space: nowrap; }
+
+.ql-multi-cursor .cursor-name {
+  display: inline-block;
+  color: #fff;
+  padding: 2px 8px; }
+
+.ql-multi-cursor .cursor-caret {
+  height: 100%;
+  position: absolute;
+  width: 2px; }
+
+.ql-multi-cursor .cursor.hidden .cursor-flag {
+  display: none; }
+
+.ql-multi-cursor .cursor.top .cursor-flag {
+  bottom: auto;
+  top: 100%; }
+
+.ql-multi-cursor .cursor.right .cursor-flag {
+  right: -2px; }
+
+.ql-paste-manager {
+  left: -100000px;
+  position: absolute;
+  top: 50%; }
+
+.ql-toolbar {
+  box-sizing: border-box; }
+
+.ql-tooltip {
+  background-color: #fff;
+  border: 1px solid #000;
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  white-space: nowrap;
+  z-index: 2000; }
+
+.ql-tooltip a {
+  cursor: pointer;
+  text-decoration: none; }
+
+.ql-editor {
+  box-sizing: border-box;
+  outline: none;
+  -moz-tab-size: 4;
+    -o-tab-size: 4;
+       tab-size: 4;
+  white-space: pre-wrap; }
+
+.ql-editor div {
+  margin: 0;
+  padding: 0; }
+
+.ql-editor a {
+  text-decoration: underline; }
+
+.ql-editor b {
+  font-weight: bold; }
+
+.ql-editor i {
+  font-style: italic; }
+
+.ql-editor s {
+  text-decoration: line-through; }
+
+.ql-editor u {
+  text-decoration: underline; }
+
+.ql-editor a,
+.ql-editor b,
+.ql-editor i,
+.ql-editor s,
+.ql-editor u,
+.ql-editor span {
+  background-color: inherit; }
+
+.ql-editor img {
+  max-width: 100%; }
+
+.ql-editor blockquote,
+.ql-editor ol,
+.ql-editor ul {
+  margin: 0 0 0 2em;
+  padding: 0; }
+
+.ql-editor ol {
+  list-style-type: decimal; }
+
+.ql-editor ul {
+  list-style-type: disc; }
+
+.ql-editor.ql-ie-9 br,
+.ql-editor.ql-ie-10 br {
+  display: none; }
+
+.ql-snow .ql-image-tooltip a {
+  border: 1px solid #06c; }
+
+.ql-snow .ql-image-tooltip a.insert {
+  background-color: #06c;
+  color: #fff; }
+
+.ql-snow .ql-image-tooltip .preview {
+  border-color: #ccc;
+  color: #ccc; }
+
+.ql-snow .ql-link-tooltip a,
+.ql-snow .ql-link-tooltip span {
+  line-height: 25px; }
+
+.ql-snow .ql-multi-cursor .cursor-name {
+  border-radius: 4px;
+  font-size: 11px;
+  line-height: 1.63636;
+  font-family: Arial;
+  margin-left: -50%;
+  padding: 4px 10px; }
+
+.ql-snow .ql-multi-cursor .cursor-triangle {
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  height: 0;
+  margin-left: -3px;
+  width: 0; }
+
+.ql-snow .ql-multi-cursor .cursor.left .cursor-name {
+  margin-left: -8px; }
+
+.ql-snow .ql-multi-cursor .cursor.right .cursor-flag {
+  right: auto; }
+
+.ql-snow .ql-multi-cursor .cursor.right .cursor-name {
+  margin-left: -100%;
+  margin-right: -8px; }
+
+.ql-snow .ql-multi-cursor .cursor-triangle.bottom {
+  border-top: 4px solid transparent;
+  display: block;
+  margin-bottom: -1px; }
+
+.ql-snow .ql-multi-cursor .cursor-triangle.top {
+  border-bottom: 4px solid transparent;
+  display: none;
+  margin-top: -1px; }
+
+.ql-snow .ql-multi-cursor .cursor.top .cursor-triangle.bottom {
+  display: none; }
+
+.ql-snow .ql-multi-cursor .cursor.top .cursor-triangle.top {
+  display: block; }
+
+.ql-snow.ql-toolbar {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none; }
+
+.ql-snow.ql-toolbar .ql-format-group {
+  display: inline-block;
+  margin-right: 15px;
+  vertical-align: middle; }
+
+.ql-snow.ql-toolbar .ql-format-separator {
+  box-sizing: border-box;
+  background-color: #ddd;
+  display: inline-block;
+  height: 14px;
+  margin-left: 4px;
+  margin-right: 4px;
+  vertical-align: middle;
+  width: 1px; }
+
+.ql-snow.ql-toolbar .ql-format-button {
+  box-sizing: border-box;
+  display: inline-block;
+  height: 24px;
+  line-height: 24px;
+  vertical-align: middle;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 18px 18px;
+  box-sizing: border-box;
+  cursor: pointer;
+  text-align: center;
+  width: 24px; }
+
+.ql-snow.ql-toolbar .ql-picker {
+  box-sizing: border-box;
+  color: #444;
+  display: inline-block;
+  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  font-size: 14px;
+  line-height: 1.28571;
+  font-weight: 500;
+  position: relative; }
+
+.ql-snow.ql-toolbar .ql-picker .ql-picker-label {
+  box-sizing: border-box;
+  display: inline-block;
+  height: 24px;
+  line-height: 24px;
+  vertical-align: middle;
+  background-color: #fff;
+  background-position: right center;
+  background-repeat: no-repeat;
+  background-size: 18px 18px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  position: relative;
+  width: 100%; }
+
+.ql-snow.ql-toolbar .ql-picker .ql-picker-label.ql-active,
+.ql-snow.ql-toolbar .ql-picker .ql-picker-label:hover {
+  color: #06c; }
+
+.ql-snow.ql-toolbar .ql-picker .ql-picker-options {
+  background-color: #fff;
+  border: 1px solid transparent;
+  box-sizing: border-box;
+  display: none;
+  padding: 4px 8px;
+  position: absolute;
+  width: 100%; }
+
+.ql-snow.ql-toolbar .ql-picker .ql-picker-options .ql-picker-item {
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 18px 18px;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: block;
+  padding-bottom: 5px;
+  padding-top: 5px; }
+
+.ql-snow.ql-toolbar .ql-picker .ql-picker-options .ql-picker-item.ql-selected,
+.ql-snow.ql-toolbar .ql-picker .ql-picker-options .ql-picker-item:hover {
+  color: #06c; }
+
+.ql-snow.ql-toolbar .ql-picker.ql-expanded .ql-picker-label {
+  border-color: #ccc;
+  color: #ccc;
+  z-index: 2; }
+
+.ql-snow.ql-toolbar .ql-picker.ql-expanded .ql-picker-options {
+  border-color: #ccc;
+  box-shadow: rgba(0, 0, 0, 0.2) 0 2px 8px;
+  display: block;
+  margin-top: -1px;
+  z-index: 1; }
+
+.ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-label {
+  background-position: center center;
+  width: 28px; }
+
+.ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-options {
+  padding: 5px;
+  width: 152px; }
+
+.ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-options .ql-picker-item {
+  border: 1px solid transparent;
+  float: left;
+  height: 16px;
+  margin: 2px;
+  padding: 0;
+  width: 16px; }
+
+.ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-options .ql-picker-item.ql-primary-color {
+  margin-bottom: 8px; }
+
+.ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-options .ql-picker-item.ql-selected,
+.ql-snow.ql-toolbar .ql-picker.ql-color-picker .ql-picker-options .ql-picker-item:hover {
+  border-color: #000; }
+
+.ql-snow.ql-toolbar .ql-picker.ql-font {
+  width: 105px; }
+
+.ql-snow.ql-toolbar .ql-picker.ql-size {
+  width: 80px; }
+
+.ql-snow.ql-toolbar .ql-picker.ql-font .ql-picker-label,
+.ql-snow.ql-toolbar .ql-picker.ql-size .ql-picker-label {
+  padding-left: 8px;
+  padding-right: 8px; }
+
+.ql-snow.ql-toolbar .ql-picker.ql-align .ql-picker-label {
+  background-position: center center;
+  width: 28px; }
+
+.ql-snow.ql-toolbar .ql-picker.ql-align .ql-picker-item {
+  box-sizing: border-box;
+  display: inline-block;
+  height: 24px;
+  line-height: 24px;
+  vertical-align: middle;
+  padding: 0;
+  width: 28px; }
+
+.ql-snow.ql-toolbar .ql-picker.ql-align .ql-picker-options {
+  padding: 4px 0; }
+
+.ql-snow.ql-toolbar .ql-picker .ql-picker-label {
+  background-image: url("/__apps/frontend/assets/__cp/images/icons/dropdown-triangles.svg"); }
+
+.ql-snow.ql-toolbar .ql-picker.ql-expanded .ql-picker-label {
+  background-image: url("/__apps/frontend/assets/__cp/images/icons/dropdown-triangles.svg"); }
+
+.ql-snow.ql-toolbar .ql-picker.ql-active:not(.ql-expanded) .ql-picker-label,
+.ql-snow.ql-toolbar:not(.ios) .ql-picker:not(.ql-expanded) .ql-picker-label:hover {
+  background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASBAMAAACk4JNkAAAAKlBMVEUAAAAAYc4AZMgAZcwAZs0AZs0AZs0AZ8wAZswAZs0AZswAZswAZswAZsx12LPhAAAADXRSTlMAFRzExcbLzM/Q0dLbKbcyLwAAADVJREFUCNdjYCAeMKYJQFnSdzdCWbl3r0NZvnev4tFre/cKlNV79yaUpXP3EJTFtEqBBHcAAHyoDQk0vM/lAAAAAElFTkSuQmCC"); }
+
+.ql-snow.ql-toolbar .ql-format-button.ql-bold,
+.ql-snow.ql-toolbar .ql-picker.ql-bold .ql-picker-label,
+.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=bold],
+.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=bold] {
+  background-image: url("/__apps/frontend/assets/__cp/images/icons/bold.svg"); }
+
+.ql-snow.ql-toolbar .ql-format-button.ql-bold.ql-active,
+.ql-snow.ql-toolbar .ql-picker.ql-bold .ql-picker-label.ql-active,
+.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=bold].ql-active,
+.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=bold].ql-selected,
+.ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-bold:hover,
+.ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-bold .ql-picker-label:hover,
+.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=bold]:hover,
+.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=bold]:hover {
+  background-image: url("/__apps/frontend/assets/__cp/images/icons/bold.svg"); }
+
+.ql-snow.ql-toolbar .ql-format-button.ql-italic,
+.ql-snow.ql-toolbar .ql-picker.ql-italic .ql-picker-label,
+.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=italic],
+.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=italic] {
+  background-image: url("/__apps/frontend/assets/__cp/images/icons/italic.svg"); }
+
+.ql-snow.ql-toolbar .ql-format-button.ql-italic.ql-active,
+.ql-snow.ql-toolbar .ql-picker.ql-italic .ql-picker-label.ql-active,
+.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=italic].ql-active,
+.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=italic].ql-selected,
+.ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-italic:hover,
+.ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-italic .ql-picker-label:hover,
+.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=italic]:hover,
+.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=italic]:hover {
+  background-image: url("/__apps/frontend/assets/__cp/images/icons/italic.svg"); }
+
+.ql-snow.ql-toolbar .ql-format-button.ql-link,
+.ql-snow.ql-toolbar .ql-picker.ql-link .ql-picker-label,
+.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=link],
+.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=link] {
+  background-image: url("/__apps/frontend/assets/__cp/images/icons/link.svg"); }
+
+.ql-snow.ql-toolbar .ql-format-button.ql-link.ql-active,
+.ql-snow.ql-toolbar .ql-picker.ql-link .ql-picker-label.ql-active,
+.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=link].ql-active,
+.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=link].ql-selected,
+.ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-link:hover,
+.ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-link .ql-picker-label:hover,
+.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=link]:hover,
+.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=link]:hover {
+  background-image: url("/__apps/frontend/assets/__cp/images/icons/link.svg"); }
+
+.ql-snow.ql-toolbar .ql-format-button.ql-image,
+.ql-snow.ql-toolbar .ql-picker.ql-image .ql-picker-label,
+.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image],
+.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image] {
+  background-image: url("/__apps/frontend/assets/__cp/images/icons/photos.svg"); }
+
+.ql-snow.ql-toolbar .ql-format-button.ql-image.ql-active,
+.ql-snow.ql-toolbar .ql-picker.ql-image .ql-picker-label.ql-active,
+.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image].ql-active,
+.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image].ql-selected,
+.ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-image:hover,
+.ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-image .ql-picker-label:hover,
+.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=image]:hover,
+.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=image]:hover {
+  background-image: url("/__apps/frontend/assets/__cp/images/icons/photos.svg"); }
+
+.ql-snow.ql-toolbar .ql-format-button.ql-attachment,
+.ql-snow.ql-toolbar .ql-picker.ql-attachment .ql-picker-label,
+.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image],
+.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image] {
+  background-image: url("/__apps/frontend/assets/__cp/images/icons/attach.svg"); }
+
+.ql-snow.ql-toolbar .ql-format-button.ql-attachment.ql-active,
+.ql-snow.ql-toolbar .ql-picker.ql-attachment .ql-picker-label.ql-active,
+.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image].ql-active,
+.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image].ql-selected,
+.ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-attachment:hover,
+.ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-attachment .ql-picker-label:hover,
+.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=image]:hover,
+.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=image]:hover {
+  background-image: url("/__apps/frontend/assets/__cp/images/icons/attach.svg"); }
+
+.ql-snow.ql-toolbar .ql-format-button.ql-cc,
+.ql-snow.ql-toolbar .ql-picker.ql-cc .ql-picker-label,
+.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image],
+.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image] {
+  background-image: url("/__apps/frontend/assets/__cp/images/icons/cc.svg"); }
+
+.ql-snow.ql-toolbar .ql-format-button.ql-cc.ql-active,
+.ql-snow.ql-toolbar .ql-picker.ql-cc .ql-picker-label.ql-active,
+.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image].ql-active,
+.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image].ql-selected,
+.ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-cc:hover,
+.ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-cc .ql-picker-label:hover,
+.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=image]:hover,
+.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=image]:hover {
+  background-image: url("/__apps/frontend/assets/__cp/images/icons/cc.svg"); }
+
+.ql-snow.ql-toolbar .ql-format-button.ql-billing,
+.ql-snow.ql-toolbar .ql-picker.ql-billing .ql-picker-label,
+.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image],
+.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image] {
+  background-image: url("/__apps/frontend/assets/__cp/images/icons/billing.svg"); }
+
+.ql-snow.ql-toolbar .ql-format-button.ql-billing.ql-active,
+.ql-snow.ql-toolbar .ql-picker.ql-billing .ql-picker-label.ql-active,
+.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=image].ql-active,
+.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=image].ql-selected,
+.ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-billing:hover,
+.ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-billing .ql-picker-label:hover,
+.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=image]:hover,
+.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=image]:hover {
+  background-image: url("/__apps/frontend/assets/__cp/images/icons/billing.svg"); }
+
+.ql-snow.ql-toolbar .ql-format-button.ql-list,
+.ql-snow.ql-toolbar .ql-picker.ql-list .ql-picker-label,
+.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=list],
+.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=list] {
+  background-image: url("/__apps/frontend/assets/__cp/images/icons/list-numeric.svg"); }
+
+.ql-snow.ql-toolbar .ql-format-button.ql-list.ql-active,
+.ql-snow.ql-toolbar .ql-picker.ql-list .ql-picker-label.ql-active,
+.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=list].ql-active,
+.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=list].ql-selected,
+.ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-list:hover,
+.ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-list .ql-picker-label:hover,
+.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=list]:hover,
+.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=list]:hover {
+  background-image: url("/__apps/frontend/assets/__cp/images/icons/list-numeric.svg"); }
+
+.ql-snow.ql-toolbar .ql-format-button.ql-bullet,
+.ql-snow.ql-toolbar .ql-picker.ql-bullet .ql-picker-label,
+.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=bullet],
+.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=bullet] {
+  background-image: url("/__apps/frontend/assets/__cp/images/icons/list-bullet.svg"); }
+
+.ql-snow.ql-toolbar .ql-format-button.ql-bullet.ql-active,
+.ql-snow.ql-toolbar .ql-picker.ql-bullet .ql-picker-label.ql-active,
+.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=bullet].ql-active,
+.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=bullet].ql-selected,
+.ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-bullet:hover,
+.ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-bullet .ql-picker-label:hover,
+.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=bullet]:hover,
+.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=bullet]:hover {
+  background-image: url("/__apps/frontend/assets/__cp/images/icons/list-bullet.svg"); }
+
+.ql-snow.ql-toolbar .ql-format-button.ql-authorship,
+.ql-snow.ql-toolbar .ql-picker.ql-authorship .ql-picker-label,
+.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=authorship],
+.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=authorship] {
+  background-image: url("/__apps/frontend/assets/__cp/images/icons/path-copy.svg"); }
+
+.ql-snow.ql-toolbar .ql-format-button.ql-authorship.ql-active,
+.ql-snow.ql-toolbar .ql-picker.ql-authorship .ql-picker-label.ql-active,
+.ql-snow.ql-toolbar .ql-picker .ql-picker-label[data-value=authorship].ql-active,
+.ql-snow.ql-toolbar .ql-picker .ql-picker-item[data-value=authorship].ql-selected,
+.ql-snow.ql-toolbar:not(.ios) .ql-format-button.ql-authorship:hover,
+.ql-snow.ql-toolbar:not(.ios) .ql-picker.ql-authorship .ql-picker-label:hover,
+.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-label[data-value=authorship]:hover,
+.ql-snow.ql-toolbar:not(.ios) .ql-picker .ql-picker-item[data-value=authorship]:hover {
+  background-image: url("/__apps/frontend/assets/__cp/images/icons/path-copy.svg"); }
+
+.ql-snow .ql-tooltip {
+  border: 1px solid #ccc;
+  box-shadow: 0 0 5px #ddd;
+  color: #222; }
+
+.ql-snow .ql-tooltip a {
+  color: #06c; }
+
+.ql-snow .ql-tooltip .input {
+  border: 1px solid #ccc;
+  margin: 0;
+  padding: 5px; }
+
+.ql-snow a {
+  color: #06c; }
 
 /* styles for frontend-cp/components/ko-timeline/activity/styles.css */
 ._activity_1tukzf {
