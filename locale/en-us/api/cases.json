@@ -116,6 +116,8 @@
   "sort_options.newest_first": "Newest first",
   "sort_options.oldest_first": "Oldest first",
 
+  "timeline.item.from": "From:",
+  "timeline.item.cc": "CC:",
   "filter_options.all": "All",
   "filter_options.posts": "Posts",
   "filter_options.posts_activities": "Posts and activities",
