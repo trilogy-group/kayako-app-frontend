@@ -4233,7 +4233,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
 
     afterEach: function afterEach() {
       window.confirm = originalConfirm;
-      // logout();
+      logout();
     }
   });
 
@@ -4623,6 +4623,116 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/views');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('ability to sort configurable columns', function (assert) {
+    visit('/admin/manage/views/new');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/manage/views/new');
+    });
+
+    andThen(function () {
+      scrollToBottomOfPage();
+    });
+
+    andThen(function () {
+      var expectedColumns = [];
+      expectedColumns.push('Case ID');
+      expectedColumns.push('Subject');
+      expectedColumns.push('Status');
+      expectedColumns.push('Assigned agent');
+      expectedColumns.push('Updated at');
+      expectedColumns.push('Requester');
+
+      assert.deepEqual(textNodesToArray('.ko-views-column .ko-views-column__content'), expectedColumns);
+    });
+
+    reorderListItems('.i-dragstrip', '.ko-views-column__content', 'Subject', 'Case ID', 'Status', 'Assigned agent', 'Updated at', 'Requester');
+
+    andThen(function () {
+      var expectedColumns = [];
+      expectedColumns.push('Subject');
+      expectedColumns.push('Case ID');
+      expectedColumns.push('Status');
+      expectedColumns.push('Assigned agent');
+      expectedColumns.push('Updated at');
+      expectedColumns.push('Requester');
+
+      assert.deepEqual(textNodesToArray('.ko-views-column .ko-views-column__content'), expectedColumns);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('ability to sort configurable columns with additional column', function (assert) {
+    visit('/admin/manage/views/new');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/manage/views/new');
+    });
+
+    andThen(function () {
+      scrollToBottomOfPage();
+    });
+
+    andThen(function () {
+      var expectedColumns = [];
+      expectedColumns.push('Case ID');
+      expectedColumns.push('Subject');
+      expectedColumns.push('Status');
+      expectedColumns.push('Assigned agent');
+      expectedColumns.push('Updated at');
+      expectedColumns.push('Requester');
+
+      assert.deepEqual(textNodesToArray('.ko-views-column .ko-views-column__content'), expectedColumns);
+    });
+
+    andThen(function () {
+      selectChoose('.qa-configure-column', 'Priority');
+    });
+
+    andThen(function () {
+      var expectedColumns = [];
+      expectedColumns.push('Case ID');
+      expectedColumns.push('Subject');
+      expectedColumns.push('Status');
+      expectedColumns.push('Assigned agent');
+      expectedColumns.push('Updated at');
+      expectedColumns.push('Requester');
+      expectedColumns.push('Priority');
+
+      assert.deepEqual(textNodesToArray('.ko-views-column .ko-views-column__content'), expectedColumns);
+    });
+
+    reorderListItems('.i-dragstrip', '.ko-views-column__content', 'Case ID', 'Priority', 'Subject', 'Status', 'Assigned agent', 'Updated at', 'Requester');
+
+    andThen(function () {
+      var expectedColumns = [];
+      expectedColumns.push('Case ID');
+      expectedColumns.push('Priority');
+      expectedColumns.push('Subject');
+      expectedColumns.push('Status');
+      expectedColumns.push('Assigned agent');
+      expectedColumns.push('Updated at');
+      expectedColumns.push('Requester');
+
+      assert.deepEqual(textNodesToArray('.ko-views-column .ko-views-column__content'), expectedColumns);
+    });
+
+    andThen(function () {
+      click('.ko-views-column .ko-views-column__item:contains("Priority") .qa-configure-column__remove');
+    });
+
+    andThen(function () {
+      var expectedColumns = [];
+      expectedColumns.push('Case ID');
+      expectedColumns.push('Subject');
+      expectedColumns.push('Status');
+      expectedColumns.push('Assigned agent');
+      expectedColumns.push('Updated at');
+      expectedColumns.push('Requester');
+
+      assert.deepEqual(textNodesToArray('.ko-views-column .ko-views-column__content'), expectedColumns);
     });
   });
 });
@@ -11717,7 +11827,7 @@ define('frontend-cp/tests/helpers/setup-mirage-for-integration', ['exports', 'fr
 });
 //Work around until this is real
 //https://github.com/samselikoff/ember-cli-mirage/issues/183
-define('frontend-cp/tests/helpers/start-app', ['exports', 'ember', 'frontend-cp/app', 'frontend-cp/config/environment', 'frontend-cp/tests/helpers/login', 'frontend-cp/tests/helpers/fill-in-rich-text-editor', 'frontend-cp/tests/helpers/use-default-scenario', 'frontend-cp/tests/helpers/ember-power-select', 'frontend-cp/tests/helpers/reorder-inputs', 'frontend-cp/tests/helpers/reorder-list-items', 'frontend-cp/tests/helpers/confirming', 'frontend-cp/tests/helpers/ember-sortable/test-helpers', 'frontend-cp/tests/helpers/scroll-to-bottom-of-page', 'frontend-cp/tests/helpers/input-array-to-input-val-array', 'frontend-cp/tests/helpers/logout'], function (exports, _ember, _frontendCpApp, _frontendCpConfigEnvironment, _frontendCpTestsHelpersLogin, _frontendCpTestsHelpersFillInRichTextEditor, _frontendCpTestsHelpersUseDefaultScenario, _frontendCpTestsHelpersEmberPowerSelect, _frontendCpTestsHelpersReorderInputs, _frontendCpTestsHelpersReorderListItems, _frontendCpTestsHelpersConfirming, _frontendCpTestsHelpersEmberSortableTestHelpers, _frontendCpTestsHelpersScrollToBottomOfPage, _frontendCpTestsHelpersInputArrayToInputValArray, _frontendCpTestsHelpersLogout) {
+define('frontend-cp/tests/helpers/start-app', ['exports', 'ember', 'frontend-cp/app', 'frontend-cp/config/environment', 'frontend-cp/tests/helpers/login', 'frontend-cp/tests/helpers/fill-in-rich-text-editor', 'frontend-cp/tests/helpers/use-default-scenario', 'frontend-cp/tests/helpers/ember-power-select', 'frontend-cp/tests/helpers/reorder-inputs', 'frontend-cp/tests/helpers/reorder-list-items', 'frontend-cp/tests/helpers/confirming', 'frontend-cp/tests/helpers/ember-sortable/test-helpers', 'frontend-cp/tests/helpers/scroll-to-bottom-of-page', 'frontend-cp/tests/helpers/input-array-to-input-val-array', 'frontend-cp/tests/helpers/text-nodes-to-array', 'frontend-cp/tests/helpers/logout'], function (exports, _ember, _frontendCpApp, _frontendCpConfigEnvironment, _frontendCpTestsHelpersLogin, _frontendCpTestsHelpersFillInRichTextEditor, _frontendCpTestsHelpersUseDefaultScenario, _frontendCpTestsHelpersEmberPowerSelect, _frontendCpTestsHelpersReorderInputs, _frontendCpTestsHelpersReorderListItems, _frontendCpTestsHelpersConfirming, _frontendCpTestsHelpersEmberSortableTestHelpers, _frontendCpTestsHelpersScrollToBottomOfPage, _frontendCpTestsHelpersInputArrayToInputValArray, _frontendCpTestsHelpersTextNodesToArray, _frontendCpTestsHelpersLogout) {
   exports['default'] = startApp;
   // eslint-disable-line
 
@@ -11748,6 +11858,17 @@ define('frontend-cp/tests/helpers/start-app', ['exports', 'ember', 'frontend-cp/
 // eslint-disable-line
 // eslint-disable-line
 // eslint-disable-line
+// eslint-disable-line
+define('frontend-cp/tests/helpers/text-nodes-to-array', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = _ember['default'].Test.registerHelper('textNodesToArray', function (app, selector) {
+    var nodes = [];
+    $(selector).each(function (index, item) {
+      nodes.push($(item).text().trim());
+    });
+
+    return nodes;
+  });
+});
 define('frontend-cp/tests/helpers/use-default-scenario', ['exports', 'ember', 'frontend-cp/mirage/scenarios/default'], function (exports, _ember, _frontendCpMirageScenariosDefault) {
   exports['default'] = _ember['default'].Test.registerAsyncHelper('useDefaultScenario', function () {
     (0, _frontendCpMirageScenariosDefault['default'])(server); //eslint-disable-line no-undef
