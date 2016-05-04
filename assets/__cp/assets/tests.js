@@ -302,13 +302,13 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/edit-test', ['exp
       assert.equal(currentURL(), '/admin/automation/monitors/' + monitor.id);
       click('.ko-predicate-builder__add');
 
-      selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--column', 'Cases: Subject');
+      selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--column', 'Subject');
       selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--operator', 'string does not contain');
       fillIn('.qa-predicate-builder--proposition:eq(1) input:last', 'collection1proposition2');
 
       click('.ko-predicate-builder__new');
 
-      selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--column', 'Cases: Subject');
+      selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--column', 'Subject');
       selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--operator', 'string does not contain');
       fillIn('.qa-predicate-builder--proposition:eq(2) input:last', 'collection2proposition1');
 
@@ -780,19 +780,19 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors/new');
       fillIn('input[name="title"]', 'Sample monitor name');
-      selectChoose('.qa-predicate-builder--proposition:eq(0) .qa-proposition--column', 'Cases: Subject');
+      selectChoose('.qa-predicate-builder--proposition:eq(0) .qa-proposition--column', 'Subject');
       selectChoose('.qa-predicate-builder--proposition:eq(0) .qa-proposition--operator', 'string does not contain');
       fillIn('.qa-predicate-builder--proposition:eq(0) input:last', 'collection1proposition1');
 
       click('.ko-predicate-builder__add');
 
-      selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--column', 'Cases: Subject');
+      selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--column', 'Subject');
       selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--operator', 'string does not contain');
       fillIn('.qa-predicate-builder--proposition:eq(1) input:last', 'collection1proposition2');
 
       click('.ko-predicate-builder__new');
 
-      selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--column', 'Cases: Subject');
+      selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--column', 'Subject');
       selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--operator', 'string does not contain');
       fillIn('.qa-predicate-builder--proposition:eq(2) input:last', 'collection2proposition1');
 
@@ -4275,7 +4275,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       // findWithAssert('.ko-toggle__container[aria-checked=false]');
       click('.ko-radio__label:contains(Just myself)');
 
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Subject');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Subject');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'string does not contain');
 
       fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
@@ -4380,7 +4380,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
   //     fillIn('input.ko-admin_views_edit__title', fieldTitle);
   //     // click('.ko-toggle__container');
   //     click('.ko-radio__label:contains(Just myself)');
-  //     selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Subject');
+  //     selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Subject');
   //     selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'string contains');
   //     fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
   //     click('.button[name=submit]:first');
@@ -4411,7 +4411,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       assert.equal(currentURL(), '/admin/manage/views/new');
       fillIn('input.ko-admin_views_edit__title', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Subject');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Subject');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'string does not contain');
       fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
       click('.button[name=submit]:first');
@@ -4431,7 +4431,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
 
       fillIn('input.ko-admin_views_edit__title', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Status');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Status');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'is equal to');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--property', 'New');
       click('.button[name=submit]:first');
@@ -4451,7 +4451,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
   //
   //     fillIn('input.ko-admin_views_edit__title', fieldTitle);
   //     click('.ko-radio__label:contains(Just myself)');
-  //     selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Assigned Agent');
+  //     selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Assigned Agent');
   //     selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'is equal to');
   //
   //     selectSearch('.qa-predicate-builder--proposition:first .qa-proposition--property', 'current user');
@@ -4473,7 +4473,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
 
       fillIn('input.ko-admin_views_edit__title', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Status');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Status');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'is not equal to');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--property', 'New');
       click('.button[name=submit]:first');
@@ -4493,7 +4493,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
 
       fillIn('input.ko-admin_views_edit__title', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Priority');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Priority');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'is less than');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--property', 'Low');
       click('.button[name=submit]:first');
@@ -4513,7 +4513,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
 
       fillIn('input.ko-admin_views_edit__title', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Priority');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Priority');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'is greater than');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--property', 'Low');
       click('.button[name=submit]:first');
@@ -4533,7 +4533,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
 
       fillIn('input.ko-admin_views_edit__title', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Tags');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Tags');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'contains one of the following');
       fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
       click('.button[name=submit]:first');
@@ -4553,7 +4553,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
 
       fillIn('input.ko-admin_views_edit__title', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Tags');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Tags');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'does not contain');
       fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
       click('.button[name=submit]:first');
@@ -4573,7 +4573,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
 
       fillIn('input.ko-admin_views_edit__title', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Tags');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Tags');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'contains one of the following');
       fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
       click('.button[name=submit]:first');
@@ -4593,7 +4593,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
 
       fillIn('input.ko-admin_views_edit__title', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Cases: Subject');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Subject');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'string contains');
       fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
       selectChoose('.qa-configure-column', 'Created at');

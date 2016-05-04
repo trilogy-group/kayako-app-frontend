@@ -6753,6 +6753,13 @@ span#HW_badge.HW_softHidden {
   border: 1px solid transparent;
   color: #3B4048; }
 
+._dropdown_1ovczd .ember-power-select-group-name {
+  margin-top: 6px;
+  display: block; }
+
+._dropdown_1ovczd .ember-power-select-group .ember-power-select-option {
+  padding-left: 18px; }
+
 @-webkit-keyframes _rotating_1ovczd {
   from {
     -webkit-transform: rotate(0deg);
