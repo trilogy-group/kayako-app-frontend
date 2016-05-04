@@ -9414,7 +9414,7 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
     visit('/agent/cases/' + targetCase.id);
 
     andThen(function () {
-      assert.equal(find('.ko-feed_item--post').length, 3, 'There is three posts');
+      assert.equal(find('.qa-feed_item--post').length, 3, 'There is three posts');
     });
   });
 
@@ -9441,11 +9441,11 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
     visit('/agent/cases/' + targetCase.id);
 
     andThen(function () {
-      click('.ko-feed_item--post:first .ko-link-to-message');
+      click('.qa-feed_item--post:first .ko-link-to-message');
     });
 
     andThen(function () {
-      var postId = find('.ko-feed_item--post:first').attr('data-id');
+      var postId = find('.qa-feed_item--post:first').attr('data-id');
       assert.ok(window.open.calledWithMatch('/agent/case/display/original/' + targetCase.id + '/' + postId));
       window.open.restore();
     });
@@ -9455,7 +9455,7 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
     visit('/agent/cases/' + targetCase.id);
 
     andThen(function () {
-      assert.equal(find('.ko-feed_item--post').length, 3, 'There is three posts');
+      assert.equal(find('.qa-feed_item--post').length, 3, 'There is three posts');
       click('.ko-layout_advanced_editor__placeholder');
     });
 
@@ -9465,8 +9465,8 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
     });
 
     andThen(function () {
-      assert.equal(find('.ko-feed_item--post').length, 4, 'There is four posts now');
-      assert.equal(find('.ko-feed_item--post:eq(0) .ko-feed_item__content').text().trim(), 'Testing replies', 'The added post is in the top');
+      assert.equal(find('.qa-feed_item--post').length, 4, 'There is four posts now');
+      assert.equal(find('.qa-feed_item--post:eq(0) .ko-feed_item__content').text().trim(), 'Testing replies', 'The added post is in the top');
     });
   });
 
@@ -9474,7 +9474,7 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
     visit('/agent/cases/' + targetCase.id);
 
     andThen(function () {
-      assert.equal(find('.ko-feed_item--post').length, 3, 'There is three posts');
+      assert.equal(find('.qa-feed_item--post').length, 3, 'There is three posts');
       assert.equal(find('.ko-feed_item').length, 3, 'There is three items');
       click('.ko-layout_advanced_editor__placeholder');
     });
@@ -9486,7 +9486,7 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
     });
 
     andThen(function () {
-      assert.equal(find('.ko-feed_item--post').length, 3, 'There is still 3 posts');
+      assert.equal(find('.qa-feed_item--post').length, 3, 'There is still 3 posts');
       assert.equal(find('.ko-feed_item').length, 4, 'There is four items now');
       assert.equal(find('.ko-feed_item:eq(0) .ko-feed_item__content').text().trim(), 'Testing notes', 'The added note is in the top');
     });
@@ -9684,11 +9684,11 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
     visit('/agent/cases/' + targetCase.id + '/user');
 
     andThen(function () {
-      selectChoose('.ko-timeline__filter .ember-power-select', 'All');
+      selectChoose('.qa-timeline__filter .ember-power-select', 'All');
     });
 
     andThen(function () {
-      assert.equal(find('.ko-feed_item--note').length, 10, 'Notes displayed');
+      assert.equal(find('.qa-feed_item--note').length, 10, 'Notes displayed');
       assert.equal(find('.ko-feed_activity').length, 2, 'Activities and events displayed');
     });
   });
@@ -9699,11 +9699,11 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
     visit('/agent/cases/' + targetCase.id + '/user');
 
     andThen(function () {
-      selectChoose('.ko-timeline__filter .ember-power-select', 'Posts');
+      selectChoose('.qa-timeline__filter .ember-power-select', 'Posts');
     });
 
     andThen(function () {
-      assert.equal(find('.ko-feed_item--note').length, 10, 'Notes displayed');
+      assert.equal(find('.qa-feed_item--note').length, 10, 'Notes displayed');
       assert.equal(find('.ko-feed_activity').length, 0, 'Activities and events not displayed');
     });
   });
@@ -9714,13 +9714,13 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
     visit('/agent/cases/' + targetCase.id + '/user');
 
     andThen(function () {
-      selectChoose('.ko-timeline__filter .ember-power-select', 'Posts and events');
+      selectChoose('.qa-timeline__filter .ember-power-select', 'Posts and events');
     });
 
     andThen(function () {
-      assert.equal(find('.ko-feed_item--note').length, 10, 'Notes displayed');
+      assert.equal(find('.qa-feed_item--note').length, 10, 'Notes displayed');
       assert.equal(find('.ko-feed_activity').length, 1, 'Events displayed');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-feed_activity__summary'), 'Test event', 'Event text displayed');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-timeline_activity__summary'), 'Test event', 'Event text displayed');
     });
   });
 
@@ -9730,13 +9730,13 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
     visit('/agent/cases/' + targetCase.id + '/user');
 
     andThen(function () {
-      selectChoose('.ko-timeline__filter .ember-power-select', 'Posts and activities');
+      selectChoose('.qa-timeline__filter .ember-power-select', 'Posts and activities');
     });
 
     andThen(function () {
-      assert.equal(find('.ko-feed_item--note').length, 10, 'Notes displayed');
+      assert.equal(find('.qa-feed_item--note').length, 10, 'Notes displayed');
       assert.equal(find('.ko-feed_activity').length, 1, 'Activities displayed');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-feed_activity__summary'), 'Test activity', 'Activity text displayed');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-timeline_activity__summary'), 'Test activity', 'Activity text displayed');
     });
   });
 
@@ -9746,7 +9746,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
     visit('/agent/cases/' + targetCase.id + '/user');
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-timeline__filter .ember-power-select-placeholder'), 'Filter: Posts', 'Default filter is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-timeline__filter .ember-power-select-placeholder'), 'Filter: Posts', 'Default filter is correct');
     });
   });
 
@@ -9756,7 +9756,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
     visit('/agent/cases/' + targetCase.id + '/user');
 
     andThen(function () {
-      assert.equal(find('.ko-feed_item--note').length, 10, 'Default number of notes displayed');
+      assert.equal(find('.qa-feed_item--note').length, 10, 'Default number of notes displayed');
       assert.equal(find('.ko-timeline__load-more-below').length, 1, 'Load more link available due to more posts to load');
     });
 
@@ -9765,7 +9765,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
     });
 
     andThen(function () {
-      assert.equal(find('.ko-feed_item--note').length, 15, 'Load more notes below');
+      assert.equal(find('.qa-feed_item--note').length, 15, 'Load more notes below');
       assert.equal(find('.ko-timeline__load-more-below').length, 0, 'Load more link hidden due to no more posts to load');
     });
   });
@@ -9779,7 +9779,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
     visit('/agent/cases/' + targetCase.id + '/user?postId=' + postId);
 
     andThen(function () {
-      assert.equal(find('.ko-feed_item--note').length, 8, 'Last 8 notes displayed');
+      assert.equal(find('.qa-feed_item--note').length, 8, 'Last 8 notes displayed');
       assert.equal(find('.ko-timeline__load-more-above').length, 1, 'Load more link available due to more posts to load');
     });
 
@@ -9788,7 +9788,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
     });
 
     andThen(function () {
-      assert.equal(find('.ko-feed_item--note').length, 15, 'Load more notes');
+      assert.equal(find('.qa-feed_item--note').length, 15, 'Load more notes');
       assert.equal(find('.ko-timeline__load-more-above').length, 0, 'Load more link hidden due to no more posts to load');
     });
   });
@@ -9799,7 +9799,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
     visit('/agent/cases/' + targetCase.id + '/user');
 
     andThen(function () {
-      selectChoose('.ko-timeline__sort .ember-power-select', 'Newest first');
+      selectChoose('.qa-timeline__sort .ember-power-select', 'Newest first');
     });
 
     andThen(function () {
@@ -9820,7 +9820,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
     visit('/agent/cases/' + targetCase.id + '/user');
 
     andThen(function () {
-      selectChoose('.ko-timeline__sort .ember-power-select', 'Oldest first');
+      selectChoose('.qa-timeline__sort .ember-power-select', 'Oldest first');
     });
 
     andThen(function () {
@@ -9841,7 +9841,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
     visit('/agent/cases/' + targetCase.id + '/user');
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-timeline__sort .ember-power-select-placeholder'), 'Sort: Newest first', 'Default sort is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-timeline__sort .ember-power-select-placeholder'), 'Sort: Newest first', 'Default sort is correct');
     });
   });
 
@@ -9851,7 +9851,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
     visit('/agent/cases/' + targetCase.id + '/user');
 
     andThen(function () {
-      assert.equal(find('.ko-feed_item--note').length, 10, 'Begin with 10 notes');
+      assert.equal(find('.qa-feed_item--note').length, 10, 'Begin with 10 notes');
     });
 
     click('.ko-layout_advanced_editor__placeholder');
@@ -9859,7 +9859,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
     click('.button--primary');
 
     andThen(function () {
-      assert.equal(find('.ko-feed_item--note').length, 11, 'Now there are 11 notes');
+      assert.equal(find('.qa-feed_item--note').length, 11, 'Now there are 11 notes');
       assert.equal(find('.ko-feed_item:eq(0) .ko-feed_item__content').text().trim(), 'Testing notes', 'The added note is in the top');
     });
   });
