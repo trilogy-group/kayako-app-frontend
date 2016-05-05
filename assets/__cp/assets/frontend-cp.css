@@ -1940,14 +1940,15 @@ img {
 .button {
   display: inline-block;
   position: relative;
-  padding: 5.5px 18px;
+  padding: 0 18px;
   background: none;
   border-radius: 2px;
   outline: none;
   border: none;
   cursor: pointer;
   color: #5F6C73;
-  height: 32px; }
+  height: 32px;
+  line-height: 32px; }
   
   .button:disabled,
   .button.disabled {
@@ -2703,6 +2704,19 @@ img {
 
 .ko-admin_macros_edit__actions-selector {
   margin-bottom: 10px; }
+
+.title-input-layout {
+  width: 362px; }
+
+.channel-layout {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex; }
+  .channel-layout .ember-power-select {
+    margin-right: 20px; }
+  .channel-layout .ember-power-select-trigger {
+    width: 140px; }
 
 .ko-admin_views_edit_predicate-header {
   margin-bottom: 18px; }
@@ -6290,6 +6304,22 @@ span#HW_badge.HW_softHidden {
 ._member_u5wpiz {
   width: calc(100% / 3);
   padding-left: 18px; }
+
+/* styles for frontend-cp/components/ko-admin/triggers/form/styles.css */
+._title-input-layout_1n627y {
+  width: 362px; }
+
+._channel-layout_1n627y {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex; }
+
+._channel-layout_1n627y ._ember-power-select_1n627y {
+  margin-right: 20px; }
+
+._channel-layout_1n627y ._ember-power-select-trigger_1n627y {
+  width: 140px; }
 
 /* styles for frontend-cp/components/ko-avatar/styles.css */
 ._avatar_6hgxvb {
