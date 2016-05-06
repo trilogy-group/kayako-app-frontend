@@ -271,10 +271,10 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/edit-test', ['exp
       var collection = server.create('predicate-collection', {
         propositions: [{ id: proposition.id, resource_type: 'proposition' }]
       });
-      var action = server.create('action');
+      var action = server.create('automation-action');
       monitor = server.create('monitor', {
         predicate_collections: [{ id: collection.id, resource_type: 'predicate_collection' }],
-        action: { id: action.id, resource_type: 'action' }
+        action: { id: action.id, resource_type: 'automation-action' }
       });
 
       login(session.id);
@@ -567,7 +567,32 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/index-test', ['ex
 });
 define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles) {
 
-  var originalConfirm = undefined;
+  var originalConfirm = undefined,
+      role = undefined;
+
+  function fillPredicateCollections() {
+    selectChoose('.qa-predicate-builder--proposition:eq(0) .qa-proposition--column', 'Subject');
+    selectChoose('.qa-predicate-builder--proposition:eq(0) .qa-proposition--operator', 'string does not contain');
+    fillIn('.qa-predicate-builder--proposition:eq(0) input:last', 'collection1proposition1');
+
+    click('.ko-predicate-builder__add');
+
+    selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--column', 'Subject');
+    selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--operator', 'string does not contain');
+    fillIn('.qa-predicate-builder--proposition:eq(1) input:last', 'collection1proposition2');
+
+    click('.ko-predicate-builder__new');
+
+    selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--column', 'Subject');
+    selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--operator', 'string does not contain');
+    fillIn('.qa-predicate-builder--proposition:eq(2) input:last', 'collection2proposition1');
+  }
+
+  function assertPredicateCollestionsAreCorrect(assert) {
+    assert.equal($('.qa-predicate-builder--proposition:eq(0) input:last').val(), 'collection1proposition1');
+    assert.equal($('.qa-predicate-builder--proposition:eq(1) input:last').val(), 'collection1proposition2');
+    assert.equal($('.qa-predicate-builder--proposition:eq(2) input:last').val(), 'collection2proposition1');
+  }
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/automation/monitors - Create a monitor', {
     beforeEach: function beforeEach() {
@@ -576,8 +601,8 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
         locale: 'en-us'
       });
 
-      var adminRole = server.create('role', { type: 'ADMIN' });
-      var agent = server.create('user', { role: adminRole, locale: locale });
+      role = server.create('role', { type: 'ADMIN' });
+      var agent = server.create('user', { role: role, locale: locale });
       var session = server.create('session', { user: agent });
 
       server.create('definition', {
@@ -600,11 +625,11 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
         input_type: 'OPTIONS',
         operators: ['comparison_equalto', 'comparison_not_equalto', 'comparison_lessthan', 'comparison_greaterthan'],
         values: {
-          '5': 'Closed',
-          '4': 'Completed',
-          '1': 'New',
-          '2': 'Open',
-          '3': 'Pending'
+          5: 'Closed',
+          4: 'Completed',
+          1: 'New',
+          2: 'Open',
+          3: 'Pending'
         }
       });
 
@@ -617,10 +642,10 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
         input_type: 'OPTIONS',
         operators: ['comparison_equalto', 'comparison_not_equalto'],
         values: {
-          '4': 'Incident',
-          '3': 'Problem',
-          '1': 'Question',
-          '2': 'Task'
+          4: 'Incident',
+          3: 'Problem',
+          1: 'Question',
+          2: 'Task'
         }
       });
 
@@ -633,10 +658,10 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
         input_type: 'OPTIONS',
         operators: ['comparison_equalto', 'comparison_not_equalto', 'comparison_lessthan', 'comparison_greaterthan'],
         values: {
-          '3': 'High',
-          '1': 'Low',
-          '2': 'Normal',
-          '4': 'Urgent'
+          3: 'High',
+          1: 'Low',
+          2: 'Normal',
+          4: 'Urgent'
         }
       });
 
@@ -649,9 +674,9 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
         input_type: 'OPTIONS',
         operators: ['comparison_equalto'],
         values: {
-          '1': 'Active',
-          '3': 'Spam',
-          '2': 'Trash'
+          1: 'Active',
+          3: 'Spam',
+          2: 'Trash'
         }
       });
 
@@ -664,7 +689,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
         input_type: 'OPTIONS',
         operators: ['comparison_equalto', 'comparison_not_equalto'],
         values: {
-          '1': 'Default'
+          1: 'Default'
         }
       });
 
@@ -677,13 +702,13 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
         input_type: 'OPTIONS',
         operators: ['comparison_equalto', 'comparison_not_equalto'],
         values: {
-          '0': 'unassigned',
+          0: 'unassigned',
           '(current users team)': '(current users team)',
-          '5': 'Contractors',
-          '3': 'Finance',
-          '4': 'Human Resources',
-          '1': 'Sales',
-          '2': 'Support'
+          5: 'Contractors',
+          3: 'Finance',
+          4: 'Human Resources',
+          1: 'Sales',
+          2: 'Support'
         }
       });
 
@@ -753,7 +778,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
         input_type: 'OPTIONS',
         operators: ['comparison_equalto', 'comparison_not_equalto'],
         values: {
-          '1': 'breached'
+          1: 'breached'
         }
       });
 
@@ -769,32 +794,37 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
     afterEach: function afterEach() {
       window.confirm = originalConfirm;
+      originalConfirm = role = null;
       logout();
     }
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('Creating a monitor', function (assert) {
-    assert.expect(4);
+  (0, _frontendCpTestsHelpersQunit.test)('Creating a monitor with a "status" action', function (assert) {
+    assert.expect(9);
+    server.create('automation-action-definition', {
+      label: 'Status',
+      name: 'status',
+      input_type: 'OPTIONS',
+      value_type: 'NUMERIC',
+      options: ['CHANGE'],
+      values: {
+        1: 'New',
+        2: 'Open',
+        3: 'Resolved',
+        4: 'Closed'
+      }
+    });
     visit('/admin/automation/monitors/new');
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors/new');
       fillIn('input[name="title"]', 'Sample monitor name');
-      selectChoose('.qa-predicate-builder--proposition:eq(0) .qa-proposition--column', 'Subject');
-      selectChoose('.qa-predicate-builder--proposition:eq(0) .qa-proposition--operator', 'string does not contain');
-      fillIn('.qa-predicate-builder--proposition:eq(0) input:last', 'collection1proposition1');
 
-      click('.ko-predicate-builder__add');
+      fillPredicateCollections();
 
-      selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--column', 'Subject');
-      selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--operator', 'string does not contain');
-      fillIn('.qa-predicate-builder--proposition:eq(1) input:last', 'collection1proposition2');
-
-      click('.ko-predicate-builder__new');
-
-      selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--column', 'Subject');
-      selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--operator', 'string does not contain');
-      fillIn('.qa-predicate-builder--proposition:eq(2) input:last', 'collection2proposition1');
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Status');
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(1)', 'Change');
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'New');
 
       click('.button[name=submit]');
     });
@@ -803,6 +833,211 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
       assert.equal(currentURL(), '/admin/automation/monitors');
       assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
       assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/1');
+      assertPredicateCollestionsAreCorrect(assert);
+      assert.equal($('.ko-automation-actions-builder__small-slot:eq(2) .ember-power-select-trigger').text().trim(), 'New', 'The status is selected');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Creating a monitor with a "priority" action', function (assert) {
+    assert.expect(9);
+    server.create('automation-action-definition', {
+      label: 'Priority',
+      name: 'priority',
+      options: ['CHANGE', 'INCREASE', 'DECREASE'],
+      input_type: 'OPTIONS',
+      value_type: 'NUMERIC',
+      values: {
+        0: 'none',
+        24: 'Critical',
+        18: 'High',
+        14: 'Low',
+        26: 'Normal'
+      },
+      attributes: [],
+      group: 'CASE',
+      resource_type: 'automation_action_definition'
+    });
+    visit('/admin/automation/monitors/new');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/new');
+      fillIn('input[name="title"]', 'Sample monitor name');
+
+      fillPredicateCollections();
+
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Priority');
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(1)', 'Change');
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'Low');
+
+      click('.button[name=submit]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/1');
+      assertPredicateCollestionsAreCorrect(assert);
+      assert.equal($('.ko-automation-actions-builder__small-slot:eq(2) .ember-power-select-trigger').text().trim(), 'Low', 'The priority is selected');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Creating a monitor with a "type" action', function (assert) {
+    assert.expect(9);
+    server.create('automation-action-definition', {
+      label: 'Type',
+      name: 'type',
+      options: ['CHANGE'],
+      input_type: 'OPTIONS',
+      value_type: 'NUMERIC',
+      values: {
+        0: 'none',
+        24: 'Incident',
+        25: 'Installation',
+        2: 'Issue',
+        27: 'Problem',
+        26: 'Question',
+        4: 'Task'
+      },
+      attributes: [],
+      group: 'CASE',
+      resource_type: 'automation_action_definition'
+    });
+    visit('/admin/automation/monitors/new');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/new');
+      fillIn('input[name="title"]', 'Sample monitor name');
+
+      fillPredicateCollections();
+
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Type');
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(1)', 'Change');
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'Issue');
+
+      click('.button[name=submit]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/1');
+      assertPredicateCollestionsAreCorrect(assert);
+      assert.equal($('.ko-automation-actions-builder__small-slot:eq(2) .ember-power-select-trigger').text().trim(), 'Issue', 'The type is selected');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Creating a monitor with a "assignee" action', function (assert) {
+    assert.expect(9);
+    server.create('automation-action-definition', {
+      label: 'Assignee',
+      name: 'assignee',
+      options: ['CHANGE'],
+      input_type: 'AUTOCOMPLETE',
+      value_type: 'NUMERIC',
+      values: [],
+      attributes: [],
+      group: 'CASE',
+      resource_type: 'automation_action_definition'
+    });
+    server.create('user', { full_name: 'Jane Morris', role: role });
+    server.create('user', { full_name: 'Alicia Morris', role: role });
+    server.create('user', { full_name: 'Ben Morris', role: role });
+    visit('/admin/automation/monitors/new');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/new');
+      fillIn('input[name="title"]', 'Sample monitor name');
+
+      fillPredicateCollections();
+
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Assignee');
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(1)', 'Change');
+      selectSearch('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'Morr');
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'Alicia Morris');
+      click('.button[name=submit]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/1');
+      assertPredicateCollestionsAreCorrect(assert);
+      assert.equal($('.ko-automation-actions-builder__small-slot:eq(2) .ember-power-select-trigger input').val(), 'Alicia Morris', 'The assignee is selected');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Creating a monitor with a "tags" action', function (assert) {
+    assert.expect(9);
+    server.create('automation-action-definition', {
+      label: 'Tags',
+      name: 'tags',
+      options: ['ADD', 'REMOVE', 'REPLACE'],
+      input_type: 'TAGS',
+      value_type: 'COLLECTION',
+      values: [],
+      attributes: [],
+      group: 'CASE',
+      resource_type: 'automation_action_definition'
+    });
+    server.create('tag', { name: 'status' });
+    server.create('tag', { name: 'critical' });
+    server.create('tag', { name: 'support' });
+    visit('/admin/automation/monitors/new');
+
+    andThen(function () {
+      server.logging = true;
+      assert.equal(currentURL(), '/admin/automation/monitors/new');
+      fillIn('input[name="title"]', 'Sample monitor name');
+
+      fillPredicateCollections();
+
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Tags');
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(1)', 'Add');
+
+      // Add an existent tag
+      selectSearch('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'stat');
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'status');
+
+      // Add a nonexistent tag
+      selectSearch('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'nonexistent');
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'Add tag “nonexistent”');
+    });
+
+    andThen(function () {
+      click('.button[name=submit]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/1');
+      assertPredicateCollestionsAreCorrect(assert);
+      assert.equal($('.ko-automation-actions-builder__small-slot:eq(2) .ember-power-select-trigger .ember-power-select-multiple-option').length, 2, 'There is two tags in this monitor');
     });
   });
 
@@ -1051,12 +1286,12 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/edit-test', ['exp
       var collection = server.create('predicate-collection', {
         propositions: [{ id: proposition.id, resource_type: 'proposition' }]
       });
-      var action = server.create('action');
+      var action = server.create('automation-action');
       trigger = server.create('trigger', {
         channel: 'SYSTEM',
         event: 'TRIGGER',
         predicate_collections: [{ id: collection.id, resource_type: 'predicate_collection' }],
-        action: { id: action.id, resource_type: 'action' }
+        action: { id: action.id, resource_type: 'automation_action' }
       });
 
       login(session.id);
@@ -12174,6 +12409,8 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
   exports.triggerKeydown = triggerKeydown;
   exports.typeInSearch = typeInSearch;
   exports.clickTrigger = clickTrigger;
+  exports.nativeTouch = nativeTouch;
+  exports.touchTrigger = touchTrigger;
 
   // Helpers for integration tests
 
@@ -12244,6 +12481,29 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
     nativeMouseDown(selector, options);
   }
 
+  function nativeTouch(selectorOrDomElement) {
+    var event = new window.Event('touchstart', { bubbles: true, cancelable: true, view: window });
+    var target = undefined;
+
+    if (typeof selectorOrDomElement === 'string') {
+      target = _ember['default'].$(selectorOrDomElement)[0];
+    } else {
+      target = selectorOrDomElement;
+    }
+    _ember['default'].run(function () {
+      return target.dispatchEvent(event);
+    });
+    _ember['default'].run(function () {
+      event = new window.Event('touchend', { bubbles: true, cancelable: true, view: window });
+      target.dispatchEvent(event);
+    });
+  }
+
+  function touchTrigger() {
+    var selector = '.ember-power-select-trigger';
+    nativeTouch(selector);
+  }
+
   // Helpers for acceptance tests
 
   exports['default'] = function () {
@@ -12281,16 +12541,30 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
         nativeMouseDown(cssPath + ' .ember-power-select-trigger');
         wait();
       }
+      var isDefaultSingleSelect = _ember['default'].$('.ember-power-select-search input').length > 0;
 
       if (isMultipleSelect) {
         fillIn(cssPath + ' .ember-power-select-trigger-multiple-input', value);
         if (isEmberOne) {
           triggerEvent(cssPath + ' .ember-power-select-trigger-multiple-input', 'input');
         }
-      } else {
+      } else if (isDefaultSingleSelect) {
         fillIn('.ember-power-select-search input', value);
         if (isEmberOne) {
           triggerEvent('.ember-power-select-dropdown-ember' + id + ' .ember-power-select-search input', 'input');
+        }
+      } else {
+        // It's probably a customized version
+        var inputIsInTrigger = !!find(cssPath + ' .ember-power-select-trigger input[type=search]')[0];
+        if (inputIsInTrigger) {
+          fillIn(cssPath + ' .ember-power-select-trigger input[type=search]', value);
+          if (isEmberOne) {
+            triggerEvent(cssPath + ' .ember-power-select-trigger input[type=search]', 'input');
+          }
+        } else {
+          if (isEmberOne) {
+            triggerEvent('.ember-power-select-dropdown-ember' + id + ' .ember-power-select-search input[type=search]', 'input');
+          }
         }
       }
     });
@@ -12305,7 +12579,7 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
       }
     });
 
-    _ember['default'].Test.registerAsyncHelper('clearSelected', function (app, cssPath, value) {
+    _ember['default'].Test.registerAsyncHelper('clearSelected', function (app, cssPath) {
       var elem = find(cssPath + ' .ember-power-select-clear-btn')[0];
       try {
         nativeMouseDown(elem);
