@@ -1,8 +1,8 @@
 {
   "assets": {
-    "assets/frontend-cp.css": "assets/frontend-cp-7b0d387b532740951d489692906b35b1.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-e4d2dc0e2a13ff608c03dcf7b40f68a1.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-4031a41abd10dcf124af036b03347e4d.map",
+    "assets/frontend-cp.css": "assets/frontend-cp-2b2e51c194bb66a67e09bb28f36d6f79.css",
+    "assets/frontend-cp.js": "assets/frontend-cp-17cad8aeddc3bb4e12ec215e8942f9d0.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-aad8baf54968426e86d1a67c1b8df714.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-faf5482dfe15f99980683768da777c4c.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-4a978e7501bc135399ba0b7e3bb30054.map",
     "assets/intl/intl.js": "assets/intl/intl-9a9ea679e318aa74641bd11c60f78d0c.js",
@@ -16,8 +16,6 @@
     "assets/vendor.css": "assets/vendor-4f2891f1413e443f02e0fbffb0bc6b61.css",
     "assets/vendor.js": "assets/vendor-f80be7736c593b6e2b1a11a74813e5e0.js",
     "assets/vendor.map": "assets/vendor-7045a1dc155a167aeebc6d0b1d13c6d4.map",
-    "images/apps/zapier/header.png": "images/apps/zapier/header-c8e2bb64a8cbe599db8a2f6c98ca0e03.png",
-    "images/apps/zapier/integrations.png": "images/apps/zapier/integrations-3a4234ed34c07e59e6c2fd60636b1b3d.png",
     "images/icons/cascading-select.png": "images/icons/cascading-select-caac3065ad73656590904fcf10ada86a.png",
     "images/icons/checkbox.png": "images/icons/checkbox-79a02996a1a01472a381af713b2609a9.png",
     "images/icons/date.png": "images/icons/date-cc6919f28dfdba1b632faa7d039ce1ae.png",
