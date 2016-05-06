@@ -1841,7 +1841,7 @@ textarea {
 html {
   font-family: "Source Sans Pro", Sans-Serif;
   font-size: 0.875em;
-  line-height: 1.28571;
+  line-height: 18px;
   background-color: #f8f8f8;
   color: #2D3138;
   overflow-y: scroll;
@@ -5835,7 +5835,7 @@ span#HW_badge.HW_softHidden {
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  width: 240px; }
+  min-width: 188px; }
 
 ._content_fcb2v3 {
   width: 100%;
@@ -5844,10 +5844,8 @@ span#HW_badge.HW_softHidden {
   min-height: calc(100vh - 42px - 42px - 198px);
   background-color: #ffffff;
   border: 1px solid #d1d5d7;
-  border-radius: 2px;
-  border-left: none;
-  border-bottom-left-radius: 0;
-  border-top-left-radius: 0; }
+  border-radius: 0 5px 5px 0;
+  border-left: none; }
 
 /* styles for frontend-cp/components/ko-input/styles.css */
 ._input_33c6q8 {
@@ -6188,18 +6186,17 @@ span#HW_badge.HW_softHidden {
 /* styles for frontend-cp/components/ko-admin/sidebar/styles.css */
 ._sidebar_1a61wp {
   min-height: 100vh;
-  padding: 27px 0;
   background-color: #FFFFFF;
   border: 1px solid #d1d5d7;
-  border-radius: 2px 0 0 2px;
+  border-radius: 5px 0 0 5px;
+  padding: 24px 0;
   width: 100%; }
 
 ._group_1a61wp {
   margin-bottom: 27px; }
 
 ._header_1a61wp {
-  margin-bottom: 4.5px;
-  padding: 4.5px;
+  padding: 3px 6px;
   text-transform: uppercase;
   font-size: 12px;
   font-weight: 600;
@@ -6213,7 +6210,7 @@ span#HW_badge.HW_softHidden {
   text-overflow: ellipsis;
   display: block;
   position: relative;
-  padding: 4.5px;
+  padding: 3px 6px;
   text-indent: 18px;
   cursor: pointer;
   border-left: 3px solid transparent; }
@@ -7793,6 +7790,58 @@ a._subtitle_vt1m5j:hover {
 
 ._signatureInput_1hb3jv:focus {
   outline: none; }
+
+/* styles for frontend-cp/session/admin/apps/zapier/styles.css */
+._header_zxnhet {
+  text-align: center; }
+
+._contentBlock_zxnhet {
+  width: 560px;
+  margin: 0 auto; }
+
+._title_zxnhet {
+  margin-top: 18px;
+  margin-bottom: 12px;
+  font-size: 30px;
+  text-align: center; }
+
+._subtitle_zxnhet {
+  font-size: 14px;
+  color: #838D94;
+  text-align: center;
+  margin-bottom: 24px; }
+
+._content_zxnhet {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex; }
+
+._messagesBlock_zxnhet {
+  width: 200px;
+  min-width: 200px; }
+
+._imageBlock_zxnhet {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 100%;
+      -ms-flex: 1 100%;
+          flex: 1 100%;
+  text-align: right; }
+
+._definitionList_zxnhet {
+  margin-top: 10px; }
+
+._definitionTitle_zxnhet {
+  margin-bottom: 6px;
+  font-weight: bold;
+  color: #2D3138; }
+
+._definitionText_zxnhet {
+  margin-bottom: 24px;
+  color: #838D94; }
+
+._findOutCTA_zxnhet {
+  padding: 0 10px; }
 
 /* styles for frontend-cp/session/admin/channels/email/index/styles.css */
 ._disabled_501lhr {
