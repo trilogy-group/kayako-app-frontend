@@ -1041,6 +1041,58 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     });
   });
 
+  (0, _frontendCpTestsHelpersQunit.test)('Creating a monitor with a "team" action', function (assert) {
+    assert.expect(9);
+    server.create('automation-action-definition', {
+      label: 'Team',
+      name: 'team',
+      options: ['CHANGE'],
+      input_type: 'OPTIONS',
+      value_type: 'NUMERIC',
+      values: {
+        43: 'Billing',
+        50: 'Customer Success',
+        44: 'Engineering',
+        46: 'Hello',
+        52: 'IT',
+        48: 'New Business',
+        49: 'Renewals',
+        14: 'Sales',
+        16: 'Support'
+      },
+      attributes: [],
+      group: 'CASE',
+      resource_type: 'automation_action_definition'
+    });
+    visit('/admin/automation/monitors/new');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/new');
+      fillIn('input[name="title"]', 'Sample monitor name');
+
+      fillPredicateCollections();
+
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Team');
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(1)', 'Change');
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'Engineering');
+
+      click('.button[name=submit]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/1');
+      assertPredicateCollestionsAreCorrect(assert);
+      assert.equal($('.ko-automation-actions-builder__small-slot:eq(2) .ember-power-select-trigger').text().trim(), 'Engineering', 'The team is selected');
+    });
+  });
+
   (0, _frontendCpTestsHelpersQunit.test)('Exit having pending changes ask for confirmation', function (assert) {
     assert.expect(3);
 
