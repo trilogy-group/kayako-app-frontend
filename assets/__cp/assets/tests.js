@@ -10315,6 +10315,277 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
   });
 });
 /* eslint-disable camelcase */
+define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/helpers/dom-helpers'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsHelpersDomHelpers) {
+
+  var targetCase = undefined;
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | agent/cases/organization timeline', {
+    beforeEach: function beforeEach() {
+      var locale = server.create('locale', { id: 1, locale: 'en-us' });
+      var brand = server.create('brand', { locale: locale });
+      var caseFields = server.createList('case-field', 4);
+      var mailbox = server.create('mailbox', { brand: brand });
+      var sourceChannel = server.create('channel', { uuid: 1, account: mailbox });
+      server.create('channel', {
+        uuid: 3,
+        type: 'NOTE'
+      });
+      server.create('case-form', {
+        fields: caseFields,
+        brand: brand
+      });
+      var agentRole = server.create('role', { type: 'AGENT' });
+      var customerRole = server.create('role', { type: 'AGENT' });
+      var agent = server.create('user', { role: agentRole, locale: locale });
+      var session = server.create('session', { user: agent });
+      var organization = server.create('organization');
+      var customer = server.create('user', {
+        full_name: 'Barney Stinson',
+        role: customerRole,
+        locale: locale,
+        organization: { id: organization.id, resource_type: 'organization' }
+      });
+      var identityEmail = server.create('identity-email');
+      server.createList('case-status', 5);
+      server.createList('case-priority', 4);
+      server.createList('attachment', 3);
+
+      server.create('plan', {
+        limits: [],
+        features: []
+      });
+      var status = server.create('case-status');
+      targetCase = server.create('case', {
+        source_channel: sourceChannel,
+        requester: customer,
+        creator: agent,
+        identity: identityEmail,
+        status: status,
+        assignee: {
+          agent: agent
+        }
+      });
+
+      server.createList('activity', 25, {
+        summary: 'Test activity'
+      });
+
+      server.createList('event', 25, {
+        body: 'Test event'
+      });
+
+      var note = server.create('note');
+
+      server.createList('post', 25, {
+        creator: agent,
+        identity: identityEmail,
+        'case': targetCase,
+        original: note
+      });
+
+      login(session.id);
+    },
+
+    afterEach: function afterEach() {
+      logout();
+      targetCase = null;
+    }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('it filters feed items to show only notes', function (assert) {
+    assert.expect(2);
+
+    visit('/agent/cases/' + targetCase.id + '/organisation');
+
+    selectChoose('.qa-timeline__filter .ember-power-select', 'Notes');
+
+    andThen(function () {
+      assert.equal(find('.qa-feed_item--note').length, 20, 'Notes displayed');
+      assert.equal(find('.ko-feed_activity').length, 0, 'Activities and events not displayed');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('it filters feed items to show only events', function (assert) {
+    assert.expect(3);
+
+    visit('/agent/cases/' + targetCase.id + '/organisation');
+
+    selectChoose('.qa-timeline__filter .ember-power-select', 'Events');
+
+    andThen(function () {
+      assert.equal(find('.qa-feed_item--note').length, 0, 'Notes not displayed');
+      assert.equal(find('.ko-feed_activity').length, 20, 'Events displayed');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-timeline_activity__summary:first'), 'Test event', 'Event text displayed');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('it filters feed items to show only activities', function (assert) {
+    assert.expect(3);
+
+    visit('/agent/cases/' + targetCase.id + '/organisation');
+
+    selectChoose('.qa-timeline__filter .ember-power-select', 'Activities');
+
+    andThen(function () {
+      assert.equal(find('.qa-feed_item--note').length, 0, 'Notes not displayed');
+      assert.equal(find('.ko-feed_activity').length, 20, 'Activities displayed');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-timeline_activity__summary:eq(0)'), 'Test activity', 'Activity text displayed');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('default filter', function (assert) {
+    assert.expect(1);
+
+    visit('/agent/cases/' + targetCase.id + '/organisation');
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-timeline__filter .ember-power-select-placeholder'), 'Filter: Notes', 'Default filter is correct');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('loading more note entries below', function (assert) {
+    assert.expect(4);
+
+    visit('/agent/cases/' + targetCase.id + '/organisation');
+
+    selectChoose('.qa-timeline__filter .ember-power-select', 'Notes');
+
+    andThen(function () {
+      assert.equal(find('.qa-feed_item--note').length, 20, 'Default number of notes displayed');
+      assert.equal(find('.qa-timeline__load-more-below').length, 1, 'Load more link available due to more posts to load');
+    });
+
+    click('.qa-timeline__load-more-below');
+
+    andThen(function () {
+      assert.equal(find('.qa-feed_item--note').length, 25, 'Load more notes below');
+      assert.equal(find('.qa-timeline__load-more-below').length, 0, 'Load more link hidden due to no more posts to load');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('loading more note entries above', function (assert) {
+    assert.expect(4);
+
+    var allPosts = server.db.posts.sortBy('created_at').reverse();
+    var postId = allPosts[2].id;
+
+    visit('/agent/cases/' + targetCase.id + '/organisation?postId=' + postId);
+
+    selectChoose('.qa-timeline__filter .ember-power-select', 'Notes');
+
+    andThen(function () {
+      assert.equal(find('.qa-feed_item--note').length, 20, 'Last 8 notes displayed');
+      assert.equal(find('.qa-timeline__load-more-above').length, 1, 'Load more link available due to more posts to load');
+    });
+
+    click('.qa-timeline__load-more-above');
+
+    andThen(function () {
+      assert.equal(find('.qa-feed_item--note').length, 22, 'Load more notes');
+      assert.equal(find('.qa-timeline__load-more-above').length, 0, 'Load more link hidden due to no more posts to load');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('loading more activity entries below', function (assert) {
+    assert.expect(4);
+
+    visit('/agent/cases/' + targetCase.id + '/organisation');
+
+    selectChoose('.qa-timeline__filter .ember-power-select', 'Activities');
+
+    andThen(function () {
+      assert.equal(find('.ko-feed_activity').length, 20, 'Default number of activities displayed');
+      assert.equal(find('.qa-timeline__load-more-below').length, 1, 'Load more link available due to more activities to load');
+    });
+
+    click('.qa-timeline__load-more-below');
+
+    andThen(function () {
+      assert.equal(find('.ko-feed_activity').length, 25, 'Load more activities below');
+      assert.equal(find('.qa-timeline__load-more-below').length, 0, 'Load more link hidden due to no more activities to load');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('loading more event entries below', function (assert) {
+    assert.expect(4);
+
+    visit('/agent/cases/' + targetCase.id + '/organisation');
+
+    selectChoose('.qa-timeline__filter .ember-power-select', 'Events');
+
+    andThen(function () {
+      assert.equal(find('.ko-feed_activity').length, 20, 'Default number of events displayed');
+      assert.equal(find('.qa-timeline__load-more-below').length, 1, 'Load more link available due to more events to load');
+    });
+
+    click('.qa-timeline__load-more-below');
+
+    andThen(function () {
+      assert.equal(find('.ko-feed_activity').length, 25, 'Load more events below');
+      assert.equal(find('.qa-timeline__load-more-below').length, 0, 'Load more link hidden due to no more events to load');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('adding a note updates the timeline when filtering by notes', function (assert) {
+    assert.expect(3);
+
+    visit('/agent/cases/' + targetCase.id + '/organisation');
+
+    andThen(function () {
+      assert.equal(find('.qa-feed_item--note').length, 20, 'Begin with 10 notes');
+    });
+
+    selectChoose('.qa-timeline__filter .ember-power-select', 'Notes');
+    click('.ko-layout_advanced_editor__placeholder');
+    fillInRichTextEditor('Testing notes');
+    click('.button--primary');
+
+    andThen(function () {
+      assert.equal(find('.qa-feed_item--note').length, 21, 'Now there are 11 notes');
+      assert.equal(find('.ko-feed_item:eq(0) .ko-feed_item__content').text().trim(), 'Testing notes', 'The added note is in the top');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('adding a note doesn\'t update the timeline when filtering by activities', function (assert) {
+    assert.expect(2);
+
+    visit('/agent/cases/' + targetCase.id + '/user');
+
+    selectChoose('.qa-timeline__filter .ember-power-select', 'Activities');
+
+    andThen(function () {
+      assert.equal(find('.qa-feed_item--note').length, 0, 'No notes displayed as filtering by activities');
+    });
+
+    click('.ko-layout_advanced_editor__placeholder');
+    fillInRichTextEditor('Testing notes');
+    click('.button--primary');
+
+    andThen(function () {
+      assert.equal(find('.qa-feed_item--note').length, 0, 'Still no notes displayed');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('adding a note doesn\'t update the timeline when filtering by events', function (assert) {
+    assert.expect(2);
+
+    visit('/agent/cases/' + targetCase.id + '/user');
+
+    selectChoose('.qa-timeline__filter .ember-power-select', 'Events');
+
+    andThen(function () {
+      assert.equal(find('.qa-feed_item--note').length, 0, 'No notes displayed as filtering by events');
+    });
+
+    click('.ko-layout_advanced_editor__placeholder');
+    fillInRichTextEditor('Testing notes');
+    click('.button--primary');
+
+    andThen(function () {
+      assert.equal(find('.qa-feed_item--note').length, 0, 'Still no notes displayed');
+    });
+  });
+});
 define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'sinon', 'frontend-cp/components/ko-text-editor/mode-selector/styles'], function (exports, _frontendCpTestsHelpersQunit, _sinon, _frontendCpComponentsKoTextEditorModeSelectorStyles) {
 
   var targetCase = undefined,
@@ -10623,16 +10894,17 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
         }
       });
 
-      server.create('activity', {
+      server.createList('activity', 25, {
         summary: 'Test activity'
       });
-      server.create('event', {
+
+      server.createList('event', 25, {
         body: 'Test event'
       });
 
       var note = server.create('note');
 
-      server.createList('post', 15, {
+      server.createList('post', 25, {
         creator: agent,
         identity: identityEmail,
         'case': targetCase,
@@ -10648,65 +10920,44 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
     }
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('it shows shows all notes, events and activities', function (assert) {
-    assert.expect(2);
-
-    visit('/agent/cases/' + targetCase.id + '/user');
-
-    andThen(function () {
-      selectChoose('.qa-timeline__filter .ember-power-select', 'All');
-    });
-
-    andThen(function () {
-      assert.equal(find('.qa-feed_item--note').length, 10, 'Notes displayed');
-      assert.equal(find('.ko-feed_activity').length, 2, 'Activities and events displayed');
-    });
-  });
-
   (0, _frontendCpTestsHelpersQunit.test)('it filters feed items to show only notes', function (assert) {
     assert.expect(2);
 
     visit('/agent/cases/' + targetCase.id + '/user');
 
-    andThen(function () {
-      selectChoose('.qa-timeline__filter .ember-power-select', 'Posts');
-    });
+    selectChoose('.qa-timeline__filter .ember-power-select', 'Notes');
 
     andThen(function () {
-      assert.equal(find('.qa-feed_item--note').length, 10, 'Notes displayed');
+      assert.equal(find('.qa-feed_item--note').length, 20, 'Notes displayed');
       assert.equal(find('.ko-feed_activity').length, 0, 'Activities and events not displayed');
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('it filters feed items to show only notes and events', function (assert) {
+  (0, _frontendCpTestsHelpersQunit.test)('it filters feed items to show only events', function (assert) {
     assert.expect(3);
 
     visit('/agent/cases/' + targetCase.id + '/user');
 
-    andThen(function () {
-      selectChoose('.qa-timeline__filter .ember-power-select', 'Posts and events');
-    });
+    selectChoose('.qa-timeline__filter .ember-power-select', 'Events');
 
     andThen(function () {
-      assert.equal(find('.qa-feed_item--note').length, 10, 'Notes displayed');
-      assert.equal(find('.ko-feed_activity').length, 1, 'Events displayed');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-timeline_activity__summary'), 'Test event', 'Event text displayed');
+      assert.equal(find('.qa-feed_item--note').length, 0, 'Notes not displayed');
+      assert.equal(find('.ko-feed_activity').length, 20, 'Events displayed');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-timeline_activity__summary:first'), 'Test event', 'Event text displayed');
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('it filters feed items to show only notes and activities', function (assert) {
+  (0, _frontendCpTestsHelpersQunit.test)('it filters feed items to show only activities', function (assert) {
     assert.expect(3);
 
     visit('/agent/cases/' + targetCase.id + '/user');
 
-    andThen(function () {
-      selectChoose('.qa-timeline__filter .ember-power-select', 'Posts and activities');
-    });
+    selectChoose('.qa-timeline__filter .ember-power-select', 'Activities');
 
     andThen(function () {
-      assert.equal(find('.qa-feed_item--note').length, 10, 'Notes displayed');
-      assert.equal(find('.ko-feed_activity').length, 1, 'Activities displayed');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-timeline_activity__summary'), 'Test activity', 'Activity text displayed');
+      assert.equal(find('.qa-feed_item--note').length, 0, 'Notes not displayed');
+      assert.equal(find('.ko-feed_activity').length, 20, 'Activities displayed');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-timeline_activity__summary:eq(0)'), 'Test activity', 'Activity text displayed');
     });
   });
 
@@ -10716,112 +10967,122 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
     visit('/agent/cases/' + targetCase.id + '/user');
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-timeline__filter .ember-power-select-placeholder'), 'Filter: Posts', 'Default filter is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-timeline__filter .ember-power-select-placeholder'), 'Filter: Notes', 'Default filter is correct');
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('loading more entries below', function (assert) {
+  (0, _frontendCpTestsHelpersQunit.test)('loading more note entries below', function (assert) {
     assert.expect(4);
 
     visit('/agent/cases/' + targetCase.id + '/user');
 
-    andThen(function () {
-      assert.equal(find('.qa-feed_item--note').length, 10, 'Default number of notes displayed');
-      assert.equal(find('.ko-timeline__load-more-below').length, 1, 'Load more link available due to more posts to load');
-    });
+    selectChoose('.qa-timeline__filter .ember-power-select', 'Notes');
 
     andThen(function () {
-      click('.ko-timeline__load-more-below');
+      assert.equal(find('.qa-feed_item--note').length, 20, 'Default number of notes displayed');
+      assert.equal(find('.qa-timeline__load-more-below').length, 1, 'Load more link available due to more posts to load');
     });
 
+    click('.qa-timeline__load-more-below');
+
     andThen(function () {
-      assert.equal(find('.qa-feed_item--note').length, 15, 'Load more notes below');
-      assert.equal(find('.ko-timeline__load-more-below').length, 0, 'Load more link hidden due to no more posts to load');
+      assert.equal(find('.qa-feed_item--note').length, 25, 'Load more notes below');
+      assert.equal(find('.qa-timeline__load-more-below').length, 0, 'Load more link hidden due to no more posts to load');
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('loading more entries above', function (assert) {
+  (0, _frontendCpTestsHelpersQunit.test)('loading more note entries above', function (assert) {
     assert.expect(4);
 
     var allPosts = server.db.posts.sortBy('created_at').reverse();
-    var postId = allPosts[allPosts.length - 8].id;
+    var postId = allPosts[2].id;
 
     visit('/agent/cases/' + targetCase.id + '/user?postId=' + postId);
 
-    andThen(function () {
-      assert.equal(find('.qa-feed_item--note').length, 8, 'Last 8 notes displayed');
-      assert.equal(find('.ko-timeline__load-more-above').length, 1, 'Load more link available due to more posts to load');
-    });
+    selectChoose('.qa-timeline__filter .ember-power-select', 'Notes');
 
     andThen(function () {
-      click('.ko-timeline__load-more-above');
+      assert.equal(find('.qa-feed_item--note').length, 20, 'Last 8 notes displayed');
+      assert.equal(find('.qa-timeline__load-more-above').length, 1, 'Load more link available due to more posts to load');
     });
 
+    click('.qa-timeline__load-more-above');
+
     andThen(function () {
-      assert.equal(find('.qa-feed_item--note').length, 15, 'Load more notes');
-      assert.equal(find('.ko-timeline__load-more-above').length, 0, 'Load more link hidden due to no more posts to load');
+      assert.equal(find('.qa-feed_item--note').length, 22, 'Load more notes');
+      assert.equal(find('.qa-timeline__load-more-above').length, 0, 'Load more link hidden due to no more posts to load');
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('sorting newest entries first', function (assert) {
-    assert.expect(1);
+  (0, _frontendCpTestsHelpersQunit.test)('loading more activity entries below', function (assert) {
+    assert.expect(4);
 
     visit('/agent/cases/' + targetCase.id + '/user');
 
+    selectChoose('.qa-timeline__filter .ember-power-select', 'Activities');
+
     andThen(function () {
-      selectChoose('.qa-timeline__sort .ember-power-select', 'Newest first');
+      assert.equal(find('.ko-feed_activity').length, 20, 'Default number of activities displayed');
+      assert.equal(find('.qa-timeline__load-more-below').length, 1, 'Load more link available due to more activities to load');
     });
 
-    andThen(function () {
-      var actualOrder = find('.ko-feed_item').map(function () {
-        return $(this).data('id');
-      }).toArray();
-      var expectedOrder = server.db.posts.sortBy('created_at').reverse().map(function (record) {
-        return parseInt(record.id);
-      }).slice(0, 10);
+    click('.qa-timeline__load-more-below');
 
-      assert.deepEqual(actualOrder, expectedOrder, 'Posts sorted by newest first');
+    andThen(function () {
+      assert.equal(find('.ko-feed_activity').length, 25, 'Load more activities below');
+      assert.equal(find('.qa-timeline__load-more-below').length, 0, 'Load more link hidden due to no more activities to load');
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('sorting oldest entries first', function (assert) {
-    assert.expect(1);
+  (0, _frontendCpTestsHelpersQunit.test)('loading more event entries below', function (assert) {
+    assert.expect(4);
 
     visit('/agent/cases/' + targetCase.id + '/user');
 
+    selectChoose('.qa-timeline__filter .ember-power-select', 'Events');
+
     andThen(function () {
-      selectChoose('.qa-timeline__sort .ember-power-select', 'Oldest first');
+      assert.equal(find('.ko-feed_activity').length, 20, 'Default number of events displayed');
+      assert.equal(find('.qa-timeline__load-more-below').length, 1, 'Load more link available due to more events to load');
     });
 
-    andThen(function () {
-      var actualOrder = find('.ko-feed_item').map(function () {
-        return $(this).data('id');
-      }).toArray();
-      var expectedOrder = server.db.posts.sortBy('created_at').map(function (record) {
-        return parseInt(record.id);
-      }).slice(5);
-
-      assert.deepEqual(actualOrder, expectedOrder, 'Posts sorted by oldest first');
-    });
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('default sort order', function (assert) {
-    assert.expect(1);
-
-    visit('/agent/cases/' + targetCase.id + '/user');
+    click('.qa-timeline__load-more-below');
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-timeline__sort .ember-power-select-placeholder'), 'Sort: Newest first', 'Default sort is correct');
+      assert.equal(find('.ko-feed_activity').length, 25, 'Load more events below');
+      assert.equal(find('.qa-timeline__load-more-below').length, 0, 'Load more link hidden due to no more events to load');
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('adding a note updates the timeline', function (assert) {
+  (0, _frontendCpTestsHelpersQunit.test)('adding a note updates the timeline when filtering by notes', function (assert) {
     assert.expect(3);
 
     visit('/agent/cases/' + targetCase.id + '/user');
 
     andThen(function () {
-      assert.equal(find('.qa-feed_item--note').length, 10, 'Begin with 10 notes');
+      assert.equal(find('.qa-feed_item--note').length, 20, 'Begin with 10 notes');
+    });
+
+    selectChoose('.qa-timeline__filter .ember-power-select', 'Notes');
+    click('.ko-layout_advanced_editor__placeholder');
+    fillInRichTextEditor('Testing notes');
+    click('.button--primary');
+
+    andThen(function () {
+      assert.equal(find('.qa-feed_item--note').length, 21, 'Now there are 11 notes');
+      assert.equal(find('.ko-feed_item:eq(0) .ko-feed_item__content').text().trim(), 'Testing notes', 'The added note is in the top');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('adding a note doesn\'t update the timeline when filtering by activities', function (assert) {
+    assert.expect(2);
+
+    visit('/agent/cases/' + targetCase.id + '/user');
+
+    selectChoose('.qa-timeline__filter .ember-power-select', 'Activities');
+
+    andThen(function () {
+      assert.equal(find('.qa-feed_item--note').length, 0, 'No notes displayed as filtering by activities');
     });
 
     click('.ko-layout_advanced_editor__placeholder');
@@ -10829,8 +11090,27 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
     click('.button--primary');
 
     andThen(function () {
-      assert.equal(find('.qa-feed_item--note').length, 11, 'Now there are 11 notes');
-      assert.equal(find('.ko-feed_item:eq(0) .ko-feed_item__content').text().trim(), 'Testing notes', 'The added note is in the top');
+      assert.equal(find('.qa-feed_item--note').length, 0, 'Still no notes displayed');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('adding a note doesn\'t update the timeline when filtering by events', function (assert) {
+    assert.expect(2);
+
+    visit('/agent/cases/' + targetCase.id + '/user');
+
+    selectChoose('.qa-timeline__filter .ember-power-select', 'Events');
+
+    andThen(function () {
+      assert.equal(find('.qa-feed_item--note').length, 0, 'No notes displayed as filtering by events');
+    });
+
+    click('.ko-layout_advanced_editor__placeholder');
+    fillInRichTextEditor('Testing notes');
+    click('.button--primary');
+
+    andThen(function () {
+      assert.equal(find('.qa-feed_item--note').length, 0, 'Still no notes displayed');
     });
   });
 });
