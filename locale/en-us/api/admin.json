@@ -449,9 +449,10 @@
   "automation_actions_builder.operators.REPLACE": "Replace",
   "automation_actions_builder.select_action": "Select an action",
   "automation_actions_builder.select_operator": "Select an operator",
-  "automation_actions_builder.priority_select_placeholder": "Select a priority",
-  "automation_actions_builder.status_select_placeholder": "Select a status",
-  "automation_actions_builder.type_select_placeholder": "Select a type",
+  "automation_actions_builder.placeholders.priority": "Select a priority",
+  "automation_actions_builder.placeholders.status": "Select a status",
+  "automation_actions_builder.placeholders.type": "Select a type",
+  "automation_actions_builder.placeholders.team": "Select a team",
   "automation_actions_builder.label.addition_of_action": "+ Add a new action",
 
   "macros.title": "Macros",
