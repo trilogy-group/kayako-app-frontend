@@ -1,7 +1,7 @@
 {
   "assets": {
-    "assets/frontend-cp.css": "assets/frontend-cp-2b2e51c194bb66a67e09bb28f36d6f79.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-b80654f61e1fcdc2a21326a0bddb363a.js",
+    "assets/frontend-cp.css": "assets/frontend-cp-7b0d387b532740951d489692906b35b1.css",
+    "assets/frontend-cp.js": "assets/frontend-cp-a0e4ed4b63f4d9807af864fc074b93ec.js",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-a989338c151ce330501dd0cd20c7939f.js",
     "assets/intl/intl.js": "assets/intl/intl-fd2f17673f0bd1d7d99e3d13018b4add.js",
     "assets/intl/intl.min.js": "assets/intl/intl.min-df93baa6892233863899470d105bde82.js",
@@ -9,6 +9,8 @@
     "assets/intl/locales/en-us.js": "assets/intl/locales/en-us-2641f81845f4a1adde213301282a52d9.js",
     "assets/vendor.css": "assets/vendor-4f2891f1413e443f02e0fbffb0bc6b61.css",
     "assets/vendor.js": "assets/vendor-3c7a53173a01bc6021e3f6aab9a25d34.js",
+    "images/apps/zapier/header.png": "images/apps/zapier/header-c8e2bb64a8cbe599db8a2f6c98ca0e03.png",
+    "images/apps/zapier/integrations.png": "images/apps/zapier/integrations-3a4234ed34c07e59e6c2fd60636b1b3d.png",
     "images/icons/cascading-select.png": "images/icons/cascading-select-caac3065ad73656590904fcf10ada86a.png",
     "images/icons/checkbox.png": "images/icons/checkbox-79a02996a1a01472a381af713b2609a9.png",
     "images/icons/date.png": "images/icons/date-cc6919f28dfdba1b632faa7d039ce1ae.png",
