@@ -650,5 +650,11 @@
   "email.edit.address.title": "Address",
   "email.edit.address.description": "You can create any number of anything-you-like@{domain} mailboxes, or you can use your own custom email addresses as mailboxes, such as support@yourdomainname.com, provided you can forward email sent to that address to Kayako.",
   "email.edit.brand.title": "Brand",
-  "email.edit.brand.description": "Your channel accounts are linked to specific Brands. When you have multiple Brands set up, Kayako will link any cases created as a result of events over this channel account to this Brand."
+  "email.edit.brand.description": "Your channel accounts are linked to specific Brands. When you have multiple Brands set up, Kayako will link any cases created as a result of events over this channel account to this Brand.",
+
+  "localization.title": "Localization",
+  "localization.headings.index": "Localization",
+  "localization.localized": "(Officially supported)",
+  "localization.enabled.message": "Language enabled successfully",
+  "localization.disabled.message": "Language disabled successfully"
 }
