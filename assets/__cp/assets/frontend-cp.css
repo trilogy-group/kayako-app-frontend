@@ -699,10 +699,6 @@ textarea {
 .t-italic {
   font-style: italic; }
 
-
-.t-disabled {
-  opacity: 0.5; }
-
 [class^="i-"], [class*=" i-"] {
   font-family: 'icomoon', 'Source Sans Pro' !important; }
   [class^="i-"]:before, [class*=" i-"]:before {
@@ -2911,9 +2907,6 @@ img {
 .ko-admin_apps_endpoints_select-type__title {
   font-weight: 600;
   margin-bottom: 5px; }
-
-.ko-admin_apps_endpoints_list-row__cell--disabled {
-  opacity: 0.6; }
 
 .ko-admin_apps_endpoints_list-row__warning {
   color: #E86048; }
@@ -6363,27 +6356,6 @@ span#HW_badge.HW_softHidden {
   width: 48px;
   height: 48px; }
 
-/* styles for frontend-cp/components/ko-breadcrumbs/styles.css */
-._breadcrumbs_1lub82 {
-  border-bottom: 1px solid #D1D5D7; }
-
-._item_1lub82 {
-  color: inherit;
-  display: inline-block;
-  position: relative;
-  bottom: -1px;
-  padding: 18px 0;
-  margin: 0 18px 0 0;
-  cursor: pointer;
-  border-bottom: 2px solid transparent; }
-
-._item_1lub82:last-child {
-  margin-right: 0; }
-
-._item_1lub82.active {
-  font-weight: 700;
-  border-color: #4EAFCB; }
-
 /* styles for frontend-cp/components/ko-case/macro-selector/trigger/styles.css */
 ._trigger_6p3bsw {
   max-width: 100%;
@@ -6844,6 +6816,9 @@ span#HW_badge.HW_softHidden {
       -ms-flex-align: center;
           align-items: center; }
 
+._disabled_zv921a {
+  opacity: 0.5; }
+
 /* styles for frontend-cp/components/ko-simple-list/row/styles.css */
 ._row_nxh6de {
   display: -webkit-box;
@@ -6880,6 +6855,27 @@ span#HW_badge.HW_softHidden {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px; }
+
+/* styles for frontend-cp/components/ko-tabs/styles.css */
+._tabs_mcpj6q {
+  border-bottom: 1px solid #D1D5D7; }
+
+._item_mcpj6q {
+  color: inherit;
+  display: inline-block;
+  position: relative;
+  bottom: -1px;
+  padding: 18px 0;
+  margin: 0 18px 0 0;
+  cursor: pointer;
+  border-bottom: 2px solid transparent; }
+
+._item_mcpj6q:last-child {
+  margin-right: 0; }
+
+._item_mcpj6q.active {
+  font-weight: 700;
+  border-color: #4EAFCB; }
 
 /* styles for frontend-cp/components/ko-text-editor/draggable-dropzone/styles.css */
 ._border_ochr0f {
@@ -7861,10 +7857,6 @@ a._subtitle_vt1m5j:hover {
 
 ._findOutCTA_zxnhet {
   padding: 0 10px; }
-
-/* styles for frontend-cp/session/admin/channels/email/index/styles.css */
-._disabled_501lhr {
-  opacity: 0.5; }
 
 /* styles for frontend-cp/session/admin/channels/facebook/index/styles.css */
 ._add-pages_y8luwb .ko-modal__content {
