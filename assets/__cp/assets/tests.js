@@ -2097,7 +2097,7 @@ define('frontend-cp/tests/acceptance/admin/channels/email/helpers', ['exports', 
     var _ref2$2 = _ref2[2];
     var hash = _ref2$2 === undefined ? {} : _ref2$2;
 
-    assert.ok(row.text().indexOf(address) !== -1, 'Mailbox address');
+    assert.ok(row.text().indexOf(address) !== -1, address + ' (Mailbox address)');
     var brand = hash.brand || 'Main Brand';
     assert.ok(row.text().indexOf('(' + brand + ')') !== -1, address + ' (Main Brand)');
 
