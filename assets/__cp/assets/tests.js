@@ -12304,6 +12304,158 @@ define('frontend-cp/tests/acceptance/agent/users/create-test', ['exports', 'fron
     });
   });
 });
+define('frontend-cp/tests/acceptance/agent/users/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/helpers/dom-helpers'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsHelpersDomHelpers) {
+
+  var customer = undefined,
+      owner = undefined;
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | User | Edit user', {
+    beforeEach: function beforeEach() {
+      var locale = server.create('locale');
+      var brand = server.create('brand', { locale: locale });
+      var caseFields = server.createList('case-field', 4);
+      var mailbox = server.create('mailbox', { brand: brand });
+      server.create('channel', { account: { id: mailbox.id, resource_type: 'mailbox' } });
+      server.create('case-form', {
+        fields: caseFields,
+        brand: brand
+      });
+      var roles = [server.create('role'), server.create('role', { title: 'Agent', type: 'AGENT', id: 2 }), server.create('role', { title: 'Collaborator', type: 'COLLABORATOR', id: 3 }), server.create('role', { title: 'Customer', type: 'CUSTOMER', id: 4 }), server.create('role', { title: 'Owner', type: 'OWNER', id: 5 })];
+
+      var customerRole = roles[3];
+      customer = server.create('user', { role: customerRole, locale: locale, agent_case_access: null, organization_case_access: 'REQUESTED' });
+
+      var ownerRole = roles[4];
+      owner = server.create('user', { role: ownerRole, locale: locale, agent_case_access: 'ALL', organization_case_access: null });
+
+      var agent = server.create('user', { role: ownerRole, locale: locale });
+      var session = server.create('session', { user: agent });
+      login(session.id);
+
+      server.create('plan', {
+        limits: [],
+        features: []
+      });
+    },
+
+    afterEach: function afterEach() {
+      logout();
+      customer = null;
+      owner = null;
+    }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('editing an owner\'s case access field', function (assert) {
+    assert.expect(4);
+
+    server.put('/api/v1/users/' + owner.id, function (_, _ref) {
+      var requestBody = _ref.requestBody;
+
+      var body = JSON.parse(requestBody);
+
+      assert.equal(body.agent_case_access, 'SELF', 'agent_case_access correctly set in request payload');
+      assert.equal(body.organization_case_access, null, 'organization_case_access correctly set to null in request payload');
+    });
+
+    visit('/agent/users/' + owner.id);
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-user-content__case-access-field .ko-info-bar_field_select__placeholder'), 'All cases', 'Case access field initial value is correct');
+    });
+
+    selectChoose('.qa-user-content__case-access-field .ember-power-select', 'Cases assigned to agent');
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-user-content__case-access-field .ko-info-bar_field_select__placeholder'), 'Cases assigned to agent', 'Case access field changed value is correct');
+    });
+
+    click('.button--primary');
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('editing a customer\'s case access field', function (assert) {
+    server.logging = true;
+    assert.expect(4);
+
+    server.put('/api/v1/users/' + customer.id, function (_, _ref2) {
+      var requestBody = _ref2.requestBody;
+
+      var body = JSON.parse(requestBody);
+
+      assert.equal(body.agent_case_access, null, 'agent_case_access correctly set in request payload');
+      assert.equal(body.organization_case_access, 'ORGANIZATION', 'organization_case_access correctly set to null in request payload');
+    });
+
+    visit('/agent/users/' + customer.id);
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-user-content__case-access-field .ko-info-bar_field_select__placeholder'), 'Only requested cases', 'Case access field initial value is correct');
+    });
+
+    selectChoose('.qa-user-content__case-access-field .ember-power-select', 'All organization\'s cases');
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-user-content__case-access-field .ko-info-bar_field_select__placeholder'), 'All organization\'s cases', 'Case access field changed value is correct');
+    });
+
+    click('.button--primary');
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('changing a customer to an owner and changing the case access field', function (assert) {
+    window.confirm = function () {
+      return true;
+    };
+
+    assert.expect(3);
+
+    server.put('/api/v1/users/' + customer.id, function (_, _ref3) {
+      var requestBody = _ref3.requestBody;
+
+      var body = JSON.parse(requestBody);
+
+      assert.equal(body.agent_case_access, 'SELF', 'agent_case_access correctly set in request payload');
+      assert.equal(body.organization_case_access, null, 'organization_case_access correctly set to null in request payload');
+    });
+
+    visit('/agent/users/' + customer.id);
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-user-content__role-field .ko-info-bar_field_select__placeholder'), 'Customer', 'Role field initial value is correct');
+    });
+
+    selectChoose('.ko-user-content__role-field .ember-power-select', 'Collaborator');
+    selectChoose('.qa-user-content__case-access-field .ember-power-select', 'Cases assigned to agent');
+
+    click('.button--primary');
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('changing an owner to a customer and changing the case access field', function (assert) {
+    window.confirm = function () {
+      return true;
+    };
+
+    assert.expect(3);
+
+    server.put('/api/v1/users/' + owner.id, function (_, _ref4) {
+      var requestBody = _ref4.requestBody;
+
+      var body = JSON.parse(requestBody);
+
+      assert.equal(body.agent_case_access, null, 'agent_case_access correctly set in request payload');
+      assert.equal(body.organization_case_access, 'ORGANIZATION', 'organization_case_access correctly set to null in request payload');
+    });
+
+    visit('/agent/users/' + owner.id);
+
+    andThen(function () {
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-user-content__role-field .ko-info-bar_field_select__placeholder'), 'Owner', 'Role field initial value is correct');
+    });
+
+    selectChoose('.ko-user-content__role-field .ember-power-select', 'Customer');
+    selectChoose('.qa-user-content__case-access-field .ember-power-select', 'All organization\'s cases');
+
+    click('.button--primary');
+  });
+});
 define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-checkbox/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoCheckboxStyles) {
 
   var originalConfirm = window.confirm;
