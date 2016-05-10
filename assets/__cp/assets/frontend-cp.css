@@ -5595,8 +5595,6 @@ span#HW_badge.HW_softHidden {
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center; }
-  .ko-universal-search_result__see-more--inline .universal-search_result__wrap {
-    width: 100%; }
 
 .universal-search_result__icon {
   display: inline-block;
