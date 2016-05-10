@@ -38,7 +38,7 @@
   "infobar.agentaccess.inherit": "(Inherit from role)",
   "infobar.agentaccess.all": "All cases",
 
-  "infobar.organizationaccess.organization": "All organization’s cases",
+  "infobar.organizationaccess.organization": "All organization's cases",
   "infobar.organizationaccess.requested": "Only requested cases",
 
   "notes": "Notes",
