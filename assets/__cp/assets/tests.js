@@ -13196,6 +13196,7 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
             triggerEvent(cssPath + ' .ember-power-select-trigger input[type=search]', 'input');
           }
         } else {
+          fillIn('.ember-power-select-dropdown-ember' + id + ' .ember-power-select-search input[type=search]', 'input');
           if (isEmberOne) {
             triggerEvent('.ember-power-select-dropdown-ember' + id + ' .ember-power-select-search input[type=search]', 'input');
           }
