@@ -1005,7 +1005,6 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     visit('/admin/automation/monitors/new');
 
     andThen(function () {
-      server.logging = true;
       assert.equal(currentURL(), '/admin/automation/monitors/new');
       fillIn('input[name="title"]', 'Sample monitor name');
 
@@ -1130,6 +1129,107 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
       assert.equal(currentURL(), '/admin/automation/monitors/1');
       assertPredicateCollestionsAreCorrect(assert);
       assert.equal($('.ko-automation-actions-builder__small-slot:eq(0) .ember-power-select-trigger').text().trim(), 'Case: Satisfaction survey', 'The Satisfaction survey has been selected');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Creating a monitor with a "Email a user" action', function (assert) {
+    assert.expect(11);
+    server.create('automation-action-definition', {
+      label: 'Email a user',
+      name: 'notificationuser',
+      options: ['SEND'],
+      input_type: 'NOTIFICATION',
+      value_type: 'ATTRIBUTES',
+      values: {
+        '-2': '(Last active user)',
+        '-3': '(Requester)',
+        '-4': '(Assignee)'
+      },
+      attributes: ['subject', 'message'],
+      group: 'NOTIFICATION',
+      resource_type: 'automation_action_definition'
+    });
+    visit('/admin/automation/monitors/new');
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/new');
+      fillIn('input[name="title"]', 'Sample monitor name');
+
+      fillPredicateCollections();
+
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Email a user');
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(1)', '(Requester)');
+      fillIn('[name="subject"]', 'Example subject');
+      fillIn('[name="message"]', 'Example message blah blah');
+      click('.button[name=submit]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/1');
+      assertPredicateCollestionsAreCorrect(assert);
+      assert.equal($('.ko-automation-actions-builder__small-slot:eq(1) .ember-power-select-trigger').text().trim(), '(Requester)', 'The requester is selected');
+      assert.equal(find('[name="subject"]').val(), 'Example subject', 'The subject is set');
+      assert.equal(find('[name="message"]').val(), 'Example message blah blah', 'The message is set');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Creating a monitor with a "Email a team" action', function (assert) {
+    assert.expect(11);
+    server.create('automation-action-definition', {
+      label: 'Email a team',
+      name: 'notificationteam',
+      options: ['SEND'],
+      input_type: 'NOTIFICATION',
+      value_type: 'ATTRIBUTES',
+      values: {
+        '-5': '(Assigned team)',
+        43: 'Billing',
+        50: 'Customer Success',
+        44: 'Engineering',
+        46: 'Hello',
+        52: 'IT',
+        48: 'New Business',
+        49: 'Renewals',
+        14: 'Sales',
+        16: 'Support'
+      },
+      attributes: ['subject', 'message'],
+      group: 'NOTIFICATION',
+      resource_type: 'automation_action_definition'
+    });
+    visit('/admin/automation/monitors/new');
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/new');
+      fillIn('input[name="title"]', 'Sample monitor name');
+
+      fillPredicateCollections();
+
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Email a team');
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(1)', 'Billing');
+      fillIn('[name="subject"]', 'Example subject');
+      fillIn('[name="message"]', 'Example message blah blah');
+      click('.button[name=submit]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/1');
+      assertPredicateCollestionsAreCorrect(assert);
+      assert.equal($('.ko-automation-actions-builder__small-slot:eq(1) .ember-power-select-trigger').text().trim(), 'Billing', 'The requester is selected');
+      assert.equal(find('[name="subject"]').val(), 'Example subject', 'The subject is set');
+      assert.equal(find('[name="message"]').val(), 'Example message blah blah', 'The message is set');
     });
   });
 

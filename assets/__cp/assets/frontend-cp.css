@@ -6044,10 +6044,17 @@ span#HW_badge.HW_softHidden {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
-  display: flex; }
+  display: flex;
+  -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap; }
 
 .ko-automation-actions-builder__small-slot {
   width: calc((100% - 100px) / 3);
+  padding-left: 10px; }
+
+.ko-automation-actions-builder__big-slot {
+  width: 100%;
   padding-left: 10px; }
 
 ._add-action-btn_10ryr1 {
