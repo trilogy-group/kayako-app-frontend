@@ -484,6 +484,8 @@
   "macros.actions.status.label": "Status",
   "macros.actions.assignee.label": "Assignee",
   "macros.errors.actions.required": "Please add at least one action",
+  "macros.assign.unassigned": "(unassigned)",
+  "macros.assign.current_agent": "(current agent)",
 
   "monitors.title": "Monitors",
   "monitors.buttons.add": "Add New",
