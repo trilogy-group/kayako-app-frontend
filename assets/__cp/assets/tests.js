@@ -7916,7 +7916,13 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/reorder-te
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/people/roles/form-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-admin/page/styles', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-checkbox/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoAdminPageStyles, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoCheckboxStyles) {
+define('frontend-cp/tests/acceptance/admin/people/roles/form-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-admin/page/styles', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoAdminPageStyles, _frontendCpComponentsKoSimpleListRowStyles) {
+
+  var createNewCaseCheckboxClass = 'qa-ko-admin_roles-create-public-reply-checkbox';
+  var createNewUsersCheckboxClass = 'qa-ko-admin_roles-create-new-users-checkbox';
+  var acceptNewChatRequestsCheckboxClass = 'qa-ko-admin_roles-accept-new-chat-requests-checkbox';
+  var manageHelpcenterCheckboxClass = 'qa-ko-admin_roles-manage-helpcenter-checkbox';
+  var manageTeamsCheckboxClass = 'qa-ko-admin_roles-manage-teams-checkbox';
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/people/roles form', {
     beforeEach: function beforeEach() {
@@ -7955,10 +7961,10 @@ define('frontend-cp/tests/acceptance/admin/people/roles/form-test', ['exports', 
     fillIn('input.ko-admin_roles_form__title', 'Custom Role');
     selectChoose('.qa-ko-admin_roles_form__role-type', 'Collaborator');
     selectChoose('.qa-ko-admin_roles_form__agent-case-access-type', 'Assigned to agent');
-    click('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Create new cases") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
-    click('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Accept new chat requests and invitations") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
-    click('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Create users and organizations") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
-    click('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Manage the Help Center") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
+    click('.' + createNewCaseCheckboxClass);
+    click('.' + acceptNewChatRequestsCheckboxClass);
+    click('.' + createNewUsersCheckboxClass);
+    click('.' + manageHelpcenterCheckboxClass);
 
     andThen(function () {
       assert.equal(find('.ko-admin-form-group__legend:contains("User administration")').length, 0);
@@ -7971,10 +7977,10 @@ define('frontend-cp/tests/acceptance/admin/people/roles/form-test', ['exports', 
     click('.qa-ko-admin_roles__list-item:contains("Custom Role") .qa-ko-admin_roles_list-item__edit');
 
     andThen(function () {
-      findWithAssert('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Create new cases") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + '[aria-checked=false]');
-      findWithAssert('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Accept new chat requests and invitations") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + '[aria-checked=false]');
-      findWithAssert('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Create users and organizations") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + '[aria-checked=false]');
-      findWithAssert('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Manage the Help Center") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + '[aria-checked=false]');
+      findWithAssert('.' + createNewCaseCheckboxClass + '[aria-checked=false]');
+      findWithAssert('.' + acceptNewChatRequestsCheckboxClass + '[aria-checked=false]');
+      findWithAssert('.' + createNewUsersCheckboxClass + '[aria-checked=false]');
+      findWithAssert('.' + manageHelpcenterCheckboxClass + '[aria-checked=false]');
     });
   });
 
@@ -7985,23 +7991,21 @@ define('frontend-cp/tests/acceptance/admin/people/roles/form-test', ['exports', 
     fillIn('input.ko-admin_roles_form__title', 'Custom Role');
     selectChoose('.qa-ko-admin_roles_form__role-type', 'Administrator');
     selectChoose('.qa-ko-admin_roles_form__agent-case-access-type', 'Assigned to agent');
-    click('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Create new cases") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
-    click('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Accept new chat requests and invitations") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
-    click('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Create users and organizations") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
-    click('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Manage the Help Center") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
-    click('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Manage teams") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
-    click('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Manage apps and integrations") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
+    click('.' + createNewCaseCheckboxClass);
+    click('.' + acceptNewChatRequestsCheckboxClass);
+    click('.' + createNewUsersCheckboxClass);
+    click('.' + manageHelpcenterCheckboxClass);
+    click('.' + manageTeamsCheckboxClass);
     click('button:contains("Save")');
     triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("Custom Role")', 'mouseenter');
     click('.qa-ko-admin_roles__list-item:contains("Custom Role") .qa-ko-admin_roles_list-item__edit');
 
     andThen(function () {
-      findWithAssert('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Create new cases") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + '[aria-checked=false]');
-      findWithAssert('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Accept new chat requests and invitations") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + '[aria-checked=false]');
-      findWithAssert('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Create users and organizations") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + '[aria-checked=false]');
-      findWithAssert('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Manage the Help Center") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + '[aria-checked=false]');
-      findWithAssert('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Manage teams") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + '[aria-checked=false]');
-      findWithAssert('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Manage apps and integrations") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + '[aria-checked=false]');
+      findWithAssert('.' + createNewCaseCheckboxClass + '[aria-checked=false]');
+      findWithAssert('.' + acceptNewChatRequestsCheckboxClass + '[aria-checked=false]');
+      findWithAssert('.' + createNewUsersCheckboxClass + '[aria-checked=false]');
+      findWithAssert('.' + manageHelpcenterCheckboxClass + '[aria-checked=false]');
+      findWithAssert('.' + manageTeamsCheckboxClass + '[aria-checked=false]');
     });
   });
 
@@ -8020,10 +8024,10 @@ define('frontend-cp/tests/acceptance/admin/people/roles/form-test', ['exports', 
 
     fillIn('input.ko-admin_roles_form__title', 'Edited Role');
     selectChoose('.qa-ko-admin_roles_form__agent-case-access-type', 'Assigned to agent');
-    click('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Create new cases") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
-    click('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Accept new chat requests and invitations") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
-    click('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Create users and organizations") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
-    click('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Manage the Help Center") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox);
+    click('.' + createNewCaseCheckboxClass);
+    click('.' + acceptNewChatRequestsCheckboxClass);
+    click('.' + createNewUsersCheckboxClass);
+    click('.' + manageHelpcenterCheckboxClass);
 
     andThen(function () {
       assert.equal(find('.ko-admin-form-group__legend:contains("User administration")').length, 0);
@@ -8035,10 +8039,10 @@ define('frontend-cp/tests/acceptance/admin/people/roles/form-test', ['exports', 
     click('.qa-ko-admin_roles__list-item:contains("Edited Role") .qa-ko-admin_roles_list-item__edit');
 
     andThen(function () {
-      findWithAssert('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Create new cases") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + '[aria-checked=true]');
-      findWithAssert('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Accept new chat requests and invitations") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + '[aria-checked=true]');
-      findWithAssert('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Create users and organizations") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + '[aria-checked=true]');
-      findWithAssert('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains("Manage the Help Center") .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + '[aria-checked=true]');
+      findWithAssert('.' + createNewCaseCheckboxClass + '[aria-checked=true]');
+      findWithAssert('.' + acceptNewChatRequestsCheckboxClass + '[aria-checked=true]');
+      findWithAssert('.' + createNewUsersCheckboxClass + '[aria-checked=true]');
+      findWithAssert('.' + manageHelpcenterCheckboxClass + '[aria-checked=true]');
     });
   });
 });
@@ -8160,17 +8164,6 @@ define('frontend-cp/tests/acceptance/admin/people/roles/index-test', ['exports',
       triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':eq(3)', 'mouseenter');
       andThen(function () {
         assert.deepEqual(getRowData(3), {
-          title: 'Custom Role',
-          caption: null,
-          label: 'Customer',
-          editLink: 'Edit',
-          deleteLink: 'Delete'
-        });
-      });
-
-      triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':eq(4)', 'mouseenter');
-      andThen(function () {
-        assert.deepEqual(getRowData(4), {
           title: 'Customer',
           caption: '(System)',
           label: 'Customer',
@@ -8179,14 +8172,25 @@ define('frontend-cp/tests/acceptance/admin/people/roles/index-test', ['exports',
         });
       });
 
-      triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':eq(5)', 'mouseenter');
+      triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':eq(4)', 'mouseenter');
       andThen(function () {
-        assert.deepEqual(getRowData(5), {
+        assert.deepEqual(getRowData(4), {
           title: 'Owner',
           caption: '(System)',
           label: 'Owner',
           editLink: null,
           deleteLink: null
+        });
+      });
+
+      triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':eq(5)', 'mouseenter');
+      andThen(function () {
+        assert.deepEqual(getRowData(5), {
+          title: 'Custom Role',
+          caption: null,
+          label: 'Customer',
+          editLink: 'Edit',
+          deleteLink: 'Delete'
         });
       });
     });
@@ -15150,7 +15154,8 @@ define('frontend-cp/tests/unit/components/ko-checkbox/component-test', ['exports
       component.set('label', 'Remember my preferences');
       component.set('tabindex', 0);
     },
-    teardown: function teardown() {}
+    teardown: function teardown() {},
+    needs: ['helper:qa-cls']
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('can be checked by pressing spacebar', function (assert) {
@@ -15444,7 +15449,7 @@ define('frontend-cp/tests/unit/components/ko-editable-text/component-test', ['ex
 define('frontend-cp/tests/unit/components/ko-info-bar/field/checkbox/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit'], function (exports, _ember, _frontendCpTestsHelpersQunit) {
 
   (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-info-bar/field/checkbox', {
-    needs: ['component:ko-checkbox', 'template:components/ko-checkbox', 'helper:ko-helper']
+    needs: ['component:ko-checkbox', 'template:components/ko-checkbox', 'helper:ko-helper', 'helper:qa-cls']
   });
 
   var options = [{ id: 1, value: 'Red' }, { id: 2, value: 'Green' }, { id: 3, value: 'Blue' }];
