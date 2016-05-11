@@ -2337,9 +2337,6 @@ img {
   margin-top: 18px;
   width: 100%; }
 
-.add-pages :global(.ko-modal__content) {
-  width: 400px; }
-
 .available-pages {
   min-height: 15px; }
   .available-pages ul {
@@ -2357,8 +2354,8 @@ img {
   color: #CFD4D8; }
 
 .reconnect {
+  margin-top: 15px;
   font-size: 12px;
-  margin-bottom: 15px;
   text-align: left; }
 
 .ko-admin_case-fields_select-type__icon {
@@ -4383,51 +4380,6 @@ label {
   100% {
     -webkit-transform: scaleY(0.3);
             transform: scaleY(0.3); } }
-
-.ko-modal__overlay {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: rgba(255, 255, 255, 0.7);
-  z-index: 1050; }
-
-.ko-modal__content {
-  position: absolute;
-  top: 50px;
-  margin: auto;
-  left: 0;
-  right: 0;
-  width: 720px;
-  border: 1px solid #D1D5D7;
-  background-color: #ffffff;
-  border-radius: 5px; }
-
-.ko-modal__content__main, .ko-modal__content__header, .ko-modal__content__footer {
-  padding: 18px; }
-
-.ko-modal__content__header {
-  position: relative; }
-  .ko-modal__content__header:before {
-    content: "";
-    position: absolute;
-    left: 10px;
-    right: 10px;
-    bottom: 0;
-    height: 2px;
-    border-bottom: 2px solid #e8eaeb; }
-
-.ko-modal__content__footer {
-  position: relative; }
-  .ko-modal__content__footer:before {
-    content: "";
-    position: absolute;
-    left: 10px;
-    right: 10px;
-    top: 0;
-    height: 2px;
-    border-top: 2px solid #e8eaeb; }
 
 .ko-notification-badge {
   padding: 0 13.5px;
@@ -6732,6 +6684,44 @@ span#HW_badge.HW_softHidden {
 ._email_j1ndo7 {
   margin-bottom: 9px; }
 
+/* styles for frontend-cp/components/ko-modal/styles.css */
+._overlay_q4hi99 {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(255, 255, 255, 0.7);
+  z-index: 1050;
+  overflow-y: auto; }
+
+._content_q4hi99 {
+  position: absolute;
+  top: 140px;
+  margin: auto;
+  margin-bottom: 140px;
+  left: 0;
+  right: 0;
+  border: 1px solid #D1D5D7;
+  background-color: #ffffff;
+  border-radius: 5px;
+  overflow: hidden; }
+
+._main_q4hi99 {
+  padding: 18px; }
+
+._header_q4hi99 {
+  position: relative;
+  padding: 18px;
+  background-color: #fafafa;
+  border-bottom: 1px solid #D1D5D7; }
+
+._footer_q4hi99 {
+  position: relative;
+  padding: 18px;
+  background-color: #fafafa;
+  border-top: 1px solid #D1D5D7; }
+
 /* styles for frontend-cp/components/ko-select/multiple/pill/styles.css */
 ._pill_nw6jmv {
   cursor: default;
@@ -7864,9 +7854,6 @@ a._subtitle_vt1m5j:hover {
   padding: 0 10px; }
 
 /* styles for frontend-cp/session/admin/channels/facebook/index/styles.css */
-._add-pages_y8luwb .ko-modal__content {
-  width: 400px; }
-
 ._available-pages_y8luwb {
   min-height: 15px; }
 
@@ -7886,8 +7873,8 @@ a._subtitle_vt1m5j:hover {
   color: #CFD4D8; }
 
 ._reconnect_y8luwb {
+  margin-top: 15px;
   font-size: 12px;
-  margin-bottom: 15px;
   text-align: left; }
 
 /* styles for frontend-cp/session/admin/people/teams/index/styles.css */

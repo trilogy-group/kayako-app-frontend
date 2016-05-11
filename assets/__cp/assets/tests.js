@@ -12556,7 +12556,7 @@ define('frontend-cp/tests/acceptance/agent/users/edit-test', ['exports', 'fronte
     click('.button--primary');
   });
 });
-define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-checkbox/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoCheckboxStyles) {
+define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-checkbox/styles', 'frontend-cp/components/ko-modal/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoCheckboxStyles, _frontendCpComponentsKoModalStyles) {
 
   var originalConfirm = window.confirm;
 
@@ -12628,14 +12628,14 @@ define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'fron
 
     andThen(function () {
       assert.equal(currentURL(), '/agent/cases/suspended-messages/3');
-      assert.equal($('.suspended-message-modal').length, 1, 'A modal opened with the message clicked');
+      assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 1, 'A modal opened with the message clicked');
       assert.equal($('.suspended-message-modal__table-row:eq(0) td:eq(1)').text().trim(), 'client2@example.com', 'The data seems correct');
       click('a:contains("Cancel")');
     });
 
     andThen(function () {
       assert.equal(currentURL(), '/agent/cases/suspended-messages');
-      assert.equal($('.suspended-message-modal').length, 0, 'The modal is gone');
+      assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 0, 'The modal is gone');
     });
   });
 
@@ -12648,14 +12648,14 @@ define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'fron
 
     andThen(function () {
       assert.equal(currentURL(), '/agent/cases/suspended-messages/3');
-      assert.equal($('.suspended-message-modal').length, 1, 'A modal opened with the message clicked');
+      assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 1, 'A modal opened with the message clicked');
       assert.equal($('.suspended-message-modal__table-row:eq(0) td:eq(1)').text().trim(), 'client2@example.com', 'The data seems correct');
       click('.button:contains("Permanently delete")');
     });
 
     andThen(function () {
       assert.equal(currentURL(), '/agent/cases/suspended-messages');
-      assert.equal($('.suspended-message-modal').length, 0, 'The modal is gone');
+      assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 0, 'The modal is gone');
       assert.equal($('.suspended-messages-section__table tbody tr').length, 19, 'One mensage was deleted');
     });
   });
@@ -12669,14 +12669,14 @@ define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'fron
 
     andThen(function () {
       assert.equal(currentURL(), '/agent/cases/suspended-messages/3');
-      assert.equal($('.suspended-message-modal').length, 1, 'A modal opened with the message clicked');
+      assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 1, 'A modal opened with the message clicked');
       assert.equal($('.suspended-message-modal__table-row:eq(0) td:eq(1)').text().trim(), 'client2@example.com', 'The data seems correct');
       click('.button:contains("Allow through")');
     });
 
     andThen(function () {
       assert.equal(currentURL(), '/agent/cases/suspended-messages');
-      assert.equal($('.suspended-message-modal').length, 0, 'The modal is gone');
+      assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 0, 'The modal is gone');
       assert.equal($('.suspended-messages-section__table tbody tr').length, 19, 'One mensage was deleted');
     });
   });
