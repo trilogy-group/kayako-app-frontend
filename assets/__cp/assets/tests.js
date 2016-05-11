@@ -1233,6 +1233,84 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     });
   });
 
+  (0, _frontendCpTestsHelpersQunit.test)('Creating a monitor with a "Stop notifications" action', function (assert) {
+    assert.expect(9);
+    server.create('automation-action-definition', {
+      label: 'Stop notifications',
+      name: 'stopnotification',
+      options: ['SEND'],
+      input_type: 'BOOLEAN_TRUE',
+      value_type: 'BOOLEAN',
+      values: [],
+      attributes: [],
+      group: 'FLOW_CONTROL',
+      resource_type: 'automation_action_definition'
+    });
+
+    visit('/admin/automation/monitors/new');
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/new');
+      fillIn('input[name="title"]', 'Sample monitor name');
+
+      fillPredicateCollections();
+
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Stop notifications');
+      click('.button[name=submit]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/1');
+      assertPredicateCollestionsAreCorrect(assert);
+      assert.equal($('.ko-automation-actions-builder__small-slot:eq(0) .ember-power-select-trigger').text().trim(), 'Flow control: Stop notifications');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Creating a monitor with a "Stop processing other rules" action', function (assert) {
+    assert.expect(9);
+    server.create('automation-action-definition', {
+      label: 'Stop processing other rules',
+      name: 'stoprules',
+      options: ['SEND'],
+      input_type: 'BOOLEAN_TRUE',
+      value_type: 'BOOLEAN',
+      values: [],
+      attributes: [],
+      group: 'FLOW_CONTROL',
+      resource_type: 'automation_action_definition'
+    });
+
+    visit('/admin/automation/monitors/new');
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/new');
+      fillIn('input[name="title"]', 'Sample monitor name');
+
+      fillPredicateCollections();
+
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Stop processing other rules');
+      click('.button[name=submit]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/1');
+      assertPredicateCollestionsAreCorrect(assert);
+      assert.equal($('.ko-automation-actions-builder__small-slot:eq(0) .ember-power-select-trigger').text().trim(), 'Flow control: Stop processing other rules');
+    });
+  });
+
   (0, _frontendCpTestsHelpersQunit.test)('Exit having pending changes ask for confirmation', function (assert) {
     assert.expect(3);
 
