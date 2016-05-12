@@ -13359,7 +13359,7 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
   function typeText(selector, text) {
     var $selector = $(selector);
     $selector.val(text);
-    var event = document.createEvent('Events');
+    var event = document.createEvent("Events");
     event.initEvent('input', true, true);
     $selector[0].dispatchEvent(event);
   }
@@ -13391,7 +13391,7 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
   }
 
   function triggerKeydown(domElement, k) {
-    var oEvent = document.createEvent('Events');
+    var oEvent = document.createEvent("Events");
     oEvent.initEvent('keydown', true, true);
     $.extend(oEvent, {
       view: window,
@@ -13452,7 +13452,7 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
     var isEmberOne = _ember['default'].VERSION.match(/1\.13/);
 
     _ember['default'].Test.registerAsyncHelper('selectChoose', function (app, cssPath, value) {
-      var id = find(cssPath).find('.ember-power-select-trigger').attr('id').replace(/\D/g, '');
+      var id = find(cssPath).find('.ember-power-select-trigger').attr('id').match(/ember-power-select-trigger-ember(\d+)/)[1];
       // If the dropdown is closed, open it
       if (_ember['default'].$('.ember-power-select-dropdown-ember' + id).length === 0) {
         nativeMouseDown(cssPath + ' .ember-power-select-trigger');
@@ -13475,7 +13475,7 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
     });
 
     _ember['default'].Test.registerAsyncHelper('selectSearch', function (app, cssPath, value) {
-      var id = find(cssPath).find('.ember-power-select-trigger').attr('id').replace(/\D/g, '');
+      var id = find(cssPath).find('.ember-power-select-trigger').attr('id').match(/ember-power-select-trigger-ember(\d+)/)[1];
       var isMultipleSelect = _ember['default'].$(cssPath + ' .ember-power-select-trigger-multiple-input').length > 0;
 
       var dropdownIsClosed = _ember['default'].$('.ember-power-select-dropdown-ember' + id).length === 0;
@@ -13513,7 +13513,7 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
     });
 
     _ember['default'].Test.registerAsyncHelper('removeMultipleOption', function (app, cssPath, value) {
-      var elem = find(cssPath + ' .ember-power-select-multiple-options > li:contains(' + value + ') > .ember-power-select-multiple-remove-btn').get(0);
+      var elem = find(cssPath + ' .ember-power-select-multiple-options > li:contains(' + value + ') > .ember-power-select-multiple-remove-btn')[0];
       try {
         nativeMouseDown(elem);
       } catch (e) {
@@ -13523,7 +13523,7 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
     });
 
     _ember['default'].Test.registerAsyncHelper('clearSelected', function (app, cssPath) {
-      var elem = find(cssPath + ' .ember-power-select-clear-btn').get(0);
+      var elem = find(cssPath + ' .ember-power-select-clear-btn')[0];
       try {
         nativeMouseDown(elem);
       } catch (e) {
@@ -15238,6 +15238,271 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/text/componen
 define('frontend-cp/tests/test-helper', ['exports', 'frontend-cp/tests/helpers/resolver', 'ember-qunit'], function (exports, _frontendCpTestsHelpersResolver, _emberQunit) {
 
   (0, _emberQunit.setResolver)(_frontendCpTestsHelpersResolver['default']);
+});
+define('frontend-cp/tests/unit/components/ko-admin/triggers/form/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit'], function (exports, _ember, _frontendCpTestsHelpersQunit) {
+
+  var component = undefined;
+  var registry = undefined;
+
+  var virtualModelStub = _ember['default'].Service.extend({
+    makeSnapshot: function makeSnapshot(theTrigger, schema) {
+      return theTrigger;
+    }
+  });
+
+  var theTrigger = { channel: 'TWITTER' };
+  var channels = [new _ember['default'].Object({
+    id: 'TWITTER',
+    name: 'TWITTER',
+    values: []
+  }), new _ember['default'].Object({
+    id: 'MAIL',
+    name: 'MAIL',
+    values: []
+  }), new _ember['default'].Object({
+    id: 'FACEBOOK',
+    name: 'FACEBOOK',
+    values: []
+  }), new _ember['default'].Object({
+    id: 'SYSTEM',
+    name: 'SYSTEM',
+    values: []
+  }), new _ember['default'].Object({
+    id: 'CHAT',
+    name: 'CHAT',
+    values: []
+  }), new _ember['default'].Object({
+    id: 'API',
+    name: 'API',
+    values: []
+  })];
+  var definitions = [new _ember['default'].Object({
+    definitionType: 'STRING',
+    group: 'CASES',
+    inputType: 'STRING',
+    label: 'Cases Example',
+    operators: ['string_contains', 'string_does_not_contain'],
+    subType: '',
+    values: ''
+  }), new _ember['default'].Object({
+    definitionType: 'STRING',
+    group: 'TWITTER',
+    inputType: 'STRING',
+    label: 'Twitter Example',
+    operators: ['string_contains', 'string_does_not_contain'],
+    subType: '',
+    values: ''
+  }), new _ember['default'].Object({
+    definitionType: 'STRING',
+    group: 'MAIL',
+    inputType: 'STRING',
+    label: 'Mail Example',
+    operators: ['string_contains', 'string_does_not_contain'],
+    subType: '',
+    values: ''
+  }), new _ember['default'].Object({
+    definitionType: 'STRING',
+    group: 'FACEBOOK',
+    inputType: 'STRING',
+    label: 'Facebook Example',
+    operators: ['string_contains', 'string_does_not_contain'],
+    subType: '',
+    values: ''
+  }), new _ember['default'].Object({
+    definitionType: 'STRING',
+    group: 'SYSTEM',
+    inputType: 'STRING',
+    label: 'System Example',
+    operators: ['string_contains', 'string_does_not_contain'],
+    subType: '',
+    values: ''
+  }), new _ember['default'].Object({
+    definitionType: 'STRING',
+    group: 'CHAT',
+    inputType: 'STRING',
+    label: 'Chat Example',
+    operators: ['string_contains', 'string_does_not_contain'],
+    subType: '',
+    values: ''
+  }), new _ember['default'].Object({
+    definitionType: 'STRING',
+    group: 'API',
+    inputType: 'STRING',
+    label: 'API Example',
+    operators: ['string_contains', 'string_does_not_contain'],
+    subType: '',
+    values: ''
+  })];
+
+  (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-admin/triggers/form', {
+    unit: true,
+    setup: function setup() {
+      registry = this.registry || this.container;
+      registry.register('service:virtual-model', virtualModelStub);
+    }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('selecting twitter as a channel does not allow MAIL, FACEBOOK, SYSTEM, CHAT, API defintions to be selected', function (assert) {
+    assert.expect(7);
+
+    component = this.subject({ theTrigger: theTrigger, channels: channels, definitions: definitions });
+
+    component.set('editedTrigger.channel', 'TWITTER');
+
+    component.get('filteredDefinitions').forEach(function (definition) {
+      switch (definition.get('group')) {
+        case 'CASES':
+          return assert.notOk(definition.get('disabled'), 'cases enabled');
+        case 'TWITTER':
+          return assert.notOk(definition.get('disabled'), 'twitter enabled');
+        case 'MAIL':
+          return assert.ok(definition.get('disabled'), 'mail disabled');
+        case 'FACEBOOK':
+          return assert.ok(definition.get('disabled'), 'facebook disabled');
+        case 'SYSTEM':
+          return assert.ok(definition.get('disabled'), 'system disabled');
+        case 'CHAT':
+          return assert.ok(definition.get('disabled'), 'chat disabled');
+        case 'API':
+          return assert.ok(definition.get('disabled'), 'api disabled');
+      }
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('selecting mail as a channel does not allow TWITTER, FACEBOOK, SYSTEM, CHAT, API defintions to be selected', function (assert) {
+    assert.expect(7);
+
+    component = this.subject({ theTrigger: theTrigger, channels: channels, definitions: definitions });
+
+    component.set('editedTrigger.channel', 'MAIL');
+
+    component.get('filteredDefinitions').forEach(function (definition) {
+      switch (definition.get('group')) {
+        case 'CASES':
+          return assert.notOk(definition.get('disabled'), 'cases enabled');
+        case 'TWITTER':
+          return assert.ok(definition.get('disabled'), 'twitter enabled');
+        case 'MAIL':
+          return assert.notOk(definition.get('disabled'), 'mail disabled');
+        case 'FACEBOOK':
+          return assert.ok(definition.get('disabled'), 'facebook disabled');
+        case 'SYSTEM':
+          return assert.ok(definition.get('disabled'), 'system disabled');
+        case 'CHAT':
+          return assert.ok(definition.get('disabled'), 'chat disabled');
+        case 'API':
+          return assert.ok(definition.get('disabled'), 'api disabled');
+      }
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('selecting facebook as a channel does not allow TWITTER, MAIL, SYSTEM, CHAT, API defintions to be selected', function (assert) {
+    assert.expect(7);
+
+    component = this.subject({ theTrigger: theTrigger, channels: channels, definitions: definitions });
+
+    component.set('editedTrigger.channel', 'FACEBOOK');
+
+    component.get('filteredDefinitions').forEach(function (definition) {
+      switch (definition.get('group')) {
+        case 'CASES':
+          return assert.notOk(definition.get('disabled'), 'cases enabled');
+        case 'TWITTER':
+          return assert.ok(definition.get('disabled'), 'twitter enabled');
+        case 'MAIL':
+          return assert.ok(definition.get('disabled'), 'mail disabled');
+        case 'FACEBOOK':
+          return assert.notOk(definition.get('disabled'), 'facebook disabled');
+        case 'SYSTEM':
+          return assert.ok(definition.get('disabled'), 'system disabled');
+        case 'CHAT':
+          return assert.ok(definition.get('disabled'), 'chat disabled');
+        case 'API':
+          return assert.ok(definition.get('disabled'), 'api disabled');
+      }
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('selecting system as a channel does not allow TWITTER, MAIL, FACEBOOK, CHAT, API defintions to be selected', function (assert) {
+    assert.expect(7);
+
+    component = this.subject({ theTrigger: theTrigger, channels: channels, definitions: definitions });
+
+    component.set('editedTrigger.channel', 'SYSTEM');
+
+    component.get('filteredDefinitions').forEach(function (definition) {
+      switch (definition.get('group')) {
+        case 'CASES':
+          return assert.notOk(definition.get('disabled'), 'cases enabled');
+        case 'TWITTER':
+          return assert.ok(definition.get('disabled'), 'twitter enabled');
+        case 'MAIL':
+          return assert.ok(definition.get('disabled'), 'mail disabled');
+        case 'FACEBOOK':
+          return assert.ok(definition.get('disabled'), 'facebook disabled');
+        case 'SYSTEM':
+          return assert.notOk(definition.get('disabled'), 'system disabled');
+        case 'CHAT':
+          return assert.ok(definition.get('disabled'), 'chat disabled');
+        case 'API':
+          return assert.ok(definition.get('disabled'), 'api disabled');
+      }
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('selecting chat as a channel does not allow TWITTER, MAIL, FACEBOOK, SYSTEM, API defintions to be selected', function (assert) {
+    assert.expect(7);
+
+    component = this.subject({ theTrigger: theTrigger, channels: channels, definitions: definitions });
+
+    component.set('editedTrigger.channel', 'CHAT');
+
+    component.get('filteredDefinitions').forEach(function (definition) {
+      switch (definition.get('group')) {
+        case 'CASES':
+          return assert.notOk(definition.get('disabled'), 'cases enabled');
+        case 'TWITTER':
+          return assert.ok(definition.get('disabled'), 'twitter enabled');
+        case 'MAIL':
+          return assert.ok(definition.get('disabled'), 'mail disabled');
+        case 'FACEBOOK':
+          return assert.ok(definition.get('disabled'), 'facebook disabled');
+        case 'SYSTEM':
+          return assert.ok(definition.get('disabled'), 'system disabled');
+        case 'CHAT':
+          return assert.notOk(definition.get('disabled'), 'chat disabled');
+        case 'API':
+          return assert.ok(definition.get('disabled'), 'api disabled');
+      }
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('selecting api as a channel does not allow TWITTER, MAIL, FACEBOOK, SYSTEM, CHAT defintions to be selected', function (assert) {
+    assert.expect(7);
+
+    component = this.subject({ theTrigger: theTrigger, channels: channels, definitions: definitions });
+
+    component.set('editedTrigger.channel', 'API');
+
+    component.get('filteredDefinitions').forEach(function (definition) {
+      switch (definition.get('group')) {
+        case 'CASES':
+          return assert.notOk(definition.get('disabled'), 'cases enabled');
+        case 'TWITTER':
+          return assert.ok(definition.get('disabled'), 'twitter enabled');
+        case 'MAIL':
+          return assert.ok(definition.get('disabled'), 'mail disabled');
+        case 'FACEBOOK':
+          return assert.ok(definition.get('disabled'), 'facebook disabled');
+        case 'SYSTEM':
+          return assert.ok(definition.get('disabled'), 'system disabled');
+        case 'CHAT':
+          return assert.ok(definition.get('disabled'), 'chat disabled');
+        case 'API':
+          return assert.notOk(definition.get('disabled'), 'api disabled');
+      }
+    });
+  });
 });
 define('frontend-cp/tests/unit/components/ko-admin-selectable-card/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit'], function (exports, _ember, _frontendCpTestsHelpersQunit) {
 
