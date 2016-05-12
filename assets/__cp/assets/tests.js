@@ -13233,7 +13233,7 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
   function typeText(selector, text) {
     var $selector = $(selector);
     $selector.val(text);
-    var event = document.createEvent("Events");
+    var event = document.createEvent('Events');
     event.initEvent('input', true, true);
     $selector[0].dispatchEvent(event);
   }
@@ -13265,7 +13265,7 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
   }
 
   function triggerKeydown(domElement, k) {
-    var oEvent = document.createEvent("Events");
+    var oEvent = document.createEvent('Events');
     oEvent.initEvent('keydown', true, true);
     $.extend(oEvent, {
       view: window,
@@ -13326,7 +13326,7 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
     var isEmberOne = _ember['default'].VERSION.match(/1\.13/);
 
     _ember['default'].Test.registerAsyncHelper('selectChoose', function (app, cssPath, value) {
-      var id = find(cssPath).find('.ember-power-select-trigger').attr('id').match(/ember-power-select-trigger-ember(\d+)/)[1];
+      var id = find(cssPath).find('.ember-power-select-trigger').attr('id').replace(/\D/g, '');
       // If the dropdown is closed, open it
       if (_ember['default'].$('.ember-power-select-dropdown-ember' + id).length === 0) {
         nativeMouseDown(cssPath + ' .ember-power-select-trigger');
@@ -13349,7 +13349,7 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
     });
 
     _ember['default'].Test.registerAsyncHelper('selectSearch', function (app, cssPath, value) {
-      var id = find(cssPath).find('.ember-power-select-trigger').attr('id').match(/ember-power-select-trigger-ember(\d+)/)[1];
+      var id = find(cssPath).find('.ember-power-select-trigger').attr('id').replace(/\D/g, '');
       var isMultipleSelect = _ember['default'].$(cssPath + ' .ember-power-select-trigger-multiple-input').length > 0;
 
       var dropdownIsClosed = _ember['default'].$('.ember-power-select-dropdown-ember' + id).length === 0;
@@ -13387,7 +13387,7 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
     });
 
     _ember['default'].Test.registerAsyncHelper('removeMultipleOption', function (app, cssPath, value) {
-      var elem = find(cssPath + ' .ember-power-select-multiple-options > li:contains(' + value + ') > .ember-power-select-multiple-remove-btn')[0];
+      var elem = find(cssPath + ' .ember-power-select-multiple-options > li:contains(' + value + ') > .ember-power-select-multiple-remove-btn').get(0);
       try {
         nativeMouseDown(elem);
       } catch (e) {
@@ -13397,7 +13397,7 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
     });
 
     _ember['default'].Test.registerAsyncHelper('clearSelected', function (app, cssPath) {
-      var elem = find(cssPath + ' .ember-power-select-clear-btn')[0];
+      var elem = find(cssPath + ' .ember-power-select-clear-btn').get(0);
       try {
         nativeMouseDown(elem);
       } catch (e) {
