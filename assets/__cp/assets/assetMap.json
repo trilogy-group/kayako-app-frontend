@@ -1,14 +1,14 @@
 {
   "assets": {
-    "assets/frontend-cp.css": "assets/frontend-cp-90c692b2f8cc541f69875b0f3ed8d711.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-4e8a03a294181bf242c30f65805570e8.js",
+    "assets/frontend-cp.css": "assets/frontend-cp-bb32bcf645cc6ef3fc09d843c5de1bdc.css",
+    "assets/frontend-cp.js": "assets/frontend-cp-acf3caa216ce17a9fb1dcd40c79a4031.js",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-a989338c151ce330501dd0cd20c7939f.js",
     "assets/intl/intl.js": "assets/intl/intl-fd2f17673f0bd1d7d99e3d13018b4add.js",
     "assets/intl/intl.min.js": "assets/intl/intl.min-df93baa6892233863899470d105bde82.js",
     "assets/intl/locales/en-gb.js": "assets/intl/locales/en-gb-ff033c5437fa01c6b16ed12cbd789970.js",
     "assets/intl/locales/en-us.js": "assets/intl/locales/en-us-2641f81845f4a1adde213301282a52d9.js",
     "assets/vendor.css": "assets/vendor-4f2891f1413e443f02e0fbffb0bc6b61.css",
-    "assets/vendor.js": "assets/vendor-d0b870afe42cf361b6ed0549275c758c.js",
+    "assets/vendor.js": "assets/vendor-f69f701d740df38e16120fc197e21ca0.js",
     "images/apps/zapier/header.png": "images/apps/zapier/header-c8e2bb64a8cbe599db8a2f6c98ca0e03.png",
     "images/apps/zapier/integrations.png": "images/apps/zapier/integrations-3a4234ed34c07e59e6c2fd60636b1b3d.png",
     "images/icons/cascading-select.png": "images/icons/cascading-select-caac3065ad73656590904fcf10ada86a.png",
