@@ -12862,7 +12862,7 @@ define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'fron
     andThen(function () {
       assert.equal(currentURL(), '/agent/cases/suspended-messages');
       assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 0, 'The modal is gone');
-      assert.equal($('.suspended-messages-section__table tbody tr').length, 19, 'One mensage was deleted');
+      assert.equal($('.suspended-messages-section__table tbody tr').length, 19, 'Message was deleted');
     });
   });
 
@@ -12883,7 +12883,7 @@ define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'fron
     andThen(function () {
       assert.equal(currentURL(), '/agent/cases/suspended-messages');
       assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 0, 'The modal is gone');
-      assert.equal($('.suspended-messages-section__table tbody tr').length, 19, 'One mensage was deleted');
+      assert.equal($('.suspended-messages-section__table tbody tr').length, 19, 'Message was deleted');
     });
   });
 
@@ -12891,13 +12891,14 @@ define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'fron
     window.confirm = function () {
       return true;
     };
-    visit('/agent/cases/suspended-messages');
+    visit('/agent/cases/suspended-messages?page=2');
+
+    server.logging = true;
 
     andThen(function () {
       assert.equal($('.suspended-messages-section__delete-all').length, 0, 'There is no button to delete ni batch visible');
       click('.suspended-messages-section__table tbody tr .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + ':eq(0)');
-      click('.suspended-messages-section__table tbody tr .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + ':eq(2)');
-      click('.suspended-messages-section__table tbody tr .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + ':eq(4)');
+      click('.suspended-messages-section__table tbody tr .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + ':eq(1)');
     });
 
     andThen(function () {
@@ -12906,7 +12907,8 @@ define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'fron
     });
 
     andThen(function () {
-      assert.equal($('.suspended-messages-section__table tbody tr').length, 17, 'One mensage was deleted');
+      assert.equal(currentURL(), '/agent/cases/suspended-messages');
+      assert.equal($('.suspended-messages-section__table tbody tr').length, 20, 'Message was deleted');
       assert.equal($('.suspended-messages-section__delete-all').length, 0, 'The button to delete in batch is gone again');
     });
   });
