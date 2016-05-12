@@ -1272,6 +1272,130 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     });
   });
 
+  (0, _frontendCpTestsHelpersQunit.test)('Creating a monitor with "ENDPOINT_SLACK" action', function (assert) {
+    assert.expect(10);
+    server.create('automation-action-definition', {
+      label: 'Test Slack thing',
+      name: 'endpoint_2',
+      options: ['SEND'],
+      input_type: 'ENDPOINT_SLACK',
+      value_type: 'STRING',
+      values: [],
+      attributes: [],
+      group: 'ENDPOINT',
+      resource_type: 'automation_action_definition'
+    });
+
+    visit('/admin/automation/monitors/new');
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/new');
+      fillIn('input[name="title"]', 'Sample monitor name');
+
+      fillPredicateCollections();
+
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Test Slack thing');
+      fillIn('[name=endpoint-message]', 'foobar');
+      click('.button[name=submit]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/1');
+      assertPredicateCollestionsAreCorrect(assert);
+      assert.equal($('.ko-automation-actions-builder__small-slot:eq(0) .ember-power-select-trigger').text().trim(), 'Endpoint: Test Slack thing');
+      assert.equal(find('[name=endpoint-message]').val(), 'foobar');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Creating a monitor with "ENDPOINT_EMAIL" action', function (assert) {
+    assert.expect(10);
+    server.create('automation-action-definition', {
+      label: 'Example email endpoint',
+      name: 'endpoint_4',
+      options: ['SEND'],
+      input_type: 'ENDPOINT_EMAIL',
+      value_type: 'STRING',
+      values: '',
+      attributes: [],
+      group: 'ENDPOINT',
+      resource_type: 'automation_action_definition'
+    });
+
+    visit('/admin/automation/monitors/new');
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/new');
+      fillIn('input[name="title"]', 'Sample monitor name');
+
+      fillPredicateCollections();
+
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Example email endpoint');
+      fillIn('[name="endpoint-message"]', 'foobar');
+      click('.button[name=submit]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/1');
+      assertPredicateCollestionsAreCorrect(assert);
+      assert.equal($('.ko-automation-actions-builder__small-slot:eq(0) .ember-power-select-trigger').text().trim(), 'Endpoint: Example email endpoint');
+      assert.equal(find('[name="endpoint-message"]').val(), 'foobar');
+    });
+  });
+
+  // test('Creating a monitor with "ENDPOINT_HTTP_XML" action', function(assert) {
+  //   assert.expect(11);
+  //   server.create('automation-action-definition', {
+  //     label: 'Some data thing',
+  //     name: 'endpoint_3',
+  //     options: ['SEND'],
+  //     input_type: 'ENDPOINT_HTTP_XML',
+  //     value_type: 'STRING',
+  //     values: [],
+  //     attributes: [],
+  //     group: 'ENDPOINT',
+  //     resource_type: 'automation_action_definition'
+  //   });
+
+  //   visit('/admin/automation/monitors/new');
+  //   andThen(function() {
+  //     assert.equal(currentURL(), '/admin/automation/monitors/new');
+  //     fillIn('input[name="title"]', 'Sample monitor name');
+
+  //     fillPredicateCollections();
+
+  //     selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Some data thing');
+  //     fillIn('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2) input', 'foobar');
+  //     click('.button[name=submit]');
+  //   });
+
+  //   andThen(function() {
+  //     assert.equal(currentURL(), '/admin/automation/monitors');
+  //     assert.equal(find(`.qa-admin_monitors--disabled .${rowStyles.row}`).length, 1, 'The monitor has been created and it is disabled');
+  //     assert.equal(find(`.qa-admin_monitors--enabled .${rowStyles.row}`).length, 0, 'There is no enabled monitors');
+  //     click('.' + rowStyles['row--actionable']);
+  //   });
+
+  //   andThen(function() {
+  //     assert.equal(currentURL(), '/admin/automation/monitors/1');
+  //     assertPredicateCollestionsAreCorrect(assert);
+  //     assert.equal($('.ko-automation-actions-builder__small-slot:eq(0) .ember-power-select-trigger').text().trim(), 'Endpoint: Some data thing');
+  //     assert.equal($('.ko-automation-actions-builder__small-slot:eq(1) .ember-power-select-trigger').text().trim(), 'Send');
+  //     assert.equal(find('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2) input').val(), 'foobar');
+  //   });
+  // });
+
   (0, _frontendCpTestsHelpersQunit.test)('Creating a monitor with a "Stop processing other rules" action', function (assert) {
     assert.expect(9);
     server.create('automation-action-definition', {
