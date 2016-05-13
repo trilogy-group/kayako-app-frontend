@@ -2337,17 +2337,17 @@ img {
   margin-top: 18px;
   width: 100%; }
 
-.available-pages {
+.availablePages {
   min-height: 15px; }
-  .available-pages ul {
+  .availablePages ul {
     list-style: none; }
 
-.available-page {
+.availablePage {
   margin-bottom: 10px; }
-  .available-page:last-child {
+  .availablePage:last-child {
     margin-bottom: 0; }
 
-.modal-title, .no-pages {
+.modalTitle, .no-pages {
   font-size: 18px; }
 
 .no-pages {
@@ -7874,19 +7874,19 @@ a.ko-timeline_item__subtitle_vt1m5j:hover {
   padding: 0 10px; }
 
 /* styles for frontend-cp/session/admin/channels/facebook/index/styles.css */
-.session_admin_channels_facebook_index__available-pages_y8luwb {
+.session_admin_channels_facebook_index__availablePages_y8luwb {
   min-height: 15px; }
 
-.session_admin_channels_facebook_index__available-pages_y8luwb ul {
+.session_admin_channels_facebook_index__availablePages_y8luwb ul {
   list-style: none; }
 
-.session_admin_channels_facebook_index__available-page_y8luwb {
+.session_admin_channels_facebook_index__availablePage_y8luwb {
   margin-bottom: 10px; }
 
-.session_admin_channels_facebook_index__available-page_y8luwb:last-child {
+.session_admin_channels_facebook_index__availablePage_y8luwb:last-child {
   margin-bottom: 0; }
 
-.session_admin_channels_facebook_index__modal-title_y8luwb, .session_admin_channels_facebook_index__no-pages_y8luwb {
+.session_admin_channels_facebook_index__modalTitle_y8luwb, .session_admin_channels_facebook_index__no-pages_y8luwb {
   font-size: 18px; }
 
 .session_admin_channels_facebook_index__no-pages_y8luwb {
