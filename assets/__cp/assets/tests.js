@@ -12697,7 +12697,6 @@ define('frontend-cp/tests/acceptance/agent/users/edit-test', ['exports', 'fronte
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a customer\'s case access field', function (assert) {
-    server.logging = true;
     assert.expect(4);
 
     server.put('/api/v1/users/' + customer.id, function (_, _ref2) {
@@ -12910,8 +12909,6 @@ define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'fron
       return true;
     };
     visit('/agent/cases/suspended-messages?page=2');
-
-    server.logging = true;
 
     andThen(function () {
       assert.equal($('.suspended-messages-section__delete-all').length, 0, 'There is no button to delete ni batch visible');
