@@ -5189,7 +5189,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/manage/facebook/manage-pages-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-simple-list/cell/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoSimpleListCellStyles) {
+define('frontend-cp/tests/acceptance/admin/manage/facebook/manage-pages-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/session/admin/channels/facebook/index/styles', 'frontend-cp/components/ko-simple-list/cell/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpSessionAdminChannelsFacebookIndexStyles, _frontendCpComponentsKoSimpleListCellStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/manage/facebook/pages', {
     beforeEach: function beforeEach() {
@@ -5228,7 +5228,25 @@ define('frontend-cp/tests/acceptance/admin/manage/facebook/manage-pages-test', [
     }
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('disabling a page', function (assert) {
+  (0, _frontendCpTestsHelpersQunit.test)('adding a facebook page', function (assert) {
+    visit('/admin/channels/facebook');
+
+    andThen(function () {
+      click('.qa-admin-facebook-page__add-page');
+    });
+
+    andThen(function () {
+      assert.equal(find('.' + _frontendCpSessionAdminChannelsFacebookIndexStyles['default'].modalTitle).length, 1);
+      click('.' + _frontendCpSessionAdminChannelsFacebookIndexStyles['default'].availablePage + ' [role="checkbox"]');
+      click('.qa-admin-facebook-page__save');
+    });
+
+    andThen(function () {
+      assert.equal(find('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':first .t-bold').text(), 'HelpDesk Management System');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('disabling a facebook page', function (assert) {
     visit('/admin/channels/facebook');
     triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':first', 'mouseenter');
     click('.qa-admin-facebook-page__disable');
@@ -5238,7 +5256,7 @@ define('frontend-cp/tests/acceptance/admin/manage/facebook/manage-pages-test', [
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('deleting a page', function (assert) {
+  (0, _frontendCpTestsHelpersQunit.test)('deleting a facebook page', function (assert) {
     visit('/admin/channels/facebook');
     triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':first', 'mouseenter');
 
@@ -5251,7 +5269,7 @@ define('frontend-cp/tests/acceptance/admin/manage/facebook/manage-pages-test', [
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('editing a page', function (assert) {
+  (0, _frontendCpTestsHelpersQunit.test)('editing a facebook page', function (assert) {
     visit('/admin/channels/facebook');
     click('.qa-admin-facebook-page');
     click('.qa-admin-facebook-page__route-messages .ko-toggle__container');
