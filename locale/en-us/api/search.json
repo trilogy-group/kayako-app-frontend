@@ -18,6 +18,7 @@
   "CASES.status.label": "Status",
   "CASES.assignedAgent.fullName": "Assigned agent",
   "CASES.notfound": "There are no cases here.",
+  "CASES.updatedAt": "Last updated",
 
   "USERS.id": "User ID",
   "USERS.fullName": "Subject",
