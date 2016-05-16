@@ -5296,7 +5296,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/manage/facebook/manage-pages-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/session/admin/channels/facebook/index/styles', 'frontend-cp/components/ko-simple-list/cell/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpSessionAdminChannelsFacebookIndexStyles, _frontendCpComponentsKoSimpleListCellStyles) {
+define('frontend-cp/tests/acceptance/admin/manage/facebook/manage-pages-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-admin/facebook/index/styles', 'frontend-cp/components/ko-simple-list/cell/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoAdminFacebookIndexStyles, _frontendCpComponentsKoSimpleListCellStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/manage/facebook/pages', {
     beforeEach: function beforeEach() {
@@ -5343,8 +5343,8 @@ define('frontend-cp/tests/acceptance/admin/manage/facebook/manage-pages-test', [
     });
 
     andThen(function () {
-      assert.equal(find('.' + _frontendCpSessionAdminChannelsFacebookIndexStyles['default'].modalTitle).length, 1);
-      click('.' + _frontendCpSessionAdminChannelsFacebookIndexStyles['default'].availablePage + ' [role="checkbox"]');
+      assert.equal(find('.' + _frontendCpComponentsKoAdminFacebookIndexStyles['default'].modalTitle).length, 1);
+      click('.' + _frontendCpComponentsKoAdminFacebookIndexStyles['default'].availablePage + ' [role="checkbox"]');
       click('.qa-admin-facebook-page__save');
     });
 
