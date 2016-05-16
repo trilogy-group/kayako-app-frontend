@@ -1,3 +1,110 @@
+define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-admin/plans/index/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoAdminPlansIndexStyles) {
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/account/plans Index', {
+    beforeEach: function beforeEach() {
+      /*eslint-disable camelcase*/
+      var locale = server.create('locale', { locale: 'en-us' });
+      server.create('plan', { limits: [], features: [] });
+      var adminRole = server.create('role', { type: 'ADMIN' });
+      var agent = server.create('user', { role: adminRole, locale: locale });
+      var session = server.create('session', { user: agent });
+      login(session.id);
+    },
+
+    afterEach: function afterEach() {
+      logout();
+    }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('visiting /admin/account/plans', function (assert) {
+    visit('/admin/account/plans');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/account/plans');
+      assert.equal(find('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].planitem).length, 5);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('switching plan', function (assert) {
+    visit('/admin/account/plans');
+    click('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].planitem + ':eq(2)');
+
+    andThen(function () {
+      assert.equal(find('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].planitem + ':eq(2)').hasClass(_frontendCpComponentsKoAdminPlansIndexStyles['default'].selected), true);
+      assert.equal(find('a:contains(Cancel)').length, 1);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('changing payment term', function (assert) {
+    var selectedIndex = null;
+    visit('/admin/account/plans');
+    andThen(function () {
+      selectedIndex = find('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].selected).index();
+      selectChoose('.payment-terms', 'Billed Annually');
+    });
+    andThen(function () {
+      assert.equal(find('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].planitem + ':eq(' + selectedIndex + ')').hasClass(_frontendCpComponentsKoAdminPlansIndexStyles['default'].selected), true);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('updating plan', function (assert) {
+    visit('/admin/account/plans');
+    click('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].planitem + ':eq(2)');
+    click('button:contains(Update Subscription)');
+    andThen(function () {
+      assert.equal(find('.ko-toast').length, 1);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('cancelling changed plan', function (assert) {
+    var selectedPlanIndex = null;
+    visit('/admin/account/plans');
+    andThen(function () {
+      selectedPlanIndex = find('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].selected).index();
+      click('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].planitem + ':eq(2)');
+    });
+    andThen(function () {
+      assert.equal(find('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].planitem + ':eq(2)').hasClass(_frontendCpComponentsKoAdminPlansIndexStyles['default'].selected), true);
+      click('a:contains(Cancel)');
+    });
+    andThen(function () {
+      assert.equal(find('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].planitem + ':eq(2)').hasClass(_frontendCpComponentsKoAdminPlansIndexStyles['default'].selected), false);
+      assert.equal(find('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].planitem + ':eq(' + selectedPlanIndex + ')').hasClass(_frontendCpComponentsKoAdminPlansIndexStyles['default'].selected), true);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('cancelling changed term', function (assert) {
+    var selectedPlanAmount = 0;
+    visit('/admin/account/plans');
+    andThen(function () {
+      selectedPlanAmount = find('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].planitem + ' .' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].planprice).text();
+      selectChoose('.payment-terms', 'Billed Annually');
+    });
+    andThen(function () {
+      assert.notEqual(find('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].planitem + ' .' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].planprice).text(), selectedPlanAmount);
+      click('a:contains(Cancel)');
+    });
+    andThen(function () {
+      assert.equal(find('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].planitem + ' .' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].planprice).text(), selectedPlanAmount);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('cancelling changed seats count', function (assert) {
+    var selectedSeats = 0;
+    visit('/admin/account/plans');
+    andThen(function () {
+      selectedSeats = find('input[type="number"]').val();
+      fillIn('input[type="number"]', 20);
+    });
+    andThen(function () {
+      assert.notEqual(find('input[type="number"]').val(), selectedSeats);
+      click('a:contains(Cancel)');
+    });
+    andThen(function () {
+      assert.equal(find('input[type="number"]').val(), selectedSeats);
+    });
+  });
+});
 define('frontend-cp/tests/acceptance/admin/automation/businesshours/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/automation/businesshours Edit', {
