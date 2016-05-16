@@ -621,6 +621,9 @@ textarea {
 .i-chevron-small-up:before {
   content: "\e603"; }
 
+.i-star:before {
+  content: "\e903"; }
+
 /*
     Color settings and variables
    ========================================================================= */
@@ -6053,6 +6056,117 @@ span#HW_badge.HW_softHidden {
 .ko-admin_automation-actions-builder__automation-action_10ryr1:hover .ko-admin_automation-actions-builder__actions_10ryr1 {
   visibility: visible; }
 
+/* styles for frontend-cp/components/ko-admin/billing/card/styles.css */
+.ko-admin_billing_card__card-group_1d4e5u {
+  padding-top: 18px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex; }
+
+.ko-admin_billing_card__group-title_1d4e5u {
+  width: 25%;
+  font-size: 16px;
+  color: #2D3138; }
+
+.ko-admin_billing_card__group-label_1d4e5u {
+  font-weight: 600;
+  font-size: 14px;
+  margin: 0; }
+
+.ko-admin_billing_card__group-body_1d4e5u {
+  width: 75%; }
+
+.ko-admin_billing_card__card_1d4e5u {
+  padding: 20px 15px;
+  background: #F7F8F9;
+  border-radius: 2px;
+  margin-top: 9px;
+  position: relative; }
+
+.ko-admin_billing_card__about-card_1d4e5u {
+  margin-bottom: 17px; }
+
+.ko-admin_billing_card__delete-handle_1d4e5u {
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: #BFC5D1;
+  cursor: pointer; }
+
+.ko-admin_billing_card__delete-handle_1d4e5u:hover {
+  color: #E86048; }
+
+.ko-admin_billing_card__card-type_1d4e5u {
+  color: #BFC5D1;
+  font-size: 18px;
+  position: relative;
+  top: -5px;
+  margin-left: 5px;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none; }
+
+.ko-admin_billing_card__card_1d4e5u:hover .ko-admin_billing_card__card-type_1d4e5u {
+  opacity: 1;
+  pointer-events: auto; }
+
+.ko-admin_billing_card__card-type-label_1d4e5u {
+  opacity: 0; }
+
+.ko-admin_billing_card__card-type-label_1d4e5u.ko-admin_billing_card__isDefault_1d4e5u {
+  position: relative;
+  top: -5px;
+  opacity: 1; }
+
+.ko-admin_billing_card__card-type_1d4e5u.ko-admin_billing_card__isDefault_1d4e5u {
+  color: #ECC645;
+  cursor: auto;
+  opacity: 1;
+  pointer-events: auto; }
+
+.ko-admin_billing_card__card-type-label_1d4e5u {
+  color: #BFC5D1;
+  font-size: 13px;
+  margin-left: 5px; }
+
+/* styles for frontend-cp/components/ko-admin/billing/index/styles.css */
+.ko-admin_billing_index__cards-group_2k63to {
+  padding-top: 18px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex; }
+
+.ko-admin_billing_index__group-title_2k63to {
+  width: 25%;
+  font-size: 16px;
+  color: #2D3138; }
+
+.ko-admin_billing_index__group-body_2k63to {
+  width: 75%; }
+
+.ko-admin_billing_index__form-body_2k63to iframe {
+  background: transparent !important; }
+
+.ko-admin_billing_index__tile_2k63to {
+  padding: 20px 15px;
+  background: #F7F8F9;
+  border-radius: 2px;
+  margin-top: 9px;
+  text-align: center; }
+
+.ko-admin_billing_index__form-footer_2k63to {
+  text-align: right; }
+
+.ko-admin_billing_index__cancel_2k63to {
+  color: #2E3137;
+  font-size: 14px;
+  margin-right: 10px; }
+
+.ko-admin_billing_index__cards-group_2k63to {
+  padding-top: 5px; }
+
 /* styles for frontend-cp/components/ko-admin/case-fields/edit/priorities/styles.css */
 .ko-admin_case-fields_edit_priorities__buttons_255vxi {
   -webkit-box-flex: 1;
@@ -6698,6 +6812,13 @@ a.ko-admin_plans_index__cancel_1pprhr {
 
 .ko-context-modal__arrow--title_11jzdk {
   background: #FFFFFF; }
+
+/* styles for frontend-cp/components/ko-creditcard-icon/styles.css */
+.ko-creditcard-icon__card-icon_1voeh3 {
+  background-image: url("/__apps/frontend/assets/__cp/images/icons/cards/cards-sprite.png");
+  height: 21px;
+  width: 34px;
+  display: inline-block; }
 
 /* styles for frontend-cp/components/ko-feedback/styles.css */
 .ko-feedback__metric_1cr8yr {
