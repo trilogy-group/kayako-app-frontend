@@ -634,7 +634,6 @@
   "account.overview.payment.buttonText" : "Update Card",
   "account.overview.billing.title" : "Billing Information",
   "account.overview.billing.buttonText" : "Update information",
-
   "email.title": "Email",
   "email.tabs.mailboxes": "Mailboxes",
   "email.tabs.settings": "Settings",
@@ -661,10 +660,28 @@
   "email.edit.address.description": "You can create any number of anything-you-like@{domain} mailboxes, or you can use your own custom email addresses as mailboxes, such as support@yourdomainname.com, provided you can forward email sent to that address to Kayako.",
   "email.edit.brand.title": "Brand",
   "email.edit.brand.description": "Your channel accounts are linked to specific Brands. When you have multiple Brands set up, Kayako will link any cases created as a result of events over this channel account to this Brand.",
-
   "localization.title": "Localization",
   "localization.headings.index": "Localization",
   "localization.localized": "(Officially supported)",
   "localization.enabled.message": "Language enabled successfully",
-  "localization.disabled.message": "Language disabled successfully"
+  "localization.disabled.message": "Language disabled successfully",
+  "account.plans.title": "Plans and add-ons",
+  "account.addons.title": "Add-ons",
+  "account.plans.upgrade": "Update Subscription",
+  "account.plans.upgradeCancel": "Cancel",
+  "account.plans.term.switchingTo": "You're on {plan} Plan",
+  "account.plans.term.chargeOf": "The next charge of",
+  "account.plans.term.placedOn": "will be placed on your",
+  "account.plans.term.chargeDuration": "with in 24 hours",
+  "account.plans.term.calculatingCharge": "Calculating charge",
+  "account.plans.seats.title": "No. Of Agents:",
+  "account.plans.subscription.cannotSwitch": "Cannot switch plan. The current number of agents on your account are exceeding the limit of agents on new plan",
+  "account.plans.subscription.updated": "Your plan has been updated successfully",
+  "account.plans.terms.monthly": "Billed Monthly",
+  "account.plans.terms.annually": "Billed Annually",
+  "account.plans.defaultCard": "Default Card",
+  "account.plans.collaborators": "{collaborators} Collaborators",
+  "account.plans.priceFor.flatFee": "up to {seats} agents",
+  "account.plans.priceFor.perAgent": "per agent / month",
+  "account.plans.notAvailable": "not available"
 }
