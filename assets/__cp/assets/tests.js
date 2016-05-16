@@ -1,3 +1,66 @@
+define('frontend-cp/tests/acceptance/admin/account/billing/index-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-admin/billing/index/styles', 'frontend-cp/components/ko-admin/billing/card/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoAdminBillingIndexStyles, _frontendCpComponentsKoAdminBillingCardStyles) {
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/account/billing Index', {
+    beforeEach: function beforeEach() {
+      /*eslint-disable camelcase*/
+      var locale = server.create('locale', { locale: 'en-us' });
+      server.create('plan', { limits: [], features: [] });
+      var adminRole = server.create('role', { type: 'ADMIN' });
+      var agent = server.create('user', { role: adminRole, locale: locale });
+      var session = server.create('session', { user: agent });
+      login(session.id);
+      server.createList('creditcard', 5);
+    },
+
+    afterEach: function afterEach() {
+      logout();
+    }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('visiting /admin/account/billing', function (assert) {
+    visit('/admin/account/billing');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/account/billing');
+      assert.equal(find('.' + _frontendCpComponentsKoAdminBillingCardStyles['default'].card).length, 5);
+      assert.equal(find('.' + _frontendCpComponentsKoAdminBillingIndexStyles['default'].tile).length, 1);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('marking card as default', function (assert) {
+    visit('/admin/account/billing');
+    andThen(function () {
+      click('.' + _frontendCpComponentsKoAdminBillingCardStyles['default'].card + ':eq(0) .' + _frontendCpComponentsKoAdminBillingCardStyles['default']['card-type']);
+    });
+    andThen(function () {
+      assert.equal(find('.' + _frontendCpComponentsKoAdminBillingCardStyles['default'].card + ':eq(0) .' + _frontendCpComponentsKoAdminBillingCardStyles['default']['card-type']).hasClass(_frontendCpComponentsKoAdminBillingCardStyles['default'].isDefault), true);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('remove a card', function (assert) {
+    visit('/admin/account/billing');
+    andThen(function () {
+      click('.' + _frontendCpComponentsKoAdminBillingCardStyles['default'].card + ':eq(1) .' + _frontendCpComponentsKoAdminBillingCardStyles['default']['delete-handle']);
+    });
+    andThen(function () {
+      assert.equal(find('.' + _frontendCpComponentsKoAdminBillingCardStyles['default'].card).length, 4);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('cannot remove a default card', function (assert) {
+    visit('/admin/account/billing');
+    andThen(function () {
+      click('.' + _frontendCpComponentsKoAdminBillingCardStyles['default'].card + ':eq(2) .' + _frontendCpComponentsKoAdminBillingCardStyles['default']['card-type']);
+    });
+    andThen(function () {
+      click('.' + _frontendCpComponentsKoAdminBillingCardStyles['default'].card + ':eq(2) .' + _frontendCpComponentsKoAdminBillingCardStyles['default']['delete-handle']).then(function () {
+        assert.equal(true, false);
+      })['catch'](function (e) {
+        assert.equal(/Element .* not found/.test(e.message), true);
+      });
+    });
+  });
+});
 define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-admin/plans/index/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoAdminPlansIndexStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/account/plans Index', {
