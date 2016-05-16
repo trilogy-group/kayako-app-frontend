@@ -2337,27 +2337,6 @@ img {
   margin-top: 18px;
   width: 100%; }
 
-.availablePages {
-  min-height: 15px; }
-  .availablePages ul {
-    list-style: none; }
-
-.availablePage {
-  margin-bottom: 10px; }
-  .availablePage:last-child {
-    margin-bottom: 0; }
-
-.modalTitle, .no-pages {
-  font-size: 18px; }
-
-.no-pages {
-  color: #CFD4D8; }
-
-.reconnect {
-  margin-top: 15px;
-  font-size: 12px;
-  text-align: left; }
-
 .ko-admin_case-fields_select-type__icon {
   width: 24px;
   height: 24px;
@@ -2579,6 +2558,27 @@ img {
   text-align: right;
   color: #38a0be;
   cursor: pointer; }
+
+.availablePages {
+  min-height: 15px; }
+  .availablePages ul {
+    list-style: none; }
+
+.availablePage {
+  margin-bottom: 10px; }
+  .availablePage:last-child {
+    margin-bottom: 0; }
+
+.modalTitle, .no-pages {
+  font-size: 18px; }
+
+.no-pages {
+  color: #CFD4D8; }
+
+.reconnect {
+  margin-top: 15px;
+  font-size: 12px;
+  text-align: left; }
 
 .ko-admin_holidays_edit {
   padding-top: 18px;
@@ -6121,6 +6121,30 @@ span#HW_badge.HW_softHidden {
 .ko-admin_case-fields_edit_types__add-type_1st90y {
   margin: 9px 0 18px; }
 
+/* styles for frontend-cp/components/ko-admin/facebook/index/styles.css */
+.ko-admin_facebook_index__availablePages_52r50f {
+  min-height: 15px; }
+
+.ko-admin_facebook_index__availablePages_52r50f ul {
+  list-style: none; }
+
+.ko-admin_facebook_index__availablePage_52r50f {
+  margin-bottom: 10px; }
+
+.ko-admin_facebook_index__availablePage_52r50f:last-child {
+  margin-bottom: 0; }
+
+.ko-admin_facebook_index__modalTitle_52r50f, .ko-admin_facebook_index__no-pages_52r50f {
+  font-size: 18px; }
+
+.ko-admin_facebook_index__no-pages_52r50f {
+  color: #CFD4D8; }
+
+.ko-admin_facebook_index__reconnect_52r50f {
+  margin-top: 15px;
+  font-size: 12px;
+  text-align: left; }
+
 /* styles for frontend-cp/components/ko-admin/forms/group/styles.css */
 .ko-admin_forms_group__group_8wtptf {
   padding: 18px 0 27px 0;
@@ -8010,30 +8034,6 @@ a.ko-timeline_item__subtitle_vt1m5j:hover {
 
 .session_admin_apps_zapier__findOutCTA_zxnhet {
   padding: 0 10px; }
-
-/* styles for frontend-cp/session/admin/channels/facebook/index/styles.css */
-.session_admin_channels_facebook_index__availablePages_y8luwb {
-  min-height: 15px; }
-
-.session_admin_channels_facebook_index__availablePages_y8luwb ul {
-  list-style: none; }
-
-.session_admin_channels_facebook_index__availablePage_y8luwb {
-  margin-bottom: 10px; }
-
-.session_admin_channels_facebook_index__availablePage_y8luwb:last-child {
-  margin-bottom: 0; }
-
-.session_admin_channels_facebook_index__modalTitle_y8luwb, .session_admin_channels_facebook_index__no-pages_y8luwb {
-  font-size: 18px; }
-
-.session_admin_channels_facebook_index__no-pages_y8luwb {
-  color: #CFD4D8; }
-
-.session_admin_channels_facebook_index__reconnect_y8luwb {
-  margin-top: 15px;
-  font-size: 12px;
-  text-align: left; }
 
 /* styles for frontend-cp/session/admin/people/teams/index/styles.css */
 .session_admin_people_teams_index__search_1tvsvh {
