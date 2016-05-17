@@ -533,7 +533,7 @@
   "roles.form.system_administration_group_legend": "System administration",
   "roles.form.agent_case_access_field_label": "Cases this agent can access",
   "roles.form.agent_case_access_field_help": "This permission can be overridden per-agent, by editing an agent's profile.",
-  "roles.form.cases_create_reply_permission_label": "Create and reply to cases",
+  "roles.form.cases_create_reply_permission_label": "Reply publicly to cases",
   "roles.form.cases_split_and_merge_permission_label": "Split and merge cases",
   "roles.form.cases_split_and_merge_permission_help": "Allows this agent to split cases into new cases, and merge two existing cases into one.",
   "roles.form.cases_trash_permission_label": "Trash cases",

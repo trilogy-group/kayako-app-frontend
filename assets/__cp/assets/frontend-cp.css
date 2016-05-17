@@ -2849,6 +2849,12 @@ img {
   .ko-agent-dropdown__drop.ember-basic-dropdown--transitioning-out.full-grown {
     -webkit-animation: slide-in-big 0.2s reverse;
             animation: slide-in-big 0.2s reverse; }
+  .ko-agent-dropdown__drop.ko-agent-dropdown__drop--1 {
+    width: 105px; }
+  .ko-agent-dropdown__drop.ko-agent-dropdown__drop--2 {
+    width: 200px; }
+  .ko-agent-dropdown__drop.ko-agent-dropdown__drop--3 {
+    width: 300px; }
 
 .ko-agent-dropdown__nav-items {
   display: -webkit-box;
@@ -5945,6 +5951,9 @@ span#HW_badge.HW_softHidden {
 .ko-select_multiple__trigger_1ib7nu:focus, .ko-select_multiple__trigger--focused_1ib7nu, .ko-select_multiple__trigger_1ib7nu[aria-expanded="true"] {
   border-color: #4EAFCB;
   box-shadow: 0 0 4px 0 rgba(78, 174, 203, 0.65), inset 0 1px 1px 0 rgba(0, 0, 0, 0.08); }
+
+.ember-power-select-trigger[aria-disabled="true"] .ember-power-select-multiple-remove-btn {
+  display: none; }
 
 /* styles for frontend-cp/components/ko-select/multiple/trigger/styles.css */
 .ko-select_multiple_trigger__trigger_13spb7 {
