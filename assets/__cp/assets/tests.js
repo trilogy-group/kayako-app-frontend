@@ -10668,6 +10668,9 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
       var enUsLocale = server.create('locale', {
         locale: 'en-us'
       });
+      server.create('permission', { name: 'agent.cases.public_reply' });
+      server.create('permission', { name: 'agent.cases.trash' });
+
       var organization = server.create('organization');
       var team = server.create('team');
       var role = server.create('role', { title: 'Admin', type: 'ADMIN', id: 1 });
@@ -11128,6 +11131,7 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | agent/cases/organization timeline', {
     beforeEach: function beforeEach() {
+      server.create('permission', { name: 'agent.organizations.update' });
       var locale = server.create('locale', { id: 1, locale: 'en-us' });
       var brand = server.create('brand', { locale: locale });
       var caseFields = server.createList('case-field', 4);
@@ -11350,46 +11354,6 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
     andThen(function () {
       assert.equal(find('.qa-feed_item--note').length, 21, 'Now there are 11 notes');
       assert.equal(find('.ko-feed_item:eq(0) .ko-feed_item__content').text().trim(), 'Testing notes', 'The added note is in the top');
-    });
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('adding a note doesn\'t update the timeline when filtering by activities', function (assert) {
-    assert.expect(2);
-
-    visit('/agent/cases/' + targetCase.id + '/user');
-
-    selectChoose('.qa-timeline__filter .ember-power-select', 'Activities');
-
-    andThen(function () {
-      assert.equal(find('.qa-feed_item--note').length, 0, 'No notes displayed as filtering by activities');
-    });
-
-    click('.ko-layout_advanced_editor__placeholder');
-    fillInRichTextEditor('Testing notes');
-    click('.button--primary');
-
-    andThen(function () {
-      assert.equal(find('.qa-feed_item--note').length, 0, 'Still no notes displayed');
-    });
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('adding a note doesn\'t update the timeline when filtering by events', function (assert) {
-    assert.expect(2);
-
-    visit('/agent/cases/' + targetCase.id + '/user');
-
-    selectChoose('.qa-timeline__filter .ember-power-select', 'Events');
-
-    andThen(function () {
-      assert.equal(find('.qa-feed_item--note').length, 0, 'No notes displayed as filtering by events');
-    });
-
-    click('.ko-layout_advanced_editor__placeholder');
-    fillInRichTextEditor('Testing notes');
-    click('.button--primary');
-
-    andThen(function () {
-      assert.equal(find('.qa-feed_item--note').length, 0, 'Still no notes displayed');
     });
   });
 });
@@ -11662,6 +11626,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | agent/cases/user timeline', {
     beforeEach: function beforeEach() {
+      server.create('permission', { name: 'agent.users.update' });
       var locale = server.create('locale', { id: 1, locale: 'en-us' });
       var brand = server.create('brand', { locale: locale });
       var caseFields = server.createList('case-field', 4);
@@ -12036,6 +12001,7 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
   var originalConfirm = undefined;
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Manage Email Identities', {
     beforeEach: function beforeEach() {
+      server.create('permission', { name: 'agent.users.update' });
       server.create('locale', {
         id: 1,
         locale: 'en-us'
@@ -12138,6 +12104,7 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Manage Twitter Identities', {
     beforeEach: function beforeEach() {
+      server.create('permission', { name: 'agent.users.update' });
       server.create('locale', {
         id: 1,
         locale: 'en-us'
@@ -12258,6 +12225,7 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Manage Phone Identities', {
     beforeEach: function beforeEach() {
+      server.create('permission', { name: 'agent.users.update' });
       server.create('locale', {
         id: 1,
         locale: 'en-us'
@@ -12729,6 +12697,8 @@ define('frontend-cp/tests/acceptance/agent/users/change-role-test', ['exports', 
     beforeEach: function beforeEach() {
       var _this = this;
 
+      server.create('permission', { name: 'agent.users.update' });
+
       this.roles = {
         admin: server.create('role', { type: 'ADMIN', title: 'Administrator' }),
         agent: server.create('role', { type: 'AGENT', title: 'Agent' }),
@@ -12832,28 +12802,12 @@ define('frontend-cp/tests/acceptance/agent/users/change-role-test', ['exports', 
       assert.ok(trigger.is('[aria-disabled="true"]'), 'expected role field to be disabled');
     });
   });
-
-  (0, _qunit.test)('CUSTOMERs may not change another user’s role', function (assert) {
-    var me = server.create('user', { role: this.roles.customer });
-    var other = server.create('user', { role: this.roles.customer });
-    var session = server.create('session', { user: me });
-
-    server.create('plan', { limits: [], features: [] });
-    login(session.id);
-
-    visit('/agent/users/' + other.id);
-
-    andThen(function () {
-      var trigger = find('.ko-user-content__role-field .ember-power-select-trigger');
-
-      assert.ok(trigger.is('[aria-disabled="true"]'), 'expected role field to be disabled');
-    });
-  });
 });
 define('frontend-cp/tests/acceptance/agent/users/create-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/session/styles', 'frontend-cp/components/ko-tabs/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpSessionStyles, _frontendCpComponentsKoTabsStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | User | Create user', {
     beforeEach: function beforeEach() {
+      server.create('permission', { name: 'agent.users.update' });
       var locale = server.create('locale');
       var brand = server.create('brand', { locale: locale });
       var caseFields = server.createList('case-field', 4);
@@ -12916,6 +12870,7 @@ define('frontend-cp/tests/acceptance/agent/users/edit-test', ['exports', 'fronte
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | User | Edit user', {
     beforeEach: function beforeEach() {
+      server.create('permission', { name: 'agent.users.update' });
       var locale = server.create('locale');
       var brand = server.create('brand', { locale: locale });
       var caseFields = server.createList('case-field', 4);
