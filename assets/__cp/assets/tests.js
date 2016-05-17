@@ -2878,9 +2878,18 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/manage/case fields/edit', {
     beforeEach: function beforeEach() {
+      server.create('setting', {
+        id: 'account.default_language',
+        category: 'account',
+        name: 'default_language',
+        is_protected: false,
+        value: 'en-us',
+        resource_type: 'setting'
+      });
       server.create('locale', {
         id: 1,
-        locale: 'en-us'
+        locale: 'en-us',
+        is_public: true
       });
       var textCustomerTitleLocaleField = server.create('locale-field', {
         locale: 'en-us'
@@ -3722,9 +3731,20 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-priorities-
   (0, _qunit.module)('Acceptance | admin/manage/cases/priorities', {
     beforeEach: function beforeEach() {
       this.application = (0, _frontendCpTestsHelpersStartApp['default'])();
-      server.create('locale');
       var role = server.create('role', { type: 'ADMIN' });
-      var locale = server.create('locale', { locale: 'en-us' });
+      server.create('setting', {
+        id: 'account.default_language',
+        category: 'account',
+        name: 'default_language',
+        is_protected: false,
+        value: 'en-us',
+        resource_type: 'setting'
+      });
+      var locale = server.create('locale', {
+        id: 1,
+        locale: 'en-us',
+        is_public: true
+      });
       var agent = server.create('user', { role: role, locale: locale });
       var session = server.create('session', { user: agent });
 
@@ -3837,12 +3857,20 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-statuses-te
     beforeEach: function beforeEach() {
       this.application = (0, _frontendCpTestsHelpersStartApp['default'])();
 
-      server.create('locale', {
+      server.create('setting', {
+        id: 'account.default_language',
+        category: 'account',
+        name: 'default_language',
+        is_protected: false,
+        value: 'en-us',
+        resource_type: 'setting'
+      });
+      var locale = server.create('locale', {
         id: 1,
-        locale: 'en-us'
+        locale: 'en-us',
+        is_public: true
       });
       var role = server.create('role', { type: 'ADMIN' });
-      var locale = server.create('locale', { locale: 'en-us' });
       var agent = server.create('user', { role: role, locale: locale });
       var session = server.create('session', { user: agent });
 
@@ -3957,9 +3985,20 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-types-test'
     beforeEach: function beforeEach() {
       this.application = (0, _frontendCpTestsHelpersStartApp['default'])();
 
-      server.create('locale');
+      server.create('setting', {
+        id: 'account.default_language',
+        category: 'account',
+        name: 'default_language',
+        is_protected: false,
+        value: 'en-us',
+        resource_type: 'setting'
+      });
+      var locale = server.create('locale', {
+        id: 1,
+        locale: 'en-us',
+        is_public: true
+      });
       var role = server.create('role', { type: 'ADMIN' });
-      var locale = server.create('locale', { locale: 'en-us' });
       var agent = server.create('user', { role: role, locale: locale });
       var session = server.create('session', { user: agent });
 
@@ -4052,9 +4091,18 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/manage/case fields/new', {
     beforeEach: function beforeEach() {
+      server.create('setting', {
+        id: 'account.default_language',
+        category: 'account',
+        name: 'default_language',
+        is_protected: false,
+        value: 'en-us',
+        resource_type: 'setting'
+      });
       server.create('locale', {
         id: 1,
-        locale: 'en-us'
+        locale: 'en-us',
+        is_public: true
       });
       var adminRole = server.create('role', { type: 'ADMIN' });
       var locale = server.create('locale', { locale: 'en-us' });
@@ -4661,9 +4709,18 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/reorder-test', ['e
     beforeEach: function beforeEach() {
       this.application = (0, _frontendCpTestsHelpersStartApp['default'])();
       /*eslint-disable camelcase*/
+      server.create('setting', {
+        id: 'account.default_language',
+        category: 'account',
+        name: 'default_language',
+        is_protected: false,
+        value: 'en-us',
+        resource_type: 'setting'
+      });
       server.create('locale', {
         id: 1,
-        locale: 'en-us'
+        locale: 'en-us',
+        is_public: true
       });
       var radioOption1LocaleField = server.create('locale-field', {
         locale: 'en-us', translation: option1Title
@@ -6492,9 +6549,18 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/people/organization fields/edit', {
     beforeEach: function beforeEach() {
       /*eslint-disable camelcase*/
+      server.create('setting', {
+        id: 'account.default_language',
+        category: 'account',
+        name: 'default_language',
+        is_protected: false,
+        value: 'en-us',
+        resource_type: 'setting'
+      });
       server.create('locale', {
         id: 1,
-        locale: 'en-us'
+        locale: 'en-us',
+        is_public: true
       });
       var textCustomerTitleLocaleField = server.create('locale-field', {
         locale: 'en-us'
@@ -7285,9 +7351,18 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/people/organization fields/new', {
     beforeEach: function beforeEach() {
+      server.create('setting', {
+        id: 'account.default_language',
+        category: 'account',
+        name: 'default_language',
+        is_protected: false,
+        value: 'en-us',
+        resource_type: 'setting'
+      });
       server.create('locale', {
         id: 1,
-        locale: 'en-us'
+        locale: 'en-us',
+        is_ublic: true
       });
       var adminRole = server.create('role', { type: 'ADMIN' });
       var locale = server.create('locale', { locale: 'en-us' });
@@ -7893,9 +7968,18 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/reorder-te
     beforeEach: function beforeEach() {
       this.application = (0, _frontendCpTestsHelpersStartApp['default'])();
       /*eslint-disable camelcase*/
+      server.create('setting', {
+        id: 'account.default_language',
+        category: 'account',
+        name: 'default_language',
+        is_protected: false,
+        value: 'en-us',
+        resource_type: 'setting'
+      });
       server.create('locale', {
         id: 1,
-        locale: 'en-us'
+        locale: 'en-us',
+        is_public: true
       });
       var radioOption1LocaleField = server.create('locale-field', {
         locale: 'en-us', translation: option1Title
@@ -8681,9 +8765,18 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/people/user fields/edit', {
     beforeEach: function beforeEach() {
+      server.create('setting', {
+        id: 'account.default_language',
+        category: 'account',
+        name: 'default_language',
+        is_protected: false,
+        value: 'en-us',
+        resource_type: 'setting'
+      });
       server.create('locale', {
         id: 1,
-        locale: 'en-us'
+        locale: 'en-us',
+        is_public: true
       });
       var textCustomerTitleLocaleField = server.create('locale-field', {
         locale: 'en-us'
@@ -9511,9 +9604,18 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/people/user fields/new', {
     beforeEach: function beforeEach() {
+      server.create('setting', {
+        id: 'account.default_language',
+        category: 'account',
+        name: 'default_language',
+        is_protected: false,
+        value: 'en-us',
+        resource_type: 'setting'
+      });
       server.create('locale', {
         id: 1,
-        locale: 'en-us'
+        locale: 'en-us',
+        is_public: true
       });
       var adminRole = server.create('role', { type: 'ADMIN' });
       var locale = server.create('locale', { locale: 'en-us' });
@@ -10118,9 +10220,18 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/reorder-test', ['e
   (0, _qunit.module)('Acceptance | admin/people/user fields/reorder', {
     beforeEach: function beforeEach() {
       this.application = (0, _frontendCpTestsHelpersStartApp['default'])();
+      server.create('setting', {
+        id: 'account.default_language',
+        category: 'account',
+        name: 'default_language',
+        is_protected: false,
+        value: 'en-us',
+        resource_type: 'setting'
+      });
       server.create('locale', {
         id: 1,
-        locale: 'en-us'
+        locale: 'en-us',
+        is_public: true
       });
       var radioOption1LocaleField = server.create('locale-field', {
         locale: 'en-us', translation: option1Title
