@@ -696,5 +696,14 @@
   "account.plans.collaborators": "{collaborators} Collaborators",
   "account.plans.priceFor.flatFee": "up to {seats} agents",
   "account.plans.priceFor.perAgent": "per agent / month",
-  "account.plans.notAvailable": "not available"
+  "account.plans.notAvailable": "not available",
+  "localization.tabs.languages": "Languages",
+  "localization.tabs.settings": "Settings",
+  "localization.settings.title": "Settings",
+  "localization.settings.heading.account_defaults": "Account defaults",
+  "localization.settings.default_language.title": "Language",
+  "localization.settings.default_language.description": "This is the default language for your Kayako account that will be used if a user has not specified their own (see the 'Languages' tab to change which languages your customers will be able to choose from in the Help Center).",
+  "localization.settings.timezone.title": "Timezone",
+  "localization.settings.timezone.description": "Choose the default timezone for your Kayako. Wherever you see time and dates, they will be displayed relative to this timezone, unless the user has specified their own timezone under their user profile.",
+  "localization.settings.time_format.title": "Time format"
 }
