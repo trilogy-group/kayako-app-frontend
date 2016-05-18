@@ -735,7 +735,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/index-test', ['ex
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles) {
+define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'moment', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _moment, _frontendCpComponentsKoSimpleListRowStyles) {
 
   var originalConfirm = undefined,
       role = undefined;
@@ -1521,6 +1521,56 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
       assertPredicateCollestionsAreCorrect(assert);
       assert.equal($('.ko-automation-actions-builder__small-slot:eq(0) .ember-power-select-trigger').text().trim(), 'Endpoint: Example email endpoint');
       assert.equal(find('[name="endpoint-message"]').val(), 'foobar');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Creating a monitor with "DATE_ABSOLUTE" action', function (assert) {
+    assert.expect(9);
+    server.create('automation-action-definition', {
+      label: 'RZ: Date',
+      name: 'customfield_85',
+      options: ['CHANGE'],
+      input_type: 'DATE_ABSOLUTE',
+      value_type: 'DATE_ABSOLUTE',
+      values: '',
+      attributes: [],
+      group: 'CUSTOM_FIELD',
+      resource_type: 'automation_action_definition'
+    });
+    visit('/admin/automation/monitors/new');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/new');
+      fillIn('input[name="title"]', 'Sample monitor name');
+
+      fillPredicateCollections();
+
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'RZ: Date');
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(1)', 'Change');
+      click('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2) .ko-date-select__trigger');
+    });
+
+    andThen(function () {
+      var dayText = (0, _moment['default'])().date().toString();
+      var dayCell = find('.ko-datepicker__date--current-month').filter(function (_, el) {
+        return el.textContent.trim() === dayText;
+      });
+      click(dayCell);
+
+      click('.button[name=submit]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/1');
+      assertPredicateCollestionsAreCorrect(assert);
+      assert.equal($('.ko-automation-actions-builder__small-slot:eq(0) .ember-power-select-trigger').text().trim(), 'Custom field: RZ: Date');
     });
   });
 
