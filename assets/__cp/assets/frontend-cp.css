@@ -3447,8 +3447,6 @@ img {
   position: relative; }
   .editable-text > [class*="i-"]:before {
     right: 0; }
-  .editable-text.error {
-    color: #E86048; }
 
 .editable-text__input-field {
   border-bottom: 1px solid transparent; }
@@ -3487,6 +3485,9 @@ img {
   font-style: italic;
   color: #616C73;
   border-bottom: 1px dotted #616C73; }
+
+.editable-text--error .editable-text__text {
+  color: #E86048; }
 
 .editable-text:hover .editable-text__pencil {
   visibility: visible; }
