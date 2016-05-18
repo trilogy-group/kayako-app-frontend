@@ -5585,7 +5585,7 @@ define('frontend-cp/tests/acceptance/admin/manage/localization/list-test', ['exp
     }
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('listing languages', function (assert) {
+  (0, _frontendCpTestsHelpersQunit.test)('listing index', function (assert) {
     visit('/admin/manage/localization');
     andThen(function () {
       assertRows(assert, [['English', ['isLocalised', 'canDisable']], ['French', ['canDisable']]], [['German', ['canEnable']], ['Russian', ['canEnable']]]);

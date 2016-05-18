@@ -4956,7 +4956,6 @@ span#HW_badge.HW_softHidden {
   .ko-reorderable-list .sortable-item.is-dragging {
     -webkit-transition-duration: 0s;
             transition-duration: 0s;
-    background-color: #F7F8F9;
     z-index: 50;
     position: relative; }
 
@@ -4970,6 +4969,9 @@ span#HW_badge.HW_softHidden {
     color: #CBCFD1;
     font-size: 30px;
     line-height: 1.2; }
+
+.ko-reorderable-list.default-theme .sortable-item.is-dragging {
+  background-color: #F7F8F9; }
 
 #ember-testing .sortable-item {
   -webkit-transition: all 0s !important;
