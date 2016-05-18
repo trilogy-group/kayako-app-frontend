@@ -11710,6 +11710,199 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
     });
   });
 });
+define('frontend-cp/tests/acceptance/agent/cases/replying-to-a-facebook-message-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'qunit', 'ember-platform'], function (exports, _frontendCpTestsHelpersQunit, _qunit, _emberPlatform) {
+  function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Case | Replying to a Facebook message', {
+    beforeEach: function beforeEach() {
+      this.agent = createAgent();
+      this['case'] = createCase();
+
+      var session = server.create('session', { user: this.agent });
+
+      login(session.id);
+      visit('/agent/cases/' + this['case'].id);
+    },
+
+    afterEach: function afterEach() {
+      logout();
+    }
+  });
+
+  (0, _qunit.test)('using the channel selector', function (assert) {
+    var _this = this;
+
+    click('.qa-ko-case-content__reply');
+    selectChoose('.qa-post__channel-selector', 'Brewfictus - Message');
+    fillInRichTextEditor('An answer via Facebook');
+    click('button:contains("Submit")');
+
+    // Assert we sent the correct data
+    server.post('/api/v1/cases/' + this['case'].id + '/reply', function (schema, req) {
+      verifyRequest(assert, req, _this);
+      return createResponse(_this);
+    });
+
+    // Assert we rendered the correct result
+    andThen(function () {
+      var item = findWithAssert('.ko-feed_item:first');
+      var content = item.find('.ko-feed_item__content');
+      var subtitle = item.find('.qa-ko-timeline_item__subtitle');
+
+      assert.equal(content.text().trim(), 'An answer via Facebook');
+      assert.equal(subtitle.text().trim(), 'via Facebook');
+    });
+  });
+
+  (0, _qunit.test)('using the inline reply button', function (assert) {
+    var _this2 = this;
+
+    triggerEvent('.ko-feed_item:first', 'mouseover');
+    click('.qa-ko-timeline_item_menu__reply');
+    fillInRichTextEditor('An answer via Facebook');
+    click('button:contains("Submit")');
+
+    // Assert we sent the correct data
+    server.post('/api/v1/cases/' + this['case'].id + '/reply', function (schema, req) {
+      verifyRequest(assert, req, _this2, {
+        in_reply_to_uuid: _this2['case'].posts[0].uuid
+      });
+      return createResponse(_this2);
+    });
+
+    // Assert we rendered the correct result
+    andThen(function () {
+      var item = findWithAssert('.ko-feed_item:first');
+      var content = item.find('.ko-feed_item__content');
+      var subtitle = item.find('.qa-ko-timeline_item__subtitle');
+
+      assert.equal(content.text().trim(), 'An answer via Facebook');
+      assert.equal(subtitle.text().trim(), 'via Facebook');
+    });
+  });
+
+  // Fixtures
+
+  var FACEBOOK_PAGE = 'Brewfictus';
+  var CUSTOMER_NAME = 'Caryn Pryor';
+  var AGENT_NAME = 'Jordan Mitchell';
+
+  function createAgent() {
+    var name = AGENT_NAME;
+    var role = server.create('role', { type: 'AGENT' });
+    var identity = server.create('identity-facebook', { full_name: name });
+    var agent = server.create('user', {
+      full_name: name,
+      role: role,
+      facebook: [identity]
+    });
+
+    server.create('plan');
+
+    return agent;
+  }
+
+  function createCase() {
+    var customer = createCustomer();
+    var identity = customer.facebook[0];
+    var channel = createChannel();
+    var status = server.create('case-status');
+    var kase = server.create('case', {
+      source_channel: channel,
+      creator: customer,
+      requester: customer,
+      identity: identity,
+      status: status
+    });
+    var post = server.create('post', {
+      contents: 'A question via Facebook',
+      creator: customer,
+      requester: customer,
+      identity: identity,
+      source_channel: channel
+    });
+
+    kase.posts = [post];
+
+    return kase;
+  }
+
+  function createCustomer() {
+    var name = CUSTOMER_NAME;
+    var role = server.create('role', { type: 'CUSTOMER' });
+    var identity = server.create('identity-facebook', { full_name: name });
+    var customer = server.create('user', {
+      full_name: name,
+      role: role,
+      facebook: [identity]
+    });
+
+    return customer;
+  }
+
+  function createChannel() {
+    var title = FACEBOOK_PAGE;
+    var account = server.create('facebook-account', { title: title });
+    var channel = server.create('channel', { type: 'FACEBOOK', account: account });
+
+    channel.id = channel.uuid;
+
+    return channel;
+  }
+
+  function verifyRequest(assert, req, context, fields) {
+    var actualPayload = JSON.parse(req.requestBody);
+
+    var expectedPayload = (0, _emberPlatform.assign)({
+      contents: 'An answer via Facebook',
+      channel: 'FACEBOOK',
+      channel_id: context['case'].source_channel.account.id,
+      in_reply_to_uuid: null,
+      status_id: null,
+      priority_id: null,
+      type_id: null,
+      assigned_team_id: null,
+      assigned_agent_id: null,
+      tags: '',
+      form_id: null,
+      field_values: {},
+      attachment_file_ids: ''
+    }, fields);
+
+    assert.deepEqual(actualPayload, expectedPayload);
+  }
+
+  function createResponse(context) {
+    var post = {
+      id: 71,
+      uuid: 'adddf2fc-8113-4f4b-9c71-40d4a2f44a5b',
+      contents: 'An answer via Facebook',
+      creator: { id: context.agent.id, resource_type: 'user' },
+      identity: { id: context.agent.facebook[0].id, resource_type: 'identity_facebook' },
+      source_channel: { id: context['case'].source_channel.uuid, resource_type: 'channel' },
+      created_at: new Date(),
+      updated_at: new Date(),
+      resource_url: '/api/v1/cases/posts/71'
+    };
+
+    var reply = {
+      resource_type: 'case_reply',
+      posts: [{ id: post.id, resource_type: 'post' }],
+      'case': { id: context['case'].id, resource_type: 'case' }
+    };
+
+    var response = {
+      data: reply,
+      resource: 'case_reply',
+      resources: {
+        'case': _defineProperty({}, context['case'].id, context['case']),
+        post: _defineProperty({}, post.id, post)
+      }
+    };
+
+    return response;
+  }
+});
 define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'sinon', 'frontend-cp/components/ko-text-editor/mode-selector/styles'], function (exports, _frontendCpTestsHelpersQunit, _sinon, _frontendCpComponentsKoTextEditorModeSelectorStyles) {
 
   var targetCase = undefined,
