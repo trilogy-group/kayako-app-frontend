@@ -3839,7 +3839,8 @@ label {
   outline: none;
   background-color: transparent;
   border: none;
-  padding: 0; }
+  padding: 0;
+  border-radius: 0; }
 
 .ko-info-bar_field_select .ember-power-select-dropdown {
   border-radius: 0;
@@ -6912,7 +6913,8 @@ a.ko-admin_plans_index__cancel_1pprhr {
 .ko-info-bar_field_select-multiple__trigger_1s44wa {
   border: none !important;
   background: transparent;
-  padding: 0; }
+  padding: 0;
+  border-radius: 0; }
 
 .ko-info-bar_field_select-multiple__dropdown_1s44wa {
   border-radius: 0;
