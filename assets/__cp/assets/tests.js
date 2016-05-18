@@ -18021,15 +18021,18 @@ define('frontend-cp/tests/unit/services/custom-fields-test', ['exports', 'ember'
 
     _ember['default'].run(function () {
       store.createRecord('locale', {
-        locale: 'en-us'
+        locale: 'en-us',
+        isPublic: true
       });
 
       store.createRecord('locale', {
-        locale: 'fr'
+        locale: 'fr',
+        isPublic: true
       });
 
       store.createRecord('locale', {
-        locale: 'de'
+        locale: 'de',
+        isPublic: true
       });
     });
 
