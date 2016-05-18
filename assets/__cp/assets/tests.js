@@ -8758,7 +8758,7 @@ define('frontend-cp/tests/acceptance/admin/people/roles/form-test', ['exports', 
     visit('/admin/people/roles');
     click('.' + _frontendCpComponentsKoAdminPageStyles['default'].header + ' button:contains("Add New Role")');
     fillIn('input.ko-admin_roles_form__title', 'Custom Role');
-    selectChoose('.qa-ko-admin_roles_form__role-type', 'Collaborator');
+    selectChoose('.qa-ko-admin_roles_form__role-type', 'Agent');
     selectChoose('.qa-ko-admin_roles_form__agent-case-access-type', 'Assigned to agent');
     click('.' + createNewCaseCheckboxClass);
     click('.' + acceptNewChatRequestsCheckboxClass);
