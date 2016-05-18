@@ -1002,7 +1002,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
       assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
-      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no enabled monitors');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
     });
 
@@ -1050,7 +1050,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
       assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
-      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no enabled monitors');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
     });
 
@@ -1100,7 +1100,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
       assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
-      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no enabled monitors');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
     });
 
@@ -1145,7 +1145,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
       assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
-      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no enabled monitors');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
     });
 
@@ -1199,7 +1199,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
       assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
-      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no enabled monitors');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
     });
 
@@ -1251,7 +1251,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
       assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
-      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no enabled monitors');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
     });
 
@@ -1291,7 +1291,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
       assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
-      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no enabled monitors');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
     });
 
@@ -2027,6 +2027,25 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/edit-test', ['exp
       assert.equal(find('.qa-events .ember-power-select-selected-item').text().trim(), 'Any');
     });
   });
+
+  (0, _frontendCpTestsHelpersQunit.test)('loading a trigger that has a channel but a null event should set the event dropdown to any', function (assert) {
+    assert.expect(3);
+
+    var trigger = server.create('trigger', {
+      channel: 'SYSTEM',
+      event: null,
+      predicate_collections: [],
+      action: {}
+    });
+
+    visit('/admin/automation/triggers/' + trigger.id);
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/triggers/' + trigger.id);
+      assert.equal(find('.qa-channels .ember-power-select-selected-item').text().trim(), 'System');
+      assert.equal(find('.qa-events .ember-power-select-selected-item').text().trim(), 'Any');
+    });
+  });
 });
 define('frontend-cp/tests/acceptance/admin/automation/triggers/index-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles) {
 
@@ -2197,7 +2216,42 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/index-test', ['ex
 });
 define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles) {
 
-  var originalConfirm = undefined;
+  var originalConfirm = undefined,
+      role = undefined;
+
+  function fillPredicateCollections() {
+    selectChoose('.qa-predicate-builder--proposition:eq(0) .qa-proposition--column', 'Subject');
+    selectChoose('.qa-predicate-builder--proposition:eq(0) .qa-proposition--operator', 'string does not contain');
+    fillIn('.qa-predicate-builder--proposition:eq(0) input:last', 'collection1proposition1');
+
+    click('.ko-predicate-builder__add');
+
+    selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--column', 'Subject');
+    selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--operator', 'string does not contain');
+    fillIn('.qa-predicate-builder--proposition:eq(1) input:last', 'collection1proposition2');
+
+    click('.ko-predicate-builder__new');
+
+    selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--column', 'Subject');
+    selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--operator', 'string does not contain');
+    fillIn('.qa-predicate-builder--proposition:eq(2) input:last', 'collection2proposition1');
+  }
+
+  function assertPredicateCollestionsAreCorrect(assert) {
+    assert.equal($('.qa-predicate-builder--proposition:eq(0) input:last').val(), 'collection1proposition1');
+    assert.equal($('.qa-predicate-builder--proposition:eq(1) input:last').val(), 'collection1proposition2');
+    assert.equal($('.qa-predicate-builder--proposition:eq(2) input:last').val(), 'collection2proposition1');
+  }
+
+  function fillChannelAndEvent() {
+    selectChoose('.qa-channels', 'System');
+    selectChoose('.qa-events', 'Trigger');
+  }
+
+  function assertChannelAndEventAreCorrect(assert) {
+    assert.equal($('.qa-channels .ember-power-select-selected-item').text().trim(), 'System');
+    assert.equal($('.qa-events .ember-power-select-selected-item').text().trim(), 'Trigger');
+  }
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/automation/triggers/new', {
     beforeEach: function beforeEach() {
@@ -2206,8 +2260,8 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
         locale: 'en-us'
       });
 
-      var adminRole = server.create('role', { type: 'ADMIN' });
-      var agent = server.create('user', { role: adminRole, locale: locale });
+      role = server.create('role', { type: 'ADMIN' });
+      var agent = server.create('user', { role: role, locale: locale });
       var session = server.create('session', { user: agent });
 
       server.create('trigger-channel', { name: 'SYSTEM', events: ['TRIGGER'] });
@@ -2232,11 +2286,11 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
         input_type: 'OPTIONS',
         operators: ['comparison_equalto', 'comparison_not_equalto', 'comparison_lessthan', 'comparison_greaterthan'],
         values: {
-          '5': 'Closed',
-          '4': 'Completed',
-          '1': 'New',
-          '2': 'Open',
-          '3': 'Pending'
+          5: 'Closed',
+          4: 'Completed',
+          1: 'New',
+          2: 'Open',
+          3: 'Pending'
         }
       });
 
@@ -2249,10 +2303,10 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
         input_type: 'OPTIONS',
         operators: ['comparison_equalto', 'comparison_not_equalto'],
         values: {
-          '4': 'Incident',
-          '3': 'Problem',
-          '1': 'Question',
-          '2': 'Task'
+          4: 'Incident',
+          3: 'Problem',
+          1: 'Question',
+          2: 'Task'
         }
       });
 
@@ -2265,10 +2319,10 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
         input_type: 'OPTIONS',
         operators: ['comparison_equalto', 'comparison_not_equalto', 'comparison_lessthan', 'comparison_greaterthan'],
         values: {
-          '3': 'High',
-          '1': 'Low',
-          '2': 'Normal',
-          '4': 'Urgent'
+          3: 'High',
+          1: 'Low',
+          2: 'Normal',
+          4: 'Urgent'
         }
       });
 
@@ -2281,9 +2335,9 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
         input_type: 'OPTIONS',
         operators: ['comparison_equalto'],
         values: {
-          '1': 'Active',
-          '3': 'Spam',
-          '2': 'Trash'
+          1: 'Active',
+          3: 'Spam',
+          2: 'Trash'
         }
       });
 
@@ -2296,7 +2350,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
         input_type: 'OPTIONS',
         operators: ['comparison_equalto', 'comparison_not_equalto'],
         values: {
-          '1': 'Default'
+          1: 'Default'
         }
       });
 
@@ -2309,13 +2363,13 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
         input_type: 'OPTIONS',
         operators: ['comparison_equalto', 'comparison_not_equalto'],
         values: {
-          '0': 'unassigned',
+          0: 'unassigned',
           '(current users team)': '(current users team)',
-          '5': 'Contractors',
-          '3': 'Finance',
-          '4': 'Human Resources',
-          '1': 'Sales',
-          '2': 'Support'
+          5: 'Contractors',
+          3: 'Finance',
+          4: 'Human Resources',
+          1: 'Sales',
+          2: 'Support'
         }
       });
 
@@ -2385,7 +2439,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
         input_type: 'OPTIONS',
         operators: ['comparison_equalto', 'comparison_not_equalto'],
         values: {
-          '1': 'breached'
+          1: 'breached'
         }
       });
 
@@ -2405,31 +2459,33 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
     }
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('Creating a trigger', function (assert) {
-    assert.expect(4);
+  (0, _frontendCpTestsHelpersQunit.test)('Creating a trigger with a "status" action', function (assert) {
+    assert.expect(11);
+    server.create('automation-action-definition', {
+      label: 'Status',
+      name: 'status',
+      input_type: 'OPTIONS',
+      value_type: 'NUMERIC',
+      options: ['CHANGE'],
+      values: {
+        1: 'New',
+        2: 'Open',
+        3: 'Resolved',
+        4: 'Closed'
+      }
+    });
     visit('/admin/automation/triggers/new');
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/triggers/new');
       fillIn('input[name="title"]', 'Sample trigger name');
-      selectChoose('.qa-channels', 'System');
-      selectChoose('.qa-events', 'Trigger');
 
-      selectChoose('.qa-predicate-builder--proposition:eq(0) .qa-proposition--column', 'Subject');
-      selectChoose('.qa-predicate-builder--proposition:eq(0) .qa-proposition--operator', 'string does not contain');
-      fillIn('.qa-predicate-builder--proposition:eq(0) input:last', 'collection1proposition1');
+      fillChannelAndEvent();
+      fillPredicateCollections();
 
-      click('.ko-predicate-builder__add');
-
-      selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--column', 'Subject');
-      selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--operator', 'string does not contain');
-      fillIn('.qa-predicate-builder--proposition:eq(1) input:last', 'collection1proposition2');
-
-      click('.ko-predicate-builder__new');
-
-      selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--column', 'Subject');
-      selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--operator', 'string does not contain');
-      fillIn('.qa-predicate-builder--proposition:eq(2) input:last', 'collection2proposition1');
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Status');
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(1)', 'Change');
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'New');
 
       click('.button[name=submit]');
     });
@@ -2438,6 +2494,315 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
       assert.equal(currentURL(), '/admin/automation/triggers');
       assert.equal(find('.qa-admin_triggers--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The trigger has been created and it is disabled');
       assert.equal(find('.qa-admin_triggers--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no enabled triggers');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/triggers/1');
+      assertChannelAndEventAreCorrect(assert);
+      assertPredicateCollestionsAreCorrect(assert);
+      assert.equal($('.ko-automation-actions-builder__small-slot:eq(2) .ember-power-select-trigger').text().trim(), 'New', 'The status is selected');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Creating a trigger with a "priority" action', function (assert) {
+    assert.expect(11);
+    server.create('automation-action-definition', {
+      label: 'Priority',
+      name: 'priority',
+      options: ['CHANGE', 'INCREASE', 'DECREASE'],
+      input_type: 'OPTIONS',
+      value_type: 'NUMERIC',
+      values: {
+        0: 'none',
+        24: 'Critical',
+        18: 'High',
+        14: 'Low',
+        26: 'Normal'
+      },
+      attributes: [],
+      group: 'CASE',
+      resource_type: 'automation_action_definition'
+    });
+    visit('/admin/automation/triggers/new');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/triggers/new');
+      fillIn('input[name="title"]', 'Sample trigger name');
+
+      fillChannelAndEvent();
+      fillPredicateCollections();
+
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Priority');
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(1)', 'Change');
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'Low');
+
+      click('.button[name=submit]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/triggers');
+      assert.equal(find('.qa-admin_triggers--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The trigger has been created and it is disabled');
+      assert.equal(find('.qa-admin_triggers--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no enabled triggers');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/triggers/1');
+      assertChannelAndEventAreCorrect(assert);
+      assertPredicateCollestionsAreCorrect(assert);
+      assert.equal($('.ko-automation-actions-builder__small-slot:eq(2) .ember-power-select-trigger').text().trim(), 'Low', 'The priority is selected');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Creating a trigger with a "type" action', function (assert) {
+    assert.expect(11);
+    server.create('automation-action-definition', {
+      label: 'Type',
+      name: 'type',
+      options: ['CHANGE'],
+      input_type: 'OPTIONS',
+      value_type: 'NUMERIC',
+      values: {
+        0: 'none',
+        24: 'Incident',
+        25: 'Installation',
+        2: 'Issue',
+        27: 'Problem',
+        26: 'Question',
+        4: 'Task'
+      },
+      attributes: [],
+      group: 'CASE',
+      resource_type: 'automation_action_definition'
+    });
+    visit('/admin/automation/triggers/new');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/triggers/new');
+      fillIn('input[name="title"]', 'Sample trigger name');
+
+      fillChannelAndEvent();
+      fillPredicateCollections();
+
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Type');
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(1)', 'Change');
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'Issue');
+
+      click('.button[name=submit]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/triggers');
+      assert.equal(find('.qa-admin_triggers--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The trigger has been created and it is disabled');
+      assert.equal(find('.qa-admin_triggers--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no enabled triggers');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/triggers/1');
+      assertChannelAndEventAreCorrect(assert);
+      assertPredicateCollestionsAreCorrect(assert);
+      assert.equal($('.ko-automation-actions-builder__small-slot:eq(2) .ember-power-select-trigger').text().trim(), 'Issue', 'The type is selected');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Creating a trigger with a "assignee" action', function (assert) {
+    assert.expect(11);
+    server.create('automation-action-definition', {
+      label: 'Assignee',
+      name: 'assignee',
+      options: ['CHANGE'],
+      input_type: 'AUTOCOMPLETE',
+      value_type: 'NUMERIC',
+      values: [],
+      attributes: [],
+      group: 'CASE',
+      resource_type: 'automation_action_definition'
+    });
+    server.create('user', { full_name: 'Jane Morris', role: role });
+    server.create('user', { full_name: 'Alicia Morris', role: role });
+    server.create('user', { full_name: 'Ben Morris', role: role });
+    visit('/admin/automation/triggers/new');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/triggers/new');
+      fillIn('input[name="title"]', 'Sample trigger name');
+
+      fillChannelAndEvent();
+      fillPredicateCollections();
+
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Assignee');
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(1)', 'Change');
+      selectSearch('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'Morr');
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'Alicia Morris');
+      click('.button[name=submit]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/triggers');
+      assert.equal(find('.qa-admin_triggers--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The trigger has been created and it is disabled');
+      assert.equal(find('.qa-admin_triggers--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no enabled triggers');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/triggers/1');
+      assertChannelAndEventAreCorrect(assert);
+      assertPredicateCollestionsAreCorrect(assert);
+      assert.equal($('.ko-automation-actions-builder__small-slot:eq(2) .ember-power-select-trigger input').val(), 'Alicia Morris', 'The assignee is selected');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Creating a trigger with a "tags" action', function (assert) {
+    assert.expect(11);
+    server.create('automation-action-definition', {
+      label: 'Tags',
+      name: 'tags',
+      options: ['ADD', 'REMOVE', 'REPLACE'],
+      input_type: 'TAGS',
+      value_type: 'COLLECTION',
+      values: [],
+      attributes: [],
+      group: 'CASE',
+      resource_type: 'automation_action_definition'
+    });
+    server.create('tag', { name: 'status' });
+    server.create('tag', { name: 'critical' });
+    server.create('tag', { name: 'support' });
+    visit('/admin/automation/triggers/new');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/triggers/new');
+      fillIn('input[name="title"]', 'Sample trigger name');
+
+      fillChannelAndEvent();
+      fillPredicateCollections();
+
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Tags');
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(1)', 'Add');
+
+      // Add an existent tag
+      selectSearch('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'stat');
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'status');
+
+      // Add a nonexistent tag
+      selectSearch('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'nonexistent');
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'Add tag “nonexistent”');
+    });
+
+    andThen(function () {
+      click('.button[name=submit]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/triggers');
+      assert.equal(find('.qa-admin_triggers--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The trigger has been created and it is disabled');
+      assert.equal(find('.qa-admin_triggers--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no enabled triggers');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/triggers/1');
+      assertChannelAndEventAreCorrect(assert);
+      assertPredicateCollestionsAreCorrect(assert);
+      assert.equal($('.ko-automation-actions-builder__small-slot:eq(2) .ember-power-select-trigger .ember-power-select-multiple-option').length, 2, 'There is two tags in this trigger');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Creating a trigger with a "team" action', function (assert) {
+    assert.expect(11);
+    server.create('automation-action-definition', {
+      label: 'Team',
+      name: 'team',
+      options: ['CHANGE'],
+      input_type: 'OPTIONS',
+      value_type: 'NUMERIC',
+      values: {
+        43: 'Billing',
+        50: 'Customer Success',
+        44: 'Engineering',
+        46: 'Hello',
+        52: 'IT',
+        48: 'New Business',
+        49: 'Renewals',
+        14: 'Sales',
+        16: 'Support'
+      },
+      attributes: [],
+      group: 'CASE',
+      resource_type: 'automation_action_definition'
+    });
+    visit('/admin/automation/triggers/new');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/triggers/new');
+      fillIn('input[name="title"]', 'Sample trigger name');
+
+      fillChannelAndEvent();
+      fillPredicateCollections();
+
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Team');
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(1)', 'Change');
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'Engineering');
+
+      click('.button[name=submit]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/triggers');
+      assert.equal(find('.qa-admin_triggers--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The trigger has been created and it is disabled');
+      assert.equal(find('.qa-admin_triggers--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no enabled triggers');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/triggers/1');
+      assertChannelAndEventAreCorrect(assert);
+      assertPredicateCollestionsAreCorrect(assert);
+      assert.equal($('.ko-automation-actions-builder__small-slot:eq(2) .ember-power-select-trigger').text().trim(), 'Engineering', 'The team is selected');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Creating a trigger with a "Send satisfaction survey" action', function (assert) {
+    assert.expect(11);
+    server.create('automation-action-definition', {
+      label: 'Satisfaction survey',
+      name: 'satisfactionsurvey',
+      options: ['SEND'],
+      input_type: 'BOOLEAN_TRUE',
+      value_type: 'BOOLEAN',
+      values: [],
+      attributes: [],
+      group: 'CASE',
+      resource_type: 'automation_action_definition'
+    });
+    visit('/admin/automation/triggers/new');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/triggers/new');
+      fillIn('input[name="title"]', 'Sample trigger name');
+
+      fillChannelAndEvent();
+      fillPredicateCollections();
+
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Satisfaction survey');
+
+      click('.button[name=submit]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/triggers');
+      assert.equal(find('.qa-admin_triggers--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The trigger has been created and it is disabled');
+      assert.equal(find('.qa-admin_triggers--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no enabled triggers');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/triggers/1');
+      assertChannelAndEventAreCorrect(assert);
+      assertPredicateCollestionsAreCorrect(assert);
+      assert.equal($('.ko-automation-actions-builder__small-slot:eq(0) .ember-power-select-trigger').text().trim(), 'Case: Satisfaction survey', 'The Satisfaction survey has been selected');
     });
   });
 
