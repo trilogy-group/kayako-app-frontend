@@ -3072,59 +3072,6 @@ img {
       border-bottom-color: #D1D5D7 !important;
       box-shadow: none !important; }
 
-.ko-case_sla-sidebar {
-  padding: 0 18px;
-  margin-top: 23px;
-  color: #838D94; }
-
-.ko-case_sla-sidebar__table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0 9px;
-  font-size: 12px;
-  margin-top: 3px; }
-
-.ko-case_sla-sidebar__label {
-  max-width: 35%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 25%;
-  font-weight: bold; }
-
-.ko-case_sla-sidebar__in {
-  padding-right: 9px;
-  text-align: right; }
-
-.ko-case_sla-sidebar__data {
-  max-width: 100%;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 60%;
-  position: relative;
-  padding: 4.5px 9px;
-  border-radius: 2px;
-  line-height: 2;
-  color: #5F6C73;
-  font-weight: 600;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none; }
-
-.ko-case_sla-sidebar__data--good {
-  background-color: rgba(137, 168, 59, 0.1); }
-
-.ko-case_sla-sidebar__data--bad {
-  background-color: rgba(232, 96, 72, 0.1); }
-
-.ko-case_sla-sidebar__data--warning {
-  background-color: rgba(236, 198, 69, 0.1); }
-
-.ko-case_sla-sidebar__data--open {
-  background-color: rgba(131, 141, 148, 0.1); }
-
 .ko-cases-list {
   padding: 0 18px;
   width: 100%; }
@@ -4047,15 +3994,6 @@ label {
   -webkit-justify-content: space-between;
       -ms-flex-pack: justify;
           justify-content: space-between; }
-
-.ko-update-log__tooltip {
-  background: #40364D;
-  border-radius: 3px;
-  border: 1px solid #40364D;
-  color: white; }
-  .ko-update-log__tooltip .tooltipster-content {
-    font-size: 12px;
-    line-height: 12px; }
 
 .ko-update-log__log-item {
   display: -webkit-box;
@@ -6643,6 +6581,86 @@ a.ko-admin_plans_index__cancel_1pprhr {
   right: 4.5px;
   color: #A1AAAF; }
 
+/* styles for frontend-cp/components/ko-case/sla-sidebar/metric/styles.css */
+.ko-case_sla-sidebar_metric__label_1md5rg {
+  max-width: 35%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 25%;
+  font-weight: bold; }
+
+.ko-case_sla-sidebar_metric__in_1md5rg {
+  padding-right: 9px;
+  text-align: right; }
+
+.ko-case_sla-sidebar_metric__data_1md5rg {
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 60%;
+  position: relative;
+  padding: 0 9px;
+  border-radius: 2px; }
+
+.ko-case_sla-sidebar_metric__data-content_1md5rg {
+  height: 30px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-align-content: space-between;
+      -ms-flex-line-pack: justify;
+          align-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center; }
+
+.ko-case_sla-sidebar_metric__time_1md5rg {
+  font-size: 12px;
+  color: #5F6C73;
+  line-height: 12px;
+  font-weight: 600; }
+
+.ko-case_sla-sidebar_metric__metric-good_1md5rg {
+  background-color: rgba(137, 168, 59, 0.1); }
+
+.ko-case_sla-sidebar_metric__metric-bad_1md5rg {
+  background-color: rgba(232, 96, 72, 0.1); }
+
+.ko-case_sla-sidebar_metric__metric-warning_1md5rg {
+  background-color: rgba(236, 198, 69, 0.1); }
+
+.ko-case_sla-sidebar_metric__metric-open_1md5rg {
+  background-color: rgba(131, 141, 148, 0.1); }
+
+.ko-case_sla-sidebar_metric__icon-good_1md5rg {
+  color: #89a83b; }
+
+.ko-case_sla-sidebar_metric__icon-bad_1md5rg {
+  color: #E86048; }
+
+.ko-case_sla-sidebar_metric__icon-warning_1md5rg {
+  color: #ECC645; }
+
+.ko-case_sla-sidebar_metric__icon-open_1md5rg {
+  color: #838D94; }
+
+/* styles for frontend-cp/components/ko-case/sla-sidebar/styles.css */
+.ko-case_sla-sidebar__sidebar_1ywlb2 {
+  padding: 0 18px;
+  margin-top: 23px;
+  color: #838D94; }
+
+.ko-case_sla-sidebar__table_1ywlb2 {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 9px;
+  font-size: 12px;
+  margin-top: 3px; }
+
 /* styles for frontend-cp/components/ko-cases-list/column/avatar/styles.css */
 .ko-cases-list_column_avatar__avatar_zybp6x {
   margin-right: 9px; }
@@ -8093,6 +8111,19 @@ a.ko-timeline_item__subtitle_vt1m5j:hover {
 
 .ko-timeline__feed_1klp8h {
   padding: 0 18px 0 36px; }
+
+/* styles for frontend-cp/components/ko-tooltip/styles.css */
+.ko-tooltip__tooltip_qur0qb {
+  background: #40364D;
+  border-radius: 3px;
+  border: 1px solid #40364D;
+  color: white; }
+
+.ko-tooltip__tooltip_qur0qb .tooltipster-content {
+  font-size: 12px;
+  line-height: 16px;
+  padding: 8px 10px;
+  text-align: center; }
 
 /* styles for frontend-cp/components/ko-user-content/styles.css */
 .ko-user-content__modalBottom_1hb3jv {

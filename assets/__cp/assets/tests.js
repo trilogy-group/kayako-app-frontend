@@ -11170,9 +11170,8 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
       var status = statuses[0];
       var priority = server.create('case-priority');
       var type = server.create('type');
-      var slas = server.createList('sla', 10);
-      var sla = slas[0];
-      var caseSlaMetrics = server.createList('case-sla-metric', 3);
+      var slaVersion = server.create('sla-version');
+      var caseSlaMetrics = server.createList('sla-metric', 3);
       var tags = server.createList('tag', 2);
 
       var caseFields = server.createList('case-field', 14);
@@ -11188,7 +11187,7 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
         status: status,
         priority: priority,
         type: type,
-        sla: sla,
+        sla_version: slaVersion,
         sla_metrics: caseSlaMetrics,
         tags: tags,
         custom_fields: [],
