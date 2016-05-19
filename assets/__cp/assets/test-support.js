@@ -12642,6 +12642,8 @@ define('ember-qunit', ['exports', 'ember-qunit/module-for', 'ember-qunit/module-
 define('ember-test-helpers/abstract-test-module', ['exports', 'klassy', 'ember-test-helpers/wait', 'ember-test-helpers/test-context', 'ember'], function (exports, _klassy, _emberTestHelpersWait, _emberTestHelpersTestContext, _ember) {
   'use strict';
 
+  var assign = _ember['default'].assign || _ember['default'].merge;
+
   exports['default'] = _klassy.Klass.extend({
     init: function init(name, options) {
       this.name = name;
@@ -12735,7 +12737,7 @@ define('ember-test-helpers/abstract-test-module', ['exports', 'klassy', 'ember-t
     },
 
     setupContext: function setupContext(options) {
-      var config = _ember['default'].merge({
+      var config = assign({
         dispatcher: null,
         inject: {}
       }, options);
