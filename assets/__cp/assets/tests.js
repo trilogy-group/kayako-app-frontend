@@ -11067,7 +11067,7 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
   });
 });
 /* eslint-disable new-cap */
-define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'ember', 'frontend-cp/session/styles', 'frontend-cp/components/ko-checkbox/styles'], function (exports, _frontendCpTestsHelpersQunit, _ember, _frontendCpSessionStyles, _frontendCpComponentsKoCheckboxStyles) {
+define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'ember', 'frontend-cp/session/styles', 'frontend-cp/components/ko-checkbox/styles', 'frontend-cp/components/ko-info-bar/field/select/trigger/styles'], function (exports, _frontendCpTestsHelpersQunit, _ember, _frontendCpSessionStyles, _frontendCpComponentsKoCheckboxStyles, _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles) {
 
   var originalConfirm = window.confirm;
 
@@ -11409,7 +11409,7 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
       var _this = this;
 
       assert.equal(find('.ko-info-bar_field_drill-down__placeholder').text(), 'No Changes');
-      find('.ko-info-bar_field_select__placeholder').each(function (index, placeholder) {
+      find('.' + _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles['default'].placeholder).each(function (index, placeholder) {
         assert.equal(_this.$(placeholder).text(), 'No Changes');
       });
       assert.ok(find('button[name=update-cases]').hasClass('disabled'));
@@ -11504,7 +11504,7 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
       var _this2 = this;
 
       assert.equal(find('.ko-info-bar_field_drill-down__placeholder').text(), 'No Changes');
-      find('.ko-info-bar_field_select__placeholder').each(function (index, placeholder) {
+      find('.' + _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles['default'].placeholder).each(function (index, placeholder) {
         assert.equal(_this2.$(placeholder).text(), 'No Changes');
       });
       assert.equal(find('.fields div:nth-child(5) ul').text().trim(), '');
@@ -13463,7 +13463,7 @@ define('frontend-cp/tests/acceptance/agent/users/create-test', ['exports', 'fron
     });
   });
 });
-define('frontend-cp/tests/acceptance/agent/users/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/helpers/dom-helpers'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsHelpersDomHelpers) {
+define('frontend-cp/tests/acceptance/agent/users/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/helpers/dom-helpers', 'frontend-cp/components/ko-info-bar/field/select/trigger/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsHelpersDomHelpers, _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles) {
 
   var customer = undefined,
       owner = undefined;
@@ -13520,13 +13520,13 @@ define('frontend-cp/tests/acceptance/agent/users/edit-test', ['exports', 'fronte
     visit('/agent/users/' + owner.id);
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-user-content__case-access-field .ko-info-bar_field_select__placeholder'), 'All cases', 'Case access field initial value is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-user-content__case-access-field .' + _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles['default'].placeholder), 'All cases', 'Case access field initial value is correct');
     });
 
     selectChoose('.qa-user-content__case-access-field .ember-power-select', 'Cases assigned to agent');
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-user-content__case-access-field .ko-info-bar_field_select__placeholder'), 'Cases assigned to agent', 'Case access field changed value is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-user-content__case-access-field .' + _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles['default'].placeholder), 'Cases assigned to agent', 'Case access field changed value is correct');
     });
 
     click('.button--primary');
@@ -13547,13 +13547,13 @@ define('frontend-cp/tests/acceptance/agent/users/edit-test', ['exports', 'fronte
     visit('/agent/users/' + customer.id);
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-user-content__case-access-field .ko-info-bar_field_select__placeholder'), 'Only requested cases', 'Case access field initial value is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-user-content__case-access-field .' + _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles['default'].placeholder), 'Only requested cases', 'Case access field initial value is correct');
     });
 
     selectChoose('.qa-user-content__case-access-field .ember-power-select', 'All organization\'s cases');
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-user-content__case-access-field .ko-info-bar_field_select__placeholder'), 'All organization\'s cases', 'Case access field changed value is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-user-content__case-access-field .' + _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles['default'].placeholder), 'All organization\'s cases', 'Case access field changed value is correct');
     });
 
     click('.button--primary');
@@ -13578,7 +13578,7 @@ define('frontend-cp/tests/acceptance/agent/users/edit-test', ['exports', 'fronte
     visit('/agent/users/' + customer.id);
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-user-content__role-field .ko-info-bar_field_select__placeholder'), 'Customer', 'Role field initial value is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-user-content__role-field .' + _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles['default'].placeholder), 'Customer', 'Role field initial value is correct');
     });
 
     selectChoose('.ko-user-content__role-field .ember-power-select', 'Collaborator');
@@ -13606,7 +13606,7 @@ define('frontend-cp/tests/acceptance/agent/users/edit-test', ['exports', 'fronte
     visit('/agent/users/' + owner.id);
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-user-content__role-field .ko-info-bar_field_select__placeholder'), 'Owner', 'Role field initial value is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-user-content__role-field .' + _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles['default'].placeholder), 'Owner', 'Role field initial value is correct');
     });
 
     selectChoose('.ko-user-content__role-field .ember-power-select', 'Customer');
