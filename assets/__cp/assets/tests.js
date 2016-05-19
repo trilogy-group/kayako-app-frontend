@@ -1556,7 +1556,6 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
         return el.textContent.trim() === dayText;
       });
       click(dayCell);
-
       click('.button[name=submit]');
     });
 
@@ -1574,47 +1573,53 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     });
   });
 
-  // test('Creating a monitor with "ENDPOINT_HTTP_XML" action', function(assert) {
-  //   assert.expect(11);
-  //   server.create('automation-action-definition', {
-  //     label: 'Some data thing',
-  //     name: 'endpoint_3',
-  //     options: ['SEND'],
-  //     input_type: 'ENDPOINT_HTTP_XML',
-  //     value_type: 'STRING',
-  //     values: [],
-  //     attributes: [],
-  //     group: 'ENDPOINT',
-  //     resource_type: 'automation_action_definition'
-  //   });
+  (0, _frontendCpTestsHelpersQunit.test)('Creating a monitor with a "MULTIPLE" action', function (assert) {
+    assert.expect(10);
+    server.create('automation-action-definition', {
+      label: 'Bug Test',
+      name: 'customfield_86',
+      options: ['ADD', 'REMOVE'],
+      input_type: 'MULTIPLE',
+      value_type: 'COLLECTION',
+      values: {
+        57: 'aaa111',
+        58: 'aaa112',
+        59: 'aaa113',
+        60: 'aaa114'
+      },
+      attributes: [],
+      group: 'CUSTOM_FIELD',
+      resource_type: 'automation_action_definition'
+    });
+    visit('/admin/automation/monitors/new');
 
-  //   visit('/admin/automation/monitors/new');
-  //   andThen(function() {
-  //     assert.equal(currentURL(), '/admin/automation/monitors/new');
-  //     fillIn('input[name="title"]', 'Sample monitor name');
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/new');
+      fillIn('input[name="title"]', 'Sample monitor name');
 
-  //     fillPredicateCollections();
+      fillPredicateCollections();
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Bug Test');
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(1)', 'Add');
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'aaa112');
+      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'aaa114');
+      click('.button[name=submit]');
+    });
 
-  //     selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Some data thing');
-  //     fillIn('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2) input', 'foobar');
-  //     click('.button[name=submit]');
-  //   });
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
+    });
 
-  //   andThen(function() {
-  //     assert.equal(currentURL(), '/admin/automation/monitors');
-  //     assert.equal(find(`.qa-admin_monitors--disabled .${rowStyles.row}`).length, 1, 'The monitor has been created and it is disabled');
-  //     assert.equal(find(`.qa-admin_monitors--enabled .${rowStyles.row}`).length, 0, 'There is no enabled monitors');
-  //     click('.' + rowStyles['row--actionable']);
-  //   });
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/1');
+      assertPredicateCollestionsAreCorrect(assert);
 
-  //   andThen(function() {
-  //     assert.equal(currentURL(), '/admin/automation/monitors/1');
-  //     assertPredicateCollestionsAreCorrect(assert);
-  //     assert.equal($('.ko-automation-actions-builder__small-slot:eq(0) .ember-power-select-trigger').text().trim(), 'Endpoint: Some data thing');
-  //     assert.equal($('.ko-automation-actions-builder__small-slot:eq(1) .ember-power-select-trigger').text().trim(), 'Send');
-  //     assert.equal(find('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2) input').val(), 'foobar');
-  //   });
-  // });
+      assert.equal($('.ko-automation-actions-builder__small-slot:eq(2) .ember-power-select-multiple-option:eq(0)').text().trim(), 'aaa112');
+      assert.equal($('.ko-automation-actions-builder__small-slot:eq(2) .ember-power-select-multiple-option:eq(1)').text().trim(), 'aaa114');
+    });
+  });
 
   (0, _frontendCpTestsHelpersQunit.test)('Creating a monitor with a "Stop processing other rules" action', function (assert) {
     assert.expect(9);
