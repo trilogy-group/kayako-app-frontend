@@ -147,6 +147,16 @@
   "sla.title.FIRST_REPLY_TIME": "First reply",
   "sla.title.NEXT_REPLY_TIME": "Next reply",
 
+  "sla.in": "in",
+  "sla.tooltip.metric.RESOLUTION_TIME": "Resolution",
+  "sla.tooltip.metric.FIRST_REPLY_TIME": "First reply",
+  "sla.tooltip.metric.NEXT_REPLY_TIME": "Next reply",
+  "sla.tooltip.made": "made",
+  "sla.tooltip.due": "due",
+  "sla.tooltip.operational_hours.BUSINESS_HOURS": "business hours",
+  "sla.tooltip.operational_hours.CALENDAR_HOURS": "calendar hours",
+  "sla.tooltip.sentence": "{metric} {made_due} at <strong>{due_time}</strong>.<br/>Due time calculated according to <strong>{operational_hours}</strong>.",
+
   "reply.click_to_start": "Click to start a",
   "reply.or_leave_a": "or leave a",
   "reply.note": "Note",
