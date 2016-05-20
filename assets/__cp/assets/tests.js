@@ -6134,6 +6134,263 @@ define('frontend-cp/tests/acceptance/admin/manage/macros/new-test', ['exports', 
     });
   });
 });
+define('frontend-cp/tests/acceptance/admin/manage/views/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+
+  var originalConfirm = undefined;
+  var view = undefined;
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/manage/views/new', {
+    beforeEach: function beforeEach() {
+      /*eslint-disable quote-props*/
+      server.create('locale', {
+        locale: 'en-us'
+      });
+
+      var columns = [server.create('column', { name: 'caseid' }), server.create('column', { name: 'subject' }), server.create('column', { name: 'casestatusid' }), server.create('column', { name: 'casepriorityid' }), server.create('column', { name: 'casetypeid' }), server.create('column', { name: 'assigneeagentid' }), server.create('column', { name: 'assigneeteamid' }), server.create('column', { name: 'brandid' }), server.create('column', { name: 'channeltype' }), server.create('column', { name: 'createdat' }), server.create('column', { name: 'updatedat' }), server.create('column', { name: 'requesterid' })];
+
+      var businesshour = server.create('business-hour', { title: 'Default Business Hours' });
+      var teams = [server.create('team', { title: 'Sales', businesshour: businesshour }), server.create('team', { title: 'Support', businesshour: businesshour }), server.create('team', { title: 'Finance', businesshour: businesshour }), server.create('team', { title: 'Human Resources', businesshour: businesshour }), server.create('team', { title: 'Contractors', businesshour: businesshour })];
+
+      server.create('definition', {
+        label: 'Subject',
+        field: 'cases.subject',
+        type: 'STRING',
+        sub_type: '',
+        group: 'CASES',
+        input_type: 'STRING',
+        operators: ['string_contains', 'string_does_not_contain'],
+        values: ''
+      });
+
+      server.create('definition', {
+        label: 'Status',
+        field: 'cases.casestatusid',
+        type: 'NUMERIC',
+        sub_type: 'INTEGER',
+        group: 'CASES',
+        input_type: 'OPTIONS',
+        operators: ['comparison_equalto', 'comparison_not_equalto', 'comparison_lessthan', 'comparison_greaterthan'],
+        values: {
+          '5': 'Closed',
+          '4': 'Completed',
+          '1': 'New',
+          '2': 'Open',
+          '3': 'Pending'
+        }
+      });
+
+      server.create('definition', {
+        label: 'Type',
+        field: 'cases.casetypeid',
+        type: 'NUMERIC',
+        sub_type: 'INTEGER',
+        group: 'CASES',
+        input_type: 'OPTIONS',
+        operators: ['comparison_equalto', 'comparison_not_equalto'],
+        values: {
+          '4': 'Incident',
+          '3': 'Problem',
+          '1': 'Question',
+          '2': 'Task'
+        }
+      });
+
+      server.create('definition', {
+        label: 'Priority',
+        field: 'cases.casepriorityid',
+        type: 'NUMERIC',
+        sub_type: 'INTEGER',
+        group: 'CASES',
+        input_type: 'OPTIONS',
+        operators: ['comparison_equalto', 'comparison_not_equalto', 'comparison_lessthan', 'comparison_greaterthan'],
+        values: {
+          '3': 'High',
+          '1': 'Low',
+          '2': 'Normal',
+          '4': 'Urgent'
+        }
+      });
+
+      server.create('definition', {
+        label: 'State',
+        field: 'cases.state',
+        type: 'NUMERIC',
+        sub_type: 'INTEGER',
+        group: 'CASES',
+        input_type: 'OPTIONS',
+        operators: ['comparison_equalto'],
+        values: {
+          '1': 'Active',
+          '3': 'Spam',
+          '2': 'Trash'
+        }
+      });
+
+      server.create('definition', {
+        label: 'Brand',
+        field: 'cases.brandid',
+        type: 'NUMERIC',
+        sub_type: 'INTEGER',
+        group: 'CASES',
+        input_type: 'OPTIONS',
+        operators: ['comparison_equalto', 'comparison_not_equalto'],
+        values: {
+          '1': 'Default'
+        }
+      });
+
+      server.create('definition', {
+        label: 'Assigned Agent Team',
+        field: 'cases.assigneeteamid',
+        type: 'NUMERIC',
+        sub_type: 'INTEGER',
+        group: 'CASES',
+        input_type: 'OPTIONS',
+        operators: ['comparison_equalto', 'comparison_not_equalto'],
+        values: {
+          '0': 'unassigned',
+          '(current users team)': '(current users team)',
+          '5': 'Contractors',
+          '3': 'Finance',
+          '4': 'Human Resources',
+          '1': 'Sales',
+          '2': 'Support'
+        }
+      });
+
+      server.create('definition', {
+        label: 'Assigned agent',
+        field: 'cases.assigneeagentid',
+        type: 'NUMERIC',
+        sub_type: 'INTEGER',
+        group: 'CASES',
+        input_type: 'AUTOCOMPLETE',
+        operators: ['comparison_equalto', 'comparison_not_equalto'],
+        values: ''
+      });
+
+      server.create('definition', {
+        label: 'Requester',
+        field: 'cases.requesterid',
+        type: 'NUMERIC',
+        sub_type: 'INTEGER',
+        group: 'CASES',
+        input_type: 'AUTOCOMPLETE',
+        operators: ['comparison_equalto', 'comparison_not_equalto'],
+        values: ''
+      });
+
+      server.create('definition', {
+        label: 'Tags',
+        field: 'tags.name',
+        type: 'COLLECTION',
+        sub_type: '',
+        group: 'CASES',
+        input_type: 'TAGS',
+        operators: ['collection_contains_insensitive', 'collection_does_not_contain_insensitive', 'collection_contains_any_insensitive'],
+        values: ''
+      });
+
+      server.create('definition', {
+        label: 'Organisation',
+        field: 'users.organizationid',
+        type: 'NUMERIC',
+        sub_type: 'INTEGER',
+        group: 'CASES',
+        input_type: 'AUTOCOMPLETE',
+        operators: ['comparison_equalto', 'comparison_not_equalto'],
+        values: ''
+      });
+
+      server.create('definition', {
+        label: 'Following',
+        field: 'followers.userid',
+        type: 'NUMERIC',
+        sub_type: 'INTEGER',
+        group: 'CASES',
+        input_type: 'OPTIONS',
+        operators: ['comparison_equalto', 'comparison_not_equalto'],
+        values: {
+          '(current user)': '(current user)'
+        }
+      });
+
+      server.create('definition', {
+        label: 'SLA Breached',
+        field: 'caseslametrics.isbreached',
+        type: 'NUMERIC',
+        sub_type: 'INTEGER',
+        group: 'CASES',
+        input_type: 'OPTIONS',
+        operators: ['comparison_equalto', 'comparison_not_equalto'],
+        values: {
+          '1': 'breached'
+        }
+      });
+
+      var adminRole = server.create('role', { type: 'ADMIN' });
+      var locale = server.create('locale', { locale: 'en-us' });
+      var agent = server.create('user', { role: adminRole, locale: locale });
+      var session = server.create('session', { user: agent });
+      login(session.id);
+      server.create('view');
+      server.create('plan', {
+        limits: [],
+        features: []
+      });
+      var stringProposition = server.create('proposition', {
+        field: 'cases.subject',
+        operator: 'string_contains',
+        value: 'dave'
+      });
+      var predicateCollections = [server.create('predicate-collection', { propositions: [stringProposition] })];
+      view = server.create('view', {
+        title: 'Engineering',
+        type: 'CUSTOM',
+        visibility_type: 'TEAM',
+        order_by_column: 'createdat',
+        order_by: 'DESC',
+        is_default: false,
+        is_system: false,
+        is_enabled: true,
+        agent: { id: agent.id, resource_type: 'user' },
+        visibility_to_teams: teams.map(function (t) {
+          return { id: t.id, resource_type: 'team' };
+        }),
+        columns: columns.map(function (c) {
+          return { name: c.name, resource_type: 'column' };
+        }),
+        predicate_collections: predicateCollections.map(function (pc) {
+          return { id: pc.id, resource_type: 'predicate_collection' };
+        })
+      });
+      /*eslint-enable quote-props*/
+    },
+
+    afterEach: function afterEach() {
+      window.confirm = originalConfirm;
+      logout();
+    }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('editing a view and leaving without making changes', function (assert) {
+    window.confirm = function (message) {
+      assert.ok(false, 'This confirm shouln\'t be invoked');
+      return true;
+    };
+
+    visit('/admin/manage/views/' + view.id);
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/manage/views/' + view.id);
+      click('.button[name=cancel]:first');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/manage/views');
+    });
+  });
+});
 define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
 
   var originalConfirm = undefined;
@@ -6745,6 +7002,23 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/views/new');
       fillIn('input.ko-admin_views_edit__title', fieldTitle);
+      click('.button[name=cancel]:first');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/manage/views');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('creating a new view and cancelling without changes', function (assert) {
+    window.confirm = function (message) {
+      assert.ok(false, 'this confirm should never be called');
+      return true;
+    };
+
+    visit('/admin/manage/views/new');
+
+    andThen(function () {
       click('.button[name=cancel]:first');
     });
 
