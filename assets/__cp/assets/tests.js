@@ -3201,6 +3201,179 @@ define('frontend-cp/tests/acceptance/admin/channels/email/new-test', ['exports',
     });
   });
 });
+define('frontend-cp/tests/acceptance/admin/manage/brands/list-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles) {
+  var _slicedToArray = (function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i['return']) _i['return'](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError('Invalid attempt to destructure non-iterable instance'); } }; })();
+
+  var getEnabledRows = function getEnabledRows() {
+    return find('.qa-brands-enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row);
+  };
+  exports.getEnabledRows = getEnabledRows;
+  var getDisabledRows = function getDisabledRows() {
+    return find('.qa-brands-disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row);
+  };
+
+  exports.getDisabledRows = getDisabledRows;
+  var assertRow = function assertRow(assert, row, _ref) {
+    var _ref2 = _slicedToArray(_ref, 3);
+
+    var name = _ref2[0];
+    var domain = _ref2[1];
+    var _ref2$2 = _ref2[2];
+    var options = _ref2$2 === undefined ? [] : _ref2$2;
+
+    assert.ok(row.text().indexOf(name) !== -1, 'Name is correct');
+
+    var isDefault = options.indexOf('isDefault') !== -1;
+    assert[isDefault ? 'ok' : 'notOk'](row.text().indexOf('(Default)') !== -1, name + ': (Default)');
+
+    triggerEvent(row, 'mouseenter');
+    andThen(function () {
+      var canEdit = options.indexOf('canEdit') !== -1;
+      assert[canEdit ? 'ok' : 'notOk'](row.find('a').text().indexOf('Edit') !== -1, name + ': Can be edited');
+
+      var canDisable = options.indexOf('canDisable') !== -1;
+      assert[canDisable ? 'ok' : 'notOk'](row.find('a').text().indexOf('Disable') !== -1, name + ': Can be disabled');
+
+      var canEnable = options.indexOf('canEnable') !== -1;
+      assert[canEnable ? 'ok' : 'notOk'](row.find('a').text().indexOf('Enable') !== -1, name + ': Can be enabled');
+
+      var canMakeDefault = options.indexOf('canMakeDefault') !== -1;
+      assert[canMakeDefault ? 'ok' : 'notOk'](row.find('a').text().indexOf('Make default') !== -1, name + ': Can be made default');
+
+      var canDelete = options.indexOf('canDelete') !== -1;
+      assert[canDelete ? 'ok' : 'notOk'](row.find('a').text().indexOf('Delete') !== -1, name + ': Can be removed');
+    });
+    triggerEvent(row, 'mouseleave');
+  };
+
+  exports.assertRow = assertRow;
+  var assertRows = function assertRows(assert) {
+    var enabled = arguments.length <= 1 || arguments[1] === undefined ? [] : arguments[1];
+    var disabled = arguments.length <= 2 || arguments[2] === undefined ? [] : arguments[2];
+
+    var enabledRows = getEnabledRows();
+    var disabledRows = getDisabledRows();
+    assert.equal(enabledRows.length, enabled.length, 'Enabled language count');
+    assert.equal(disabledRows.length, disabled.length, 'Disabled language count');
+
+    enabled.forEach(function (row, index) {
+      return assertRow(assert, enabledRows.eq(index), row);
+    });
+    disabled.forEach(function (row, index) {
+      return assertRow(assert, disabledRows.eq(index), row);
+    });
+  };
+
+  exports.assertRows = assertRows;
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/manage/brands', {
+    beforeEach: function beforeEach() {
+      var en = server.create('locale', { id: 1, locale: 'en-us', name: 'English', is_public: true, is_localised: true });
+
+      server.create('brand', { id: 1, locale: en, is_enabled: true, name: 'Default', domain: 'kayako.com', sub_domain: 'support', is_default: true });
+      server.create('brand', { id: 2, locale: en, is_enabled: true, name: 'Custom Alias', domain: 'kayako.com', sub_domain: 'custom_alais', is_default: false, alias: 'example.com' });
+      server.create('brand', { id: 3, locale: en, is_enabled: false, name: 'Disabled', domain: 'kayako.com', sub_domain: 'disabled', is_default: false });
+
+      var role = server.create('role', { type: 'ADMIN' });
+      var user = server.create('user', { role: role, locale: en });
+      var session = server.create('session', { user: user });
+
+      server.create('plan', {
+        limits: [],
+        features: []
+      });
+
+      login(session.id);
+    },
+
+    afterEach: function afterEach() {
+      logout();
+    }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('listing brands', function (assert) {
+    visit('/admin/manage/brands');
+    andThen(function () {
+      assertRows(assert, [['Default', 'support.kayako.com', ['isDefault', 'canEdit']], ['Custom Alias', 'example.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']]], [['Disabled', 'disabled.kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('disabling a brand', function (assert) {
+    visit('/admin/manage/brands');
+    andThen(function () {
+      return triggerEvent(getEnabledRows().eq(1), 'mouseenter');
+    });
+    andThen(function () {
+      return click(getEnabledRows().eq(1).find('.qa-brand-disable'));
+    });
+    andThen(function () {
+      assertRows(assert, [['Default', 'support.kayako.com', ['isDefault', 'canEdit']]], [['Custom Alias', 'example.com', ['canEdit', 'canEnable', 'canDelete']], ['Disabled', 'disabled.kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('enabling a brand', function (assert) {
+    visit('/admin/manage/brands');
+    andThen(function () {
+      return triggerEvent(getDisabledRows().eq(0), 'mouseenter');
+    });
+    andThen(function () {
+      return click(getDisabledRows().eq(0).find('.qa-brand-enable'));
+    });
+    andThen(function () {
+      assertRows(assert, [['Default', 'support.kayako.com', ['isDefault', 'canEdit']], ['Custom Alias', 'example.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']], ['Disabled', 'disabled.kayako.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']]], []);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('deleting a brand', function (assert) {
+    visit('/admin/manage/brands');
+    andThen(function () {
+      return triggerEvent(getEnabledRows().eq(1), 'mouseenter');
+    });
+    andThen(function () {
+      return confirming(true, function () {
+        click(getEnabledRows().eq(1).find('.qa-brand-delete'));
+      });
+    });
+    andThen(function () {
+      assertRows(assert, [['Default', 'support.kayako.com', ['isDefault', 'canEdit']]], [['Disabled', 'disabled.kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('making a brand default', function (assert) {
+    visit('/admin/manage/brands');
+    andThen(function () {
+      return triggerEvent(getEnabledRows().eq(1), 'mouseenter');
+    });
+    andThen(function () {
+      return click(getEnabledRows().eq(1).find('.qa-brand-make-default'));
+    });
+    andThen(function () {
+      assertRows(assert, [['Default', 'support.kayako.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']], ['Custom Alias', 'example.com', ['isDefault', 'canEdit']]], [['Disabled', 'disabled.kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
+    });
+  });
+  //
+  (0, _frontendCpTestsHelpersQunit.test)('opening a brand edit page by clicking on the row', function (assert) {
+    visit('/admin/manage/brands');
+    andThen(function () {
+      return click(getEnabledRows().eq(0));
+    });
+    andThen(function () {
+      return assert.equal(currentURL(), '/admin/manage/brands/1');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('opening a brand edit page by clicking on the edit link', function (assert) {
+    visit('/admin/manage/brands');
+    andThen(function () {
+      return triggerEvent(getEnabledRows().eq(0), 'mouseenter');
+    });
+    andThen(function () {
+      return click(getEnabledRows().eq(0).find('.qa-brand-edit'));
+    });
+    andThen(function () {
+      return assert.equal(currentURL(), '/admin/manage/brands/1');
+    });
+  });
+});
 define('frontend-cp/tests/acceptance/admin/manage/case-fields/delete-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles) {
 
   var originalConfirm = undefined;
