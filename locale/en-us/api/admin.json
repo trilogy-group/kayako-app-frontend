@@ -652,7 +652,7 @@
   "email.enabled.message": "Email enabled successfully",
   "email.disabled.message": "Email disabled successfully",
   "email.deleted.message": "Email deleted successfully",
-  "email.default.message": "Email successfully made successfully",
+  "email.default.message": "Email successfully made default",
   "email.settings.heading.receiving_email": "Receiving email",
   "email.settings.heading.sending_email": "Sending email",
   "email.settings.heading.receiving_email": "Receiving email",
@@ -701,5 +701,14 @@
   "localization.settings.default_language.description": "This is the default language for your Kayako account that will be used if a user has not specified their own (see the 'Languages' tab to change which languages your customers will be able to choose from in the Help Center).",
   "localization.settings.timezone.title": "Timezone",
   "localization.settings.timezone.description": "Choose the default timezone for your Kayako. Wherever you see time and dates, they will be displayed relative to this timezone, unless the user has specified their own timezone under their user profile.",
-  "localization.settings.time_format.title": "Time format"
+  "localization.settings.time_format.title": "Time format",
+
+  "brands.title": "Brands",
+  "brands.headings.index": "Brands",
+  "brands.enabled.message": "Brand enabled successfully",
+  "brands.disabled.message": "Brand disabled successfully",
+  "brands.delete.message": "Deleting a Brand will delete its Help Center, all its content and all of your template customizations. This is not reversible. Are you sure you wish to continue?",
+  "brands.deleted.message": "Brand deleted successfully",
+  "brands.default.message": "Brand successfully made default",
+  "brands.buttons.add_brand": "Create a new Brand"
 }
