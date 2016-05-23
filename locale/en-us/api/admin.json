@@ -572,6 +572,8 @@
   "roles.form.users_and_organization_fields_manage_permission_help": "Allows this admin to create, update and delete custom user and organization profile fields.",
   "roles.form.settings_manage_permission_label": "Manage system configuration",
   "roles.form.settings_manage_permission_help": "Allows the admin to manage system settings and configuration, such as security settings, authentication options and blacklists.",
+  "roles.form.localization_manage_permission_label": "Manage localization",
+
 
   "sla.title": "SLA",
   "sla.service_level_agreements": "Service Level Agreements",
