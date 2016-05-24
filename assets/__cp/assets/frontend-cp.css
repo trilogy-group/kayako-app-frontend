@@ -2350,82 +2350,6 @@ img {
   white-space: nowrap;
   width: 350px; }
 
-.ko-session-agent-cases-index {
-  margin: 40px 45px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  overflow: hidden;
-  background-color: #ffffff;
-  border: 1px solid #d1d5d7;
-  border-radius: 2px;
-  min-height: 500px; }
-
-.ko-session-agent-cases-index__sidebar {
-  width: 300px;
-  min-width: 200px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  border-right: 1px solid #d1d5d7; }
-  .ko-session-agent-cases-index__sidebar .liquid-child {
-    width: 100%;
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -webkit-flex-direction: column;
-        -ms-flex-direction: column;
-            flex-direction: column; }
-
-.ko-session-agent-cases-index__content {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
-  overflow: auto; }
-
-.ko-session-agent-cases-index__pagination {
-  height: 220px;
-  position: absolute;
-  right: 0;
-  bottom: 0; }
-
-.suspended-message-modal__header-text {
-  font-size: 18px;
-  font-weight: 600; }
-
-.suspended-message-modal__footer {
-  text-align: right;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: end;
-  -webkit-align-items: flex-end;
-      -ms-flex-align: end;
-          align-items: flex-end;
-  -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-      -ms-flex-pack: end;
-          justify-content: flex-end; }
-
-.suspended-message-modal__button {
-  margin-left: 9px; }
-
-.suspended-message-modal__table td {
-  vertical-align: top;
-  padding: 9px; }
-
-.suspended-message-modal__text {
-  height: 200px;
-  overflow-y: scroll;
-  word-break: break-all; }
-
 .ko-admin-card-team {
   width: 100%;
   margin-bottom: 18px;
@@ -2580,6 +2504,20 @@ img {
   margin-top: 15px;
   font-size: 12px;
   text-align: left; }
+
+.footer {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+      -ms-flex-pack: end;
+          justify-content: flex-end; }
 
 .ko-admin_holidays_edit {
   padding-top: 18px;
@@ -6148,6 +6086,20 @@ span#HW_badge.HW_softHidden {
   font-size: 12px;
   text-align: left; }
 
+.ko-admin_facebook_index__footer_52r50f {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+      -ms-flex-pack: end;
+          justify-content: flex-end; }
+
 /* styles for frontend-cp/components/ko-admin/forms/group/styles.css */
 .ko-admin_forms_group__group_8wtptf {
   padding: 18px 0 27px 0;
@@ -7733,6 +7685,85 @@ a.ko-timeline_item__subtitle_vt1m5j:hover {
 .session_admin_people_teams_index__team_1tvsvh {
   width: 50%;
   padding-left: 18px; }
+
+/* styles for frontend-cp/session/agent/cases/index/styles.css */
+.session_agent_cases_index__index_1luxbl {
+  margin: 40px 45px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  overflow: hidden;
+  background-color: #ffffff;
+  border: 1px solid #d1d5d7;
+  border-radius: 2px;
+  min-height: 500px; }
+
+.session_agent_cases_index__sidebar_1luxbl {
+  width: 300px;
+  min-width: 200px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-right: 1px solid #d1d5d7; }
+
+.session_agent_cases_index__sidebar_1luxbl .liquid-child {
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column; }
+
+.session_agent_cases_index__content_1luxbl {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  overflow: auto;
+  position: relative; }
+
+.session_agent_cases_index__pagination_1luxbl {
+  height: 220px;
+  position: absolute;
+  right: 0;
+  bottom: 0; }
+
+/* styles for frontend-cp/session/agent/cases/index/suspended-messages/show/styles.css */
+.session_agent_cases_index_suspended-messages_show__header-text_84d628 {
+  font-size: 18px;
+  font-weight: 600; }
+
+.session_agent_cases_index_suspended-messages_show__footer_84d628 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+      -ms-flex-pack: end;
+          justify-content: flex-end; }
+
+.session_agent_cases_index_suspended-messages_show__button_84d628 {
+  margin-left: 9px; }
+
+.session_agent_cases_index_suspended-messages_show__table-row_84d628 {
+  vertical-align: top;
+  padding: 9px; }
+
+.session_agent_cases_index_suspended-messages_show__modal-text_84d628 {
+  height: 200px;
+  overflow-y: scroll;
+  word-break: break-all; }
 
 /* styles for frontend-cp/session/agent/cases/index/suspended-messages/styles.css */
 .session_agent_cases_index_suspended-messages__section_1qhp96 {
