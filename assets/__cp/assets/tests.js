@@ -61,6 +61,93 @@ define('frontend-cp/tests/acceptance/admin/account/billing/index-test', ['export
     });
   });
 });
+define('frontend-cp/tests/acceptance/admin/account/overview/index-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/account/overview Index', {
+    beforeEach: function beforeEach() {
+      /*eslint-disable camelcase*/
+      var locale = server.create('locale', { locale: 'en-us' });
+      server.create('plan', { limits: [], features: [] });
+      var adminRole = server.create('role', { type: 'ADMIN' });
+      var agent = server.create('user', { role: adminRole, locale: locale });
+      var session = server.create('session', { user: agent });
+      server.createList('invoice', 5);
+      login(session.id);
+    },
+
+    afterEach: function afterEach() {
+      logout();
+    }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('visiting /admin/account/overview', function (assert) {
+    visit('/admin/account/overview');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/account/overview');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('listing invoices', function (assert) {
+    visit('/admin/account/overview');
+
+    andThen(function () {
+      assert.equal(find('.invoice-item').length, 5);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('opening cancel subscription modal', function (assert) {
+    visit('/admin/account/overview');
+
+    andThen(function () {
+      click('.cancel-subscription');
+    });
+
+    andThen(function () {
+      assert.equal(find('.cancel-subscription-modal').length, 1);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('closing cancel subscription modal', function (assert) {
+    visit('/admin/account/overview');
+
+    andThen(function () {
+      click('.cancel-subscription');
+      click('.revert-subscription');
+    });
+
+    andThen(function () {
+      assert.equal(find('.cancel-subscription-modal').length, 0);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('cancel subscription successfully', function (assert) {
+    visit('/admin/account/overview');
+
+    andThen(function () {
+      click('.cancel-subscription');
+      click('.end-subscription');
+    });
+
+    andThen(function () {
+      assert.equal(find('.ko-toast').length, 1);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('cancel subscription successfully even after moving to different route', function (assert) {
+    visit('/admin/account/overview');
+
+    andThen(function () {
+      click('.cancel-subscription');
+      click('.end-subscription');
+      visit('/admin');
+    });
+
+    andThen(function () {
+      assert.equal(find('.ko-toast').length, 1);
+    });
+  });
+});
 define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-admin/plans/index/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoAdminPlansIndexStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/account/plans Index', {
