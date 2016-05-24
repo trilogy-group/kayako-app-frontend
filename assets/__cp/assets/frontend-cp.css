@@ -630,7 +630,7 @@ textarea {
 /*
 	Brand configuration
    ========================================================================== */
-.ko-agent-dropdown__nav-item:focus, .ko-case_macro-selector .ember-power-select-search input:focus, .checkbox:focus, .ko-radio__container:focus, .ko-toggle__container:focus, .ko-input__input_33c6q8:focus, .ko-case_macro-selector_trigger__trigger_6p3bsw:focus, .ko-checkbox__checkbox_va0kgl:focus {
+.ko-agent-dropdown__nav-item:focus, .ko-case_macro-selector .ember-power-select-search input:focus, .checkbox:focus, .ko-radio__container:focus, .ko-toggle__container:focus, .ko-input__input_33c6q8:focus, .ko-admin_brands_form_domain-input__container_1hdt0q.ko-admin_brands_form_domain-input__focused_1hdt0q, .ko-case_macro-selector_trigger__trigger_6p3bsw:focus, .ko-checkbox__checkbox_va0kgl:focus {
   outline: none;
   border-color: #4EAFCB;
   box-shadow: 0 0 4px 0 rgba(78, 174, 203, 0.65), inset 0 1px 1px 0 rgba(0, 0, 0, 0.08); }
@@ -5998,6 +5998,49 @@ span#HW_badge.HW_softHidden {
 
 .ko-admin_billing_index__cards-group_2k63to {
   padding-top: 5px; }
+
+/* styles for frontend-cp/components/ko-admin/brands/form/domain-input/styles.css */
+.ko-admin_brands_form_domain-input__container_1hdt0q {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-radius: 2px;
+  border: 1px solid #D1D5D7;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05);
+  -webkit-transition: border-color 0.1s, box-shadow 0.1s;
+  transition: border-color 0.1s, box-shadow 0.1s;
+  width: 285px; }
+
+.ko-admin_brands_form_domain-input__input_1hdt0q {
+  line-height: 18px;
+  padding: 5px 9px;
+  border-width: 0px;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  outline: none;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1; }
+
+.ko-admin_brands_form_domain-input__input_1hdt0q:disabled {
+  background-color: #eeeeee;
+  opacity: 0.8;
+  color: #A1AAAF; }
+
+.ko-admin_brands_form_domain-input__domain_1hdt0q {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: #F1F1F1;
+  padding: 0 10px; }
 
 /* styles for frontend-cp/components/ko-admin/case-fields/edit/priorities/styles.css */
 .ko-admin_case-fields_edit_priorities__buttons_255vxi {
