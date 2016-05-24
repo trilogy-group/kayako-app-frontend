@@ -572,6 +572,8 @@
   "roles.form.users_and_organization_fields_manage_permission_help": "Allows this admin to create, update and delete custom user and organization profile fields.",
   "roles.form.settings_manage_permission_label": "Manage system configuration",
   "roles.form.settings_manage_permission_help": "Allows the admin to manage system settings and configuration, such as security settings, authentication options and blacklists.",
+  "roles.form.localization_manage_permission_label": "Manage localization",
+
 
   "sla.title": "SLA",
   "sla.service_level_agreements": "Service Level Agreements",
@@ -650,7 +652,7 @@
   "email.enabled.message": "Email enabled successfully",
   "email.disabled.message": "Email disabled successfully",
   "email.deleted.message": "Email deleted successfully",
-  "email.default.message": "Email successfully made successfully",
+  "email.default.message": "Email successfully made default",
   "email.settings.heading.receiving_email": "Receiving email",
   "email.settings.heading.sending_email": "Sending email",
   "email.settings.heading.receiving_email": "Receiving email",
@@ -699,5 +701,24 @@
   "localization.settings.default_language.description": "This is the default language for your Kayako account that will be used if a user has not specified their own (see the 'Languages' tab to change which languages your customers will be able to choose from in the Help Center).",
   "localization.settings.timezone.title": "Timezone",
   "localization.settings.timezone.description": "Choose the default timezone for your Kayako. Wherever you see time and dates, they will be displayed relative to this timezone, unless the user has specified their own timezone under their user profile.",
-  "localization.settings.time_format.title": "Time format"
+  "localization.settings.time_format.title": "Time format",
+
+  "brands.title": "Brands",
+  "brands.headings.index": "Brands",
+  "brands.enabled.message": "Brand enabled successfully",
+  "brands.disabled.message": "Brand disabled successfully",
+  "brands.delete.message": "Deleting a Brand will delete its Help Center, all its content and all of your template customizations. This is not reversible. Are you sure you wish to continue?",
+  "brands.deleted.message": "Brand deleted successfully",
+  "brands.default.message": "Brand successfully made default",
+  "brands.buttons.add_brand": "Create a new Brand",
+  "brands.create.title": "Brands / New",
+  "brands.edit.title": "Brands / {name}",
+  "brands.edit.heading.brand_settings": "Brand settings",
+  "brands.edit.name.title": "Brand name",
+  "brands.edit.name.placeholder": "e.g. Brewfictus USA",
+  "brands.edit.locale.title": "Language",
+  "brands.edit.locale.description": "This is the default language that will be used for this Brand, if a user has not specified their own.",
+  "brands.edit.heading.domain": "Domain",
+  "brands.edit.domain.description": "Each one of your Brands has its own unique domain name and its Help Center. To start with, every Brand has a .kayako.com domain. After you’ve got a .kayako.com name for your Brand, you can set up a custom domain for the Brand too.",
+  "brands.edit.domain.description2": "You can configure a custom domain name and custom SSL certificate for this new Brand after you have created it."
 }
