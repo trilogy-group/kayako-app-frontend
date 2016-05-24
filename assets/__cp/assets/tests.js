@@ -11650,6 +11650,9 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
     andThen(function () {
       find('.ko-layout_advanced_section__subject input').trigger($.Event('keydown', { which: 13, keyCode: 13 }));
       fillInRichTextEditor('I press the button and the bomb explodes');
+    });
+
+    andThen(function () {
       // click('.ko-info-bar_item:contains("Case form")');
       // click('.ko-info-bar_item:contains("Case form") .dropdown-menu__item:contains("Internet Related Issue")');
       click('.ko-layout_advanced__sidebar .button--primary');
@@ -12351,10 +12354,15 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
       assert.equal(find('.qa-feed_item--note').length, 20, 'Begin with 20 notes');
     });
 
-    selectChoose('.qa-timeline__filter .ember-power-select', 'Notes');
-    click('.ko-layout_advanced_editor__placeholder');
-    fillInRichTextEditor('Testing notes');
-    click('.button--primary');
+    andThen(function () {
+      selectChoose('.qa-timeline__filter .ember-power-select', 'Notes');
+      click('.ko-layout_advanced_editor__placeholder');
+      fillInRichTextEditor('Testing notes');
+    });
+
+    andThen(function () {
+      click('.button--primary');
+    });
 
     andThen(function () {
       assert.equal(find('.qa-feed_item--note').length, 21, 'Now there are 21 notes');
@@ -12384,10 +12392,18 @@ define('frontend-cp/tests/acceptance/agent/cases/replying-to-a-facebook-message-
   (0, _qunit.test)('using the channel selector', function (assert) {
     var _this = this;
 
-    click('.qa-ko-case-content__reply');
-    selectChoose('.qa-post__channel-selector', 'Brewfictus - Message');
-    fillInRichTextEditor('An answer via Facebook');
-    click('button:contains("Submit")');
+    andThen(function () {
+      click('.qa-ko-case-content__reply');
+      selectChoose('.qa-post__channel-selector', 'Brewfictus - Message');
+    });
+
+    andThen(function () {
+      fillInRichTextEditor('An answer via Facebook');
+    });
+
+    andThen(function () {
+      click('button:contains("Submit")');
+    });
 
     // Assert we sent the correct data
     server.post('/api/v1/cases/' + this['case'].id + '/reply', function (schema, req) {
@@ -12409,10 +12425,15 @@ define('frontend-cp/tests/acceptance/agent/cases/replying-to-a-facebook-message-
   (0, _qunit.test)('using the inline reply button', function (assert) {
     var _this2 = this;
 
-    triggerEvent('.ko-feed_item:first', 'mouseover');
-    click('.qa-ko-timeline_item_menu__reply');
-    fillInRichTextEditor('An answer via Facebook');
-    click('button:contains("Submit")');
+    andThen(function () {
+      triggerEvent('.ko-feed_item:first', 'mouseover');
+      click('.qa-ko-timeline_item_menu__reply');
+      fillInRichTextEditor('An answer via Facebook');
+    });
+
+    andThen(function () {
+      click('button:contains("Submit")');
+    });
 
     // Assert we sent the correct data
     server.post('/api/v1/cases/' + this['case'].id + '/reply', function (schema, req) {
@@ -12710,6 +12731,9 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
 
     andThen(function () {
       fillInRichTextEditor('Testing replies');
+    });
+
+    andThen(function () {
       click('.button--primary');
     });
 
@@ -12731,6 +12755,9 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
     andThen(function () {
       click('.' + _frontendCpComponentsKoTextEditorModeSelectorStyles['default'].root);
       fillInRichTextEditor('Testing notes');
+    });
+
+    andThen(function () {
       click('.button--primary');
     });
 
@@ -13070,10 +13097,15 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
       assert.equal(find('.qa-feed_item--note').length, 20, 'Begin with 10 notes');
     });
 
-    selectChoose('.qa-timeline__filter .ember-power-select', 'Notes');
-    click('.ko-layout_advanced_editor__placeholder');
-    fillInRichTextEditor('Testing notes');
-    click('.button--primary');
+    andThen(function () {
+      selectChoose('.qa-timeline__filter .ember-power-select', 'Notes');
+      click('.ko-layout_advanced_editor__placeholder');
+      fillInRichTextEditor('Testing notes');
+    });
+
+    andThen(function () {
+      click('.button--primary');
+    });
 
     andThen(function () {
       assert.equal(find('.qa-feed_item--note').length, 21, 'Now there are 11 notes');
@@ -13092,9 +13124,14 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
       assert.equal(find('.qa-feed_item--note').length, 0, 'No notes displayed as filtering by activities');
     });
 
-    click('.ko-layout_advanced_editor__placeholder');
-    fillInRichTextEditor('Testing notes');
-    click('.button--primary');
+    andThen(function () {
+      click('.ko-layout_advanced_editor__placeholder');
+      fillInRichTextEditor('Testing notes');
+    });
+
+    andThen(function () {
+      click('.button--primary');
+    });
 
     andThen(function () {
       assert.equal(find('.qa-feed_item--note').length, 0, 'Still no notes displayed');
@@ -13112,9 +13149,14 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
       assert.equal(find('.qa-feed_item--note').length, 0, 'No notes displayed as filtering by events');
     });
 
-    click('.ko-layout_advanced_editor__placeholder');
-    fillInRichTextEditor('Testing notes');
-    click('.button--primary');
+    andThen(function () {
+      click('.ko-layout_advanced_editor__placeholder');
+      fillInRichTextEditor('Testing notes');
+    });
+
+    andThen(function () {
+      click('.button--primary');
+    });
 
     andThen(function () {
       assert.equal(find('.qa-feed_item--note').length, 0, 'Still no notes displayed');
@@ -15020,12 +15062,14 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
   };
 });
 define('frontend-cp/tests/helpers/ember-sortable/test-helpers', ['exports', 'ember-sortable/helpers/drag', 'ember-sortable/helpers/reorder'], function (exports, _emberSortableHelpersDrag, _emberSortableHelpersReorder) {});
-define('frontend-cp/tests/helpers/fill-in-rich-text-editor', ['exports', 'ember', 'npm:quill', 'frontend-cp/components/ko-text-editor/styles'], function (exports, _ember, _npmQuill, _frontendCpComponentsKoTextEditorStyles) {
+define('frontend-cp/tests/helpers/fill-in-rich-text-editor', ['exports', 'ember', 'frontend-cp/components/ko-text-editor/styles'], function (exports, _ember, _frontendCpComponentsKoTextEditorStyles) {
   exports['default'] = _ember['default'].Test.registerAsyncHelper('fillInRichTextEditor', function (app, html) {
-    var editor = _npmQuill['default'].editors.find(function (ed) {
-      return ed.container.classList.contains(_frontendCpComponentsKoTextEditorStyles['default']['text-area']);
-    });
-    editor.setHTML(html);
+    var editor = _ember['default'].$('.' + _frontendCpComponentsKoTextEditorStyles['default'].froalaTextArea);
+    editor.froalaEditor('html.set', html);
+
+    // This is a special hack in tests to make Froala to respond and trigger event for update
+    editor.find('[contenteditable]').trigger($.Event('keyup', { which: 32, keyCode: 32 }));
+    editor.find('[contenteditable]').trigger($.Event('keyup', { which: 8, keyCode: 8 }));
   });
 });
 define('frontend-cp/tests/helpers/input-array-to-input-val-array', ['exports', 'ember'], function (exports, _ember) {

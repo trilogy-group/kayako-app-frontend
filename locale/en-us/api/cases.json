@@ -83,6 +83,7 @@
   "channelType.none": "-",
   "channelType.NOTE": "Note",
   "channelType.HELPCENTER": "Helpcenter",
+  "channel.confirm.sanitize_text": "Switching to this channel will clear any text formatting you’ve applied to your reply. Do you want to continue?",
   "new_case": "New case",
   "new_case_subject_placeholder": "Click to set a subject...",
   "new_case_tab_placeholder": "New Case",
