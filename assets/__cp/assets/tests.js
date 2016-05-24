@@ -12143,11 +12143,8 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
       var brand = server.create('brand', { locale: locale });
       var caseFields = server.createList('case-field', 4);
       var mailbox = server.create('mailbox', { brand: brand });
-      var sourceChannel = server.create('channel', { uuid: 1, account: mailbox });
-      server.create('channel', {
-        uuid: 3,
-        type: 'NOTE'
-      });
+      var sourceChannel = server.create('channel', { account: mailbox });
+      var noteChannel = server.create('channel', { type: 'NOTE' });
       server.create('case-form', {
         fields: caseFields,
         brand: brand
@@ -12198,7 +12195,8 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
         creator: agent,
         identity: identityEmail,
         'case': targetCase,
-        original: note
+        original: note,
+        source_channel: noteChannel
       });
 
       login(session.id);
@@ -12350,7 +12348,7 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
     visit('/agent/cases/' + targetCase.id + '/organisation');
 
     andThen(function () {
-      assert.equal(find('.qa-feed_item--note').length, 20, 'Begin with 10 notes');
+      assert.equal(find('.qa-feed_item--note').length, 20, 'Begin with 20 notes');
     });
 
     selectChoose('.qa-timeline__filter .ember-power-select', 'Notes');
@@ -12359,7 +12357,7 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
     click('.button--primary');
 
     andThen(function () {
-      assert.equal(find('.qa-feed_item--note').length, 21, 'Now there are 11 notes');
+      assert.equal(find('.qa-feed_item--note').length, 21, 'Now there are 21 notes');
       assert.equal(find('.ko-feed_item:eq(0) .ko-feed_item__content').text().trim(), 'Testing notes', 'The added note is in the top');
     });
   });
@@ -12557,7 +12555,7 @@ define('frontend-cp/tests/acceptance/agent/cases/replying-to-a-facebook-message-
     return response;
   }
 });
-define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'sinon', 'frontend-cp/components/ko-text-editor/mode-selector/styles'], function (exports, _frontendCpTestsHelpersQunit, _sinon, _frontendCpComponentsKoTextEditorModeSelectorStyles) {
+define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'qunit', 'sinon', 'frontend-cp/components/ko-text-editor/mode-selector/styles'], function (exports, _frontendCpTestsHelpersQunit, _qunit, _sinon, _frontendCpComponentsKoTextEditorModeSelectorStyles) {
 
   var targetCase = undefined,
       identityEmail = undefined,
@@ -12569,11 +12567,12 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
       var brand = server.create('brand', { locale: locale });
       var caseFields = server.createList('case-field', 4);
       var mailbox = server.create('mailbox', { brand: brand });
-      var sourceChannel = server.create('channel', { uuid: 1, account: mailbox });
-      server.create('channel', {
-        uuid: 3,
-        type: 'NOTE'
-      });
+      var twitterAccount = server.create('twitter-account', { brand: brand });
+      var sourceChannel = server.create('channel', { account: mailbox });
+      server.create('channel', { type: 'NOTE' });
+
+      var twitterChannel = server.create('channel', { type: 'TWITTER', account: twitterAccount });
+      var helpCenterChannel = server.create('channel', { type: 'HELPCENTER' });
       server.create('case-form', {
         fields: caseFields,
         brand: brand
@@ -12610,7 +12609,26 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
         creator: agent,
         identity: identityEmail,
         'case': targetCase,
-        original: caseMessage
+        original: caseMessage,
+        source_channel: sourceChannel
+      });
+
+      var twitterTweet = server.create('twitter-tweet');
+
+      this.tweet = server.create('post', {
+        creator: agent,
+        identity: identityEmail,
+        'case': targetCase,
+        original: twitterTweet,
+        source_channel: twitterChannel
+      });
+
+      server.create('post', {
+        creator: agent,
+        identity: identityEmail,
+        'case': targetCase,
+        original: caseMessage,
+        source_channel: helpCenterChannel
       });
 
       login(session.id);
@@ -12622,7 +12640,7 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
     }
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('it shows messages, notes and attachments', function (assert) {
+  (0, _qunit.test)('it shows messages, notes and attachments', function (assert) {
     visit('/agent/cases/' + targetCase.id);
 
     andThen(function () {
@@ -12630,7 +12648,7 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('posts have linkified text', function (assert) {
+  (0, _qunit.test)('posts have linkified text', function (assert) {
     server.create('post', {
       creator: agent,
       identity: identityEmail,
@@ -12647,23 +12665,42 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('posts have a link to the original message', function (assert) {
+  (0, _qunit.test)('posts have a link to the original message', function (assert) {
+    var _this = this;
+
+    assert.expect(3);
+
     _sinon['default'].stub(window, 'open');
 
     visit('/agent/cases/' + targetCase.id);
 
     andThen(function () {
-      click('.qa-feed_item--post:first .ko-link-to-message');
+      click('.qa-feed_item--post:first .qa-link-to-message');
     });
 
     andThen(function () {
       var postId = find('.qa-feed_item--post:first').attr('data-id');
-      assert.ok(window.open.calledWithMatch('/agent/case/display/original/' + targetCase.id + '/' + postId));
+      assert.ok(window.open.calledWithMatch('/agent/case/display/original/' + targetCase.id + '/' + postId), 'Link to original email');
+    });
+
+    andThen(function () {
+      click('.qa-feed_item--twitter-post:first .qa-link-to-message');
+    });
+
+    andThen(function () {
+      var screenName = _this.tweet.original.screen_name;
+      var id = _this.tweet.original.id;
+
+      assert.ok(window.open.calledWithMatch('https://twitter.com/' + screenName + '/status/' + id), 'Link to original tweet');
       window.open.restore();
+    });
+
+    andThen(function () {
+      assert.equal(find('.qa-feed_item--helpcenter-post:first a.qa-link-to-message').length, 0, 'Help Center post does not link to original');
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('add replies', function (assert) {
+  (0, _qunit.test)('add replies', function (assert) {
     visit('/agent/cases/' + targetCase.id);
 
     andThen(function () {
@@ -12682,12 +12719,12 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('add notes', function (assert) {
+  (0, _qunit.test)('add notes', function (assert) {
     visit('/agent/cases/' + targetCase.id);
 
     andThen(function () {
       assert.equal(find('.qa-feed_item--post').length, 3, 'There is three posts');
-      assert.equal(find('.ko-feed_item').length, 3, 'There is three items');
+      assert.equal(find('.ko-feed_item').length, 5, 'There are five items');
       click('.ko-layout_advanced_editor__placeholder');
     });
 
@@ -12699,7 +12736,7 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
 
     andThen(function () {
       assert.equal(find('.qa-feed_item--post').length, 3, 'There is still 3 posts');
-      assert.equal(find('.ko-feed_item').length, 4, 'There is four items now');
+      assert.equal(find('.ko-feed_item').length, 6, 'There are six items now');
       assert.equal(find('.ko-feed_item:eq(0) .ko-feed_item__content').text().trim(), 'Testing notes', 'The added note is in the top');
     });
   });
@@ -12831,11 +12868,8 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
       var brand = server.create('brand', { locale: locale });
       var caseFields = server.createList('case-field', 4);
       var mailbox = server.create('mailbox', { brand: brand });
-      var sourceChannel = server.create('channel', { uuid: 1, account: mailbox });
-      server.create('channel', {
-        uuid: 3,
-        type: 'NOTE'
-      });
+      var sourceChannel = server.create('channel', { account: mailbox });
+      var noteChannel = server.create('channel', { type: 'NOTE' });
       server.create('case-form', {
         fields: caseFields,
         brand: brand
@@ -12880,7 +12914,8 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
         creator: agent,
         identity: identityEmail,
         'case': targetCase,
-        original: note
+        original: note,
+        source_channel: noteChannel
       });
 
       login(session.id);
@@ -17917,6 +17952,101 @@ define("frontend-cp/tests/unit/components/ko-table-row/component-test", ["export
 //     assert.equal(row, component);
 //   });
 // });
+define('frontend-cp/tests/unit/components/ko-timeline/item/link-to/-href-generators-test', ['exports', 'qunit', 'frontend-cp/components/ko-timeline/item/link-to/-href-generators'], function (exports, _qunit, _frontendCpComponentsKoTimelineItemLinkToHrefGenerators) {
+
+  (0, _qunit.module)('Unit | Component | ko-timeline/item/link-to/-href generators', function () {
+    (0, _qunit.module)('emailHref', function () {
+      (0, _qunit.test)('return null href', function (assert) {
+        assert.expect(3);
+
+        var result = (0, _frontendCpComponentsKoTimelineItemLinkToHrefGenerators.emailHref)(null, {});
+        assert.equal(result, null, 'href can\'t be determined');
+
+        result = (0, _frontendCpComponentsKoTimelineItemLinkToHrefGenerators.emailHref)({}, null);
+        assert.equal(result, null, 'href can\'t be determined');
+
+        result = (0, _frontendCpComponentsKoTimelineItemLinkToHrefGenerators.emailHref)({}, {
+          constructor: {
+            modelName: 'foobar'
+          }
+        });
+        assert.equal(result, null, 'href can\'t be determined');
+      });
+
+      (0, _qunit.test)('return href pointing to original email', function (assert) {
+        assert.expect(1);
+
+        var model = {
+          id: 123
+        };
+
+        var parent = {
+          id: 456,
+          constructor: {
+            modelName: 'case'
+          }
+        };
+
+        var result = (0, _frontendCpComponentsKoTimelineItemLinkToHrefGenerators.emailHref)(model, parent);
+
+        assert.equal(result, '/agent/case/display/original/456/123', 'Generate href');
+      });
+    });
+
+    (0, _qunit.module)('twitterHref', function () {
+      (0, _qunit.test)('return null href', function (assert) {
+        assert.expect(5);
+
+        var result = (0, _frontendCpComponentsKoTimelineItemLinkToHrefGenerators.twitterHref)(null);
+        assert.equal(result, null, 'href can\'t be determined');
+
+        result = (0, _frontendCpComponentsKoTimelineItemLinkToHrefGenerators.twitterHref)({});
+        assert.equal(result, null, 'href can\'t be determined');
+
+        result = (0, _frontendCpComponentsKoTimelineItemLinkToHrefGenerators.twitterHref)({
+          original: {}
+        });
+        assert.equal(result, null, 'href can\'t be determined');
+
+        result = (0, _frontendCpComponentsKoTimelineItemLinkToHrefGenerators.twitterHref)({
+          original: {
+            screenName: 'foobar'
+          }
+        });
+        assert.equal(result, null, 'href can\'t be determined');
+
+        result = (0, _frontendCpComponentsKoTimelineItemLinkToHrefGenerators.twitterHref)({
+          original: {
+            id: 123
+          }
+        });
+        assert.equal(result, null, 'href can\'t be determined');
+      });
+
+      (0, _qunit.test)('return href pointing to original tweet', function (assert) {
+        assert.expect(1);
+
+        var result = (0, _frontendCpComponentsKoTimelineItemLinkToHrefGenerators.twitterHref)({
+          original: {
+            id: 123,
+            screenName: 'foobar'
+          }
+        });
+
+        assert.equal(result, 'https://twitter.com/foobar/status/123', 'Generate href');
+      });
+    });
+
+    (0, _qunit.module)('nullHref', function () {
+      (0, _qunit.test)('return null href', function (assert) {
+        assert.expect(1);
+
+        var result = (0, _frontendCpComponentsKoTimelineItemLinkToHrefGenerators.nullHref)('foobar');
+        assert.equal(result, null, 'href is always null');
+      });
+    });
+  });
+});
 define('frontend-cp/tests/unit/components/ko-toggle/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/lib/keycodes'], function (exports, _ember, _frontendCpTestsHelpersQunit, _frontendCpLibKeycodes) {
 
   var component = undefined;
