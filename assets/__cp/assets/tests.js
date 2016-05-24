@@ -14365,7 +14365,7 @@ define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'fron
     andThen(function () {
       assert.equal(currentURL(), '/agent/cases/suspended-messages/3');
       assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 1, 'A modal opened with the message clicked');
-      assert.equal($('.suspended-message-modal__table-row:eq(0) td:eq(1)').text().trim(), 'client2@example.com', 'The data seems correct');
+      assert.equal($('.qa-suspended-message-modal__table-row:eq(0) td:eq(1)').text().trim(), 'client2@example.com', 'The data seems correct');
       click('a:contains("Cancel")');
     });
 
@@ -14385,7 +14385,7 @@ define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'fron
     andThen(function () {
       assert.equal(currentURL(), '/agent/cases/suspended-messages/3');
       assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 1, 'A modal opened with the message clicked');
-      assert.equal($('.suspended-message-modal__table-row:eq(0) td:eq(1)').text().trim(), 'client2@example.com', 'The data seems correct');
+      assert.equal($('.qa-suspended-message-modal__table-row:eq(0) td:eq(1)').text().trim(), 'client2@example.com', 'The data seems correct');
       click('.button:contains("Permanently delete")');
     });
 
@@ -14406,7 +14406,7 @@ define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'fron
     andThen(function () {
       assert.equal(currentURL(), '/agent/cases/suspended-messages/3');
       assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 1, 'A modal opened with the message clicked');
-      assert.equal($('.suspended-message-modal__table-row:eq(0) td:eq(1)').text().trim(), 'client2@example.com', 'The data seems correct');
+      assert.equal($('.qa-suspended-message-modal__table-row:eq(0) td:eq(1)').text().trim(), 'client2@example.com', 'The data seems correct');
       click('.button:contains("Allow through")');
     });
 
