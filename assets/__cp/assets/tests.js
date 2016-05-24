@@ -16754,8 +16754,8 @@ define('frontend-cp/tests/unit/components/ko-admin/triggers/form/component-test'
     name: 'SYSTEM',
     values: []
   }), new _ember['default'].Object({
-    id: 'CHAT',
-    name: 'CHAT',
+    id: 'MESSENGER',
+    name: 'MESSENGER',
     values: []
   }), new _ember['default'].Object({
     id: 'API',
@@ -16804,9 +16804,9 @@ define('frontend-cp/tests/unit/components/ko-admin/triggers/form/component-test'
     values: ''
   }), new _ember['default'].Object({
     definitionType: 'STRING',
-    group: 'CHAT',
+    group: 'MESSENGER',
     inputType: 'STRING',
-    label: 'Chat Example',
+    label: 'Messenger Example',
     operators: ['string_contains', 'string_does_not_contain'],
     subType: '',
     values: ''
@@ -16828,7 +16828,7 @@ define('frontend-cp/tests/unit/components/ko-admin/triggers/form/component-test'
     }
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('selecting twitter as a channel does not allow MAIL, FACEBOOK, SYSTEM, CHAT, API defintions to be selected', function (assert) {
+  (0, _frontendCpTestsHelpersQunit.test)('selecting twitter as a channel does not allow MAIL, FACEBOOK, SYSTEM, MESSENGER, API defintions to be selected', function (assert) {
     assert.expect(7);
 
     component = this.subject({ theTrigger: theTrigger, channels: channels, definitions: definitions });
@@ -16847,15 +16847,15 @@ define('frontend-cp/tests/unit/components/ko-admin/triggers/form/component-test'
           return assert.ok(definition.get('disabled'), 'facebook disabled');
         case 'SYSTEM':
           return assert.ok(definition.get('disabled'), 'system disabled');
-        case 'CHAT':
-          return assert.ok(definition.get('disabled'), 'chat disabled');
+        case 'MESSENGER':
+          return assert.ok(definition.get('disabled'), 'messenger disabled');
         case 'API':
           return assert.ok(definition.get('disabled'), 'api disabled');
       }
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('selecting mail as a channel does not allow TWITTER, FACEBOOK, SYSTEM, CHAT, API defintions to be selected', function (assert) {
+  (0, _frontendCpTestsHelpersQunit.test)('selecting mail as a channel does not allow TWITTER, FACEBOOK, SYSTEM, MESSENGER, API defintions to be selected', function (assert) {
     assert.expect(7);
 
     component = this.subject({ theTrigger: theTrigger, channels: channels, definitions: definitions });
@@ -16874,15 +16874,15 @@ define('frontend-cp/tests/unit/components/ko-admin/triggers/form/component-test'
           return assert.ok(definition.get('disabled'), 'facebook disabled');
         case 'SYSTEM':
           return assert.ok(definition.get('disabled'), 'system disabled');
-        case 'CHAT':
-          return assert.ok(definition.get('disabled'), 'chat disabled');
+        case 'MESSENGER':
+          return assert.ok(definition.get('disabled'), 'messenger disabled');
         case 'API':
           return assert.ok(definition.get('disabled'), 'api disabled');
       }
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('selecting facebook as a channel does not allow TWITTER, MAIL, SYSTEM, CHAT, API defintions to be selected', function (assert) {
+  (0, _frontendCpTestsHelpersQunit.test)('selecting facebook as a channel does not allow TWITTER, MAIL, SYSTEM, MESSENGER, API defintions to be selected', function (assert) {
     assert.expect(7);
 
     component = this.subject({ theTrigger: theTrigger, channels: channels, definitions: definitions });
@@ -16901,15 +16901,15 @@ define('frontend-cp/tests/unit/components/ko-admin/triggers/form/component-test'
           return assert.notOk(definition.get('disabled'), 'facebook disabled');
         case 'SYSTEM':
           return assert.ok(definition.get('disabled'), 'system disabled');
-        case 'CHAT':
-          return assert.ok(definition.get('disabled'), 'chat disabled');
+        case 'MESSENGER':
+          return assert.ok(definition.get('disabled'), 'messenger disabled');
         case 'API':
           return assert.ok(definition.get('disabled'), 'api disabled');
       }
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('selecting system as a channel does not allow TWITTER, MAIL, FACEBOOK, CHAT, API defintions to be selected', function (assert) {
+  (0, _frontendCpTestsHelpersQunit.test)('selecting system as a channel does not allow TWITTER, MAIL, FACEBOOK, MESSENGER, API defintions to be selected', function (assert) {
     assert.expect(7);
 
     component = this.subject({ theTrigger: theTrigger, channels: channels, definitions: definitions });
@@ -16928,20 +16928,20 @@ define('frontend-cp/tests/unit/components/ko-admin/triggers/form/component-test'
           return assert.ok(definition.get('disabled'), 'facebook disabled');
         case 'SYSTEM':
           return assert.notOk(definition.get('disabled'), 'system disabled');
-        case 'CHAT':
-          return assert.ok(definition.get('disabled'), 'chat disabled');
+        case 'MESSENGER':
+          return assert.ok(definition.get('disabled'), 'messenger disabled');
         case 'API':
           return assert.ok(definition.get('disabled'), 'api disabled');
       }
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('selecting chat as a channel does not allow TWITTER, MAIL, FACEBOOK, SYSTEM, API defintions to be selected', function (assert) {
+  (0, _frontendCpTestsHelpersQunit.test)('selecting messenger as a channel does not allow TWITTER, MAIL, FACEBOOK, SYSTEM, API defintions to be selected', function (assert) {
     assert.expect(7);
 
     component = this.subject({ theTrigger: theTrigger, channels: channels, definitions: definitions });
 
-    component.set('editedTrigger.channel', 'CHAT');
+    component.set('editedTrigger.channel', 'MESSENGER');
 
     component.get('filteredDefinitions').forEach(function (definition) {
       switch (definition.get('group')) {
@@ -16955,15 +16955,15 @@ define('frontend-cp/tests/unit/components/ko-admin/triggers/form/component-test'
           return assert.ok(definition.get('disabled'), 'facebook disabled');
         case 'SYSTEM':
           return assert.ok(definition.get('disabled'), 'system disabled');
-        case 'CHAT':
-          return assert.notOk(definition.get('disabled'), 'chat disabled');
+        case 'MESSENGER':
+          return assert.notOk(definition.get('disabled'), 'messenger disabled');
         case 'API':
           return assert.ok(definition.get('disabled'), 'api disabled');
       }
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('selecting api as a channel does not allow TWITTER, MAIL, FACEBOOK, SYSTEM, CHAT defintions to be selected', function (assert) {
+  (0, _frontendCpTestsHelpersQunit.test)('selecting api as a channel does not allow TWITTER, MAIL, FACEBOOK, SYSTEM, MESSENGER defintions to be selected', function (assert) {
     assert.expect(7);
 
     component = this.subject({ theTrigger: theTrigger, channels: channels, definitions: definitions });
@@ -16982,8 +16982,8 @@ define('frontend-cp/tests/unit/components/ko-admin/triggers/form/component-test'
           return assert.ok(definition.get('disabled'), 'facebook disabled');
         case 'SYSTEM':
           return assert.ok(definition.get('disabled'), 'system disabled');
-        case 'CHAT':
-          return assert.ok(definition.get('disabled'), 'chat disabled');
+        case 'MESSENGER':
+          return assert.ok(definition.get('disabled'), 'messenger disabled');
         case 'API':
           return assert.notOk(definition.get('disabled'), 'api disabled');
       }
