@@ -623,7 +623,7 @@
   "account.overview.invoices.title": "Invoices",
   "account.overview.invoices.date": "Date",
   "account.overview.invoices.amount": "Amount",
-  "account.overview.invoices.downloadText": "PDF",
+  "account.overview.invoices.downloadText": "Download PDF",
   "account.overview.invoices.notAvailable": "There are no Invoices generated for this account",
   "account.overview.balance.title": "Balance",
   "account.overview.plan.title" : "Current Plan",
