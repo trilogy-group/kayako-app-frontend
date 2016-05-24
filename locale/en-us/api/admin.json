@@ -710,5 +710,15 @@
   "brands.delete.message": "Deleting a Brand will delete its Help Center, all its content and all of your template customizations. This is not reversible. Are you sure you wish to continue?",
   "brands.deleted.message": "Brand deleted successfully",
   "brands.default.message": "Brand successfully made default",
-  "brands.buttons.add_brand": "Create a new Brand"
+  "brands.buttons.add_brand": "Create a new Brand",
+  "brands.create.title": "Brands / New",
+  "brands.edit.title": "Brands / {name}",
+  "brands.edit.heading.brand_settings": "Brand settings",
+  "brands.edit.name.title": "Brand name",
+  "brands.edit.name.placeholder": "e.g. Brewfictus USA",
+  "brands.edit.locale.title": "Language",
+  "brands.edit.locale.description": "This is the default language that will be used for this Brand, if a user has not specified their own.",
+  "brands.edit.heading.domain": "Domain",
+  "brands.edit.domain.description": "Each one of your Brands has its own unique domain name and its Help Center. To start with, every Brand has a .kayako.com domain. After you’ve got a .kayako.com name for your Brand, you can set up a custom domain for the Brand too.",
+  "brands.edit.domain.description2": "You can configure a custom domain name and custom SSL certificate for this new Brand after you have created it."
 }
