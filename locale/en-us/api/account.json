@@ -1,0 +1,7 @@
+{
+  "cancellation.reason.product_reliability": "Not functioning as expected - bugs/downtime",
+  "cancellation.reason.product_functionality": "Doesn't have necessary features - integration",
+  "cancellation.reason.product_price": "Too expensive",
+  "cancellation.reason.product_service": "Support isn't good",
+  "cancellation.reason.out_of_business": "Business doesn't need a help desk anymore"
+}
