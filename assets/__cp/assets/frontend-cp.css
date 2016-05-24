@@ -5464,12 +5464,24 @@ span#HW_badge.HW_softHidden {
   top: 31px;
   z-index: 30; }
 
-.ko-admin_billing_address {
+.billing-address {
   padding: 20px 0; }
 
-.ko-admin_overview_action {
+.account-action {
   width: 100%;
   text-align: right; }
+
+.note {
+  padding: 20px 15px;
+  background: #F7F8F9;
+  border-radius: 2px;
+  margin-top: 9px;
+  text-align: center;
+  font-size: 16px;
+  color: #838D94; }
+
+.invoices-list {
+  margin-top: 18px; }
 
 /* styles for frontend-cp/session/styles.css */
 .session__topContainer_1qdlgo {
@@ -5707,8 +5719,10 @@ span#HW_badge.HW_softHidden {
   border: 1px solid #d1d5d7 !important;
   border-radius: 2px !important;
   padding: 6px 0;
-  margin-top: 3px; }
+  margin-top: 3px;
+  z-index: 1100; }
 
+/* making sure to show it on top of modal */
 ._dropdown_1ovczd .ember-power-select-options {
   overflow-x: hidden; }
 
@@ -6154,6 +6168,47 @@ span#HW_badge.HW_softHidden {
 
 .ko-admin_forms_group__contents_8wtptf {
   width: 75%; }
+
+/* styles for frontend-cp/components/ko-admin/overview/index/styles.css */
+.ko-admin_overview_index__billing-address_13wym3 {
+  padding: 20px 0; }
+
+.ko-admin_overview_index__account-action_13wym3 {
+  width: 100%;
+  text-align: right; }
+
+.ko-admin_overview_index__note_13wym3 {
+  padding: 20px 15px;
+  background: #F7F8F9;
+  border-radius: 2px;
+  margin-top: 9px;
+  text-align: center;
+  font-size: 16px;
+  color: #838D94; }
+
+.ko-admin_overview_index__invoices-list_13wym3 {
+  margin-top: 18px; }
+
+/* styles for frontend-cp/components/ko-admin/overview/subscription/styles.css */
+.ko-admin_overview_subscription__cancel-note_1kyc8v {
+  line-height: 24px; }
+
+.ko-admin_overview_subscription__form-wrapper_1kyc8v {
+  margin-top: 30px; }
+
+.ko-admin_overview_subscription__form-footer_1kyc8v {
+  text-align: right; }
+
+.ko-admin_overview_subscription__cancel_1kyc8v {
+  display: inline-block;
+  margin-right: 10px; }
+
+.ko-admin_overview_subscription__cancel-link_1kyc8v {
+  color: #2E3137; }
+
+.ko-admin_overview_subscription__cancel-loader_1kyc8v {
+  position: relative;
+  top: 2px; }
 
 /* styles for frontend-cp/components/ko-admin/page/styles.css */
 .ko-admin_page__header_rlnz1x {
