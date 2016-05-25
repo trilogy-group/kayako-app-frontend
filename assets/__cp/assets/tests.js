@@ -11575,6 +11575,8 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Case | Create case', {
     beforeEach: function beforeEach() {
+      createView();
+
       var locale = server.create('locale', { locale: 'en-us' });
       var brand = server.create('brand', { locale: locale });
       var caseFields = server.createList('case-field', 4);
@@ -11668,6 +11670,33 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
       assert.equal(currentURL(), '/agent/cases/123');
     });
   });
+
+  function createView() {
+    var columns = server.createList('column', 5);
+
+    var propositionAssignedToCurrentUser = server.create('proposition', {
+      field: 'cases.assigneeagentid',
+      operator: 'comparison_equalto',
+      value: '(current_user)'
+    });
+
+    var inboxPredicateCollection = server.create('predicate-collection', {
+      propositions: [{ id: propositionAssignedToCurrentUser.id, resource_type: 'proposition' }]
+    });
+
+    server.create('view', {
+      title: 'Inbox',
+      is_default: true,
+      is_enabled: true,
+      is_system: true,
+      order_by: 'DESC',
+      order_by_column: 'caseid',
+      columns: columns,
+      predicate_collections: [{ id: inboxPredicateCollection.id, resource_type: 'predicate_collection' }],
+      sort_order: 1,
+      type: 'INBOX'
+    });
+  }
 });
 /* eslint-disable new-cap */
 define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'ember', 'frontend-cp/session/styles', 'frontend-cp/components/ko-checkbox/styles', 'frontend-cp/components/ko-info-bar/field/select/trigger/styles'], function (exports, _frontendCpTestsHelpersQunit, _ember, _frontendCpSessionStyles, _frontendCpComponentsKoCheckboxStyles, _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles) {
@@ -13163,6 +13192,61 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
     });
   });
 });
+define('frontend-cp/tests/acceptance/agent/index-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'qunit'], function (exports, _frontendCpTestsHelpersQunit, _qunit) {
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | agent/index', {
+    beforeEach: function beforeEach() {
+      var columns = server.createList('column', 5);
+
+      var propositionAssignedToCurrentUser = server.create('proposition', {
+        field: 'cases.assigneeagentid',
+        operator: 'comparison_equalto',
+        value: '(current_user)'
+      });
+
+      var inboxPredicateCollection = server.create('predicate-collection', {
+        propositions: [{ id: propositionAssignedToCurrentUser.id, resource_type: 'proposition' }]
+      });
+
+      this.view = server.create('view', {
+        title: 'Inbox',
+        is_default: true,
+        is_enabled: true,
+        is_system: true,
+        order_by: 'DESC',
+        order_by_column: 'caseid',
+        columns: columns,
+        predicate_collections: [{ id: inboxPredicateCollection.id, resource_type: 'predicate_collection' }],
+        sort_order: 1,
+        type: 'INBOX'
+      });
+
+      var emails = [server.create('identity-email', { email: 'first@example.com', is_primary: true, is_validated: true })];
+      var locale = server.create('locale', { locale: 'en-us' });
+      var user = server.create('user', { emails: emails, role: server.create('role'), locale: locale });
+      var session = server.create('session', { user: user });
+      server.create('plan', { limits: [], features: [] });
+
+      login(session.id);
+    },
+
+    afterEach: function afterEach() {
+      logout();
+    }
+  });
+
+  (0, _qunit.test)('visiting /agent redirects to case list', function (assert) {
+    var _this = this;
+
+    assert.expect(1);
+
+    visit('/agent');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/agent/cases/view/' + _this.view.id);
+    });
+  });
+});
 define("frontend-cp/tests/acceptance/agent/macros/select-macro-test", ["exports"], function (exports) {});
 // /* eslint-disable new-cap */
 //
@@ -14084,6 +14168,8 @@ define('frontend-cp/tests/acceptance/agent/users/create-test', ['exports', 'fron
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | User | Create user', {
     beforeEach: function beforeEach() {
+      createView();
+
       server.create('permission', { name: 'agent.users.update' });
       var locale = server.create('locale');
       var brand = server.create('brand', { locale: locale });
@@ -14139,6 +14225,33 @@ define('frontend-cp/tests/acceptance/agent/users/create-test', ['exports', 'fron
       assert.equal(find('.' + _frontendCpSessionStyles['default'].tab).text().trim(), 'Barney Stinson', 'That tab belongs to the created user');
     });
   });
+
+  function createView() {
+    var columns = server.createList('column', 5);
+
+    var propositionAssignedToCurrentUser = server.create('proposition', {
+      field: 'cases.assigneeagentid',
+      operator: 'comparison_equalto',
+      value: '(current_user)'
+    });
+
+    var inboxPredicateCollection = server.create('predicate-collection', {
+      propositions: [{ id: propositionAssignedToCurrentUser.id, resource_type: 'proposition' }]
+    });
+
+    server.create('view', {
+      title: 'Inbox',
+      is_default: true,
+      is_enabled: true,
+      is_system: true,
+      order_by: 'DESC',
+      order_by_column: 'caseid',
+      columns: columns,
+      predicate_collections: [{ id: inboxPredicateCollection.id, resource_type: 'predicate_collection' }],
+      sort_order: 1,
+      type: 'INBOX'
+    });
+  }
 });
 define('frontend-cp/tests/acceptance/agent/users/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/helpers/dom-helpers', 'frontend-cp/components/ko-info-bar/field/select/trigger/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsHelpersDomHelpers, _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles) {
 
