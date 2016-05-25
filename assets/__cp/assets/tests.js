@@ -12912,6 +12912,23 @@ define('frontend-cp/tests/acceptance/agent/cases/user-test', ['exports', 'fronte
       assert.equal(find('.qa-user-action-menu__dropdown .ko-dropdown_list__item').length, 3);
     });
   });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Update a user with invalid info highlights the errors', function (assert) {
+    var locale = server.create('locale', { locale: 'en-us' });
+    var agentRole = server.create('role', { type: 'AGENT' });
+    var agent = server.create('user', { role: agentRole, locale: locale });
+    server.db.cases.update(1, { requester: agent });
+    visit('/agent/cases/1/user');
+
+    andThen(function () {
+      selectChoose('.ko-user-content__role-field', 'Agent');
+      click('.button--primary');
+    });
+
+    andThen(function () {
+      assert.equal(find('.user-team-ids-field .ko-info-bar_item--error').length, 1, 'The teams field contains errors');
+    });
+  });
 });
 define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/helpers/dom-helpers'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsHelpersDomHelpers) {
 
@@ -12931,7 +12948,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
         brand: brand
       });
       var agentRole = server.create('role', { type: 'AGENT' });
-      var customerRole = server.create('role', { type: 'AGENT' });
+      var customerRole = server.create('role', { type: 'CUSTOMER' });
       var agent = server.create('user', { role: agentRole, locale: locale });
       var session = server.create('session', { user: agent });
       var customer = server.create('user', { full_name: 'Barney Stinson', role: customerRole, locale: locale });
