@@ -7813,3 +7813,22 @@ a.ko-timeline_item__subtitle_vt1m5j:hover {
 
 .session_agent_cases_index_suspended-messages__empty_1qhp96 {
   margin-top: 18px; }
+
+/* styles for frontend-cp/session/agent/search/styles.css */
+.session_agent_search__index_1sn5yt {
+  margin: 40px 45px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  overflow: hidden;
+  background-color: #ffffff;
+  border: 1px solid #d1d5d7;
+  border-radius: 2px;
+  min-height: 500px; }
+
+.session_agent_search__pagination_1sn5yt {
+  height: 220px;
+  position: absolute;
+  right: 0;
+  bottom: 0; }
