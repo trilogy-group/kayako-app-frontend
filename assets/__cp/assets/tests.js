@@ -148,7 +148,7 @@ define('frontend-cp/tests/acceptance/admin/account/overview/index-test', ['expor
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-admin/plans/index/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoAdminPlansIndexStyles) {
+define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-admin/plans/index/styles', 'frontend-cp/components/ko-admin/rateplans/item/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoAdminPlansIndexStyles, _frontendCpComponentsKoAdminRateplansItemStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/account/plans Index', {
     beforeEach: function beforeEach() {
@@ -171,17 +171,17 @@ define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports'
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/account/plans');
-      assert.equal(find('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].planitem).length, 5);
+      assert.equal(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planitem).length, 5);
     });
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('switching plan', function (assert) {
     visit('/admin/account/plans');
-    click('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].planitem + ':eq(2)');
+    click('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planitem + ':eq(2)');
 
     andThen(function () {
-      assert.equal(find('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].planitem + ':eq(2)').hasClass(_frontendCpComponentsKoAdminPlansIndexStyles['default'].selected), true);
-      assert.equal(find('a:contains(Cancel)').length, 1);
+      assert.equal(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planitem + ':eq(2)').hasClass(_frontendCpComponentsKoAdminRateplansItemStyles['default'].selected), true);
+      assert.equal(find('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].cancel).length, 1);
     });
   });
 
@@ -189,18 +189,18 @@ define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports'
     var selectedIndex = null;
     visit('/admin/account/plans');
     andThen(function () {
-      selectedIndex = find('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].selected).index();
+      selectedIndex = find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].selected).index();
       selectChoose('.payment-terms', 'Billed Annually');
     });
     andThen(function () {
-      assert.equal(find('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].planitem + ':eq(' + selectedIndex + ')').hasClass(_frontendCpComponentsKoAdminPlansIndexStyles['default'].selected), true);
+      assert.equal(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planitem + ':eq(' + selectedIndex + ')').hasClass(_frontendCpComponentsKoAdminRateplansItemStyles['default'].selected), true);
     });
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('updating plan', function (assert) {
     visit('/admin/account/plans');
-    click('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].planitem + ':eq(2)');
-    click('button:contains(Update Subscription)');
+    click('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planitem + ':eq(2)');
+    click('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].button);
     andThen(function () {
       assert.equal(find('.ko-toast').length, 1);
     });
@@ -210,16 +210,16 @@ define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports'
     var selectedPlanIndex = null;
     visit('/admin/account/plans');
     andThen(function () {
-      selectedPlanIndex = find('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].selected).index();
-      click('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].planitem + ':eq(2)');
+      selectedPlanIndex = find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].selected).index();
+      click('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planitem + ':eq(2)');
     });
     andThen(function () {
-      assert.equal(find('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].planitem + ':eq(2)').hasClass(_frontendCpComponentsKoAdminPlansIndexStyles['default'].selected), true);
+      assert.equal(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planitem + ':eq(2)').hasClass(_frontendCpComponentsKoAdminRateplansItemStyles['default'].selected), true);
       click('a:contains(Cancel)');
     });
     andThen(function () {
-      assert.equal(find('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].planitem + ':eq(2)').hasClass(_frontendCpComponentsKoAdminPlansIndexStyles['default'].selected), false);
-      assert.equal(find('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].planitem + ':eq(' + selectedPlanIndex + ')').hasClass(_frontendCpComponentsKoAdminPlansIndexStyles['default'].selected), true);
+      assert.equal(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planitem + ':eq(2)').hasClass(_frontendCpComponentsKoAdminRateplansItemStyles['default'].selected), false);
+      assert.equal(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planitem + ':eq(' + selectedPlanIndex + ')').hasClass(_frontendCpComponentsKoAdminRateplansItemStyles['default'].selected), true);
     });
   });
 
@@ -227,15 +227,15 @@ define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports'
     var selectedPlanAmount = 0;
     visit('/admin/account/plans');
     andThen(function () {
-      selectedPlanAmount = find('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].planitem + ' .' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].planprice).text();
+      selectedPlanAmount = find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planitem + ' .' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planprice).text();
       selectChoose('.payment-terms', 'Billed Annually');
     });
     andThen(function () {
-      assert.notEqual(find('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].planitem + ' .' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].planprice).text(), selectedPlanAmount);
-      click('a:contains(Cancel)');
+      assert.notEqual(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planitem + ' .' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planprice).text(), selectedPlanAmount);
+      click('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].cancel);
     });
     andThen(function () {
-      assert.equal(find('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].planitem + ' .' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].planprice).text(), selectedPlanAmount);
+      assert.equal(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planitem + ' .' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planprice).text(), selectedPlanAmount);
     });
   });
 
@@ -243,15 +243,15 @@ define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports'
     var selectedSeats = 0;
     visit('/admin/account/plans');
     andThen(function () {
-      selectedSeats = find('input[type="number"]').val();
-      fillIn('input[type="number"]', 20);
+      selectedSeats = find('.agents-count').val();
+      fillIn('.agents-count', 20);
     });
     andThen(function () {
-      assert.notEqual(find('input[type="number"]').val(), selectedSeats);
-      click('a:contains(Cancel)');
+      assert.notEqual(find('.agents-count').val(), selectedSeats);
+      click('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].cancel);
     });
     andThen(function () {
-      assert.equal(find('input[type="number"]').val(), selectedSeats);
+      assert.equal(find('.agents-count').val(), selectedSeats);
     });
   });
 });
