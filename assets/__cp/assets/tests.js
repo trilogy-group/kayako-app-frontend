@@ -3463,14 +3463,14 @@ define('frontend-cp/tests/acceptance/admin/manage/brands/list-test', ['exports',
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/manage/brands/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/acceptance/admin/manage/brands/helpers'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsAcceptanceAdminManageBrandsHelpers) {
+define('frontend-cp/tests/acceptance/admin/manage/brands/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/acceptance/admin/manage/brands/helpers', 'frontend-cp/components/ko-admin/brands/form/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsAcceptanceAdminManageBrandsHelpers, _frontendCpComponentsKoAdminBrandsFormStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/manage/brands', {
     beforeEach: function beforeEach() {
       var en = server.create('locale', { id: 1, locale: 'en-us', name: 'English', is_public: true, is_localised: true });
 
       server.create('brand', { id: 1, locale: en, is_enabled: true, name: 'Default', domain: 'kayako.com', sub_domain: 'support', is_default: true });
-      server.create('brand', { id: 2, locale: en, is_enabled: true, name: 'Custom Alias', domain: 'kayako.com', sub_domain: 'custom_alais', is_default: false, alias: 'example.com' });
+      server.create('brand', { id: 2, locale: en, is_enabled: true, name: 'Custom Alias', domain: 'kayako.com', sub_domain: 'custom_alias', is_default: false, alias: 'example.com' });
       server.create('brand', { id: 3, locale: en, is_enabled: false, name: 'Disabled', domain: 'kayako.com', sub_domain: 'disabled', is_default: false });
 
       var role = server.create('role', { type: 'ADMIN' });
@@ -3514,7 +3514,20 @@ define('frontend-cp/tests/acceptance/admin/manage/brands/new-test', ['exports', 
       return selectChoose('.qa-brand-edit-locale', 'Russian');
     });
     andThen(function () {
-      return fillIn('.qa-brand-edit-subdomain input', 'mynewbrand');
+      return fillIn('.qa-brand-edit-subdomain input', 'support');
+    });
+    andThen(function () {
+      var text = 'this domain is not available, try another one';
+      assert.notEqual(find('.' + _frontendCpComponentsKoAdminBrandsFormStyles['default']['domain-not-available']).text().indexOf(text), -1, '"domain unavailable" text is shown');
+      assert.equal($('button[type=submit][disabled]').length, 2, 'submit is disabled');
+    });
+    andThen(function () {
+      return fillIn('.qa-brand-edit-subdomain input', 'my-new-brand');
+    });
+    andThen(function () {
+      var text = 'this domain name is available!';
+      assert.notEqual(find('.' + _frontendCpComponentsKoAdminBrandsFormStyles['default']['domain-available']).text().indexOf(text), -1, '"domain available" text is shown');
+      assert.equal($('button[type=submit][disabled]').length, 0, 'submit is enabled');
     });
     andThen(function () {
       return click('button[type=submit]');
