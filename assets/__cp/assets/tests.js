@@ -822,7 +822,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/index-test', ['ex
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'moment', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _moment, _frontendCpComponentsKoSimpleListRowStyles) {
+define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'moment', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-admin/automation-actions-builder/styles'], function (exports, _frontendCpTestsHelpersQunit, _moment, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoAdminAutomationActionsBuilderStyles) {
 
   var originalConfirm = undefined,
       role = undefined;
@@ -1079,9 +1079,9 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
       fillPredicateCollections();
 
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Status');
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(1)', 'Change');
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'New');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Status');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'Change');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'New');
 
       click('.button[name=submit]');
     });
@@ -1096,7 +1096,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors/1');
       assertPredicateCollestionsAreCorrect(assert);
-      assert.equal($('.ko-automation-actions-builder__small-slot:eq(2) .ember-power-select-trigger').text().trim(), 'New', 'The status is selected');
+      assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2) .ember-power-select-trigger').text().trim(), 'New', 'The status is selected');
     });
   });
 
@@ -1127,9 +1127,9 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
       fillPredicateCollections();
 
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Priority');
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(1)', 'Change');
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'Low');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Priority');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'Change');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'Low');
 
       click('.button[name=submit]');
     });
@@ -1144,7 +1144,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors/1');
       assertPredicateCollestionsAreCorrect(assert);
-      assert.equal($('.ko-automation-actions-builder__small-slot:eq(2) .ember-power-select-trigger').text().trim(), 'Low', 'The priority is selected');
+      assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2) .ember-power-select-trigger').text().trim(), 'Low', 'The priority is selected');
     });
   });
 
@@ -1177,9 +1177,9 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
       fillPredicateCollections();
 
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Type');
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(1)', 'Change');
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'Issue');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Type');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'Change');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'Issue');
 
       click('.button[name=submit]');
     });
@@ -1194,7 +1194,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors/1');
       assertPredicateCollestionsAreCorrect(assert);
-      assert.equal($('.ko-automation-actions-builder__small-slot:eq(2) .ember-power-select-trigger').text().trim(), 'Issue', 'The type is selected');
+      assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2) .ember-power-select-trigger').text().trim(), 'Issue', 'The type is selected');
     });
   });
 
@@ -1222,10 +1222,10 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
       fillPredicateCollections();
 
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Assignee');
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(1)', 'Change');
-      selectSearch('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'Morr');
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'Alicia Morris');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Assignee');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'Change');
+      selectSearch('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'Morr');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'Alicia Morris');
       click('.button[name=submit]');
     });
 
@@ -1239,7 +1239,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors/1');
       assertPredicateCollestionsAreCorrect(assert);
-      assert.equal($('.ko-automation-actions-builder__small-slot:eq(2) .ember-power-select-trigger input').val(), 'Alicia Morris', 'The assignee is selected');
+      assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2) .ember-power-select-trigger input').val(), 'Alicia Morris', 'The assignee is selected');
     });
   });
 
@@ -1267,16 +1267,16 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
       fillPredicateCollections();
 
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Tags');
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(1)', 'Add');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Tags');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'Add');
 
       // Add an existent tag
-      selectSearch('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'stat');
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'status');
+      selectSearch('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'stat');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'status');
 
       // Add a nonexistent tag
-      selectSearch('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'nonexistent');
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'Add tag “nonexistent”');
+      selectSearch('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'nonexistent');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'Add tag “nonexistent”');
     });
 
     andThen(function () {
@@ -1293,7 +1293,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors/1');
       assertPredicateCollestionsAreCorrect(assert);
-      assert.equal($('.ko-automation-actions-builder__small-slot:eq(2) .ember-power-select-trigger .ember-power-select-multiple-option').length, 2, 'There is two tags in this monitor');
+      assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2) .ember-power-select-trigger .ember-power-select-multiple-option').length, 2, 'There is two tags in this monitor');
     });
   });
 
@@ -1328,9 +1328,9 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
       fillPredicateCollections();
 
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Team');
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(1)', 'Change');
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'Engineering');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Team');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'Change');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'Engineering');
 
       click('.button[name=submit]');
     });
@@ -1345,7 +1345,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors/1');
       assertPredicateCollestionsAreCorrect(assert);
-      assert.equal($('.ko-automation-actions-builder__small-slot:eq(2) .ember-power-select-trigger').text().trim(), 'Engineering', 'The team is selected');
+      assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2) .ember-power-select-trigger').text().trim(), 'Engineering', 'The team is selected');
     });
   });
 
@@ -1370,7 +1370,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
       fillPredicateCollections();
 
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Satisfaction survey');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Satisfaction survey');
 
       click('.button[name=submit]');
     });
@@ -1385,7 +1385,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors/1');
       assertPredicateCollestionsAreCorrect(assert);
-      assert.equal($('.ko-automation-actions-builder__small-slot:eq(0) .ember-power-select-trigger').text().trim(), 'Case: Satisfaction survey', 'The Satisfaction survey has been selected');
+      assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0) .ember-power-select-trigger').text().trim(), 'Case: Satisfaction survey', 'The Satisfaction survey has been selected');
     });
   });
 
@@ -1413,8 +1413,8 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
       fillPredicateCollections();
 
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Email a user');
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(1)', '(Requester)');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Email a user');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', '(Requester)');
       fillIn('[name="subject"]', 'Example subject');
       fillIn('[name="message"]', 'Example message blah blah');
       click('.button[name=submit]');
@@ -1430,7 +1430,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors/1');
       assertPredicateCollestionsAreCorrect(assert);
-      assert.equal($('.ko-automation-actions-builder__small-slot:eq(1) .ember-power-select-trigger').text().trim(), '(Requester)', 'The requester is selected');
+      assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1) .ember-power-select-trigger').text().trim(), '(Requester)', 'The requester is selected');
       assert.equal(find('[name="subject"]').val(), 'Example subject', 'The subject is set');
       assert.equal(find('[name="message"]').val(), 'Example message blah blah', 'The message is set');
     });
@@ -1467,8 +1467,8 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
       fillPredicateCollections();
 
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Email a team');
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(1)', 'Billing');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Email a team');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'Billing');
       fillIn('[name="subject"]', 'Example subject');
       fillIn('[name="message"]', 'Example message blah blah');
       click('.button[name=submit]');
@@ -1484,7 +1484,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors/1');
       assertPredicateCollestionsAreCorrect(assert);
-      assert.equal($('.ko-automation-actions-builder__small-slot:eq(1) .ember-power-select-trigger').text().trim(), 'Billing', 'The requester is selected');
+      assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1) .ember-power-select-trigger').text().trim(), 'Billing', 'The requester is selected');
       assert.equal(find('[name="subject"]').val(), 'Example subject', 'The subject is set');
       assert.equal(find('[name="message"]').val(), 'Example message blah blah', 'The message is set');
     });
@@ -1511,7 +1511,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
       fillPredicateCollections();
 
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Stop notifications');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Stop notifications');
       click('.button[name=submit]');
     });
 
@@ -1525,7 +1525,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors/1');
       assertPredicateCollestionsAreCorrect(assert);
-      assert.equal($('.ko-automation-actions-builder__small-slot:eq(0) .ember-power-select-trigger').text().trim(), 'Flow control: Stop notifications');
+      assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0) .ember-power-select-trigger').text().trim(), 'Flow control: Stop notifications');
     });
   });
 
@@ -1550,7 +1550,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
       fillPredicateCollections();
 
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Test Slack thing');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Test Slack thing');
       fillIn('[name=endpoint-message]', 'foobar');
       click('.button[name=submit]');
     });
@@ -1565,7 +1565,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors/1');
       assertPredicateCollestionsAreCorrect(assert);
-      assert.equal($('.ko-automation-actions-builder__small-slot:eq(0) .ember-power-select-trigger').text().trim(), 'Endpoint: Test Slack thing');
+      assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0) .ember-power-select-trigger').text().trim(), 'Endpoint: Test Slack thing');
       assert.equal(find('[name=endpoint-message]').val(), 'foobar');
     });
   });
@@ -1591,7 +1591,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
       fillPredicateCollections();
 
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Example email endpoint');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Example email endpoint');
       fillIn('[name="endpoint-message"]', 'foobar');
       click('.button[name=submit]');
     });
@@ -1606,8 +1606,158 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors/1');
       assertPredicateCollestionsAreCorrect(assert);
-      assert.equal($('.ko-automation-actions-builder__small-slot:eq(0) .ember-power-select-trigger').text().trim(), 'Endpoint: Example email endpoint');
+      assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0) .ember-power-select-trigger').text().trim(), 'Endpoint: Example email endpoint');
       assert.equal(find('[name="endpoint-message"]').val(), 'foobar');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Creating a monitor with "ENDPOINT_HTTP_XML" action', function (assert) {
+    assert.expect(14);
+    server.create('automation-action-definition', {
+      label: 'Some XML thing',
+      name: 'endpoint_3',
+      options: ['SEND'],
+      input_type: 'ENDPOINT_HTTP_XML',
+      value_type: 'STRING',
+      values: '',
+      attributes: [],
+      group: 'ENDPOINT',
+      resource_type: 'automation_action_definition'
+    });
+
+    visit('/admin/automation/monitors/new');
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/new');
+      fillIn('input[name="title"]', 'Sample monitor name');
+
+      fillPredicateCollections();
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Some XML thing');
+    });
+
+    andThen(function () {
+      assert.equal($('.ko-radio__container:eq(0)').attr('aria-checked'), 'true', 'The first radio is selected');
+      assert.equal($('.ko-radio__container:eq(1)').attr('aria-checked'), 'false', 'The second radio is not selected');
+      click('.ko-radio__label:eq(1)');
+      fillIn('[name="endpoint-payload"]', '<foo>bar</foo>');
+      click('.button[name=submit]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/1');
+      assertPredicateCollestionsAreCorrect(assert);
+      assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0) .ember-power-select-trigger').text().trim(), 'Endpoint: Some XML thing');
+      assert.equal($('.ko-radio__container:eq(0)').attr('aria-checked'), 'false', 'The first radio is not selected');
+      assert.equal($('.ko-radio__container:eq(1)').attr('aria-checked'), 'true', 'The second radio is selected');
+      assert.equal(find('[name="endpoint-payload"]').val(), '<foo>bar</foo>');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Creating a monitor with "ENDPOINT_HTTP_JSON" action', function (assert) {
+    assert.expect(14);
+    server.create('automation-action-definition', {
+      label: 'POST json example',
+      name: 'endpoint_5',
+      options: ['SEND'],
+      input_type: 'ENDPOINT_HTTP_JSON',
+      value_type: 'STRING',
+      values: '',
+      attributes: [],
+      group: 'ENDPOINT',
+      resource_type: 'automation_action_definition'
+    });
+
+    visit('/admin/automation/monitors/new');
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/new');
+      fillIn('input[name="title"]', 'Sample monitor name');
+
+      fillPredicateCollections();
+
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'POST json example');
+    });
+
+    andThen(function () {
+      assert.equal($('.ko-radio__container:eq(0)').attr('aria-checked'), 'true', 'The first radio is selected');
+      assert.equal($('.ko-radio__container:eq(1)').attr('aria-checked'), 'false', 'The second radio is not selected');
+      click('.ko-radio__label:eq(1)');
+      fillIn('[name="endpoint-payload"]', '{ "foo": "bar" }');
+      click('.button[name=submit]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/1');
+      assertPredicateCollestionsAreCorrect(assert);
+      assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0) .ember-power-select-trigger').text().trim(), 'Endpoint: POST json example');
+      assert.equal($('.ko-radio__container:eq(0)').attr('aria-checked'), 'false', 'The first radio is not selected');
+      assert.equal($('.ko-radio__container:eq(1)').attr('aria-checked'), 'true', 'The second radio is selected');
+      assert.equal(find('[name="endpoint-payload"]').val(), '{ "foo": "bar" }');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Creating a monitor with "ENDPOINT_HTTP" action', function (assert) {
+    assert.expect(15);
+    server.create('automation-action-definition', {
+      label: 'GET example',
+      name: 'endpoint_6',
+      options: ['SEND'],
+      input_type: 'ENDPOINT_HTTP',
+      value_type: 'STRING',
+      values: '',
+      attributes: [],
+      group: 'ENDPOINT',
+      resource_type: 'automation_action_definition'
+    });
+    visit('/admin/automation/monitors/new');
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/new');
+      fillIn('input[name="title"]', 'Sample monitor name');
+
+      fillPredicateCollections();
+
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'GET example');
+    });
+
+    andThen(function () {
+      assert.equal($('.ko-radio__container:eq(0)').attr('aria-checked'), 'true', 'The first radio is selected');
+      assert.equal($('.ko-radio__container:eq(1)').attr('aria-checked'), 'false', 'The second radio is not selected');
+      click('.ko-radio__label:eq(1)');
+    });
+
+    andThen(function () {
+      fillIn('[name="parameters-key-0"]', 'foo');
+      fillIn('[name="parameters-value-0"]', 'bar');
+      click('.button[name=submit]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/1');
+      assertPredicateCollestionsAreCorrect(assert);
+      assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0) .ember-power-select-trigger').text().trim(), 'Endpoint: GET example');
+      assert.equal($('.ko-radio__container:eq(0)').attr('aria-checked'), 'false', 'The first radio is not selected');
+      assert.equal($('.ko-radio__container:eq(1)').attr('aria-checked'), 'true', 'The second radio is selected');
+      assert.equal(find('[name="parameters-key-0"]').val(), 'foo');
+      assert.equal(find('[name="parameters-value-0"]').val(), 'bar');
     });
   });
 
@@ -1632,9 +1782,9 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
       fillPredicateCollections();
 
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'RZ: Date');
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(1)', 'Change');
-      click('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2) .ko-date-select__trigger');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'RZ: Date');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'Change');
+      click('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2) .ko-date-select__trigger');
     });
 
     andThen(function () {
@@ -1656,7 +1806,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors/1');
       assertPredicateCollestionsAreCorrect(assert);
-      assert.equal($('.ko-automation-actions-builder__small-slot:eq(0) .ember-power-select-trigger').text().trim(), 'Custom field: RZ: Date');
+      assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0) .ember-power-select-trigger').text().trim(), 'Custom field: RZ: Date');
     });
   });
 
@@ -1685,10 +1835,10 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
       fillIn('input[name="title"]', 'Sample monitor name');
 
       fillPredicateCollections();
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Bug Test');
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(1)', 'Add');
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'aaa112');
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'aaa114');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Bug Test');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'Add');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'aaa112');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'aaa114');
       click('.button[name=submit]');
     });
 
@@ -1703,8 +1853,8 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
       assert.equal(currentURL(), '/admin/automation/monitors/1');
       assertPredicateCollestionsAreCorrect(assert);
 
-      assert.equal($('.ko-automation-actions-builder__small-slot:eq(2) .ember-power-select-multiple-option:eq(0)').text().trim(), 'aaa112');
-      assert.equal($('.ko-automation-actions-builder__small-slot:eq(2) .ember-power-select-multiple-option:eq(1)').text().trim(), 'aaa114');
+      assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2) .ember-power-select-multiple-option:eq(0)').text().trim(), 'aaa112');
+      assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2) .ember-power-select-multiple-option:eq(1)').text().trim(), 'aaa114');
     });
   });
 
@@ -1729,7 +1879,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
       fillPredicateCollections();
 
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Stop processing other rules');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Stop processing other rules');
       click('.button[name=submit]');
     });
 
@@ -1743,7 +1893,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors/1');
       assertPredicateCollestionsAreCorrect(assert);
-      assert.equal($('.ko-automation-actions-builder__small-slot:eq(0) .ember-power-select-trigger').text().trim(), 'Flow control: Stop processing other rules');
+      assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0) .ember-power-select-trigger').text().trim(), 'Flow control: Stop processing other rules');
     });
   });
 
@@ -2356,7 +2506,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/index-test', ['ex
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles) {
+define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-admin/automation-actions-builder/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoAdminAutomationActionsBuilderStyles) {
 
   var originalConfirm = undefined,
       role = undefined;
@@ -2625,9 +2775,9 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
       fillChannelAndEvent();
       fillPredicateCollections();
 
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Status');
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(1)', 'Change');
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'New');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Status');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'Change');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'New');
 
       click('.button[name=submit]');
     });
@@ -2643,7 +2793,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
       assert.equal(currentURL(), '/admin/automation/triggers/1');
       assertChannelAndEventAreCorrect(assert);
       assertPredicateCollestionsAreCorrect(assert);
-      assert.equal($('.ko-automation-actions-builder__small-slot:eq(2) .ember-power-select-trigger').text().trim(), 'New', 'The status is selected');
+      assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2) .ember-power-select-trigger').text().trim(), 'New', 'The status is selected');
     });
   });
 
@@ -2675,9 +2825,9 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
       fillChannelAndEvent();
       fillPredicateCollections();
 
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Priority');
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(1)', 'Change');
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'Low');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Priority');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'Change');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'Low');
 
       click('.button[name=submit]');
     });
@@ -2693,7 +2843,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
       assert.equal(currentURL(), '/admin/automation/triggers/1');
       assertChannelAndEventAreCorrect(assert);
       assertPredicateCollestionsAreCorrect(assert);
-      assert.equal($('.ko-automation-actions-builder__small-slot:eq(2) .ember-power-select-trigger').text().trim(), 'Low', 'The priority is selected');
+      assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2) .ember-power-select-trigger').text().trim(), 'Low', 'The priority is selected');
     });
   });
 
@@ -2727,9 +2877,9 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
       fillChannelAndEvent();
       fillPredicateCollections();
 
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Type');
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(1)', 'Change');
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'Issue');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Type');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'Change');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'Issue');
 
       click('.button[name=submit]');
     });
@@ -2745,7 +2895,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
       assert.equal(currentURL(), '/admin/automation/triggers/1');
       assertChannelAndEventAreCorrect(assert);
       assertPredicateCollestionsAreCorrect(assert);
-      assert.equal($('.ko-automation-actions-builder__small-slot:eq(2) .ember-power-select-trigger').text().trim(), 'Issue', 'The type is selected');
+      assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2) .ember-power-select-trigger').text().trim(), 'Issue', 'The type is selected');
     });
   });
 
@@ -2774,10 +2924,10 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
       fillChannelAndEvent();
       fillPredicateCollections();
 
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Assignee');
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(1)', 'Change');
-      selectSearch('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'Morr');
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'Alicia Morris');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Assignee');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'Change');
+      selectSearch('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'Morr');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'Alicia Morris');
       click('.button[name=submit]');
     });
 
@@ -2792,7 +2942,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
       assert.equal(currentURL(), '/admin/automation/triggers/1');
       assertChannelAndEventAreCorrect(assert);
       assertPredicateCollestionsAreCorrect(assert);
-      assert.equal($('.ko-automation-actions-builder__small-slot:eq(2) .ember-power-select-trigger input').val(), 'Alicia Morris', 'The assignee is selected');
+      assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2) .ember-power-select-trigger input').val(), 'Alicia Morris', 'The assignee is selected');
     });
   });
 
@@ -2821,16 +2971,16 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
       fillChannelAndEvent();
       fillPredicateCollections();
 
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Tags');
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(1)', 'Add');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Tags');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'Add');
 
       // Add an existent tag
-      selectSearch('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'stat');
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'status');
+      selectSearch('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'stat');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'status');
 
       // Add a nonexistent tag
-      selectSearch('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'nonexistent');
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'Add tag “nonexistent”');
+      selectSearch('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'nonexistent');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'Add tag “nonexistent”');
     });
 
     andThen(function () {
@@ -2848,7 +2998,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
       assert.equal(currentURL(), '/admin/automation/triggers/1');
       assertChannelAndEventAreCorrect(assert);
       assertPredicateCollestionsAreCorrect(assert);
-      assert.equal($('.ko-automation-actions-builder__small-slot:eq(2) .ember-power-select-trigger .ember-power-select-multiple-option').length, 2, 'There is two tags in this trigger');
+      assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2) .ember-power-select-trigger .ember-power-select-multiple-option').length, 2, 'There is two tags in this trigger');
     });
   });
 
@@ -2884,9 +3034,9 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
       fillChannelAndEvent();
       fillPredicateCollections();
 
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Team');
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(1)', 'Change');
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(2)', 'Engineering');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Team');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'Change');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'Engineering');
 
       click('.button[name=submit]');
     });
@@ -2902,7 +3052,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
       assert.equal(currentURL(), '/admin/automation/triggers/1');
       assertChannelAndEventAreCorrect(assert);
       assertPredicateCollestionsAreCorrect(assert);
-      assert.equal($('.ko-automation-actions-builder__small-slot:eq(2) .ember-power-select-trigger').text().trim(), 'Engineering', 'The team is selected');
+      assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2) .ember-power-select-trigger').text().trim(), 'Engineering', 'The team is selected');
     });
   });
 
@@ -2928,7 +3078,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
       fillChannelAndEvent();
       fillPredicateCollections();
 
-      selectChoose('.ko-automation-actions-builder .ko-automation-actions-builder__small-slot:eq(0)', 'Satisfaction survey');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Satisfaction survey');
 
       click('.button[name=submit]');
     });
@@ -2944,7 +3094,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
       assert.equal(currentURL(), '/admin/automation/triggers/1');
       assertChannelAndEventAreCorrect(assert);
       assertPredicateCollestionsAreCorrect(assert);
-      assert.equal($('.ko-automation-actions-builder__small-slot:eq(0) .ember-power-select-trigger').text().trim(), 'Case: Satisfaction survey', 'The Satisfaction survey has been selected');
+      assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0) .ember-power-select-trigger').text().trim(), 'Case: Satisfaction survey', 'The Satisfaction survey has been selected');
     });
   });
 
@@ -15229,7 +15379,7 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
   function typeText(selector, text) {
     var $selector = $(selector);
     $selector.val(text);
-    var event = document.createEvent("Events");
+    var event = document.createEvent('Events');
     event.initEvent('input', true, true);
     $selector[0].dispatchEvent(event);
   }
@@ -15261,7 +15411,7 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
   }
 
   function triggerKeydown(domElement, k) {
-    var oEvent = document.createEvent("Events");
+    var oEvent = document.createEvent('Events');
     oEvent.initEvent('keydown', true, true);
     $.extend(oEvent, {
       view: window,
@@ -15322,7 +15472,8 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
     var isEmberOne = _ember['default'].VERSION.match(/1\.13/);
 
     _ember['default'].Test.registerAsyncHelper('selectChoose', function (app, cssPath, value) {
-      var id = find(cssPath).find('.ember-power-select-trigger').attr('id').match(/ember-power-select-trigger-ember(\d+)/)[1];
+      var match = find(cssPath).find('.ember-power-select-trigger').attr('id').match(/\d+$/);
+      var id = match[0];
       // If the dropdown is closed, open it
       if (_ember['default'].$('.ember-power-select-dropdown-ember' + id).length === 0) {
         nativeMouseDown(cssPath + ' .ember-power-select-trigger');
@@ -15345,7 +15496,7 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
     });
 
     _ember['default'].Test.registerAsyncHelper('selectSearch', function (app, cssPath, value) {
-      var id = find(cssPath).find('.ember-power-select-trigger').attr('id').match(/ember-power-select-trigger-ember(\d+)/)[1];
+      var id = find(cssPath).find('.ember-power-select-trigger').attr('id').replace(/\D/g, '');
       var isMultipleSelect = _ember['default'].$(cssPath + ' .ember-power-select-trigger-multiple-input').length > 0;
 
       var dropdownIsClosed = _ember['default'].$('.ember-power-select-dropdown-ember' + id).length === 0;
@@ -15383,7 +15534,7 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
     });
 
     _ember['default'].Test.registerAsyncHelper('removeMultipleOption', function (app, cssPath, value) {
-      var elem = find(cssPath + ' .ember-power-select-multiple-options > li:contains(' + value + ') > .ember-power-select-multiple-remove-btn')[0];
+      var elem = find(cssPath + ' .ember-power-select-multiple-options > li:contains(' + value + ') > .ember-power-select-multiple-remove-btn').get(0);
       try {
         nativeMouseDown(elem);
       } catch (e) {
@@ -15393,7 +15544,7 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
     });
 
     _ember['default'].Test.registerAsyncHelper('clearSelected', function (app, cssPath) {
-      var elem = find(cssPath + ' .ember-power-select-clear-btn')[0];
+      var elem = find(cssPath + ' .ember-power-select-clear-btn').get(0);
       try {
         nativeMouseDown(elem);
       } catch (e) {
