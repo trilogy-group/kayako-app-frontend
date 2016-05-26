@@ -5994,6 +5994,26 @@ span#HW_badge.HW_softHidden {
   background-color: #F1F1F1;
   padding: 0 10px; }
 
+/* styles for frontend-cp/components/ko-admin/brands/form/styles.css */
+.ko-admin_brands_form__domain_zzsct3 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center; }
+
+.ko-admin_brands_form__domain-input_zzsct3 {
+  margin-right: 20px; }
+
+.ko-admin_brands_form__domain-available_zzsct3 {
+  color: #89a83b; }
+
+.ko-admin_brands_form__domain-not-available_zzsct3 {
+  color: #E86048; }
+
 /* styles for frontend-cp/components/ko-admin/case-fields/edit/priorities/styles.css */
 .ko-admin_case-fields_edit_priorities__buttons_255vxi {
   -webkit-box-flex: 1;
