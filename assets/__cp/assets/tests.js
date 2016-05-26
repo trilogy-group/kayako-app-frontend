@@ -13746,6 +13746,114 @@ define('frontend-cp/tests/acceptance/agent/organisations/create-test', ['exports
   //});
 });
 /* eslint-disable camelcase, new-cap */
+define('frontend-cp/tests/acceptance/agent/organisations/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+
+  var theCase = undefined;
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Organisation | Update organisation', {
+    beforeEach: function beforeEach() {
+      var locale = server.create('locale', {
+        id: 1,
+        locale: 'en-us'
+      });
+      var brand = server.create('brand', { locale: locale });
+      var statuses = server.createList('case-status', 5);
+      var priority = server.create('case-priority');
+      var businesshour = server.create('business-hour', { title: 'Default Business Hours' });
+      var teams = server.createList('team', 4, { businesshour: businesshour });
+      var customFields = server.createList('user-field-value', 3);
+      var agentRole = server.create('role', { title: 'Agent', type: 'AGENT', id: 2 });
+      var customerRole = server.create('role', { title: 'Agent', type: 'CUSTOMER', id: 4 });
+      var organization = server.create('organization', {
+        domains: [server.create('identity-domain')]
+      });
+      server.create('organization', {
+        domains: [server.create('identity-domain')]
+      }); // Another organization
+
+      var inboxPredicateCollection = server.create('predicate-collection', {
+        propositions: [{
+          id: server.create('proposition', { field: 'cases.assigneeagentid', operator: 'comparison_equalto', value: '(current_user)' }).id,
+          resource_type: 'proposition'
+        }]
+      });
+
+      server.create('view', {
+        title: 'Inbox',
+        is_default: true,
+        is_enabled: true,
+        is_system: true,
+        order_by: 'DESC',
+        order_by_column: 'caseid',
+        columns: server.createList('column', 5),
+        predicate_collections: [{ id: inboxPredicateCollection.id, resource_type: 'predicate_collection' }],
+        sort_order: 1,
+        type: 'INBOX'
+      });
+
+      var customer = server.create('user', {
+        custom_fields: customFields,
+        role: customerRole,
+        locale: locale,
+        organization: organization
+      });
+
+      var agent = server.create('user', {
+        custom_fields: customFields,
+        role: agentRole,
+        teams: teams,
+        locale: locale
+      });
+
+      theCase = server.create('case', {
+        requester: customer,
+        creator: agent,
+        assignedAgent: { id: agent.id, resource_type: 'user' },
+        assignedTeam: { id: teams[0].id, resource_type: 'team' },
+        brand: brand,
+        source_channel: null,
+        identity: null,
+        status: statuses[0],
+        priority: priority,
+        type: server.create('type'),
+        sla_version: server.create('sla-version'),
+        sla_metrics: server.createList('sla-metric', 3),
+        tags: server.createList('tag', 2)
+      });
+
+      ['admin.organizations.update', 'admin.organizations.delete'].forEach(function (name) {
+        return server.create('permission', { name: name });
+      });
+
+      var session = server.create('session', { user: agent });
+      server.create('plan', {
+        limits: [],
+        features: []
+      });
+      login(session.id);
+    },
+
+    afterEach: function afterEach() {
+      logout();
+    }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Update an organisation with invalid info highlights the errors', function (assert) {
+    visit('/agent/cases/' + theCase.id + '/organisation');
+
+    andThen(function () {
+      click('.organization-domains-field .ember-power-select-multiple-remove-btn');
+      fillIn('.organization-domains-field .ember-power-select-trigger-multiple-input', 'brew2.com');
+      keyEvent('.organization-domains-field .ember-power-select-trigger-multiple-input', 'keydown', 13);
+      click('.button--primary');
+    });
+
+    andThen(function () {
+      assert.equal(find('.organization-domains-field .ko-info-bar_item--error').length, 1, 'The domains field is marked as errored');
+    });
+  });
+});
+/* eslint-disable camelcase, new-cap */
 define('frontend-cp/tests/acceptance/agent/search/search-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/lib/keycodes', 'frontend-cp/session/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpLibKeycodes, _frontendCpSessionStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Case | Search', {
