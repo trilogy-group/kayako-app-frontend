@@ -1673,7 +1673,6 @@ textarea {
   font-family: inherit;
   font-size: inherit;
   border: none;
-  width: 25px;
   display: inline-block;
   line-height: inherit;
   -webkit-appearance: none;
@@ -1755,9 +1754,15 @@ textarea {
   cursor: pointer;
   padding: 0 8px; }
 
+.ember-power-select-group[aria-disabled="true"] {
+  color: #999999;
+  cursor: not-allowed; }
+
+.ember-power-select-group[aria-disabled="true"] .ember-power-select-option,
 .ember-power-select-option[aria-disabled="true"] {
   color: #999999;
-  pointer-events: none; }
+  pointer-events: none;
+  cursor: not-allowed; }
 
 .ember-power-select-option[aria-selected="true"] {
   background-color: #FFFFFF; }
@@ -5802,6 +5807,48 @@ span#HW_badge.HW_softHidden {
   padding: 0 26px 0 9px;
   line-height: 28px; }
 
+/* styles for frontend-cp/components/key-value-collection-builder/styles.css */
+.key-value-collection-builder__pair_1hs9l5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: 9px;
+  padding-right: 40px; }
+
+.key-value-collection-builder__pair_1hs9l5:hover .key-value-collection-builder__remove-btn_1hs9l5 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex; }
+
+.key-value-collection-builder__key_1hs9l5 {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  padding-right: 1rem;
+  max-width: 300px; }
+
+.key-value-collection-builder__value_1hs9l5 {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  padding-right: 1rem;
+  max-width: 300px; }
+
+.key-value-collection-builder__remove-btn_1hs9l5 {
+  display: none;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+              -ms-grid-row-align: center;
+          align-items: center; }
+
+.key-value-collection-builder__add-btn_1hs9l5 {
+  color: #38a0be; }
+
 /* styles for frontend-cp/components/ko-admin/add-new-card/styles.css */
 .ko-admin_add-new-card__form-body_xvltbj iframe {
   background: transparent !important; }
@@ -5816,6 +5863,7 @@ span#HW_badge.HW_softHidden {
 
 /* styles for frontend-cp/components/ko-admin/automation-actions-builder/styles.css */
 .ko-admin_automation-actions-builder__automation-action_10ryr1 {
+  position: relative;
   padding: 15px 15px 15px 40px;
   margin-bottom: 9px;
   background-color: #F3F6EB;
@@ -5828,18 +5876,22 @@ span#HW_badge.HW_softHidden {
       -ms-flex-wrap: wrap;
           flex-wrap: wrap; }
 
-.ko-automation-actions-builder__small-slot {
+.ko-admin_automation-actions-builder__small-slot_10ryr1 {
   width: calc((100% - 100px) / 3);
   padding-left: 10px; }
 
-.ko-automation-actions-builder__big-slot {
+.ko-admin_automation-actions-builder__big-slot_10ryr1 {
   width: 100%;
+  width: calc(100% - 120px);
   padding-left: 10px; }
 
 .ko-admin_automation-actions-builder__add-action-btn_10ryr1 {
   color: #38a0be; }
 
 .ko-admin_automation-actions-builder__actions_10ryr1 {
+  position: absolute;
+  top: 9px;
+  right: 9px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
