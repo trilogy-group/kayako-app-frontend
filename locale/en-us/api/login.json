@@ -12,5 +12,6 @@
   "welcome": "Welcome to Kayako",
 
   "error.invalid_email": "Please enter a valid email address",
-  "error.email_not_found": "This email doesn't exist"
+  "error.email_not_found": "This email doesn't exist",
+  "error.login_failed": "Email and password combination is incorrect"
 }
