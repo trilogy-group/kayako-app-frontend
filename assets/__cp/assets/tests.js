@@ -14543,6 +14543,97 @@ define('frontend-cp/tests/acceptance/agent/users/edit-test', ['exports', 'fronte
     click('.button--primary');
   });
 });
+define('frontend-cp/tests/acceptance/login/login-test', ['exports', 'qunit', 'frontend-cp/tests/helpers/qunit'], function (exports, _qunit, _frontendCpTestsHelpersQunit) {
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | login/login');
+
+  (0, _qunit.test)('visiting /agent/login', function (assert) {
+    visit('/agent/login');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/agent/login');
+    });
+  });
+
+  (0, _qunit.test)('submitting invalid credentials', function (assert) {
+    visit('/agent/login');
+
+    fillIn('.ko-login-password__email', 'invalid@kayako.com');
+    fillIn('.ko-login-password__password', 'invalid');
+    click('.ko-login__submit');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/agent/login');
+      assert.equal(find('.ko-login__flipper.a-error').length, 1);
+      assert.equal(find('.ko-login__error').text().trim(), 'Email and password combination is incorrect');
+    });
+  });
+
+  (0, _qunit.test)('submitting valid credentials', function (assert) {
+    // required data for the subsequent redirect, but not interesting for this test itself
+    setupDataForCasesView();
+
+    visit('/agent/login');
+
+    fillIn('.ko-login-password__email', 'main@kayako.com');
+    fillIn('.ko-login-password__password', 'valid');
+    click('.ko-login__submit');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/agent/cases/view/1');
+    });
+  });
+
+  function setupDataForCasesView() {
+    var locale = server.create('locale', { locale: 'en-us' });
+    var brand = server.create('brand', { locale: locale });
+    var caseFields = server.createList('case-field', 4);
+    var mailbox = server.create('mailbox', { brand: brand });
+    server.create('channel', { account: { id: mailbox.id, resource_type: 'mailbox' } });
+    server.create('case-form', {
+      fields: caseFields,
+      brand: brand
+    });
+    var agentRole = server.create('role', { type: 'AGENT' });
+    var customerRole = server.create('role', { type: 'AGENT' });
+
+    server.create('user', { role: agentRole, locale: locale });
+
+    server.create('user', { full_name: 'Barney Stinson', role: customerRole, locale: locale });
+    server.createList('case-status', 5);
+    server.createList('case-priority', 4);
+
+    server.create('plan', {
+      limits: [],
+      features: []
+    });
+
+    var columns = server.createList('column', 5);
+
+    var propositionAssignedToCurrentUser = server.create('proposition', {
+      field: 'cases.assigneeagentid',
+      operator: 'comparison_equalto',
+      value: '(current_user)'
+    });
+
+    var inboxPredicateCollection = server.create('predicate-collection', {
+      propositions: [{ id: propositionAssignedToCurrentUser.id, resource_type: 'proposition' }]
+    });
+
+    server.create('view', {
+      title: 'Inbox',
+      is_default: true,
+      is_enabled: true,
+      is_system: true,
+      order_by: 'DESC',
+      order_by_column: 'caseid',
+      columns: columns,
+      predicate_collections: [{ id: inboxPredicateCollection.id, resource_type: 'predicate_collection' }],
+      sort_order: 1,
+      type: 'INBOX'
+    });
+  }
+});
 define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-checkbox/styles', 'frontend-cp/components/ko-modal/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoCheckboxStyles, _frontendCpComponentsKoModalStyles) {
 
   var originalConfirm = window.confirm;
