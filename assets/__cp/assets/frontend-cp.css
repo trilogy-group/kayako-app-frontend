@@ -5802,6 +5802,18 @@ span#HW_badge.HW_softHidden {
   padding: 0 26px 0 9px;
   line-height: 28px; }
 
+/* styles for frontend-cp/components/ko-admin/add-new-card/styles.css */
+.ko-admin_add-new-card__form-body_xvltbj iframe {
+  background: transparent !important; }
+
+.ko-admin_add-new-card__form-footer_xvltbj {
+  text-align: right; }
+
+.ko-admin_add-new-card__cancel_xvltbj {
+  color: #2E3137;
+  font-size: 14px;
+  margin-right: 10px; }
+
 /* styles for frontend-cp/components/ko-admin/automation-actions-builder/styles.css */
 .ko-admin_automation-actions-builder__automation-action_10ryr1 {
   padding: 15px 15px 15px 40px;
@@ -5930,23 +5942,12 @@ span#HW_badge.HW_softHidden {
 .ko-admin_billing_index__group-body_2k63to {
   width: 75%; }
 
-.ko-admin_billing_index__form-body_2k63to iframe {
-  background: transparent !important; }
-
 .ko-admin_billing_index__tile_2k63to {
   padding: 20px 15px;
   background: #F7F8F9;
   border-radius: 2px;
   margin-top: 9px;
   text-align: center; }
-
-.ko-admin_billing_index__form-footer_2k63to {
-  text-align: right; }
-
-.ko-admin_billing_index__cancel_2k63to {
-  color: #2E3137;
-  font-size: 14px;
-  margin-right: 10px; }
 
 .ko-admin_billing_index__cards-group_2k63to {
   padding-top: 5px; }
@@ -7118,7 +7119,8 @@ a.ko-admin_plans_index__cancel_1pprhr {
   position: relative;
   padding: 18px;
   background-color: #fafafa;
-  border-top: 1px solid #D1D5D7; }
+  border-top: 1px solid #D1D5D7;
+  border-radius: 0 0 5px 5px; }
 
 /* styles for frontend-cp/components/ko-select/multiple/pill/styles.css */
 .ko-select_multiple_pill__pill_nw6jmv {
