@@ -354,8 +354,6 @@
   "twitter.connection_lost": "connection lost",
   "twitter.reconnect": "Reconnect",
   "twitter.deleted.message": "Twitter account deleted successfully",
-  "twitter.enabled.message": "Twitter account enabled successfully",
-  "twitter.disabled.message": "Twitter account disabled successfully",
 
   "predicate_builder.cases.subject": "Case: Subject",
   "predicate_builder.cases.casestatusid": "Case: Status",
@@ -613,8 +611,6 @@
 
   "facebook.headings.index": "Facebook",
   "facebook.buttons.create_account": "Connect a new page",
-  "facebook.enabled.message": "Facebook account enabled successfully",
-  "facebook.disabled.message": "Facebook account disabled successfully",
   "facebook.deleted.message": "Facebook account deleted successfully",
   "facebook.connection_lost": "connection lost",
   "facebook.reconnect": "Reconnect",
