@@ -11830,7 +11830,7 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
       assert.equal(status, 'Open', 'Status has updated to OPEN');
       assert.equal(find('.' + _frontendCpSessionStyles['default'].tab).length, 1, 'There is only one tab');
       assert.equal(find('.' + _frontendCpSessionStyles['default'].tab).text().trim(), 'No internet', 'That title of the tab has updated');
-      assert.equal(currentURL(), '/agent/cases/123');
+      assert.equal(currentURL(), '/agent/cases/1');
     });
   });
 
@@ -13034,7 +13034,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-test', ['exports', 'fronte
     visit('/agent/cases/1/user');
 
     andThen(function () {
-      assert.equal(find('.' + _frontendCpComponentsKoTabsStyles['default'].item).length, 2);
+      assert.equal(find('.' + _frontendCpComponentsKoTabsStyles['default'].item).length, 3);
     });
   });
 
@@ -17274,32 +17274,32 @@ define('frontend-cp/tests/unit/components/ko-admin/triggers/form/component-test'
   });
 
   var theTrigger = { channel: 'TWITTER' };
-  var channels = [new _ember['default'].Object({
+  var channels = [_ember['default'].Object.create({
     id: 'TWITTER',
     name: 'TWITTER',
     values: []
-  }), new _ember['default'].Object({
+  }), _ember['default'].Object.create({
     id: 'MAIL',
     name: 'MAIL',
     values: []
-  }), new _ember['default'].Object({
+  }), _ember['default'].Object.create({
     id: 'FACEBOOK',
     name: 'FACEBOOK',
     values: []
-  }), new _ember['default'].Object({
+  }), _ember['default'].Object.create({
     id: 'SYSTEM',
     name: 'SYSTEM',
     values: []
-  }), new _ember['default'].Object({
+  }), _ember['default'].Object.create({
     id: 'MESSENGER',
     name: 'MESSENGER',
     values: []
-  }), new _ember['default'].Object({
+  }), _ember['default'].Object.create({
     id: 'API',
     name: 'API',
     values: []
   })];
-  var definitions = [new _ember['default'].Object({
+  var definitions = [_ember['default'].Object.create({
     definitionType: 'STRING',
     group: 'CASES',
     inputType: 'STRING',
@@ -17307,7 +17307,7 @@ define('frontend-cp/tests/unit/components/ko-admin/triggers/form/component-test'
     operators: ['string_contains', 'string_does_not_contain'],
     subType: '',
     values: ''
-  }), new _ember['default'].Object({
+  }), _ember['default'].Object.create({
     definitionType: 'STRING',
     group: 'TWITTER',
     inputType: 'STRING',
@@ -17315,7 +17315,7 @@ define('frontend-cp/tests/unit/components/ko-admin/triggers/form/component-test'
     operators: ['string_contains', 'string_does_not_contain'],
     subType: '',
     values: ''
-  }), new _ember['default'].Object({
+  }), _ember['default'].Object.create({
     definitionType: 'STRING',
     group: 'MAIL',
     inputType: 'STRING',
@@ -17323,7 +17323,7 @@ define('frontend-cp/tests/unit/components/ko-admin/triggers/form/component-test'
     operators: ['string_contains', 'string_does_not_contain'],
     subType: '',
     values: ''
-  }), new _ember['default'].Object({
+  }), _ember['default'].Object.create({
     definitionType: 'STRING',
     group: 'FACEBOOK',
     inputType: 'STRING',
@@ -17331,7 +17331,7 @@ define('frontend-cp/tests/unit/components/ko-admin/triggers/form/component-test'
     operators: ['string_contains', 'string_does_not_contain'],
     subType: '',
     values: ''
-  }), new _ember['default'].Object({
+  }), _ember['default'].Object.create({
     definitionType: 'STRING',
     group: 'SYSTEM',
     inputType: 'STRING',
@@ -17339,7 +17339,7 @@ define('frontend-cp/tests/unit/components/ko-admin/triggers/form/component-test'
     operators: ['string_contains', 'string_does_not_contain'],
     subType: '',
     values: ''
-  }), new _ember['default'].Object({
+  }), _ember['default'].Object.create({
     definitionType: 'STRING',
     group: 'MESSENGER',
     inputType: 'STRING',
@@ -17347,7 +17347,7 @@ define('frontend-cp/tests/unit/components/ko-admin/triggers/form/component-test'
     operators: ['string_contains', 'string_does_not_contain'],
     subType: '',
     values: ''
-  }), new _ember['default'].Object({
+  }), _ember['default'].Object.create({
     definitionType: 'STRING',
     group: 'API',
     inputType: 'STRING',
@@ -18001,7 +18001,7 @@ define('frontend-cp/tests/unit/components/ko-people-popover/component-test', ['e
     _ember['default'].run(function () {
       component.set('searchTerm', 'K');
       component.set('isLoading', false);
-      component.set('suggestedPeople', [new _ember['default'].Object({
+      component.set('suggestedPeople', [_ember['default'].Object.create({
         parent: {
           avatar: '',
           fullName: 'Demo User',
@@ -18025,7 +18025,7 @@ define('frontend-cp/tests/unit/components/ko-people-popover/component-test', ['e
 
     _ember['default'].run(function () {
       component.set('isLoading', false);
-      component.set('selectedPeople', [new _ember['default'].Object({
+      component.set('selectedPeople', [_ember['default'].Object.create({
         parent: {
           avatar: '',
           fullName: 'Demo User',
