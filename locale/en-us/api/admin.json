@@ -354,6 +354,8 @@
   "twitter.connection_lost": "connection lost",
   "twitter.reconnect": "Reconnect",
   "twitter.deleted.message": "Twitter account deleted successfully",
+  "twitter.enabled.message": "Twitter account enabled successfully",
+  "twitter.disabled.message": "Twitter account disabled successfully",
 
   "predicate_builder.cases.subject": "Case: Subject",
   "predicate_builder.cases.casestatusid": "Case: Status",
@@ -460,8 +462,11 @@
   "automation_actions_builder.labels.message": "Message",
   "automation_actions_builder.labels.endpoint_message": "Message to send",
   "automation_actions_builder.labels.request_payload": "Request payload",
+  "automation_actions_builder.labels.request_parameters": "Parameters",
   "automation_actions_builder.label.addition_of_action": "+ Add a new action",
+  "automation_actions_builder.label.add_parameter": "+ Add a new parameter",
   "automation_actions_builder.label.request_payload_explanation": "The simple payload format will send a standard set of case attributes to the Endpoint, or you can specify your own attributes and values.",
+  "automation_actions_builder.label.request_parameters_explanation": "These parameters will be appended or posted (depending on the Endpoint method type) to the HTTP request to the Endpoint URL.",
   "automation_actions_builder.label.request_payload_explanation_link": "Find out more about HTTP requests Endpoints",
   "automation_actions_builder.label.placeholders_allowed": "You can use placeholders here.",
   "automation_actions_builder.label.placeholders_allowed_link": "Find out more about placeholders.",
@@ -608,6 +613,8 @@
 
   "facebook.headings.index": "Facebook",
   "facebook.buttons.create_account": "Connect a new page",
+  "facebook.enabled.message": "Facebook account enabled successfully",
+  "facebook.disabled.message": "Facebook account disabled successfully",
   "facebook.deleted.message": "Facebook account deleted successfully",
   "facebook.connection_lost": "connection lost",
   "facebook.reconnect": "Reconnect",
@@ -732,5 +739,7 @@
   "brands.edit.locale.description": "This is the default language that will be used for this Brand, if a user has not specified their own.",
   "brands.edit.heading.domain": "Domain",
   "brands.edit.domain.description": "Each one of your Brands has its own unique domain name and its Help Center. To start with, every Brand has a .kayako.com domain. After you’ve got a .kayako.com name for your Brand, you can set up a custom domain for the Brand too.",
-  "brands.edit.domain.description2": "You can configure a custom domain name and custom SSL certificate for this new Brand after you have created it."
+  "brands.edit.domain.description2": "You can configure a custom domain name and custom SSL certificate for this new Brand after you have created it.",
+  "brands.edit.domain.available": ":-) this domain name is available!",
+  "brands.edit.domain.not_available": ":-( this domain is not available, try another one"
 }
