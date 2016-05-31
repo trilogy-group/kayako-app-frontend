@@ -15417,7 +15417,7 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
   // Helpers for integration tests
 
   function typeText(selector, text) {
-    var $selector = $(selector);
+    var $selector = $($(selector).get(0)); // Only interact with the first result
     $selector.val(text);
     var event = document.createEvent('Events');
     event.initEvent('input', true, true);
@@ -15469,7 +15469,7 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
 
   function typeInSearch(text) {
     _ember['default'].run(function () {
-      typeText('.ember-power-select-search input, .ember-power-select-trigger-multiple-input', text);
+      typeText('.ember-power-select-search-input, .ember-power-select-search input, .ember-power-select-trigger-multiple-input, input[type="search"]', text);
     });
   }
 
@@ -15544,7 +15544,7 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
         nativeMouseDown(cssPath + ' .ember-power-select-trigger');
         wait();
       }
-      var isDefaultSingleSelect = _ember['default'].$('.ember-power-select-search input').length > 0;
+      var isDefaultSingleSelect = _ember['default'].$('.ember-power-select-search-input').length > 0;
 
       if (isMultipleSelect) {
         fillIn(cssPath + ' .ember-power-select-trigger-multiple-input', value);
@@ -15552,9 +15552,9 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
           triggerEvent(cssPath + ' .ember-power-select-trigger-multiple-input', 'input');
         }
       } else if (isDefaultSingleSelect) {
-        fillIn('.ember-power-select-search input', value);
+        fillIn('.ember-power-select-search-input', value);
         if (isEmberOne) {
-          triggerEvent('.ember-power-select-dropdown-ember' + id + ' .ember-power-select-search input', 'input');
+          triggerEvent('.ember-power-select-dropdown-ember' + id + ' .ember-power-select-search-input', 'input');
         }
       } else {
         // It's probably a customized version
@@ -15565,9 +15565,9 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
             triggerEvent(cssPath + ' .ember-power-select-trigger input[type=search]', 'input');
           }
         } else {
-          fillIn('.ember-power-select-dropdown-ember' + id + ' .ember-power-select-search input[type=search]', 'input');
+          fillIn('.ember-power-select-dropdown-ember' + id + ' .ember-power-select-search-input[type=search]', 'input');
           if (isEmberOne) {
-            triggerEvent('.ember-power-select-dropdown-ember' + id + ' .ember-power-select-search input[type=search]', 'input');
+            triggerEvent('.ember-power-select-dropdown-ember' + id + ' .ember-power-select-search-input[type=search]', 'input');
           }
         }
       }
@@ -15577,6 +15577,7 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
       var elem = find(cssPath + ' .ember-power-select-multiple-options > li:contains(' + value + ') > .ember-power-select-multiple-remove-btn').get(0);
       try {
         nativeMouseDown(elem);
+        wait();
       } catch (e) {
         console.warn('css path to remove btn not found');
         throw e;
@@ -15587,6 +15588,7 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
       var elem = find(cssPath + ' .ember-power-select-clear-btn').get(0);
       try {
         nativeMouseDown(elem);
+        wait();
       } catch (e) {
         console.warn('css path to clear btn not found');
         throw e;
