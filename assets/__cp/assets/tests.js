@@ -1858,6 +1858,46 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     });
   });
 
+  (0, _frontendCpTestsHelpersQunit.test)('Creating a monitor with a "BOOLEAN" action', function (assert) {
+    assert.expect(9);
+    server.create('automation-action-definition', {
+      label: 'Yes / No',
+      name: 'customfield_84',
+      options: ['CHANGE'],
+      input_type: 'BOOLEAN',
+      value_type: 'BOOLEAN',
+      values: '',
+      attributes: [],
+      group: 'CUSTOM_FIELD',
+      resource_type: 'automation_action_definition'
+    });
+
+    visit('/admin/automation/monitors/new');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/new');
+      fillIn('input[name="title"]', 'Sample monitor name');
+
+      fillPredicateCollections();
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Yes / No');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'Yes');
+      click('.button[name=submit]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/monitors/1');
+      assertPredicateCollestionsAreCorrect(assert);
+      assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1) .ember-power-select-trigger').text().trim(), 'Yes', 'The value is YES');
+    });
+  });
+
   (0, _frontendCpTestsHelpersQunit.test)('Creating a monitor with a "Stop processing other rules" action', function (assert) {
     assert.expect(9);
     server.create('automation-action-definition', {
