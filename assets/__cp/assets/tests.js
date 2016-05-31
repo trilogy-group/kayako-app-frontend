@@ -4,7 +4,7 @@ define('frontend-cp/tests/acceptance/admin/account/billing/index-test', ['export
     beforeEach: function beforeEach() {
       /*eslint-disable camelcase*/
       var locale = server.create('locale', { locale: 'en-us' });
-      server.create('plan', { limits: [], features: [] });
+      server.create('plan', { limits: {}, features: [] });
       var adminRole = server.create('role', { type: 'ADMIN' });
       var agent = server.create('user', { role: adminRole, locale: locale });
       var session = server.create('session', { user: agent });
@@ -67,7 +67,7 @@ define('frontend-cp/tests/acceptance/admin/account/overview/index-test', ['expor
     beforeEach: function beforeEach() {
       /*eslint-disable camelcase*/
       var locale = server.create('locale', { locale: 'en-us' });
-      server.create('plan', { limits: [], features: [] });
+      server.create('plan', { limits: {}, features: [] });
       var adminRole = server.create('role', { type: 'ADMIN' });
       var agent = server.create('user', { role: adminRole, locale: locale });
       var session = server.create('session', { user: agent });
@@ -154,7 +154,7 @@ define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports'
     beforeEach: function beforeEach() {
       /*eslint-disable camelcase*/
       var locale = server.create('locale', { locale: 'en-us' });
-      server.create('plan', { limits: [], features: [] });
+      server.create('plan', { limits: {}, features: [] });
       var adminRole = server.create('role', { type: 'ADMIN' });
       var agent = server.create('user', { role: adminRole, locale: locale });
       var session = server.create('session', { user: agent });
@@ -261,7 +261,7 @@ define('frontend-cp/tests/acceptance/admin/automation/businesshours/edit-test', 
     beforeEach: function beforeEach() {
       /*eslint-disable camelcase*/
       var locale = server.create('locale', { locale: 'en-us' });
-      server.create('plan', { limits: [], features: [] });
+      server.create('plan', { limits: {}, features: [] });
       var adminRole = server.create('role', { type: 'ADMIN' });
       var agent = server.create('user', { role: adminRole, locale: locale });
       var session = server.create('session', { user: agent });
@@ -537,7 +537,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/edit-test', ['exp
       login(session.id);
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
       originalConfirm = window.confirm;
@@ -661,7 +661,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/index-test', ['ex
       login(session.id);
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
       originalConfirm = window.confirm;
@@ -1042,7 +1042,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
       login(session.id);
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
       originalConfirm = window.confirm;
@@ -2153,7 +2153,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/edit-test', ['exp
       login(session.id);
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
       originalConfirm = window.confirm;
@@ -2356,7 +2356,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/index-test', ['ex
       login(session.id);
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
       originalConfirm = window.confirm;
@@ -2738,7 +2738,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
       login(session.id);
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
       originalConfirm = window.confirm;
@@ -3282,7 +3282,7 @@ define('frontend-cp/tests/acceptance/admin/channels/email/list-test', ['exports'
       var session = server.create('session', { user: user });
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
 
@@ -3394,7 +3394,7 @@ define('frontend-cp/tests/acceptance/admin/channels/email/new-test', ['exports',
       var session = server.create('session', { user: user });
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
 
@@ -3517,7 +3517,7 @@ define('frontend-cp/tests/acceptance/admin/manage/brands/list-test', ['exports',
       var session = server.create('session', { user: user });
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
 
@@ -3637,7 +3637,7 @@ define('frontend-cp/tests/acceptance/admin/manage/brands/new-test', ['exports', 
       server.create('locale', { id: 4, locale: 'ru-ru', name: 'Russian', is_public: true, is_localised: true });
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
 
@@ -3725,7 +3725,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/delete-test', ['ex
       login(session.id);
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
       originalConfirm = window.confirm;
@@ -4088,7 +4088,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       login(session.id);
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
     },
@@ -4676,7 +4676,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-priorities-
       });
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
     },
@@ -4802,7 +4802,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-statuses-te
       });
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
     },
@@ -4928,7 +4928,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-types-test'
       });
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
     },
@@ -5020,7 +5020,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       login(session.id);
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
     },
@@ -5795,7 +5795,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/reorder-test', ['e
       login(session.id);
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
       /*eslint-enable camelcase*/
@@ -6013,7 +6013,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
       locale = server.create('locale', { locale: 'en-us' });
       var user = server.create('user', { emails: emails, role: server.create('role'), locale: locale });
       var session = server.create('session', { user: user });
-      server.create('plan', { limits: [], features: [] });
+      server.create('plan', { limits: {}, features: [] });
       brand = server.create('brand', { locale: locale });
       originalConfirm = window.confirm;
       login(session.id);
@@ -6353,7 +6353,7 @@ define('frontend-cp/tests/acceptance/admin/manage/facebook/manage-pages-test', [
       login(session.id);
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
       /*eslint-enable quote-props*/
@@ -6470,7 +6470,7 @@ define('frontend-cp/tests/acceptance/admin/manage/localization/list-test', ['exp
       var session = server.create('session', { user: user });
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
 
@@ -6541,7 +6541,7 @@ define('frontend-cp/tests/acceptance/admin/manage/macros/new-test', ['exports', 
       login(session.id);
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
       /*eslint-enable camelcase, quote-props*/
@@ -6824,7 +6824,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/edit-test', ['exports', 
       login(session.id);
       server.create('view');
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
       var stringProposition = server.create('proposition', {
@@ -7098,7 +7098,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       login(session.id);
       server.create('view');
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
       /*eslint-enable quote-props*/
@@ -7657,7 +7657,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/delete-tes
       login(sessionId);
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
       originalConfirm = window.confirm;
@@ -8009,7 +8009,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
       login(session.id);
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
       /*eslint-enable camelcase*/
@@ -8542,7 +8542,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       login(session.id);
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
     },
@@ -9295,7 +9295,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/reorder-te
       login(session.id);
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
       /*eslint-enable camelcase*/
@@ -9499,7 +9499,7 @@ define('frontend-cp/tests/acceptance/admin/people/roles/form-test', ['exports', 
       });
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
 
@@ -9623,7 +9623,7 @@ define('frontend-cp/tests/acceptance/admin/people/roles/index-test', ['exports',
       });
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
 
@@ -9800,7 +9800,7 @@ define('frontend-cp/tests/acceptance/admin/people/teams-forms-test', ['exports',
       var user = server.create('user', { emails: emails, locale: locale, role: server.create('role', { roleType: 'ADMIN' }) });
       var session = server.create('session', { user: user });
 
-      server.create('plan', { limits: [], features: [] });
+      server.create('plan', { limits: {}, features: [] });
 
       server.create('brand', { locale: server.create('locale') });
 
@@ -9874,7 +9874,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/delete-test', ['ex
       login(session.id);
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
       originalConfirm = window.confirm;
@@ -10225,7 +10225,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       login(session.id);
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
     },
@@ -10795,7 +10795,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       login(session.id);
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
     },
@@ -11547,7 +11547,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/reorder-test', ['e
       login(session.id);
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
     },
@@ -11759,7 +11759,7 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
       login(session.id);
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
     },
@@ -12008,8 +12008,8 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
       });
 
       var limit = server.create('limit', {
-        name: 'collaborators',
-        limit: 10
+        collaborators: 10,
+        agents: 5
       });
 
       var feature = server.create('feature', {
@@ -12019,7 +12019,7 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
       });
 
       server.create('plan', {
-        limits: [limit],
+        limits: limit,
         features: [feature]
       });
 
@@ -12361,7 +12361,7 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
       server.createList('attachment', 3);
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
       var status = server.create('case-status');
@@ -12801,7 +12801,7 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
       server.createList('attachment', 3);
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
       var status = server.create('case-status');
@@ -13059,7 +13059,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-test', ['exports', 'fronte
     login(sessionId);
 
     server.create('plan', {
-      limits: [],
+      limits: {},
       features: []
     });
 
@@ -13121,7 +13121,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
       server.createList('attachment', 3);
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
       var status = server.create('case-status');
@@ -13405,7 +13405,7 @@ define('frontend-cp/tests/acceptance/agent/index-test', ['exports', 'frontend-cp
       var locale = server.create('locale', { locale: 'en-us' });
       var user = server.create('user', { emails: emails, role: server.create('role'), locale: locale });
       var session = server.create('session', { user: user });
-      server.create('plan', { limits: [], features: [] });
+      server.create('plan', { limits: {}, features: [] });
 
       login(session.id);
     },
@@ -13551,7 +13551,7 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
       var locale = server.create('locale', { locale: 'en-us' });
       var user = server.create('user', { emails: emails, role: server.create('role'), locale: locale });
       var session = server.create('session', { user: user });
-      server.create('plan', { limits: [], features: [] });
+      server.create('plan', { limits: {}, features: [] });
       login(session.id);
 
       visit('/agent/users/' + user.id);
@@ -13654,7 +13654,7 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
       var locale = server.create('locale', { locale: 'en-us' });
       var user = server.create('user', { twitter: twitter, role: server.create('role'), locale: locale });
       var session = server.create('session', { user: user });
-      server.create('plan', { limits: [], features: [] });
+      server.create('plan', { limits: {}, features: [] });
       login(session.id);
 
       visit('/agent/users/' + user.id);
@@ -13721,7 +13721,7 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
       var locale = server.create('locale', { locale: 'en-us' });
       var user = server.create('user', { facebook: facebook, role: server.create('role'), locale: locale });
       var session = server.create('session', { user: user });
-      server.create('plan', { limits: [], features: [] });
+      server.create('plan', { limits: {}, features: [] });
       login(session.id);
 
       visit('/agent/users/' + user.id);
@@ -13775,7 +13775,7 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
       var locale = server.create('locale', { locale: 'en-us' });
       var user = server.create('user', { phones: phones, role: server.create('role'), locale: locale });
       var session = server.create('session', { user: user });
-      server.create('plan', { limits: [], features: [] });
+      server.create('plan', { limits: {}, features: [] });
       login(session.id);
 
       visit('/agent/users/' + user.id);
@@ -13855,7 +13855,7 @@ define('frontend-cp/tests/acceptance/agent/organisations/create-test', ['exports
       login(session.id);
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
     },
@@ -13977,7 +13977,7 @@ define('frontend-cp/tests/acceptance/agent/organisations/edit-test', ['exports',
 
       var session = server.create('session', { user: agent });
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
       login(session.id);
@@ -14375,7 +14375,7 @@ define('frontend-cp/tests/acceptance/agent/users/change-role-test', ['exports', 
     var other = server.create('user', { role: this.roles.customer });
     var session = server.create('session', { user: me });
 
-    server.create('plan', { limits: [], features: [] });
+    server.create('plan', { limits: {}, features: [] });
     login(session.id);
 
     visit('/agent/users/' + other.id);
@@ -14395,7 +14395,7 @@ define('frontend-cp/tests/acceptance/agent/users/change-role-test', ['exports', 
     var other = server.create('user', { role: this.roles.agent });
     var session = server.create('session', { user: me });
 
-    server.create('plan', { limits: [], features: [] });
+    server.create('plan', { limits: {}, features: [] });
     login(session.id);
 
     visit('/agent/users/' + other.id);
@@ -14415,7 +14415,7 @@ define('frontend-cp/tests/acceptance/agent/users/change-role-test', ['exports', 
     var requested = false;
     var endpoint = '/api/v1/users/' + other.id;
 
-    server.create('plan', { limits: [], features: [] });
+    server.create('plan', { limits: {}, features: [] });
     login(session.id);
 
     server.put(endpoint, function () {
@@ -14440,7 +14440,7 @@ define('frontend-cp/tests/acceptance/agent/users/change-role-test', ['exports', 
     var other = server.create('user', { role: this.roles.customer });
     var session = server.create('session', { user: me });
 
-    server.create('plan', { limits: [], features: [] });
+    server.create('plan', { limits: {}, features: [] });
     login(session.id);
 
     visit('/agent/users/' + other.id);
@@ -14475,7 +14475,7 @@ define('frontend-cp/tests/acceptance/agent/users/create-test', ['exports', 'fron
       login(session.id);
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
     },
@@ -14571,7 +14571,7 @@ define('frontend-cp/tests/acceptance/agent/users/edit-test', ['exports', 'fronte
       login(session.id);
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
     },
@@ -14754,7 +14754,7 @@ define('frontend-cp/tests/acceptance/login/login-test', ['exports', 'qunit', 'fr
     server.createList('case-priority', 4);
 
     server.create('plan', {
-      limits: [],
+      limits: {},
       features: []
     });
 
@@ -14805,7 +14805,7 @@ define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'fron
       login(session.id);
 
       server.create('plan', {
-        limits: [],
+        limits: {},
         features: []
       });
 
@@ -19687,8 +19687,7 @@ define('frontend-cp/tests/unit/services/plan-test', ['exports', 'ember', 'ember-
       /* eslint-disable no-undef, camelcase */
       (0, _frontendCpTestsHelpersSetupMirageForIntegration['default'])(getOwner(this));
       var limit = server.create('limit', {
-        name: 'collaborators',
-        limit: 10
+        collaborators: 10
       });
 
       var feature = server.create('feature', {
@@ -19698,7 +19697,7 @@ define('frontend-cp/tests/unit/services/plan-test', ['exports', 'ember', 'ember-
       });
 
       server.create('plan', {
-        limits: [limit],
+        limits: limit,
         features: [feature]
       });
       /* eslint-enable no-undef, camelcase */
@@ -19735,8 +19734,7 @@ define('frontend-cp/tests/unit/services/plan-test', ['exports', 'ember', 'ember-
 
     /* eslint-disable no-undef, camelcase */
     var limit = server.create('limit', {
-      name: 'agents',
-      limit: 2
+      agents: 2
     });
 
     var feature = server.create('feature', {
@@ -19748,7 +19746,7 @@ define('frontend-cp/tests/unit/services/plan-test', ['exports', 'ember', 'ember-
     server.db.plans.remove(1);
 
     server.create('plan', {
-      limits: [limit],
+      limits: limit,
       features: [feature]
     });
     /* eslint-enable no-undef, camelcase */
