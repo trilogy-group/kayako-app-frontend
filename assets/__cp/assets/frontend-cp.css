@@ -4811,33 +4811,6 @@ span#HW_badge.HW_softHidden {
   display: -ms-flexbox;
   display: flex; }
 
-.ko-sla {
-  text-align: center; }
-
-.ko-sla--bad {
-  background-color: #E86048; }
-
-.ko-sla--warning {
-  background-color: #ECC645; }
-  .ko-sla--warning .ko-sla__i {
-    color: #FFF; }
-  .ko-sla--warning .ko-sla__metric {
-    color: #FFF; }
-
-.ko-sla__container {
-  display: inline-block;
-  width: 50px;
-  padding: 1px 5px;
-  border-radius: 2px;
-  text-align: center; }
-
-.ko-sla__icon {
-  display: inline-block; }
-
-.ko-sla__metric {
-  display: inline-block;
-  padding-left: 2px; }
-
 .ko-stateful-button {
   width: 150px;
   height: 32px;
@@ -6473,9 +6446,6 @@ a.ko-admin_plans_index__cancel_1pprhr {
 .ko-case_sla-sidebar_metric__metric-bad_1md5rg {
   background-color: rgba(232, 96, 72, 0.1); }
 
-.ko-case_sla-sidebar_metric__metric-warning_1md5rg {
-  background-color: rgba(236, 198, 69, 0.1); }
-
 .ko-case_sla-sidebar_metric__metric-open_1md5rg {
   background-color: rgba(131, 141, 148, 0.1); }
 
@@ -6484,9 +6454,6 @@ a.ko-admin_plans_index__cancel_1pprhr {
 
 .ko-case_sla-sidebar_metric__icon-bad_1md5rg {
   color: #E86048; }
-
-.ko-case_sla-sidebar_metric__icon-warning_1md5rg {
-  color: #ECC645; }
 
 .ko-case_sla-sidebar_metric__icon-open_1md5rg {
   color: #838D94; }
@@ -7125,6 +7092,49 @@ a.ko-admin_plans_index__cancel_1pprhr {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px; }
+
+/* styles for frontend-cp/components/ko-sla/styles.css */
+.ko-sla__container_n3t7i0 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+
+.ko-sla__metric_n3t7i0 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 0 5px;
+  border-radius: 2px;
+  height: 19px; }
+
+.ko-sla__metric-breached_n3t7i0 {
+  background-color: #E86048; }
+
+.ko-sla__icon_n3t7i0 {
+  font-size: 11px;
+  line-height: 1; }
+
+.ko-sla__icon-good_n3t7i0 {
+  color: #89a83b; }
+
+.ko-sla__icon-bad_n3t7i0 {
+  color: #E86048; }
+
+.ko-sla__icon-open_n3t7i0 {
+  color: #A1AAAF; }
+
+.ko-sla__icon-breached_n3t7i0 {
+  color: #fff; }
+
+.ko-sla__text_n3t7i0 {
+  padding-left: 7px;
+  line-height: 1; }
+
+.ko-sla__text-breached_n3t7i0 {
+  color: #fff; }
 
 /* styles for frontend-cp/components/ko-tabs/styles.css */
 .ko-tabs__tabs_mcpj6q {
