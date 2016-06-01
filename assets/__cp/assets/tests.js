@@ -5052,14 +5052,13 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
         value: 'en-us',
         resource_type: 'setting'
       });
-      server.create('locale', {
+      var locale = server.create('locale', {
         id: 1,
         locale: 'en-us',
         is_public: true
       });
       var adminRole = server.create('role', { type: 'ADMIN' });
-      var locale = server.create('locale', { locale: 'en-us' });
-      var agent = server.create('user', { role: adminRole, locale: locale });
+      var agent = server.create('user', { role: adminRole, locale: { id: locale.id, resource_type: 'locale' } });
       var session = server.create('session', { user: agent });
       login(session.id);
 
@@ -5073,6 +5072,35 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       window.confirm = originalConfirm;
       logout();
     }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('creating a new field sends locale fields for all public locales', function (assert) {
+    assert.expect(7);
+
+    server.create('locale', {
+      id: 2,
+      locale: 'es',
+      is_public: false
+    });
+
+    visit('/admin/manage/case-fields/new/TEXT');
+
+    server.post('/api/v1/cases/fields', function (schema, request) {
+      var requestData = JSON.parse(request.requestBody);
+      assert.equal(requestData.customer_titles.length, 1, '1 customer title');
+      assert.equal(requestData.descriptions.length, 1, '1 description');
+      assert.equal(requestData.customer_titles[0].locale, 'en-us', 'customer title locale');
+      assert.equal(requestData.customer_titles[0].translation, null, 'customer title translation');
+      assert.equal(requestData.descriptions[0].locale, 'en-us', 'description locale');
+      assert.equal(requestData.descriptions[0].translation, null, 'description translation');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/manage/case-fields/new/TEXT');
+
+      fillIn('input.ko-admin_case-fields_edit__title', 'fieldTitle');
+      click('.button--primary:first');
+    });
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new text field', function (assert) {
@@ -8562,14 +8590,13 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
         value: 'en-us',
         resource_type: 'setting'
       });
-      server.create('locale', {
+      var locale = server.create('locale', {
         id: 1,
         locale: 'en-us',
         is_ublic: true
       });
       var adminRole = server.create('role', { type: 'ADMIN' });
-      var locale = server.create('locale', { locale: 'en-us' });
-      var agent = server.create('user', { role: adminRole, locale: locale });
+      var agent = server.create('user', { role: adminRole, locale: { id: locale.id, resource_type: 'locale' } });
       var session = server.create('session', { user: agent });
       login(session.id);
 
@@ -8583,6 +8610,35 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       window.confirm = originalConfirm;
       logout();
     }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('creating a new field sends locale fields for all public locales', function (assert) {
+    assert.expect(7);
+
+    server.create('locale', {
+      id: 2,
+      locale: 'es',
+      is_public: false
+    });
+
+    visit('/admin/people/organization-fields/new/TEXT');
+
+    server.post('/api/v1/organizations/fields', function (schema, request) {
+      var requestData = JSON.parse(request.requestBody);
+      assert.equal(requestData.customer_titles.length, 1, '1 customer title');
+      assert.equal(requestData.descriptions.length, 1, '1 description');
+      assert.equal(requestData.customer_titles[0].locale, 'en-us', 'customer title locale');
+      assert.equal(requestData.customer_titles[0].translation, null, 'customer title translation');
+      assert.equal(requestData.descriptions[0].locale, 'en-us', 'description locale');
+      assert.equal(requestData.descriptions[0].translation, null, 'description translation');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/people/organization-fields/new/TEXT');
+
+      fillIn('input.ko-admin_case-fields_edit__title', 'fieldTitle');
+      click('.button--primary:first');
+    });
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new text field', function (assert) {
@@ -10815,14 +10871,13 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
         value: 'en-us',
         resource_type: 'setting'
       });
-      server.create('locale', {
+      var locale = server.create('locale', {
         id: 1,
         locale: 'en-us',
         is_public: true
       });
       var adminRole = server.create('role', { type: 'ADMIN' });
-      var locale = server.create('locale', { locale: 'en-us' });
-      var agent = server.create('user', { role: adminRole, locale: locale });
+      var agent = server.create('user', { role: adminRole, locale: { id: locale.id, resource_type: 'locale' } });
       var session = server.create('session', { user: agent });
       login(session.id);
 
@@ -10836,6 +10891,35 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       window.confirm = originalConfirm;
       logout();
     }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('creating a new field sends locale fields for all public locales', function (assert) {
+    assert.expect(7);
+
+    server.create('locale', {
+      id: 2,
+      locale: 'es',
+      is_public: false
+    });
+
+    visit('/admin/people/user-fields/new/TEXT');
+
+    server.post('/api/v1/users/fields', function (schema, request) {
+      var requestData = JSON.parse(request.requestBody);
+      assert.equal(requestData.customer_titles.length, 1, '1 customer title');
+      assert.equal(requestData.descriptions.length, 1, '1 description');
+      assert.equal(requestData.customer_titles[0].locale, 'en-us', 'customer title locale');
+      assert.equal(requestData.customer_titles[0].translation, null, 'customer title translation');
+      assert.equal(requestData.descriptions[0].locale, 'en-us', 'description locale');
+      assert.equal(requestData.descriptions[0].translation, null, 'description translation');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/people/user-fields/new/TEXT');
+
+      fillIn('input.ko-admin_case-fields_edit__title', 'fieldTitle');
+      click('.button--primary:first');
+    });
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new text field', function (assert) {
