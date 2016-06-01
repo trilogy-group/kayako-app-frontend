@@ -6089,11 +6089,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
   (0, _frontendCpTestsHelpersQunit.test)('Try to create new Case Form, Modify field, then Cancel, Prompt should appear, Agree, then redirects back to Case Form Index Page', function (assert) {
     visit('/admin/manage/case-forms');
 
-    window.confirm = function (message) {
-      assert.equal(message, 'You have unsaved changes on this page. Are you sure you want to discard these changes?');
-      return true;
-    };
-
     andThen(function () {
       click('.qa-admin_case-forms__new-button');
     });
@@ -6105,6 +6100,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
 
     andThen(function () {
       click('.qa-admin_case-forms__cancel-button');
+      click('.qa-ko-confirm-modal__confirm');
     });
 
     andThen(function () {
@@ -6114,12 +6110,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
 
   (0, _frontendCpTestsHelpersQunit.test)('Cancelling new case form after it was modified triggers prompt and prevents redirect when cancelled', function (assert) {
     visit('/admin/manage/case-forms');
-
-    window.confirm = function (message) {
-      assert.equal(message, 'You have unsaved changes on this page. Are you sure you want to discard these changes?');
-      return false;
-    };
-
     andThen(function () {
       click('.qa-admin_case-forms__new-button');
     });
@@ -6131,6 +6121,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
 
     andThen(function () {
       click('.qa-admin_case-forms__cancel-button');
+      click('.qa-ko-confirm-modal__cancel');
     });
 
     andThen(function () {
@@ -6344,10 +6335,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
   (0, _frontendCpTestsHelpersQunit.test)('I can delete regular case form (not default one)', function (assert) {
     assert.expect(2);
 
-    window.confirm = function () {
-      return true;
-    };
-
     server.create('case-form', {
       is_default: false,
       is_enabled: true,
@@ -6362,6 +6349,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
     andThen(function () {
       assert.equal(find('.qa-admin_case-forms__enabled-list .qa-admin_case-forms__list-row').length, 1);
       click('.qa-admin_case-forms__enabled-list .qa-admin_case-forms__list-row:contains("Form 1") a:contains("Delete")');
+      click('.qa-ko-confirm-modal__confirm');
     });
 
     andThen(function () {
