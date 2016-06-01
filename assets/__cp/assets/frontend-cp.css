@@ -6609,6 +6609,17 @@ a.ko-admin_plans_index__cancel_1pprhr {
 .ko-checkbox__labelDisabled_va0kgl {
   opacity: 0.5; }
 
+/* styles for frontend-cp/components/ko-confirm-modal/styles.css */
+.ko-confirm-modal__confirmButton_yktylu {
+  float: right; }
+
+.ko-confirm-modal__header_yktylu {
+  font-size: 16px;
+  padding: 4px 0px; }
+
+.ko-confirm-modal__body_yktylu {
+  padding: 4px 0px; }
+
 /* styles for frontend-cp/components/ko-context-modal/styles.css */
 .ko-context-modal__dropdown_11jzdk {
   position: absolute;
@@ -6960,7 +6971,7 @@ a.ko-admin_plans_index__cancel_1pprhr {
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.6);
   z-index: 1050;
   overflow-y: auto; }
 
@@ -6991,6 +7002,9 @@ a.ko-admin_plans_index__cancel_1pprhr {
   background-color: #fafafa;
   border-top: 1px solid #D1D5D7;
   border-radius: 0 0 5px 5px; }
+
+.ko-modal__footer-small_q4hi99 {
+  padding: 4.5px; }
 
 /* styles for frontend-cp/components/ko-select/multiple/pill/styles.css */
 .ko-select_multiple_pill__pill_nw6jmv {
