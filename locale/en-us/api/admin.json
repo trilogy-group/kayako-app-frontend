@@ -222,6 +222,8 @@
   "caseforms.remove_from_form": "Remove from form",
   "caseforms.edit.description_on.is_enabled": "Form is enabled",
   "caseforms.edit.description_off.is_enabled": "Form is disabled",
+  "caseforms.confirm_delete.title": "Delete case form",
+  "caseforms.confirm_delete.body": "Are you sure you want to delete the case form? This cannot be undone.",
 
   "casefields.title": "Case Fields",
   "casefields.headings.enabled_fields": "Enabled Fields",
@@ -470,6 +472,8 @@
   "automation_actions_builder.label.request_payload_explanation_link": "Find out more about HTTP requests Endpoints",
   "automation_actions_builder.label.placeholders_allowed": "You can use placeholders here.",
   "automation_actions_builder.label.placeholders_allowed_link": "Find out more about placeholders.",
+  "automation_actions_builder.values.true": "Yes",
+  "automation_actions_builder.values.false": "No",
 
   "macros.title": "Macros",
   "macros.usage_count": "Used {count, plural, =1 {1 time} other {# times}}",
