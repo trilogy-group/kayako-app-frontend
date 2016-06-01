@@ -260,8 +260,12 @@ define('frontend-cp/tests/acceptance/admin/automation/businesshours/edit-test', 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/automation/businesshours Edit', {
     beforeEach: function beforeEach() {
       /*eslint-disable camelcase*/
-      var locale = server.create('locale', { locale: 'en-us' });
-      server.create('plan', { limits: {}, features: [] });
+      var locale = server.create('locale', {
+        id: 1,
+        locale: 'en-us',
+        is_public: true
+      });
+      server.create('plan', { limits: [], features: [] });
       var adminRole = server.create('role', { type: 'ADMIN' });
       var agent = server.create('user', { role: adminRole, locale: locale });
       var session = server.create('session', { user: agent });
@@ -19460,7 +19464,7 @@ define('frontend-cp/tests/unit/services/error-handler-test', ['exports', 'ember'
   var getOwner = _ember['default'].getOwner;
 
   (0, _emberQunit.moduleFor)('service:error-handler', 'Unit | Service | error-handler', {
-    needs: ['service:error-handler/session-loading-failed-strategy', 'service:error-handler/notification-strategy', 'service:error-handler/permissions-denied-strategy', 'service:error-handler/resource-not-found-strategy', 'service:error-handler/credential-expired-strategy', 'service:error-handler/generic-strategy', 'service:intl', 'service:notification', 'service:plan', 'service:localStore', 'service:session', 'service:tabStore', 'service:locale', 'ember-intl@adapter:default'],
+    needs: ['service:error-handler/session-loading-failed-strategy', 'service:error-handler/notification-strategy', 'service:error-handler/permissions-denied-strategy', 'service:error-handler/resource-not-found-strategy', 'service:error-handler/credential-expired-strategy', 'service:error-handler/generic-strategy', 'service:intl', 'service:notification', 'service:plan', 'service:localStore', 'service:session', 'service:tabStore', 'service:locale', 'service:moment', 'ember-intl@adapter:default'],
     beforeEach: function beforeEach() {
       var intl = getOwner(this).lookup('service:intl');
       intl.setLocale('en-us');
