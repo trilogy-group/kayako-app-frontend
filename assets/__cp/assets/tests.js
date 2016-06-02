@@ -13433,7 +13433,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
     });
 
     andThen(function () {
-      assert.equal(find('.qa-feed_item--note').length, 21, 'Now there are 11 notes');
+      assert.equal(find('.qa-feed_item--note').length, 21, 'Now there are 21 notes');
       assert.equal(find('.ko-feed_item:eq(0) .ko-feed_item__content').text().trim(), 'Testing notes', 'The added note is in the top');
     });
   });
