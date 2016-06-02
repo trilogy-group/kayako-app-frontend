@@ -772,5 +772,20 @@
   "brands.edit.domain.description": "Each one of your Brands has its own unique domain name and its Help Center. To start with, every Brand has a .kayako.com domain. After you’ve got a .kayako.com name for your Brand, you can set up a custom domain for the Brand too.",
   "brands.edit.domain.description2": "You can configure a custom domain name and custom SSL certificate for this new Brand after you have created it.",
   "brands.edit.domain.available": ":-) this domain name is available!",
-  "brands.edit.domain.not_available": ":-( this domain is not available, try another one"
+  "brands.edit.domain.not_available": ":-( this domain is not available, try another one",
+  "brands.edit.heading.alias": "Custom domain",
+  "brands.edit.alias.description": "You can map your own domain name to the Kayako domain above for this Brand. This is called <em>host mapping</em> and involves some DNS configuration work. If you aren’t able to do this configuration now, you can always add a custom domain to this Brand later. [Find out more about custom domain names and host mapping in Kayako].",
+  "brands.edit.alias.placeholder": "e.g. brewfictus.com",
+  "brands.edit.dns.check": "Check DNS configuration",
+  "brands.edit.dns.valid": "Looks good from here!",
+  "brands.edit.dns.invalid": "Unfortunately we couldn’t validate that {alias} name has been correctly mapped to {subDomain}.{domain}. If you’re sure it has, you can proceed. If not, please contact your system administrator or Kayako support for assistance.",
+  "brands.edit.heading.custom_ssl": "Custom SSL",
+  "brands.edit.ssl.description": "Your .kayako.com are secured by SSL (https) by default. However, because the Kayako SSL encryption certificate is not valid for your custom domain name, you’ll need to provide your own SSL certificate for your domain name. If you don’t, your customers may see ‘Invalid Certificate’ errors. [Find out more about custom SSL in Kayako].",
+  "brands.edit.ssl_certificate_not_set": "SSL certificate not set",
+  "brands.edit.ssl_certificate_set": "SSL certificate set",
+  "brands.edit.ssl_certificate_replace": "Replace certificate",
+  "brands.edit.set_ssl_certificate": "Set certificate",
+  "brands.edit.ssl_certificate.title": "SSL certificate",
+  "brands.edit.private_key.title": "Private key",
+  "brands.edit.private_key.description": "Make sure your private key has not been encrypted with a passphrase (otherwise, we won’t be able to use it to secure connections with your custom domain name)."
 }
