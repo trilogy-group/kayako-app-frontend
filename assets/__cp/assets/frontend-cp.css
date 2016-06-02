@@ -5706,17 +5706,27 @@ span#HW_badge.HW_softHidden {
 .key-value-collection-builder__add-btn_1hs9l5 {
   color: #38a0be; }
 
-/* styles for frontend-cp/components/ko-admin/add-new-card/styles.css */
-.ko-admin_add-new-card__form-body_xvltbj iframe {
-  background: transparent !important; }
-
-.ko-admin_add-new-card__form-footer_xvltbj {
+/* styles for frontend-cp/components/ko-admin/add-new-card/footer/styles.css */
+.ko-admin_add-new-card_footer__form-footer_pqxoth {
   text-align: right; }
 
-.ko-admin_add-new-card__cancel_xvltbj {
+.ko-admin_add-new-card_footer__cancel_pqxoth {
   color: #2E3137;
   font-size: 14px;
   margin-right: 10px; }
+
+/* styles for frontend-cp/components/ko-admin/add-new-card/form/styles.css */
+.ko-admin_add-new-card_form__form-body_k3vg6u iframe {
+  background: transparent !important; }
+
+.ko-admin_add-new-card_form__loader_k3vg6u {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 150px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
 
 /* styles for frontend-cp/components/ko-admin/automation-actions-builder/styles.css */
 .ko-admin_automation-actions-builder__automation-action_10ryr1 {
@@ -6107,7 +6117,7 @@ a.ko-admin_plans_index__cancel_1pprhr {
 .ko-admin_plans_notification__notification_tzt8x0 {
   font-size: 14px;
   color: #2D3138;
-  padding: 7px 18px;
+  padding: 16px 28px;
   line-height: 24px;
   background: #EEF7FA;
   border-left: 2px solid #4EAFCB; }
@@ -6203,13 +6213,13 @@ a.ko-admin_plans_index__cancel_1pprhr {
           align-items: stretch; }
 
 .ko-admin_rateplans_list__listfilters_kou2ll {
-  margin-top: 25px; }
-
-.ko-admin_rateplans_list__termfilter_kou2ll {
-  float: left; }
-
-.ko-admin_rateplans_list__agentsfilter_kou2ll {
-  float: right; }
+  margin-top: 25px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
 
 .ko-admin_rateplans_list__agentscount_kou2ll {
   width: 80px;
@@ -6338,6 +6348,88 @@ a.ko-admin_plans_index__cancel_1pprhr {
 .ko-admin_team__member_u5wpiz {
   width: calc(100% / 3);
   padding-left: 18px; }
+
+/* styles for frontend-cp/components/ko-admin/trial/index/styles.css */
+.ko-admin_trial_index__notification_gzo7px {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
+
+.ko-admin_trial_index__steps-container_gzo7px {
+  margin-top: 36px;
+  counter-reset: section; }
+
+.ko-admin_trial_index__step_gzo7px {
+  padding: 20px 0;
+  border-bottom: 1px solid #EBEEF0;
+  margin-left: 40px;
+  position: relative; }
+
+.ko-admin_trial_index__step_gzo7px:before {
+  counter-increment: section;
+  content: counter(section);
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  color: #838D94;
+  border: 1px solid #D1D5D7;
+  background: #F7F8F9;
+  position: absolute;
+  text-align: center;
+  line-height: 30px;
+  font-size: 16px;
+  left: -40px;
+  top: 15px;
+  z-index: 1; }
+
+.ko-admin_trial_index__step_gzo7px:after {
+  content: "";
+  width: 1px;
+  height: 100%;
+  position: absolute;
+  left: -25px;
+  top: 15px;
+  background: #EBEEF0; }
+
+.ko-admin_trial_index__step-header_gzo7px {
+  font-size: 16px;
+  color: #838D94;
+  cursor: pointer; }
+
+.ko-admin_trial_index__step-body_gzo7px {
+  overflow: hidden;
+  max-height: 0;
+  -webkit-transition: max-height 200ms linear;
+  transition: max-height 200ms linear; }
+
+.ko-admin_trial_index__form-wrapper_gzo7px {
+  margin-top: 40px; }
+
+.ko-admin_trial_index__expanded_gzo7px .ko-admin_trial_index__step-header_gzo7px {
+  color: #2D3138; }
+
+.ko-admin_trial_index__expanded_gzo7px .ko-admin_trial_index__step-body_gzo7px {
+  max-height: 1200px;
+  -webkit-transition: max-height 100ms linear;
+  transition: max-height 100ms linear; }
+
+.ko-admin_trial_index__expanded_gzo7px:before {
+  background: #fff;
+  color: #2D3138; }
+
+.ko-admin_trial_index__step-actions_gzo7px {
+  margin-top: 45px;
+  text-align: right; }
+
+.ko-admin_trial_index__prev_gzo7px {
+  margin-right: 10px;
+  color: #2D3138; }
+
+.ko-admin_trial_index__button_gzo7px {
+  min-width: 172px; }
 
 /* styles for frontend-cp/components/ko-admin/triggers/form/styles.css */
 .ko-admin_triggers_form__title-input-layout_1n627y {
