@@ -1170,8 +1170,8 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
-      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
-      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no enabled monitors');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is enabled');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no disabled monitors');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
     });
 
@@ -1218,8 +1218,8 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
-      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
-      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no enabled monitors');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is enabled');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no disabled monitors');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
     });
 
@@ -1268,8 +1268,8 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
-      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
-      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no enabled monitors');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is enabled');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no disabled monitors');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
     });
 
@@ -1313,8 +1313,8 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
-      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
-      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no enabled monitors');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is enabled');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no disabled monitors');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
     });
 
@@ -1367,8 +1367,8 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
-      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
-      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no enabled monitors');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is enabled');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no disabled monitors');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
     });
 
@@ -1419,8 +1419,8 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
-      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
-      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no enabled monitors');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is enabled');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no disabled monitors');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
     });
 
@@ -1459,8 +1459,8 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
-      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
-      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no enabled monitors');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is enabled');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no disabled monitors');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
     });
 
@@ -1504,8 +1504,8 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
-      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
-      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is enabled');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no disabled monitors');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
     });
 
@@ -1558,8 +1558,8 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
-      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
-      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is enabled');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no disabled monitors');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
     });
 
@@ -1599,8 +1599,8 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
-      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
-      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is enabled');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no disabled monitors');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
     });
 
@@ -1639,8 +1639,8 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
-      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
-      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is enabled');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no disabled monitors');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
     });
 
@@ -1680,8 +1680,8 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
-      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
-      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is enabled');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no disabled monitors');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
     });
 
@@ -1726,8 +1726,8 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
-      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
-      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is enabled');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no disabled monitors');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
     });
 
@@ -1775,8 +1775,8 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
-      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
-      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is enabled');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no disabled monitors');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
     });
 
@@ -1827,8 +1827,8 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
-      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
-      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is enabled');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no disabled monitors');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
     });
 
@@ -1880,8 +1880,8 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
-      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
-      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is enabled');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no disabled monitors');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
     });
 
@@ -1926,8 +1926,8 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
-      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
-      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is enabled');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no disabled monitors');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
     });
 
@@ -1968,8 +1968,8 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
-      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
-      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is enabled');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no disabled monitors');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
     });
 
@@ -2007,8 +2007,8 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
-      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is disabled');
-      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There is no enabled monitors');
+      assert.equal(find('.qa-admin_monitors--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The monitor has been created and it is enabled');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no disabled monitors');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
     });
 
@@ -2906,8 +2906,8 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/triggers');
-      assert.equal(find('.qa-admin_triggers--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The trigger has been created and it is disabled');
-      assert.equal(find('.qa-admin_triggers--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no enabled triggers');
+      assert.equal(find('.qa-admin_triggers--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The trigger has been created and it is enabled');
+      assert.equal(find('.qa-admin_triggers--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no disabled triggers');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
     });
 
@@ -2956,8 +2956,8 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/triggers');
-      assert.equal(find('.qa-admin_triggers--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The trigger has been created and it is disabled');
-      assert.equal(find('.qa-admin_triggers--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no enabled triggers');
+      assert.equal(find('.qa-admin_triggers--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The trigger has been created and it is enabled');
+      assert.equal(find('.qa-admin_triggers--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no disabled triggers');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
     });
 
@@ -3008,8 +3008,8 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/triggers');
-      assert.equal(find('.qa-admin_triggers--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The trigger has been created and it is disabled');
-      assert.equal(find('.qa-admin_triggers--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no enabled triggers');
+      assert.equal(find('.qa-admin_triggers--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The trigger has been created and it is enabled');
+      assert.equal(find('.qa-admin_triggers--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no disabled triggers');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
     });
 
@@ -3055,8 +3055,8 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/triggers');
-      assert.equal(find('.qa-admin_triggers--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The trigger has been created and it is disabled');
-      assert.equal(find('.qa-admin_triggers--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no enabled triggers');
+      assert.equal(find('.qa-admin_triggers--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The trigger has been created and it is enabled');
+      assert.equal(find('.qa-admin_triggers--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no disabled triggers');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
     });
 
@@ -3111,8 +3111,8 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/triggers');
-      assert.equal(find('.qa-admin_triggers--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The trigger has been created and it is disabled');
-      assert.equal(find('.qa-admin_triggers--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no enabled triggers');
+      assert.equal(find('.qa-admin_triggers--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The trigger has been created and it is enabled');
+      assert.equal(find('.qa-admin_triggers--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no disabled triggers');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
     });
 
@@ -3165,8 +3165,8 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/triggers');
-      assert.equal(find('.qa-admin_triggers--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The trigger has been created and it is disabled');
-      assert.equal(find('.qa-admin_triggers--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no enabled triggers');
+      assert.equal(find('.qa-admin_triggers--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The trigger has been created and it is enabled');
+      assert.equal(find('.qa-admin_triggers--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no disabled triggers');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
     });
 
@@ -3207,8 +3207,8 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/triggers');
-      assert.equal(find('.qa-admin_triggers--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The trigger has been created and it is disabled');
-      assert.equal(find('.qa-admin_triggers--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no enabled triggers');
+      assert.equal(find('.qa-admin_triggers--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The trigger has been created and it is enabled');
+      assert.equal(find('.qa-admin_triggers--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no disabled triggers');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
     });
 
