@@ -1,0 +1,45 @@
+{
+  "insights.title": "Insights",
+
+  "sidebar.general.title": "General",
+  "sidebar.general.agents.title": "Agents",
+  "sidebar.general.teams.title": "Teams",
+  "sidebar.general.cases.title": "Cases",
+
+  "metric.total_assigned": "Total Assigned",
+  "metric.total_created": "Total Created",
+  "metric.total_completed": "Total Completed",
+  "metric.customers_helped": "Customers Helped",
+  "metric.cases_touched": "Cases Touched",
+  "metric.total_public_replies": "Total Public Replies",
+  "metric.average_csat": "Average CSAT",
+  "metric.average_first_response_time": "Average First Response Time",
+  "metric.average_response_time": "Average Response Time",
+  "metric.average_resolution_time": "Average Resolution Time",
+  "metric.average_replies_to_resolution": "Average Replies To Resolution",
+  "metric.percentage_first_contact_resolved": "% First Contact Resolved",
+
+  "agents.page.title": "Insights / Agents",
+  "agents.customers_helped": "<b>{amount}</b> customers helped in specified period",
+  "agents.cases_completed_vs_csat": "Cases Completed vs CSAT",
+  "agents.cases_completed_vs_csat_explanation": "<b>{value}</b> cases completed with average <b>{csatValue}</b> CSAT",
+
+  "teams.page.title": "Insights / Teams",
+
+  "agents.sla_resolution_target": "SLA Resolution Target",
+  "agents.sla_resolution_target_explanation": "Beautiful answer here, in the last quarter",
+
+  "chart.completion_vs_csat.completed_cases_current": "Completed Cases (current)",
+  "chart.completion_vs_csat.completed_cases_previous": "Completed Cases (previous)",
+  "chart.completion_vs_csat.csat_current": "CSAT (current)",
+  "chart.completion_vs_csat.csat_previous": "CSAT (previous)",
+  "chart.completion_vs_csat.csat_axis_title": "CSAT",
+  "chart.completion_vs_csat.completed_cases_axis_title": "Completed Cases",
+
+  "chart.completion_vs_csat.chart_tooltip_cases": " cases",
+  "chart.completion_vs_csat.chart_tooltip_no_csat": "no CSAT",
+
+  "chart.sla_resolution.resolution_due_at": "Resolution Due At",
+  "chart.sla_resolution.age": "Age",
+  "chart.sla_resolution.effort_score": "Effort score"
+}
