@@ -408,8 +408,17 @@ textarea {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 
+.i-cross-circle:before {
+  content: "\e905"; }
+
+.i-star:before {
+  content: "\e903"; }
+
 .i-event-twitter:before {
   content: "\e643"; }
+
+.i-check-circle:before {
+  content: "\e904"; }
 
 .i-happy-outline:before {
   content: "\e63e"; }
@@ -620,9 +629,6 @@ textarea {
 
 .i-chevron-small-up:before {
   content: "\e603"; }
-
-.i-star:before {
-  content: "\e903"; }
 
 /*
     Color settings and variables
@@ -1938,7 +1944,7 @@ img {
   cursor: pointer;
   color: #5F6C73;
   height: 32px;
-  line-height: 32px; }
+  line-height: 30px; }
   
   .button:disabled,
   .button.disabled {
@@ -5318,8 +5324,10 @@ span#HW_badge.HW_softHidden {
 
 .ko-input__input_33c6q8:disabled {
   background-color: #eeeeee;
-  opacity: 0.8;
   color: #A1AAAF; }
+
+.ko-input__monospace_33c6q8 {
+  font-family: monospace; }
 
 .ko-input__full_33c6q8 {
   width: 100%; }
@@ -5894,7 +5902,6 @@ span#HW_badge.HW_softHidden {
 
 .ko-admin_brands_form_domain-input__input_1hdt0q:disabled {
   background-color: #eeeeee;
-  opacity: 0.8;
   color: #A1AAAF; }
 
 .ko-admin_brands_form_domain-input__domain_1hdt0q {
@@ -5904,7 +5911,7 @@ span#HW_badge.HW_softHidden {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  background-color: #F1F1F1;
+  background-color: #eeeeee;
   padding: 0 10px; }
 
 /* styles for frontend-cp/components/ko-admin/brands/form/styles.css */
@@ -5920,10 +5927,56 @@ span#HW_badge.HW_softHidden {
   margin-right: 20px; }
 
 .ko-admin_brands_form__domain-available_zzsct3 {
+  font-size: 12px;
   color: #89a83b; }
 
 .ko-admin_brands_form__domain-not-available_zzsct3 {
+  font-size: 12px;
   color: #E86048; }
+
+.ko-admin_brands_form__alias-container_zzsct3 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
+
+.ko-admin_brands_form__check-dns-button_zzsct3 {
+  margin: 0 10px; }
+
+.ko-admin_brands_form__dns-valid_zzsct3 {
+  font-size: 12px;
+  margin-top: 5px;
+  color: #89a83b; }
+
+.ko-admin_brands_form__dns-invalid_zzsct3 {
+  font-size: 12px;
+  margin-top: 5px;
+  color: #E86048; }
+
+.ko-admin_brands_form__ssl-set-icon_zzsct3 {
+  color: #89a83b; }
+
+.ko-admin_brands_form__ssl-not-set-icon_zzsct3 {
+  color: #E86048; }
+
+.ko-admin_brands_form__ssl-label_zzsct3 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
+
+.ko-admin_brands_form__ssl-icon_zzsct3 {
+  margin: 0 20px 0 10px; }
+
+.ko-admin_brands_form__cancel-ssl-button_zzsct3 {
+  margin-top: 10px; }
+
+.ko-admin_brands_form__textarea_zzsct3 {
+  width: calc(100% - 120px); }
 
 /* styles for frontend-cp/components/ko-admin/case-fields/edit/priorities/styles.css */
 .ko-admin_case-fields_edit_priorities__buttons_255vxi {
