@@ -46,6 +46,7 @@
   "make_default": "Make default",
   "save": "Save",
   "cancel": "Cancel",
+  "apply": "Apply",
   "confirm_button": "Confirm",
   "and": "And",
   "or": "Or",
@@ -157,5 +158,13 @@
   "units.B": "B",
 
   "confirm_delete.header": "Delete",
-  "confirm_delete.body": "Delete this item?"
+  "confirm_delete.body": "Delete this item?",
+
+  "input_date_range.custom_range": "Custom Range",
+  "input_date_range.today": "Today",
+  "input_date_range.yesterday": "Yesterday",
+  "input_date_range.last7days": "Last 7 Days",
+  "input_date_range.last30days": "Last 30 Days",
+  "input_date_range.this_month": "This Month",
+  "input_date_range.last_month": "Last Month"
 }

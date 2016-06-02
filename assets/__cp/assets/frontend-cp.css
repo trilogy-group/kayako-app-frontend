@@ -689,7 +689,7 @@ textarea {
 .t-base {
   font-size: 14px !important; }
 
-.ko-admin_sidebar__item_1a61wp,
+.ko-sidebar__item_6aclzg,
 .t-naked-link {
   text-decoration: none;
   color: inherit; }
@@ -5305,6 +5305,43 @@ span#HW_badge.HW_softHidden {
 .invoices-list {
   margin-top: 18px; }
 
+/* styles for frontend-cp/components/ko-input/styles.css */
+.ko-input__input_33c6q8 {
+  line-height: 18px;
+  padding: 5px 9px;
+  border-radius: 2px;
+  border: 1px solid #D1D5D7;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05);
+  width: 285px;
+  -webkit-transition: border-color 0.1s, box-shadow 0.1s;
+  transition: border-color 0.1s, box-shadow 0.1s; }
+
+.ko-input__input_33c6q8:disabled {
+  background-color: #eeeeee;
+  opacity: 0.8;
+  color: #A1AAAF; }
+
+.ko-input__full_33c6q8 {
+  width: 100%; }
+
+.ko-input__input_33c6q8[type=number]::-webkit-inner-spin-button,
+.ko-input__input_33c6q8[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0; }
+
+.ko-input__input_33c6q8[type=number] {
+  -moz-appearance: textfield; }
+
+/* styles for frontend-cp/components/ko-input/search/styles.css */
+.ko-input_search__search_z5hmhd {
+  position: relative; }
+  .ko-input_search__search_z5hmhd > [class*="i-"]:before {
+    right: 9px; }
+
+.ko-input_search__input_z5hmhd {
+  display: inline-block;
+  padding-right: 18px; }
+
 /* styles for frontend-cp/session/styles.css */
 .session__topContainer_1qdlgo {
   margin-top: 25px;
@@ -5415,8 +5452,8 @@ span#HW_badge.HW_softHidden {
 .session__nav-secondary__sidebar_1qdlgo {
   width: 300px; }
 
-/* styles for frontend-cp/components/ko-admin/page-container/styles.css */
-.ko-admin_page-container__index_fcb2v3 {
+/* styles for frontend-cp/components/ko-layout/two-columns/styles.css */
+.ko-layout_two-columns__index_3mn307 {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
@@ -5429,13 +5466,13 @@ span#HW_badge.HW_softHidden {
       -ms-flex-align: stretch;
           align-items: stretch; }
 
-.ko-admin_page-container__sidebar_fcb2v3 {
+.ko-layout_two-columns__sidebar_3mn307 {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   min-width: 188px; }
 
-.ko-admin_page-container__content_fcb2v3 {
+.ko-layout_two-columns__content_3mn307 {
   width: 100%;
   min-width: 940px;
   padding: 18px;
@@ -5444,43 +5481,6 @@ span#HW_badge.HW_softHidden {
   border: 1px solid #d1d5d7;
   border-radius: 0 5px 5px 0;
   border-left: none; }
-
-/* styles for frontend-cp/components/ko-input/styles.css */
-.ko-input__input_33c6q8 {
-  line-height: 18px;
-  padding: 5px 9px;
-  border-radius: 2px;
-  border: 1px solid #D1D5D7;
-  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05);
-  width: 285px;
-  -webkit-transition: border-color 0.1s, box-shadow 0.1s;
-  transition: border-color 0.1s, box-shadow 0.1s; }
-
-.ko-input__input_33c6q8:disabled {
-  background-color: #eeeeee;
-  opacity: 0.8;
-  color: #A1AAAF; }
-
-.ko-input__full_33c6q8 {
-  width: 100%; }
-
-.ko-input__input_33c6q8[type=number]::-webkit-inner-spin-button,
-.ko-input__input_33c6q8[type=number]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0; }
-
-.ko-input__input_33c6q8[type=number] {
-  -moz-appearance: textfield; }
-
-/* styles for frontend-cp/components/ko-input/search/styles.css */
-.ko-input_search__search_z5hmhd {
-  position: relative; }
-  .ko-input_search__search_z5hmhd > [class*="i-"]:before {
-    right: 9px; }
-
-.ko-input_search__input_z5hmhd {
-  display: inline-block;
-  padding-right: 18px; }
 
 /* styles for frontend-cp/components/ko-select/shared.css */
 ._statusIcon_1ovczd .ember-power-select-status-icon {
@@ -5648,7 +5648,10 @@ span#HW_badge.HW_softHidden {
 /* styles for frontend-cp/components/ko-select/trigger/styles.css */
 .ko-select_trigger__trigger_plyl15 {
   overflow: hidden;
-  text-overflow: ellipsis; }
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
 
 .ko-select_trigger__input_plyl15 {
   outline: none;
@@ -6237,49 +6240,6 @@ a.ko-admin_plans_index__cancel_1pprhr {
 
 .ko-admin_roles_list-item__action_1ubcxi:last-child::after {
   content: ''; }
-
-/* styles for frontend-cp/components/ko-admin/sidebar/styles.css */
-.ko-admin_sidebar__sidebar_1a61wp {
-  min-height: 100vh;
-  background-color: #FFFFFF;
-  border: 1px solid #d1d5d7;
-  border-radius: 5px 0 0 5px;
-  padding: 24px 0;
-  width: 100%; }
-
-.ko-admin_sidebar__group_1a61wp {
-  margin-bottom: 27px; }
-
-.ko-admin_sidebar__header_1a61wp {
-  padding: 3px 6px;
-  text-transform: uppercase;
-  font-size: 12px;
-  font-weight: 600;
-  color: #838D94;
-  text-indent: 18px; }
-
-.ko-admin_sidebar__item_1a61wp {
-  max-width: calc(100% + 1px);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: block;
-  position: relative;
-  padding: 3px 6px;
-  text-indent: 18px;
-  cursor: pointer;
-  border-left: 3px solid transparent; }
-
-.ko-admin_sidebar__item_1a61wp.active {
-  /* set by ember :( */
-  margin-left: -1px;
-  /* offset its containers border. */
-  background-color: #F7F8F9;
-  border-left: 3px solid #4EAFCB;
-  color: #4EAFCB; }
-
-.ko-admin_sidebar__item--is-disabled_1a61wp {
-  color: rgba(0, 0, 0, 0.3); }
 
 /* styles for frontend-cp/components/ko-admin/sla/edit/operational-hours/styles.css */
 .ko-admin_sla_edit_operational-hours__operationalHours_19ecaq {
@@ -7014,6 +6974,231 @@ a.ko-admin_plans_index__cancel_1pprhr {
 .ko-info-bar_metadata__value_usevhy {
   width: 67%; }
 
+/* styles for frontend-cp/components/ko-input-date-range/styles.css */
+.ko-input-date-range__chartDateRange_12zrkr {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-item-align: end;
+      align-self: flex-end; }
+
+.ko-input-date-range__chartDateRangeIcon_12zrkr {
+  border: 1px solid #D1D5D7;
+  color: #838D94;
+  font-size: 16px;
+  cursor: pointer;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  padding: 5px 7px;
+  border-radius: 0 3px 3px 0;
+  border-left: none; }
+
+.ko-input-date-range__chartDateRange_12zrkr .hide {
+  display: none; }
+
+.ko-input-date-range__chartDateRange_12zrkr .daterangepicker-input {
+  line-height: 18px;
+  padding: 5px 9px;
+  border: 1px solid #D1D5D7;
+  border-radius: 2px 0 0 2px;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05);
+  width: 160px;
+  -webkit-transition: border-color 0.1s, box-shadow 0.1s;
+  transition: border-color 0.1s, box-shadow 0.1s; }
+
+.daterangepicker {
+  display: none; }
+
+.daterangepicker .ranges li {
+  background: #F7F8F9;
+  color: #4EAFCB;
+  border: 1px solid #F7F8F9; }
+
+.daterangepicker .ranges li:hover {
+  border: 1px solid #4EAFCB; }
+
+.daterangepicker .ranges li.active {
+  border: 1px solid #4EAFCB;
+  background: #4EAFCB;
+  color: #F7F8F9; }
+
+.daterangepicker {
+  border-top: 1px solid #D1D5D7; }
+
+.daterangepicker:before {
+  display: none; }
+
+.daterangepicker:after {
+  display: none; }
+
+.daterangepicker td.active {
+  background: #4EAFCB;
+  color: #F7F8F9; }
+
+.daterangepicker td.available:hover {
+  background: #F7F8F9;
+  color: #4EAFCB; }
+
+.daterangepicker .input-mini.active {
+  border: 1px solid #4EAFCB; }
+
+.daterangepicker td.available:hover {
+  background: #F7F8F9; }
+
+.daterangepicker th.available:hover {
+  background: #F7F8F9; }
+
+/* styles for frontend-cp/components/ko-insights/actor/styles.css */
+.ko-insights_actor__actorContainer_1bymb4 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-grid-column-align: center;
+      justify-items: center;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start; }
+
+.ko-insights_actor__actorDropdownContainer_1bymb4 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -ms-flex-item-align: center;
+      align-self: center;
+  margin-left: 9px; }
+
+.ko-insights_actor__actorDropdown_1bymb4 .ember-basic-dropdown-trigger {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: auto;
+  min-height: 20px;
+  font-size: 18px;
+  font-weight: 500;
+  border: 0;
+  line-height: 1;
+  padding: 0; }
+
+.ko-insights_actor__actorDropdown_1bymb4 .ember-power-select-status-icon {
+  margin: 0 0 0 5px;
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 20px;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -ms-flex-item-align: center;
+      align-self: center; }
+
+.ko-insights_actor__actorDropdown_1bymb4 [aria-expanded="true"] .ember-power-select-status-icon {
+  display: none; }
+
+.ko-insights_actor__actorDropdown_1bymb4 [aria-expanded="true"] input {
+  line-height: 20px; }
+
+.ko-insights_actor__actorDropdown_1bymb4 [aria-expanded="true"] {
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.75) !important; }
+
+.ko-insights_actor__actorDescription_1bymb4 {
+  font-size: 14px;
+  color: #838D94; }
+
+/* styles for frontend-cp/components/ko-insights/charts/completion-vs-csat-columns/styles.css */
+.ko-insights_charts_completion-vs-csat-columns__tooltipTable_1hxhrr {
+  padding: 0;
+  margin: 0;
+  border: 0; }
+
+.ko-insights_charts_completion-vs-csat-columns__tooltipTd_1hxhrr {
+  padding: 3px; }
+
+.ko-insights_charts_completion-vs-csat-columns__tooltipTh_1hxhrr {
+  padding: 3px; }
+
+/* styles for frontend-cp/components/ko-insights/metric/styles.css */
+.ko-insights_metric__metric_1h3qp2 {
+  border-bottom: 2px solid #EBEEF0;
+  padding: 5px;
+  width: 120px; }
+
+.ko-insights_metric__values_1h3qp2 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start; }
+
+.ko-insights_metric__value_1h3qp2 {
+  color: #838D94;
+  font-weight: 700; }
+
+.ko-insights_metric__name_1h3qp2 {
+  font-size: 12px;
+  margin-top: 10px; }
+
+.ko-insights_metric__delta_1h3qp2 {
+  color: #6CC54B;
+  font-size: 11px;
+  margin-left: 12px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center; }
+
+.ko-insights_metric__deltaNegative_1h3qp2 {
+  color: #E96955; }
+
+.ko-insights_metric__triangle_1h3qp2 {
+  width: 0;
+  height: 0;
+  margin-top: -4px;
+  margin-right: 3px;
+  border-style: solid;
+  border-width: 0 4px 5px 4px;
+  border-color: transparent transparent #6CC54B transparent; }
+
+.ko-insights_metric__triangleNegative_1h3qp2 {
+  margin-top: -2px;
+  border-width: 5px 4px 0 4px;
+  border-color: #E96955 transparent transparent transparent; }
+
+.ko-insights_metric__sizeMedium_1h3qp2 {
+  min-height: inherit; }
+
+.ko-insights_metric__sizeMedium_1h3qp2 .ko-insights_metric__value_1h3qp2 {
+  font-size: 24px; }
+
+.ko-insights_metric__sizeLarge_1h3qp2 {
+  min-height: 85px; }
+
+.ko-insights_metric__sizeLarge_1h3qp2 .ko-insights_metric__value_1h3qp2 {
+  font-size: 30px;
+  line-height: 32px;
+  white-space: nowrap; }
+
+.ko-insights_metric__sizeLarge_1h3qp2 .ko-insights_metric__name_1h3qp2 {
+  margin-top: 5px; }
+
 /* styles for frontend-cp/components/ko-layout/container/styles.css */
 .ko-layout_container__root_160oc3 {
   padding-left: 44px;
@@ -7118,6 +7303,49 @@ a.ko-admin_plans_index__cancel_1pprhr {
   text-overflow: ellipsis;
   line-height: 20px;
   font-size: 14px; }
+
+/* styles for frontend-cp/components/ko-sidebar/styles.css */
+.ko-sidebar__sidebar_6aclzg {
+  min-height: 100vh;
+  background-color: #FFFFFF;
+  border: 1px solid #d1d5d7;
+  border-radius: 5px 0 0 5px;
+  padding: 24px 0;
+  width: 100%; }
+
+.ko-sidebar__group_6aclzg {
+  margin-bottom: 27px; }
+
+.ko-sidebar__header_6aclzg {
+  padding: 3px 6px;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 600;
+  color: #838D94;
+  text-indent: 18px; }
+
+.ko-sidebar__item_6aclzg {
+  max-width: calc(100% + 1px);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  position: relative;
+  padding: 3px 6px;
+  text-indent: 18px;
+  cursor: pointer;
+  border-left: 3px solid transparent; }
+
+.ko-sidebar__item_6aclzg.active {
+  /* set by ember :( */
+  margin-left: -1px;
+  /* offset its containers border. */
+  background-color: #F7F8F9;
+  border-left: 3px solid #4EAFCB;
+  color: #4EAFCB; }
+
+.ko-sidebar__item--is-disabled_6aclzg {
+  color: rgba(0, 0, 0, 0.3); }
 
 /* styles for frontend-cp/components/ko-simple-box-row/cell/styles.css */
 .ko-simple-box-row_cell__cell_1sjiu0 {
@@ -7810,6 +8038,136 @@ a.ko-timeline_item__subtitle_vt1m5j:hover {
 
 .session_agent_cases_index_suspended-messages__empty_1qhp96 {
   margin-top: 18px; }
+
+/* styles for frontend-cp/session/agent/insights/general/agents/styles.css */
+.session_agent_insights_general_agents__header_pvetw2 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-grid-column-align: center;
+      justify-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
+
+.session_agent_insights_general_agents__entity_pvetw2 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+
+.session_agent_insights_general_agents__filters_pvetw2 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center; }
+
+.session_agent_insights_general_agents__metrics_pvetw2 {
+  margin-top: 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
+
+.session_agent_insights_general_agents__chart_pvetw2 {
+  margin-top: 30px; }
+
+.session_agent_insights_general_agents__questionBlock_pvetw2 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
+
+.session_agent_insights_general_agents__question_pvetw2 {
+  margin-top: 20px; }
+
+.session_agent_insights_general_agents__questionTitle_pvetw2 {
+  margin-bottom: 0;
+  line-height: 26px; }
+
+.session_agent_insights_general_agents__answer_pvetw2 {
+  margin-bottom: 30px;
+  color: #838D94; }
+
+/* styles for frontend-cp/session/agent/insights/general/teams/styles.css */
+.session_agent_insights_general_teams__header_9flxqu {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-grid-column-align: center;
+      justify-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
+
+.session_agent_insights_general_teams__entity_9flxqu {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+
+.session_agent_insights_general_teams__filters_9flxqu {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center; }
+
+.session_agent_insights_general_teams__metrics_9flxqu {
+  margin-top: 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
+
+.session_agent_insights_general_teams__chart_9flxqu {
+  margin-top: 30px; }
+
+.session_agent_insights_general_teams__questionBlock_9flxqu {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
+
+.session_agent_insights_general_teams__question_9flxqu {
+  margin-top: 20px; }
+
+.session_agent_insights_general_teams__questionTitle_9flxqu {
+  margin-bottom: 0;
+  line-height: 26px; }
+
+.session_agent_insights_general_teams__answer_9flxqu {
+  margin-bottom: 30px;
+  color: #838D94; }
 
 /* styles for frontend-cp/session/agent/search/styles.css */
 .session_agent_search__index_1sn5yt {
