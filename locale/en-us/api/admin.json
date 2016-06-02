@@ -449,6 +449,8 @@
   "predicate_builder.date_relative.value.next90days": "Next 90 Days",
   "predicate_builder.date_relative.value.next180days": "Next 180 Days",
   "predicate_builder.date_relative.value.next365days": "Next 365 Days",
+  "predicate_builder.boolean.true": "Yes",
+  "predicate_builder.boolean.false": "No",
 
   "automation_actions_builder.group.CASE": "Case",
   "automation_actions_builder.group.NOTIFICATION": "Notification",
