@@ -7503,6 +7503,57 @@ a.ko-timeline_item__subtitle_vt1m5j:hover {
 .ko-user-content__signatureInput_1hb3jv:focus {
   outline: none; }
 
+/* styles for frontend-cp/session/admin/apps/api/styles.css */
+.session_admin_apps_api__header_1t2sf4 {
+  text-align: center; }
+
+.session_admin_apps_api__contentBlock_1t2sf4 {
+  width: 680px;
+  margin: 0 auto; }
+
+.session_admin_apps_api__title_1t2sf4 {
+  margin-top: 18px;
+  margin-bottom: 12px;
+  font-size: 30px;
+  text-align: center; }
+
+.session_admin_apps_api__subtitle_1t2sf4 {
+  font-size: 14px;
+  color: #838D94;
+  text-align: center;
+  margin-bottom: 24px; }
+
+.session_admin_apps_api__content_1t2sf4 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+
+.session_admin_apps_api__messagesBlock_1t2sf4 {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 0;
+          flex: 1 1 0;
+  margin-right: 10px; }
+
+.session_admin_apps_api__imageBlock_1t2sf4 {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 315px;
+          flex: 0 0 315px; }
+
+.session_admin_apps_api__definitionList_1t2sf4 {
+  margin-top: 10px; }
+
+.session_admin_apps_api__definitionTitle_1t2sf4 {
+  margin-bottom: 6px;
+  font-weight: bold;
+  color: #2D3138; }
+
+.session_admin_apps_api__definitionText_1t2sf4 {
+  margin-bottom: 24px;
+  color: #838D94; }
+
+.session_admin_apps_api__findOutCTA_1t2sf4 {
+  padding: 0 10px; }
+
 /* styles for frontend-cp/session/admin/apps/zapier/styles.css */
 .session_admin_apps_zapier__header_zxnhet {
   text-align: center; }
