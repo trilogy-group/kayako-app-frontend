@@ -644,6 +644,18 @@
   "facebook.see_facebook_account": "Don't see your Facebook page?",
   "facebook.connect_facebook_account": "Connect your Facebook account",
 
+  "account.trial.title": "Upgrade Account",
+  "account.trial.upgrade.note": "You have {daysLeft} left on your trial. Upgrade your plan today, to keep the good times rolling.",
+  "account.trial.start.upgrade": "Upgrade",
+  "account.trial.step.plans": "Choose plan",
+  "account.trial.step.vat": "Vat Id",
+  "account.trial.step.billing": "Add your payment details",
+  "account.trial.vat.help": "Please feel free to leave Vat Id empty, if it is not applicable to your country",
+  "account.trial.upgraded": "Your account has been upgraded successfully",
+  "account.trial.step.next.label": "Next Step",
+  "account.trial.step.prev.label": "Previous Step",
+  "account.trial.upgrade.label": "Upgrade Your Account",
+
   "account.overview.title": "Overview",
   "account.overview.list.title": "Billing Overview",
   "account.overview.invoices.title": "Invoices",

@@ -255,6 +255,84 @@ define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports'
     });
   });
 });
+define('frontend-cp/tests/acceptance/admin/account/trial/index-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-admin/rateplans/item/styles', 'frontend-cp/components/ko-admin/trial/index/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoAdminRateplansItemStyles, _frontendCpComponentsKoAdminTrialIndexStyles) {
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/account/trial Index', {
+    beforeEach: function beforeEach() {
+      /*eslint-disable camelcase*/
+      var locale = server.create('locale', { locale: 'en-us' });
+      server.create('plan', { limits: [], features: [] });
+      var adminRole = server.create('role', { type: 'ADMIN' });
+      var agent = server.create('user', { role: adminRole, locale: locale });
+      var session = server.create('session', { user: agent });
+      login(session.id);
+    },
+
+    afterEach: function afterEach() {
+      logout();
+    }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('visiting /admin/account/trial', function (assert) {
+    visit('/admin/account/trial');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/account/trial');
+      assert.equal(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planitem).length, 5);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('rateplans step should be active by default', function (assert) {
+    visit('/admin/account/trial');
+
+    andThen(function () {
+      assert.equal(find('.' + _frontendCpComponentsKoAdminTrialIndexStyles['default'].step + ':eq(0)').hasClass(_frontendCpComponentsKoAdminTrialIndexStyles['default'].expanded), true);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('clicking on next step without selecting the rateplan should not work', function (assert) {
+    visit('/admin/account/trial');
+
+    andThen(function () {
+      click('.move-to-vat');
+    });
+
+    andThen(function () {
+      assert.equal(find('.' + _frontendCpComponentsKoAdminTrialIndexStyles['default'].step + ':eq(0)').hasClass(_frontendCpComponentsKoAdminTrialIndexStyles['default'].expanded), true);
+      assert.equal(find('.' + _frontendCpComponentsKoAdminTrialIndexStyles['default'].step + ':eq(1)').hasClass(_frontendCpComponentsKoAdminTrialIndexStyles['default'].expanded), false);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('clicking next on rateplans step after selecting new plan should move to vat step', function (assert) {
+    visit('/admin/account/trial');
+
+    andThen(function () {
+      click('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planitem + ':eq(2)');
+      click('.move-to-vat');
+    });
+
+    andThen(function () {
+      assert.equal(find('.' + _frontendCpComponentsKoAdminTrialIndexStyles['default'].step + ':eq(0)').hasClass(_frontendCpComponentsKoAdminTrialIndexStyles['default'].expanded), false);
+      assert.equal(find('.' + _frontendCpComponentsKoAdminTrialIndexStyles['default'].step + ':eq(1)').hasClass(_frontendCpComponentsKoAdminTrialIndexStyles['default'].expanded), true);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('clicking next on vatid step should move to billing step', function (assert) {
+    visit('/admin/account/trial');
+
+    andThen(function () {
+      click('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planitem + ':eq(2)');
+      click('.move-to-vat');
+      click('.move-to-billing');
+    });
+
+    andThen(function () {
+      assert.equal(find('.' + _frontendCpComponentsKoAdminTrialIndexStyles['default'].step + ':eq(0)').hasClass(_frontendCpComponentsKoAdminTrialIndexStyles['default'].expanded), false);
+      assert.equal(find('.' + _frontendCpComponentsKoAdminTrialIndexStyles['default'].step + ':eq(1)').hasClass(_frontendCpComponentsKoAdminTrialIndexStyles['default'].expanded), false);
+      assert.equal(find('.' + _frontendCpComponentsKoAdminTrialIndexStyles['default'].step + ':eq(2)').hasClass(_frontendCpComponentsKoAdminTrialIndexStyles['default'].expanded), true);
+    });
+  });
+});
 define('frontend-cp/tests/acceptance/admin/automation/businesshours/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/automation/businesshours Edit', {
