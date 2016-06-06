@@ -1162,7 +1162,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
       fillPredicateCollections();
 
       selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Status');
-      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'Change');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'change');
       selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'New');
 
       click('.button[name=submit]');
@@ -1210,7 +1210,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
       fillPredicateCollections();
 
       selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Priority');
-      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'Change');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'change');
       selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'Low');
 
       click('.button[name=submit]');
@@ -1260,7 +1260,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
       fillPredicateCollections();
 
       selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Type');
-      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'Change');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'change');
       selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'Issue');
 
       click('.button[name=submit]');
@@ -1305,9 +1305,10 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
       fillPredicateCollections();
 
       selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Assignee');
-      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'Change');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'change');
       selectSearch('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'Morr');
       selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'Alicia Morris');
+
       click('.button[name=submit]');
     });
 
@@ -1321,7 +1322,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors/1');
       assertPredicateCollestionsAreCorrect(assert);
-      assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2) .ember-power-select-trigger input').val(), 'Alicia Morris', 'The assignee is selected');
+      assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2) .ember-power-select-trigger').text().trim(), 'Alicia Morris', 'The assignee is selected');
     });
   });
 
@@ -1350,7 +1351,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
       fillPredicateCollections();
 
       selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Tags');
-      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'Add');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'add');
 
       // Add an existent tag
       selectSearch('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'stat');
@@ -1411,7 +1412,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
       fillPredicateCollections();
 
       selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Team');
-      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'Change');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'change');
       selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'Engineering');
 
       click('.button[name=submit]');
@@ -1865,7 +1866,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
       fillPredicateCollections();
 
       selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'RZ: Date');
-      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'Change');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'change');
       click('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2) .ko-date-select__trigger');
     });
 
@@ -1918,7 +1919,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
       fillPredicateCollections();
       selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Bug Test');
-      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'Add');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'add');
       selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'aaa112');
       selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'aaa114');
       click('.button[name=submit]');
@@ -2898,7 +2899,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
       fillPredicateCollections();
 
       selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Status');
-      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'Change');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'change');
       selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'New');
 
       click('.button[name=submit]');
@@ -2948,7 +2949,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
       fillPredicateCollections();
 
       selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Priority');
-      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'Change');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'change');
       selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'Low');
 
       click('.button[name=submit]');
@@ -3000,7 +3001,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
       fillPredicateCollections();
 
       selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Type');
-      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'Change');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'change');
       selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'Issue');
 
       click('.button[name=submit]');
@@ -3047,7 +3048,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
       fillPredicateCollections();
 
       selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Assignee');
-      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'Change');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'change');
       selectSearch('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'Morr');
       selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'Alicia Morris');
       click('.button[name=submit]');
@@ -3064,7 +3065,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
       assert.equal(currentURL(), '/admin/automation/triggers/1');
       assertChannelAndEventAreCorrect(assert);
       assertPredicateCollestionsAreCorrect(assert);
-      assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2) .ember-power-select-trigger input').val(), 'Alicia Morris', 'The assignee is selected');
+      assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2) .ember-power-select-trigger').text().trim(), 'Alicia Morris', 'The assignee is selected');
     });
   });
 
@@ -3094,7 +3095,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
       fillPredicateCollections();
 
       selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Tags');
-      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'Add');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'add');
 
       // Add an existent tag
       selectSearch('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'stat');
@@ -3157,7 +3158,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
       fillPredicateCollections();
 
       selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Team');
-      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'Change');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'change');
       selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'Engineering');
 
       click('.button[name=submit]');

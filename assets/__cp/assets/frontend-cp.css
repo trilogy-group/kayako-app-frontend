@@ -5750,7 +5750,14 @@ span#HW_badge.HW_softHidden {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-wrap: wrap;
-      flex-wrap: wrap; }
+      flex-wrap: wrap;
+  opacity: 0;
+  -webkit-animation: ko-admin_automation-actions-builder__fadeIn_10ryr1 ease-in 1;
+          animation: ko-admin_automation-actions-builder__fadeIn_10ryr1 ease-in 1;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+  -webkit-animation-duration: 0.3s;
+          animation-duration: 0.3s; }
 
 .ko-admin_automation-actions-builder__small-slot_10ryr1 {
   width: calc((100% - 100px) / 3);
@@ -5764,19 +5771,39 @@ span#HW_badge.HW_softHidden {
 .ko-admin_automation-actions-builder__add-action-btn_10ryr1 {
   color: #38a0be; }
 
+.ko-admin_automation-actions-builder__remove-action-btn_10ryr1 {
+  padding: 0;
+  font-size: 16px;
+  line-height: 1.125;
+  opacity: 0.5; }
+
+.ko-admin_automation-actions-builder__remove-action-btn_10ryr1:hover {
+  opacity: 1; }
+
+.ko-admin_automation-actions-builder__remove-action-btn_10ryr1:hover .ko-admin_automation-actions-builder__remove-icon_10ryr1 {
+  color: red; }
+
 .ko-admin_automation-actions-builder__actions_10ryr1 {
   position: absolute;
-  top: 9px;
-  right: 9px;
+  top: 0;
+  right: 0;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -ms-flex-line-pack: center;
-      align-content: center;
-  visibility: hidden; }
+      align-content: center; }
 
-.ko-admin_automation-actions-builder__automation-action_10ryr1:hover .ko-admin_automation-actions-builder__actions_10ryr1 {
-  visibility: visible; }
+@-webkit-keyframes ko-admin_automation-actions-builder__fadeIn_10ryr1 {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
+
+@keyframes ko-admin_automation-actions-builder__fadeIn_10ryr1 {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
 
 /* styles for frontend-cp/components/ko-admin/billing/card/styles.css */
 .ko-admin_billing_card__card-group_1d4e5u {
