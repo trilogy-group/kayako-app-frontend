@@ -6,7 +6,7 @@ define('frontend-cp/tests/acceptance/admin/account/billing/index-test', ['export
       var locale = server.create('locale', { locale: 'en-us' });
       server.create('plan', { limits: {}, features: [] });
       var adminRole = server.create('role', { type: 'ADMIN' });
-      var agent = server.create('user', { role: adminRole, locale: locale });
+      var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
       login(session.id);
       server.createList('creditcard', 5);
@@ -69,7 +69,7 @@ define('frontend-cp/tests/acceptance/admin/account/overview/index-test', ['expor
       var locale = server.create('locale', { locale: 'en-us' });
       server.create('plan', { limits: {}, features: [] });
       var adminRole = server.create('role', { type: 'ADMIN' });
-      var agent = server.create('user', { role: adminRole, locale: locale });
+      var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
       server.createList('invoice', 5);
       login(session.id);
@@ -156,7 +156,7 @@ define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports'
       var locale = server.create('locale', { locale: 'en-us' });
       server.create('plan', { limits: {}, features: [] });
       var adminRole = server.create('role', { type: 'ADMIN' });
-      var agent = server.create('user', { role: adminRole, locale: locale });
+      var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
       login(session.id);
     },
@@ -263,7 +263,7 @@ define('frontend-cp/tests/acceptance/admin/account/trial/index-test', ['exports'
       var locale = server.create('locale', { locale: 'en-us' });
       server.create('plan', { limits: [], features: [] });
       var adminRole = server.create('role', { type: 'ADMIN' });
-      var agent = server.create('user', { role: adminRole, locale: locale });
+      var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
       login(session.id);
     },
@@ -345,7 +345,7 @@ define('frontend-cp/tests/acceptance/admin/automation/businesshours/edit-test', 
       });
       server.create('plan', { limits: [], features: [] });
       var adminRole = server.create('role', { type: 'ADMIN' });
-      var agent = server.create('user', { role: adminRole, locale: locale });
+      var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
       login(session.id);
 
@@ -422,7 +422,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/edit-test', ['exp
       });
 
       var adminRole = server.create('role', { type: 'ADMIN' });
-      var agent = server.create('user', { role: adminRole, locale: locale });
+      var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
 
       server.create('definition', {
@@ -738,7 +738,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/index-test', ['ex
       });
 
       var adminRole = server.create('role', { type: 'ADMIN' });
-      var agent = server.create('user', { role: adminRole, locale: locale });
+      var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
       login(session.id);
 
@@ -941,7 +941,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
       });
 
       role = server.create('role', { type: 'ADMIN' });
-      var agent = server.create('user', { role: role, locale: locale });
+      var agent = server.create('user', { role: role, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
 
       server.create('definition', {
@@ -2074,7 +2074,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/edit-test', ['exp
       });
 
       var adminRole = server.create('role', { type: 'ADMIN' });
-      var agent = server.create('user', { role: adminRole, locale: locale });
+      var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
 
       server.create('trigger-channel', { name: 'SYSTEM', events: ['TRIGGER'] });
@@ -2474,7 +2474,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/index-test', ['ex
       });
 
       var adminRole = server.create('role', { type: 'ADMIN' });
-      var agent = server.create('user', { role: adminRole, locale: locale });
+      var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
       login(session.id);
 
@@ -2676,7 +2676,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
       });
 
       role = server.create('role', { type: 'ADMIN' });
-      var agent = server.create('user', { role: role, locale: locale });
+      var agent = server.create('user', { role: role, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
 
       server.create('trigger-channel', { name: 'SYSTEM', events: ['TRIGGER'] });
@@ -3401,7 +3401,7 @@ define('frontend-cp/tests/acceptance/admin/channels/email/list-test', ['exports'
     beforeEach: function beforeEach() {
       var locale = server.create('locale', { id: 1, locale: 'en-us', isDefault: true });
       var role = server.create('role', { type: 'ADMIN' });
-      var user = server.create('user', { role: role, locale: locale });
+      var user = server.create('user', { role: role, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: user });
 
       server.create('plan', {
@@ -3513,7 +3513,7 @@ define('frontend-cp/tests/acceptance/admin/channels/email/new-test', ['exports',
     beforeEach: function beforeEach() {
       var locale = server.create('locale', { id: 1, locale: 'en-us', isDefault: true });
       var role = server.create('role', { type: 'ADMIN' });
-      var user = server.create('user', { role: role, locale: locale });
+      var user = server.create('user', { role: role, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: user });
 
       server.create('plan', {
@@ -3572,7 +3572,7 @@ define('frontend-cp/tests/acceptance/admin/manage/brands/edit-test', ['exports',
       server.create('brand', { id: 3, locale: en, is_enabled: false, name: 'Disabled', domain: 'kayako.com', sub_domain: 'disabled', is_default: false });
 
       var role = server.create('role', { type: 'ADMIN' });
-      var user = server.create('user', { role: role, locale: en });
+      var user = server.create('user', { role: role, locale: en, time_zone: 'Europe/London' });
       var session = server.create('session', { user: user });
 
       server.create('setting', {
@@ -3720,7 +3720,7 @@ define('frontend-cp/tests/acceptance/admin/manage/brands/list-test', ['exports',
       server.create('brand', { id: 3, locale: en, is_enabled: false, name: 'Disabled', domain: 'kayako.com', sub_domain: 'disabled', is_default: false });
 
       var role = server.create('role', { type: 'ADMIN' });
-      var user = server.create('user', { role: role, locale: en });
+      var user = server.create('user', { role: role, locale: en, time_zone: 'Europe/London' });
       var session = server.create('session', { user: user });
 
       server.create('plan', {
@@ -3831,7 +3831,7 @@ define('frontend-cp/tests/acceptance/admin/manage/brands/new-test', ['exports', 
       server.create('brand', { id: 3, locale: en, is_enabled: false, name: 'Disabled', domain: 'kayako.com', sub_domain: 'disabled', is_default: false });
 
       var role = server.create('role', { type: 'ADMIN' });
-      var user = server.create('user', { role: role, locale: en });
+      var user = server.create('user', { role: role, locale: en, time_zone: 'Europe/London' });
       var session = server.create('session', { user: user });
 
       server.create('setting', {
@@ -3928,7 +3928,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/delete-test', ['ex
         is_system: false
       });
       var adminRole = server.create('role', { type: 'ADMIN' });
-      var agent = server.create('user', { role: adminRole, locale: locale });
+      var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
       login(session.id);
 
@@ -4291,7 +4291,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       });
       var adminRole = server.create('role', { type: 'ADMIN' });
       var locale = server.create('locale', { locale: 'en-us' });
-      var agent = server.create('user', { role: adminRole, locale: locale });
+      var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
       login(session.id);
 
@@ -4862,7 +4862,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-priorities-
         locale: 'en-us',
         is_public: true
       });
-      var agent = server.create('user', { role: role, locale: locale });
+      var agent = server.create('user', { role: role, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
 
       login(session.id);
@@ -4988,7 +4988,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-statuses-te
         is_public: true
       });
       var role = server.create('role', { type: 'ADMIN' });
-      var agent = server.create('user', { role: role, locale: locale });
+      var agent = server.create('user', { role: role, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
 
       login(session.id);
@@ -5116,7 +5116,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-types-test'
         is_public: true
       });
       var role = server.create('role', { type: 'ADMIN' });
-      var agent = server.create('user', { role: role, locale: locale });
+      var agent = server.create('user', { role: role, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
 
       login(session.id);
@@ -5222,7 +5222,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
         is_public: true
       });
       var adminRole = server.create('role', { type: 'ADMIN' });
-      var agent = server.create('user', { role: adminRole, locale: { id: locale.id, resource_type: 'locale' } });
+      var agent = server.create('user', { role: adminRole, locale: { id: locale.id, resource_type: 'locale' }, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
       login(session.id);
 
@@ -6026,7 +6026,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/reorder-test', ['e
       });
       var agentRole = server.create('role', { type: 'ADMIN' });
       var locale = server.create('locale', { locale: 'en-us' });
-      var agent = server.create('user', { role: agentRole, locale: locale });
+      var agent = server.create('user', { role: agentRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
       login(session.id);
 
@@ -6247,7 +6247,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
     beforeEach: function beforeEach() {
       var emails = [server.create('identity-email', { email: 'first@example.com', is_primary: true, is_validated: true }), server.create('identity-email', { email: 'second@example.com', is_primary: false, is_validated: true }), server.create('identity-email', { email: 'third@example.com', is_primary: false, is_validated: false })];
       locale = server.create('locale', { locale: 'en-us' });
-      var user = server.create('user', { emails: emails, role: server.create('role'), locale: locale });
+      var user = server.create('user', { emails: emails, role: server.create('role'), locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: user });
       server.create('plan', { limits: {}, features: [] });
       brand = server.create('brand', { locale: locale });
@@ -6564,14 +6564,14 @@ define('frontend-cp/tests/acceptance/admin/manage/facebook/manage-pages-test', [
       var agentRole = server.create('role', { type: 'AGENT' });
       var locale = server.create('locale', { locale: 'en-us' });
 
-      server.create('user', { teams: [salesTeam], role: agentRole, full_name: 'Leeroy Jenkins', locale: locale });
+      server.create('user', { teams: [salesTeam], role: agentRole, full_name: 'Leeroy Jenkins', locale: locale, time_zone: 'Europe/London' });
       server.create('case-status', { label: 'New' });
       server.create('case-type', { label: 'Question' });
       server.create('case-priority', { label: 'Low' });
       server.create('facebook-page');
 
       var adminRole = server.create('role', { type: 'ADMIN' });
-      var agent = server.create('user', { role: adminRole, locale: locale });
+      var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
 
       login(session.id);
@@ -6690,7 +6690,7 @@ define('frontend-cp/tests/acceptance/admin/manage/localization/list-test', ['exp
       server.create('locale', { id: 3, locale: 'de-de', name: 'German', is_public: false, is_localised: false });
       server.create('locale', { id: 4, locale: 'ru-ru', name: 'Russian', is_public: false, is_localised: false });
       var role = server.create('role', { type: 'ADMIN' });
-      var user = server.create('user', { role: role, locale: en });
+      var user = server.create('user', { role: role, locale: en, time_zone: 'Europe/London' });
       var session = server.create('session', { user: user });
 
       server.create('plan', {
@@ -6753,13 +6753,13 @@ define('frontend-cp/tests/acceptance/admin/manage/macros/new-test', ['exports', 
       var agentRole = server.create('role', { type: 'AGENT' });
       var locale = server.create('locale', { locale: 'en-us' });
 
-      server.create('user', { teams: [salesTeam], role: agentRole, full_name: 'Leeroy Jenkins', locale: locale });
+      server.create('user', { teams: [salesTeam], role: agentRole, full_name: 'Leeroy Jenkins', locale: locale, time_zone: 'Europe/London' });
       server.create('case-status', { label: 'New' });
       server.create('case-type', { label: 'Question' });
       server.create('case-priority', { label: 'Low' });
 
       var adminRole = server.create('role', { type: 'ADMIN' });
-      var agent = server.create('user', { role: adminRole, locale: locale });
+      var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
 
       login(session.id);
@@ -7043,7 +7043,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/edit-test', ['exports', 
 
       var adminRole = server.create('role', { type: 'ADMIN' });
       var locale = server.create('locale', { locale: 'en-us' });
-      var agent = server.create('user', { role: adminRole, locale: locale });
+      var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
       login(session.id);
       server.create('view');
@@ -7317,7 +7317,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
 
       var adminRole = server.create('role', { type: 'ADMIN' });
       var locale = server.create('locale', { locale: 'en-us' });
-      var agent = server.create('user', { role: adminRole, locale: locale });
+      var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
       login(session.id);
       server.create('view');
@@ -7876,7 +7876,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/delete-tes
       });
       var adminRole = server.create('role', { type: 'ADMIN' });
       var locale = server.create('locale', { locale: 'en-us' });
-      var agent = server.create('user', { role: adminRole, locale: locale });
+      var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
       var sessionId = server.create('session', { user: agent }).id;
       login(sessionId);
 
@@ -8228,7 +8228,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
       });
       var adminRole = server.create('role', { type: 'ADMIN' });
       var locale = server.create('locale', { locale: 'en-us' });
-      var agent = server.create('user', { role: adminRole, locale: locale });
+      var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
       login(session.id);
 
@@ -8760,7 +8760,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
         is_ublic: true
       });
       var adminRole = server.create('role', { type: 'ADMIN' });
-      var agent = server.create('user', { role: adminRole, locale: { id: locale.id, resource_type: 'locale' } });
+      var agent = server.create('user', { role: adminRole, locale: { id: locale.id, resource_type: 'locale' }, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
       login(session.id);
 
@@ -9542,7 +9542,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/reorder-te
       });
       var agentRole = server.create('role', { type: 'ADMIN' });
       var locale = server.create('locale', { locale: 'en-us' });
-      var agent = server.create('user', { role: agentRole, locale: locale });
+      var agent = server.create('user', { role: agentRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
       login(session.id);
 
@@ -9764,7 +9764,7 @@ define('frontend-cp/tests/acceptance/admin/people/roles/form-test', ['exports', 
 
       var adminRole = server.create('role', { type: 'ADMIN' });
       var locale = server.create('locale', { locale: 'en-us' });
-      var agent = server.create('user', { role: adminRole, locale: locale });
+      var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
       login(session.id);
     },
@@ -9917,7 +9917,7 @@ define('frontend-cp/tests/acceptance/admin/people/roles/index-test', ['exports',
       });
 
       var locale = server.create('locale', { locale: 'en-us' });
-      var agent = server.create('user', { role: adminRole, locale: locale });
+      var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
       login(session.id);
     },
@@ -10049,7 +10049,7 @@ define('frontend-cp/tests/acceptance/admin/people/teams-forms-test', ['exports',
       server.create('permission', { name: 'admin.team.delete', value: true });
 
       var locale = server.create('locale', { locale: 'en-us' });
-      var user = server.create('user', { emails: emails, locale: locale, role: server.create('role', { roleType: 'ADMIN' }) });
+      var user = server.create('user', { emails: emails, locale: locale, role: server.create('role', { roleType: 'ADMIN' }), time_zone: 'Europe/London' });
       var session = server.create('session', { user: user });
 
       server.create('plan', { limits: {}, features: [] });
@@ -11041,7 +11041,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
         is_public: true
       });
       var adminRole = server.create('role', { type: 'ADMIN' });
-      var agent = server.create('user', { role: adminRole, locale: { id: locale.id, resource_type: 'locale' } });
+      var agent = server.create('user', { role: adminRole, locale: { id: locale.id, resource_type: 'locale' }, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
       login(session.id);
 
@@ -11822,7 +11822,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/reorder-test', ['e
       });
       var agentRole = server.create('role', { type: 'ADMIN' });
       var locale = server.create('locale', { locale: 'en-us' });
-      var agent = server.create('user', { role: agentRole, locale: locale });
+      var agent = server.create('user', { role: agentRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
       login(session.id);
 
@@ -12031,9 +12031,9 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
       });
       var agentRole = server.create('role', { type: 'AGENT' });
       var customerRole = server.create('role', { type: 'AGENT' });
-      var agent = server.create('user', { role: agentRole, locale: locale });
+      var agent = server.create('user', { role: agentRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
-      server.create('user', { full_name: 'Barney Stinson', role: customerRole, locale: locale });
+      server.create('user', { full_name: 'Barney Stinson', role: customerRole, locale: locale, time_zone: 'Europe/London' });
       server.createList('case-status', 5);
       server.createList('case-priority', 4);
       login(session.id);
@@ -12173,7 +12173,8 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
         locale: { id: enUsLocale.id, resource_type: 'locale' },
         organization: { id: organization.id, resource_type: 'organization' },
         role: { id: role.id, resource_type: 'role' },
-        teams: [{ id: team.id, resource_type: 'team' }]
+        teams: [{ id: team.id, resource_type: 'team' }],
+        time_zone: 'Europe/London'
       });
 
       server.create('session', { user: { id: defaultUser.id, resource_type: 'user' } });
@@ -12626,14 +12627,15 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
       });
       var agentRole = server.create('role', { type: 'AGENT' });
       var customerRole = server.create('role', { type: 'AGENT' });
-      var agent = server.create('user', { role: agentRole, locale: locale });
+      var agent = server.create('user', { role: agentRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
       var organization = server.create('organization');
       var customer = server.create('user', {
         full_name: 'Barney Stinson',
         role: customerRole,
         locale: locale,
-        organization: { id: organization.id, resource_type: 'organization' }
+        organization: { id: organization.id, resource_type: 'organization' },
+        time_zone: 'Europe/London'
       });
       var identityEmail = server.create('identity-email');
       server.createList('case-status', 5);
@@ -12939,7 +12941,8 @@ define('frontend-cp/tests/acceptance/agent/cases/replying-to-a-facebook-message-
     var agent = server.create('user', {
       full_name: name,
       role: role,
-      facebook: [identity]
+      facebook: [identity],
+      time_zone: 'Europe/London'
     });
 
     server.create('plan');
@@ -12979,7 +12982,8 @@ define('frontend-cp/tests/acceptance/agent/cases/replying-to-a-facebook-message-
     var customer = server.create('user', {
       full_name: name,
       role: role,
-      facebook: [identity]
+      facebook: [identity],
+      time_zone: 'Europe/London'
     });
 
     return customer;
@@ -13072,9 +13076,9 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
       });
       var agentRole = server.create('role', { type: 'AGENT' });
       var customerRole = server.create('role', { type: 'AGENT' });
-      agent = server.create('user', { role: agentRole, locale: locale });
+      agent = server.create('user', { role: agentRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
-      var customer = server.create('user', { full_name: 'Barney Stinson', role: customerRole, locale: locale });
+      var customer = server.create('user', { full_name: 'Barney Stinson', role: customerRole, locale: locale, time_zone: 'Europe/London' });
       identityEmail = server.create('identity-email');
       server.createList('case-status', 5);
       server.createList('case-priority', 4);
@@ -13330,10 +13334,10 @@ define('frontend-cp/tests/acceptance/agent/cases/user-test', ['exports', 'fronte
     });
     var agentRole = server.create('role', { type: 'AGENT' });
     var customerRole = server.create('role', { type: 'AGENT' });
-    var agent = server.create('user', { role: agentRole, locale: locale });
+    var agent = server.create('user', { role: agentRole, locale: locale, time_zone: 'Europe/London' });
     var sessionId = server.db.sessions[0].id;
     server.db.sessions.update(sessionId, { user: agent });
-    server.create('user', { full_name: 'Barney Stinson', role: customerRole, locale: locale });
+    server.create('user', { full_name: 'Barney Stinson', role: customerRole, locale: locale, time_zone: 'Europe/London' });
     server.createList('case-status', 5);
     server.createList('case-priority', 4);
     login(sessionId);
@@ -13359,7 +13363,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-test', ['exports', 'fronte
   (0, _frontendCpTestsHelpersQunit.test)('Update a user with invalid info highlights the errors', function (assert) {
     var locale = server.create('locale', { locale: 'en-us' });
     var agentRole = server.create('role', { type: 'AGENT' });
-    var agent = server.create('user', { role: agentRole, locale: locale });
+    var agent = server.create('user', { role: agentRole, locale: locale, time_zone: 'Europe/London' });
     server.db.cases.update(1, { requester: agent });
     visit('/agent/cases/1/user');
 
@@ -13392,9 +13396,9 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
       });
       var agentRole = server.create('role', { type: 'AGENT' });
       var customerRole = server.create('role', { type: 'CUSTOMER' });
-      var agent = server.create('user', { role: agentRole, locale: locale });
+      var agent = server.create('user', { role: agentRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
-      var customer = server.create('user', { full_name: 'Barney Stinson', role: customerRole, locale: locale });
+      var customer = server.create('user', { full_name: 'Barney Stinson', role: customerRole, locale: locale, time_zone: 'Europe/London' });
       var identityEmail = server.create('identity-email');
       server.createList('case-status', 5);
       server.createList('case-priority', 4);
@@ -13683,7 +13687,7 @@ define('frontend-cp/tests/acceptance/agent/index-test', ['exports', 'frontend-cp
 
       var emails = [server.create('identity-email', { email: 'first@example.com', is_primary: true, is_validated: true })];
       var locale = server.create('locale', { locale: 'en-us' });
-      var user = server.create('user', { emails: emails, role: server.create('role'), locale: locale });
+      var user = server.create('user', { emails: emails, role: server.create('role'), locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: user });
       server.create('plan', { limits: {}, features: [] });
 
@@ -13829,7 +13833,7 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
       });
       var emails = [server.create('identity-email', { email: 'first@example.com', is_primary: true, is_validated: true }), server.create('identity-email', { email: 'second@example.com', is_primary: false, is_validated: true }), server.create('identity-email', { email: 'third@example.com', is_primary: false, is_validated: false })];
       var locale = server.create('locale', { locale: 'en-us' });
-      var user = server.create('user', { emails: emails, role: server.create('role'), locale: locale });
+      var user = server.create('user', { emails: emails, role: server.create('role'), locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: user });
       server.create('plan', { limits: {}, features: [] });
       login(session.id);
@@ -13932,7 +13936,7 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
       });
       var twitter = [server.create('identity-twitter', { screen_name: '@first', is_primary: true, is_validated: true }), server.create('identity-twitter', { screen_name: '@second', is_primary: false, is_validated: true }), server.create('identity-twitter', { screen_name: '@third', is_primary: false, is_validated: false })];
       var locale = server.create('locale', { locale: 'en-us' });
-      var user = server.create('user', { twitter: twitter, role: server.create('role'), locale: locale });
+      var user = server.create('user', { twitter: twitter, role: server.create('role'), locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: user });
       server.create('plan', { limits: {}, features: [] });
       login(session.id);
@@ -13999,7 +14003,7 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
       });
       var facebook = [server.create('identity-facebook', { user_name: 'Mike', is_primary: true, is_validated: true }), server.create('identity-facebook', { user_name: 'Mary', is_primary: false, is_validated: true }), server.create('identity-facebook', { user_name: 'John', is_primary: false, is_validated: false })];
       var locale = server.create('locale', { locale: 'en-us' });
-      var user = server.create('user', { facebook: facebook, role: server.create('role'), locale: locale });
+      var user = server.create('user', { facebook: facebook, role: server.create('role'), locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: user });
       server.create('plan', { limits: {}, features: [] });
       login(session.id);
@@ -14053,7 +14057,7 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
       });
       var phones = [server.create('identity-phone', { number: '+44 1111 111111', is_primary: true, is_validated: true }), server.create('identity-phone', { number: '+44 2222 222222', is_primary: false, is_validated: true }), server.create('identity-phone', { number: '+44 3333 333333', is_primary: false, is_validated: false })];
       var locale = server.create('locale', { locale: 'en-us' });
-      var user = server.create('user', { phones: phones, role: server.create('role'), locale: locale });
+      var user = server.create('user', { phones: phones, role: server.create('role'), locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: user });
       server.create('plan', { limits: {}, features: [] });
       login(session.id);
@@ -14130,7 +14134,7 @@ define('frontend-cp/tests/acceptance/agent/organisations/create-test', ['exports
       // server.create('role', {title: 'Collaborator', type: 'COLLABORATOR', id: 3}),
       // server.create('role', {title: 'Customer', type: 'CUSTOMER', id: 4})
       var agentRole = roles[1];
-      var agent = server.create('user', { role: agentRole, locale: locale });
+      var agent = server.create('user', { role: agentRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
       login(session.id);
 
@@ -14225,14 +14229,16 @@ define('frontend-cp/tests/acceptance/agent/organisations/edit-test', ['exports',
         custom_fields: customFields,
         role: customerRole,
         locale: locale,
-        organization: organization
+        organization: organization,
+        time_zone: 'Europe/London'
       });
 
       var agent = server.create('user', {
         custom_fields: customFields,
         role: agentRole,
         teams: teams,
-        locale: locale
+        locale: locale,
+        time_zone: 'Europe/London'
       });
 
       theCase = server.create('case', {
@@ -14651,8 +14657,8 @@ define('frontend-cp/tests/acceptance/agent/users/change-role-test', ['exports', 
   (0, _qunit.test)('Changing another user’s role from CUSTOMER requires confirmation', function (assert) {
     var _this2 = this;
 
-    var me = server.create('user', { role: this.roles.admin });
-    var other = server.create('user', { role: this.roles.customer });
+    var me = server.create('user', { role: this.roles.admin, time_zone: 'Europe/London' });
+    var other = server.create('user', { role: this.roles.customer, time_zone: 'Europe/London' });
     var session = server.create('session', { user: me });
 
     server.create('plan', { limits: {}, features: [] });
@@ -14671,8 +14677,8 @@ define('frontend-cp/tests/acceptance/agent/users/change-role-test', ['exports', 
   (0, _qunit.test)('Changing another user’s role to CUSTOMER requires confirmation', function (assert) {
     var _this3 = this;
 
-    var me = server.create('user', { role: this.roles.admin });
-    var other = server.create('user', { role: this.roles.agent });
+    var me = server.create('user', { role: this.roles.admin, time_zone: 'Europe/London' });
+    var other = server.create('user', { role: this.roles.agent, time_zone: 'Europe/London' });
     var session = server.create('session', { user: me });
 
     server.create('plan', { limits: {}, features: [] });
@@ -14689,8 +14695,8 @@ define('frontend-cp/tests/acceptance/agent/users/change-role-test', ['exports', 
   });
 
   (0, _qunit.test)('Declining confirmation prevents the record from saving', function (assert) {
-    var me = server.create('user', { role: this.roles.admin });
-    var other = server.create('user', { role: this.roles.agent });
+    var me = server.create('user', { role: this.roles.admin, time_zone: 'Europe/London' });
+    var other = server.create('user', { role: this.roles.agent, time_zone: 'Europe/London' });
     var session = server.create('session', { user: me });
     var requested = false;
     var endpoint = '/api/v1/users/' + other.id;
@@ -14716,8 +14722,8 @@ define('frontend-cp/tests/acceptance/agent/users/change-role-test', ['exports', 
   });
 
   (0, _qunit.test)('AGENTs may not change another user’s role', function (assert) {
-    var me = server.create('user', { role: this.roles.agent });
-    var other = server.create('user', { role: this.roles.customer });
+    var me = server.create('user', { role: this.roles.agent, time_zone: 'Europe/London' });
+    var other = server.create('user', { role: this.roles.customer, time_zone: 'Europe/London' });
     var session = server.create('session', { user: me });
 
     server.create('plan', { limits: {}, features: [] });
@@ -14750,7 +14756,7 @@ define('frontend-cp/tests/acceptance/agent/users/create-test', ['exports', 'fron
       });
       var roles = [server.create('role'), server.create('role', { title: 'Agent', type: 'AGENT', id: 2 }), server.create('role', { title: 'Collaborator', type: 'COLLABORATOR', id: 3 }), server.create('role', { title: 'Customer', type: 'CUSTOMER', id: 4 })];
       var agentRole = roles[1];
-      var agent = server.create('user', { role: agentRole, locale: locale });
+      var agent = server.create('user', { role: agentRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
       login(session.id);
 
@@ -14841,12 +14847,12 @@ define('frontend-cp/tests/acceptance/agent/users/edit-test', ['exports', 'fronte
       var roles = [server.create('role'), server.create('role', { title: 'Agent', type: 'AGENT', id: 2 }), server.create('role', { title: 'Collaborator', type: 'COLLABORATOR', id: 3 }), server.create('role', { title: 'Customer', type: 'CUSTOMER', id: 4 }), server.create('role', { title: 'Owner', type: 'OWNER', id: 5 })];
 
       var customerRole = roles[3];
-      customer = server.create('user', { role: customerRole, locale: locale, agent_case_access: null, organization_case_access: 'REQUESTED' });
+      customer = server.create('user', { role: customerRole, locale: locale, agent_case_access: null, organization_case_access: 'REQUESTED', time_zone: 'Europe/London' });
 
       var ownerRole = roles[4];
-      owner = server.create('user', { role: ownerRole, locale: locale, agent_case_access: 'ALL', organization_case_access: null });
+      owner = server.create('user', { role: ownerRole, locale: locale, agent_case_access: 'ALL', organization_case_access: null, time_zone: 'Europe/London' });
 
-      var agent = server.create('user', { role: ownerRole, locale: locale });
+      var agent = server.create('user', { role: ownerRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
       login(session.id);
 
@@ -15027,9 +15033,9 @@ define('frontend-cp/tests/acceptance/login/login-test', ['exports', 'qunit', 'fr
     var agentRole = server.create('role', { type: 'AGENT' });
     var customerRole = server.create('role', { type: 'AGENT' });
 
-    server.create('user', { role: agentRole, locale: locale });
+    server.create('user', { role: agentRole, locale: locale, time_zone: 'Europe/London' });
 
-    server.create('user', { full_name: 'Barney Stinson', role: customerRole, locale: locale });
+    server.create('user', { full_name: 'Barney Stinson', role: customerRole, locale: locale, time_zone: 'Europe/London' });
     server.createList('case-status', 5);
     server.createList('case-priority', 4);
 
@@ -15080,7 +15086,7 @@ define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'fron
         brand: brand
       });
       var agentRole = server.create('role', { type: 'AGENT' });
-      var agent = server.create('user', { role: agentRole, locale: locale });
+      var agent = server.create('user', { role: agentRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
       login(session.id);
 
