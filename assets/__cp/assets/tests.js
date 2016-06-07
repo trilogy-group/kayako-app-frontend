@@ -2061,6 +2061,54 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     });
   });
 });
+define('frontend-cp/tests/acceptance/admin/automation/sla/index-test', ['exports', 'qunit', 'frontend-cp/tests/helpers/qunit'], function (exports, _qunit, _frontendCpTestsHelpersQunit) {
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/automation/sla/index', {
+    beforeEach: function beforeEach() {
+      var locale = server.create('locale', {
+        locale: 'en-us'
+      });
+
+      var adminRole = server.create('role', { type: 'ADMIN' });
+      var agent = server.create('user', { role: adminRole, locale: locale });
+      var session = server.create('session', { user: agent });
+      login(session.id);
+
+      server.create('plan', {
+        limits: {},
+        features: []
+      });
+    },
+
+    afterEach: function afterEach() {
+      logout();
+    }
+  });
+
+  (0, _qunit.test)('disabling an SLA', function (assert) {
+    assert.expect(4);
+
+    server.create('sla', { title: 'test sla', is_enabled: true, execution_order: 1 });
+
+    visit('/admin/automation/sla');
+
+    andThen(function () {
+      assert.equal(find('.qa-enabled-slas .qa-sla-row').length, 1, 'SLA is enabled');
+      assert.equal(find('.qa-disabled-slas .qa-sla-row').length, 0, 'Disabled SLA list is empty');
+    });
+
+    andThen(function () {
+      triggerEvent('.qa-enabled-slas .qa-sla-row:eq(0)', 'mouseenter');
+    });
+
+    click('.qa-disable-sla');
+
+    andThen(function () {
+      assert.equal(find('.qa-enabled-slas .qa-sla-row').length, 0, 'Enabled SLA list is empty');
+      assert.equal(find('.qa-disabled-slas .qa-sla-row').length, 1, 'SLA is disabled');
+    });
+  });
+});
 define('frontend-cp/tests/acceptance/admin/automation/triggers/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles) {
 
   var originalConfirm = undefined;
