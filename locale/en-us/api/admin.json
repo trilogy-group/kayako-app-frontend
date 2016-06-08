@@ -24,7 +24,7 @@
   "apps.endpoints.list.problem_reaching": "Problem reaching endpoint",
   "apps.endpoints.list.EMAIL.description": "Email",
   "apps.endpoints.list.HTTP.description": "HTTP Webhook",
-  "apps.endpoints.list.SLACK.description": "HTTP Webhook",
+  "apps.endpoints.list.SLACK.description": "Slack",
   "apps.endpoints.list.last_triggered": "last triggered {date}",
   "apps.endpoints.list.http.title": "Title",
   "apps.endpoints.list.http.description": "Title",
