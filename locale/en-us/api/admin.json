@@ -707,7 +707,6 @@
   "email.default.message": "Email successfully made default",
   "email.settings.heading.receiving_email": "Receiving email",
   "email.settings.heading.sending_email": "Sending email",
-  "email.settings.heading.receiving_email": "Receiving email",
   "email.settings.wildcard_email.title": "Wildcard email address",
   "email.settings.wildcard_email.description": "Kayako will catch email sent to any variation of support@{domain} (such as hello@{domain}, marypoppins@{domain}), even if there isn’t a corresponding Mailbox for the destination address. This may be useful if you wish to catch email where users mistype your email address, such as suport@{domain}.",
   "email.settings.personalize_replies.title": "Personalize the ‘from’ in email replies",
