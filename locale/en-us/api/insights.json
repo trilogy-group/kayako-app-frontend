@@ -1,5 +1,6 @@
 {
   "insights.title": "Insights",
+  "insights.vs": "vs",
 
   "sidebar.general.title": "General",
   "sidebar.general.agents.title": "Agents",
@@ -21,8 +22,10 @@
 
   "agents.page.title": "Insights / Agents",
   "agents.customers_helped": "<b>{amount}</b> customers helped in specified period",
-  "agents.cases_completed_vs_csat": "Cases Completed vs CSAT",
-  "agents.cases_completed_vs_csat_explanation": "<b>{value}</b> cases completed with average <b>{csatValue}</b> CSAT",
+  "agents.cases_completed": "Cases Completed",
+  "agents.cases_completed_explanation": "<b>{value}</b> cases completed",
+  "agents.csat": "CSAT",
+  "agents.csat_explanation": "Average <b>{csatValue}</b> CSAT in current period vs <b>{csatPreviousValue}</b> CSAT in previous period",
 
   "teams.page.title": "Insights / Teams",
 
