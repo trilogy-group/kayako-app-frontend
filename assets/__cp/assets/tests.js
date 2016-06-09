@@ -14177,10 +14177,10 @@ define('frontend-cp/tests/acceptance/agent/organisations/create-test', ['exports
         fields: caseFields,
         brand: brand
       });
-      var roles = [server.create('role'), server.create('role', { title: 'Agent', type: 'AGENT', id: 2 })];
-
+      var roles = [server.create('role'), server.create('role', { title: 'Agent', type: 'AGENT', id: 2 })
       // server.create('role', {title: 'Collaborator', type: 'COLLABORATOR', id: 3}),
       // server.create('role', {title: 'Customer', type: 'CUSTOMER', id: 4})
+      ];
       var agentRole = roles[1];
       var agent = server.create('user', { role: agentRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
