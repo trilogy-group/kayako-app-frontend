@@ -7416,7 +7416,7 @@ a.ko-admin_plans_index__cancel_1pprhr {
   cursor: pointer;
   border-left: 3px solid transparent; }
 
-.ko-sidebar__item_6aclzg.active {
+.ko-sidebar__item_6aclzg.active:not(.ember-transitioning-out), .ko-sidebar__item_6aclzg.ember-transitioning-in {
   /* set by ember :( */
   margin-left: -1px;
   /* offset its containers border. */
@@ -7553,7 +7553,7 @@ a.ko-admin_plans_index__cancel_1pprhr {
 .ko-tabs__item_mcpj6q:last-child {
   margin-right: 0; }
 
-.ko-tabs__item_mcpj6q.active {
+.ko-tabs__item_mcpj6q.active:not(.ember-transitioning-out), .ko-tabs__item_mcpj6q.ember-transitioning-in {
   font-weight: 700;
   border-color: #4EAFCB; }
 
