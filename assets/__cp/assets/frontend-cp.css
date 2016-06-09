@@ -7135,6 +7135,9 @@ a.ko-admin_plans_index__cancel_1pprhr {
 .daterangepicker th.available:hover {
   background: #F7F8F9; }
 
+.daterangepicker .off {
+  visibility: hidden; }
+
 /* styles for frontend-cp/components/ko-insights/actor/styles.css */
 .ko-insights_actor__actorContainer_1bymb4 {
   display: -webkit-box;
@@ -7196,18 +7199,6 @@ a.ko-admin_plans_index__cancel_1pprhr {
 .ko-insights_actor__actorDescription_1bymb4 {
   font-size: 14px;
   color: #838D94; }
-
-/* styles for frontend-cp/components/ko-insights/charts/completion-vs-csat-columns/styles.css */
-.ko-insights_charts_completion-vs-csat-columns__tooltipTable_1hxhrr {
-  padding: 0;
-  margin: 0;
-  border: 0; }
-
-.ko-insights_charts_completion-vs-csat-columns__tooltipTd_1hxhrr {
-  padding: 3px; }
-
-.ko-insights_charts_completion-vs-csat-columns__tooltipTh_1hxhrr {
-  padding: 3px; }
 
 /* styles for frontend-cp/components/ko-insights/metric/styles.css */
 .ko-insights_metric__metric_1h3qp2 {
@@ -7278,6 +7269,83 @@ a.ko-admin_plans_index__cancel_1pprhr {
 
 .ko-insights_metric__sizeLarge_1h3qp2 .ko-insights_metric__name_1h3qp2 {
   margin-top: 5px; }
+
+/* styles for frontend-cp/components/ko-insights/section/agents-teams/styles.css */
+.ko-insights_section_agents-teams__header_1qxjcv {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-grid-column-align: center;
+      justify-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
+
+.ko-insights_section_agents-teams__entity_1qxjcv {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+
+.ko-insights_section_agents-teams__filters_1qxjcv {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center; }
+
+.ko-insights_section_agents-teams__metrics_1qxjcv {
+  margin-top: 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
+
+.ko-insights_section_agents-teams__chart_1qxjcv {
+  margin-top: 30px; }
+
+.ko-insights_section_agents-teams__questionBlock_1qxjcv {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
+
+.ko-insights_section_agents-teams__question_1qxjcv {
+  margin-top: 20px; }
+
+.ko-insights_section_agents-teams__questionTitle_1qxjcv {
+  margin-bottom: 0;
+  line-height: 26px; }
+
+.ko-insights_section_agents-teams__answer_1qxjcv {
+  margin-bottom: 30px;
+  color: #838D94; }
+
+.ko-insights_section_agents-teams__insights_1qxjcv {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
 
 /* styles for frontend-cp/components/ko-layout/container/styles.css */
 .ko-layout_container__root_160oc3 {
@@ -8118,136 +8186,6 @@ a.ko-timeline_item__subtitle_vt1m5j:hover {
 
 .session_agent_cases_index_suspended-messages__empty_1qhp96 {
   margin-top: 18px; }
-
-/* styles for frontend-cp/session/agent/insights/general/agents/styles.css */
-.session_agent_insights_general_agents__header_pvetw2 {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-grid-column-align: center;
-      justify-items: center;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between; }
-
-.session_agent_insights_general_agents__entity_pvetw2 {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex; }
-
-.session_agent_insights_general_agents__filters_pvetw2 {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center; }
-
-.session_agent_insights_general_agents__metrics_pvetw2 {
-  margin-top: 30px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between; }
-
-.session_agent_insights_general_agents__chart_pvetw2 {
-  margin-top: 30px; }
-
-.session_agent_insights_general_agents__questionBlock_pvetw2 {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center; }
-
-.session_agent_insights_general_agents__question_pvetw2 {
-  margin-top: 20px; }
-
-.session_agent_insights_general_agents__questionTitle_pvetw2 {
-  margin-bottom: 0;
-  line-height: 26px; }
-
-.session_agent_insights_general_agents__answer_pvetw2 {
-  margin-bottom: 30px;
-  color: #838D94; }
-
-/* styles for frontend-cp/session/agent/insights/general/teams/styles.css */
-.session_agent_insights_general_teams__header_9flxqu {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-grid-column-align: center;
-      justify-items: center;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between; }
-
-.session_agent_insights_general_teams__entity_9flxqu {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex; }
-
-.session_agent_insights_general_teams__filters_9flxqu {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center; }
-
-.session_agent_insights_general_teams__metrics_9flxqu {
-  margin-top: 30px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between; }
-
-.session_agent_insights_general_teams__chart_9flxqu {
-  margin-top: 30px; }
-
-.session_agent_insights_general_teams__questionBlock_9flxqu {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center; }
-
-.session_agent_insights_general_teams__question_9flxqu {
-  margin-top: 20px; }
-
-.session_agent_insights_general_teams__questionTitle_9flxqu {
-  margin-bottom: 0;
-  line-height: 26px; }
-
-.session_agent_insights_general_teams__answer_9flxqu {
-  margin-bottom: 30px;
-  color: #838D94; }
 
 /* styles for frontend-cp/session/agent/search/styles.css */
 .session_agent_search__index_1sn5yt {
