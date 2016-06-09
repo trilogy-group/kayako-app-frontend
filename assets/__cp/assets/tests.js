@@ -904,7 +904,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/index-test', ['ex
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'npm:moment', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-admin/automation-actions-builder/styles'], function (exports, _frontendCpTestsHelpersQunit, _npmMoment, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoAdminAutomationActionsBuilderStyles) {
+define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'moment', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-admin/automation-actions-builder/styles'], function (exports, _frontendCpTestsHelpersQunit, _moment, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoAdminAutomationActionsBuilderStyles) {
 
   var originalConfirm = undefined,
       role = undefined;
@@ -1871,7 +1871,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     });
 
     andThen(function () {
-      var dayText = (0, _npmMoment['default'])().date().toString();
+      var dayText = (0, _moment['default'])().date().toString();
       var dayCell = find('.ko-datepicker__date--current-month').filter(function (_, el) {
         return el.textContent.trim() === dayText;
       });
