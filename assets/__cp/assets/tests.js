@@ -19499,7 +19499,7 @@ define('frontend-cp/tests/unit/services/custom-fields-test', ['exports', 'ember'
   var getOwner = _ember['default'].getOwner;
 
   (0, _emberQunit.moduleFor)('service:custom-fields', 'Unit | Service | custom-fields', {
-    needs: ['model:user-field', 'model:field-option', 'model:field', 'model:locale', 'model:locale-field', 'model:locale-string', 'service:custom-fields/types', 'service:custom-fields/options', 'service:intl', 'service:notification', 'service:request-history', 'ember-intl@adapter:default', 'adapter:application', 'service:session', 'service:error-handler', 'service:error-handler/notification-strategy'],
+    needs: ['model:user-field', 'model:field-option', 'model:field', 'model:locale', 'model:locale-field', 'model:locale-string', 'service:custom-fields/types', 'service:custom-fields/options', 'service:intl', 'service:notification', 'service:request-history', 'ember-intl@adapter:default', 'adapter:application', 'service:session', 'service:error-handler', 'service:error-handler/notification-strategy', 'service:server-clock'],
     beforeEach: function beforeEach() {
       var intl = getOwner(this).lookup('service:intl');
 
@@ -20043,6 +20043,40 @@ define('frontend-cp/tests/unit/services/plan-test', ['exports', 'ember', 'ember-
       assert.equal(service.limitFor('agents'), 2);
       assert.equal(service.has('agents'), true);
     });
+  });
+});
+define('frontend-cp/tests/unit/services/server-clock-test', ['exports', 'ember-qunit', 'moment'], function (exports, _emberQunit, _moment) {
+
+  var serverClock = undefined;
+  (0, _emberQunit.moduleFor)('service:server-clock', 'Unit | Service | server clock', {
+    needs: ['service:server-clock'],
+    beforeEach: function beforeEach() {
+      serverClock = this.subject();
+    }
+  });
+
+  (0, _emberQunit.test)('it handles lastKnownServerTime not being set', function (assert) {
+    assert.equal(serverClock.get('skew'), 0, 'skew should be 0');
+  });
+
+  (0, _emberQunit.test)('it calculates the diff between now and the future', function (assert) {
+    var future = (0, _moment['default'])().add(1, 'minutes');
+
+    serverClock.set('lastKnownServerTime', future);
+    assert.ok(serverClock.get('skew') > 59900, 'positive diff');
+  });
+
+  (0, _emberQunit.test)('it calculates the diff between now and the past', function (assert) {
+    var future = (0, _moment['default'])().subtract(1, 'minutes');
+
+    serverClock.set('lastKnownServerTime', future);
+    assert.ok(serverClock.get('skew') < -60000, 'negative diff');
+  });
+
+  (0, _emberQunit.test)('it returns current date if the date passed is null', function (assert) {
+    var now = (0, _moment['default'])();
+
+    assert.equal(serverClock.applySkew(null).format('lll'), now.format('lll'), 'current date time');
   });
 });
 define('frontend-cp/tests/unit/utils/promise-queue-test', ['exports', 'ember', 'qunit', 'ember-qunit', 'frontend-cp/utils/promise-queue'], function (exports, _ember, _qunit, _emberQunit, _frontendCpUtilsPromiseQueue) {
