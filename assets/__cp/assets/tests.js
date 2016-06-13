@@ -15935,7 +15935,9 @@ define('frontend-cp/tests/helpers/logout', ['exports', 'ember', 'frontend-cp/con
     document.cookie = sessionIdCookieName + '=; expires=0; domain=' + sessionIdCookieDomain + '; path=/';
   });
 });
-define('frontend-cp/tests/helpers/module-for-acceptance', ['exports', 'qunit', 'frontend-cp/tests/helpers/start-app', 'frontend-cp/tests/helpers/destroy-app'], function (exports, _qunit, _frontendCpTestsHelpersStartApp, _frontendCpTestsHelpersDestroyApp) {
+define('frontend-cp/tests/helpers/module-for-acceptance', ['exports', 'qunit', 'ember', 'frontend-cp/tests/helpers/start-app', 'frontend-cp/tests/helpers/destroy-app'], function (exports, _qunit, _ember, _frontendCpTestsHelpersStartApp, _frontendCpTestsHelpersDestroyApp) {
+  var Promise = _ember['default'].RSVP.Promise;
+
   exports['default'] = function (name) {
     var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
@@ -15944,16 +15946,17 @@ define('frontend-cp/tests/helpers/module-for-acceptance', ['exports', 'qunit', '
         this.application = (0, _frontendCpTestsHelpersStartApp['default'])();
 
         if (options.beforeEach) {
-          Reflect.apply(options.beforeEach, this, arguments);
+          return Reflect.apply(options.beforeEach, this, arguments);
         }
       },
 
       afterEach: function afterEach() {
-        if (options.afterEach) {
-          Reflect.apply(options.afterEach, this, arguments);
-        }
+        var _this = this;
 
-        (0, _frontendCpTestsHelpersDestroyApp['default'])(this.application);
+        var afterEach = options.afterEach && Reflect.apply(options.afterEach, this, arguments);
+        return Promise.resolve(afterEach).then(function () {
+          return (0, _frontendCpTestsHelpersDestroyApp['default'])(_this.application);
+        });
       }
     });
   };
@@ -16229,7 +16232,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.5.1',
+          'revision': 'Ember@2.6.0',
           'loc': {
             'source': null,
             'start': {
@@ -16301,7 +16304,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.5.1',
+          'revision': 'Ember@2.6.0',
           'loc': {
             'source': null,
             'start': {
@@ -16448,7 +16451,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.5.1',
+          'revision': 'Ember@2.6.0',
           'loc': {
             'source': null,
             'start': {
@@ -16571,7 +16574,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.5.1',
+          'revision': 'Ember@2.6.0',
           'loc': {
             'source': null,
             'start': {
@@ -16702,7 +16705,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/component-test', ['
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.5.1',
+          'revision': 'Ember@2.6.0',
           'loc': {
             'source': null,
             'start': {
@@ -16777,7 +16780,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.5.1',
+          'revision': 'Ember@2.6.0',
           'loc': {
             'source': null,
             'start': {
@@ -16834,7 +16837,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.5.1',
+          'revision': 'Ember@2.6.0',
           'loc': {
             'source': null,
             'start': {
@@ -16905,7 +16908,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.5.1',
+          'revision': 'Ember@2.6.0',
           'loc': {
             'source': null,
             'start': {
@@ -16966,7 +16969,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.5.1',
+          'revision': 'Ember@2.6.0',
           'loc': {
             'source': null,
             'start': {
@@ -17030,7 +17033,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.5.1',
+          'revision': 'Ember@2.6.0',
           'loc': {
             'source': null,
             'start': {
@@ -17112,7 +17115,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/multiline-tex
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.5.1',
+          'revision': 'Ember@2.6.0',
           'loc': {
             'source': null,
             'start': {
@@ -17166,7 +17169,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/multiline-tex
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.5.1',
+          'revision': 'Ember@2.6.0',
           'loc': {
             'source': null,
             'start': {
@@ -17239,7 +17242,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/select/compon
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.5.1',
+          'revision': 'Ember@2.6.0',
           'loc': {
             'source': null,
             'start': {
@@ -17297,7 +17300,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/select/compon
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.5.1',
+          'revision': 'Ember@2.6.0',
           'loc': {
             'source': null,
             'start': {
@@ -17355,7 +17358,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/select/compon
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.5.1',
+          'revision': 'Ember@2.6.0',
           'loc': {
             'source': null,
             'start': {
@@ -17448,7 +17451,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/text/componen
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.5.1',
+          'revision': 'Ember@2.6.0',
           'loc': {
             'source': null,
             'start': {
@@ -17504,7 +17507,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/text/componen
             'name': 'missing-wrapper',
             'problems': ['wrong-type']
           },
-          'revision': 'Ember@2.5.1',
+          'revision': 'Ember@2.6.0',
           'loc': {
             'source': null,
             'start': {

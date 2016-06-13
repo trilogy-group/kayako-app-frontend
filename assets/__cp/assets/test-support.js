@@ -12,10 +12,10 @@
  *            Portions Copyright 2008-2011 Apple Inc. All rights reserved.
  * @license   Licensed under MIT license
  *            See https://raw.github.com/emberjs/ember.js/master/LICENSE
- * @version   2.5.1
+ * @version   2.6.0
  */
 
-var enifed, requireModule, require, requirejs, Ember;
+var enifed, requireModule, require, Ember;
 var mainContext = this;
 
 (function() {
@@ -26,7 +26,7 @@ var mainContext = this;
     Ember = this.Ember = this.Ember || {};
   }
 
-  if (typeof Ember === 'undefined') { Ember = {}; };
+  if (typeof Ember === 'undefined') { Ember = {}; }
 
   if (typeof Ember.__loader === 'undefined') {
     var registry = {};
@@ -46,9 +46,9 @@ var mainContext = this;
       registry[name] = value;
     };
 
-    requirejs = require = requireModule = function(name) {
+    require = requireModule = function(name) {
       return internalRequire(name, null);
-    }
+    };
 
     // setup `require` module
     require['default'] = require;
@@ -89,7 +89,7 @@ var mainContext = this;
       var deps = mod.deps;
       var callback = mod.callback;
       var length = deps.length;
-      var reified = new Array(length);;
+      var reified = new Array(length);
 
       for (var i = 0; i < length; i++) {
         if (deps[i] === 'exports') {
@@ -104,9 +104,9 @@ var mainContext = this;
       callback.apply(this, reified);
 
       return exports;
-    };
+    }
 
-    requirejs._eak_seen = registry;
+    requireModule._eak_seen = registry;
 
     Ember.__loader = {
       define: enifed,
@@ -115,7 +115,7 @@ var mainContext = this;
     };
   } else {
     enifed = Ember.__loader.define;
-    requirejs = require = requireModule = Ember.__loader.require;
+    require = requireModule = Ember.__loader.require;
   }
 })();
 
@@ -152,18 +152,27 @@ enifed('ember-debug/deprecate', ['exports', 'ember-metal/core', 'ember-metal/err
     _emberMetalLogger.default.warn('DEPRECATION: ' + updatedMessage);
   });
 
-  registerHandler(function logDeprecationStackTrace(message, options, next) {
-    if (_emberMetalCore.default.LOG_STACKTRACE_ON_DEPRECATION) {
-      var stackStr = '';
-      var error = undefined,
-          stack = undefined;
+  var captureErrorForStack = undefined;
 
-      // When using new Error, we can't do the arguments check for Chrome. Alternatives are welcome
+  if (new Error().stack) {
+    captureErrorForStack = function () {
+      return new Error();
+    };
+  } else {
+    captureErrorForStack = function () {
       try {
         __fail__.fail();
       } catch (e) {
-        error = e;
+        return e;
       }
+    };
+  }
+
+  registerHandler(function logDeprecationStackTrace(message, options, next) {
+    if (_emberMetalCore.default.LOG_STACKTRACE_ON_DEPRECATION) {
+      var stackStr = '';
+      var error = captureErrorForStack();
+      var stack = undefined;
 
       if (error.stack) {
         if (error['arguments']) {
@@ -256,29 +265,14 @@ enifed('ember-debug/deprecate', ['exports', 'ember-metal/core', 'ember-metal/err
     _emberDebugHandlers.invoke.apply(undefined, ['deprecate'].concat(_slice.call(arguments)));
   }
 });
-enifed('ember-debug/handlers', ['exports', 'ember-debug/is-plain-function', 'ember-debug/deprecate'], function (exports, _emberDebugIsPlainFunction, _emberDebugDeprecate) {
-  'use strict';
+enifed("ember-debug/handlers", ["exports"], function (exports) {
+  "use strict";
 
-  exports.generateTestAsFunctionDeprecation = generateTestAsFunctionDeprecation;
   exports.registerHandler = registerHandler;
   exports.invoke = invoke;
   var HANDLERS = {};
 
   exports.HANDLERS = HANDLERS;
-
-  function generateTestAsFunctionDeprecation(source) {
-    return 'Calling `' + source + '` with a function argument is deprecated. Please ' + 'use `!!Constructor` for constructors, or an `IIFE` to compute the test for deprecation. ' + 'In a future version, functions will be treated as truthy values instead of being executed.';
-  }
-
-  function normalizeTest(test, source) {
-    if (_emberDebugIsPlainFunction.default(test)) {
-      _emberDebugDeprecate.default(generateTestAsFunctionDeprecation(source), false, { id: 'ember-debug.deprecate-test-as-function', until: '2.5.0' });
-
-      return test();
-    }
-
-    return test;
-  }
 
   function registerHandler(type, callback) {
     var nextHandler = HANDLERS[type] || function () {};
@@ -289,7 +283,7 @@ enifed('ember-debug/handlers', ['exports', 'ember-debug/is-plain-function', 'emb
   }
 
   function invoke(type, message, test, options) {
-    if (normalizeTest(test, 'Ember.' + type)) {
+    if (test) {
       return;
     }
 
@@ -304,7 +298,7 @@ enifed('ember-debug/handlers', ['exports', 'ember-debug/is-plain-function', 'emb
     }
   }
 });
-enifed('ember-debug/index', ['exports', 'ember-metal/core', 'ember-metal/debug', 'ember-metal/features', 'ember-metal/error', 'ember-metal/logger', 'ember-metal/environment', 'ember-debug/deprecate', 'ember-debug/warn', 'ember-debug/is-plain-function', 'ember-debug/handlers'], function (exports, _emberMetalCore, _emberMetalDebug, _emberMetalFeatures, _emberMetalError, _emberMetalLogger, _emberMetalEnvironment, _emberDebugDeprecate, _emberDebugWarn, _emberDebugIsPlainFunction, _emberDebugHandlers) {
+enifed('ember-debug/index', ['exports', 'ember-metal/core', 'ember-metal/debug', 'ember-metal/features', 'ember-metal/error', 'ember-metal/logger', 'ember-metal/environment', 'ember-debug/deprecate', 'ember-debug/warn'], function (exports, _emberMetalCore, _emberMetalDebug, _emberMetalFeatures, _emberMetalError, _emberMetalLogger, _emberMetalEnvironment, _emberDebugDeprecate, _emberDebugWarn) {
   'use strict';
 
   exports._warnIfUsingStrippedFeatureFlags = _warnIfUsingStrippedFeatureFlags;
@@ -341,17 +335,7 @@ enifed('ember-debug/index', ['exports', 'ember-metal/core', 'ember-metal/debug',
     @public
   */
   _emberMetalDebug.setDebugFunction('assert', function assert(desc, test) {
-    var throwAssertion = undefined;
-
-    if (_emberDebugIsPlainFunction.default(test)) {
-      _emberMetalDebug.deprecate(_emberDebugHandlers.generateTestAsFunctionDeprecation('Ember.assert'), false, { id: 'ember-debug.deprecate-test-as-function', until: '2.5.0' });
-
-      throwAssertion = !test();
-    } else {
-      throwAssertion = !test;
-    }
-
-    if (throwAssertion) {
+    if (!test) {
       throw new _emberMetalError.default('Assertion Failed: ' + desc);
     }
   });
@@ -542,7 +526,8 @@ enifed('ember-debug/index', ['exports', 'ember-metal/core', 'ember-metal/debug',
     Deprecations are invoked by calls to [Ember.deprecate](http://emberjs.com/api/classes/Ember.html#method_deprecate).
     The following example demonstrates its usage by registering a handler that throws an error if the
     message contains the word "should", otherwise defers to the default handler.
-     ```javascript
+  
+    ```javascript
     Ember.Debug.registerDeprecationHandler((message, options, next) => {
       if (message.indexOf('should') !== -1) {
         throw new Error(`Deprecation message with should: ${message}`);
@@ -552,8 +537,10 @@ enifed('ember-debug/index', ['exports', 'ember-metal/core', 'ember-metal/debug',
       }
     }
     ```
-     The handler function takes the following arguments:
-     <ul>
+  
+    The handler function takes the following arguments:
+  
+    <ul>
       <li> <code>message</code> - The message received from the deprecation call.</li>
       <li> <code>options</code> - An object passed in with the deprecation call containing additional information including:</li>
         <ul>
@@ -562,7 +549,8 @@ enifed('ember-debug/index', ['exports', 'ember-metal/core', 'ember-metal/debug',
         </ul>
       <li> <code>next</code> - A function that calls into the previously registered handler.</li>
     </ul>
-     @public
+  
+    @public
     @static
     @method registerDeprecationHandler
     @param handler {Function} A function to handle deprecation calls.
@@ -574,12 +562,15 @@ enifed('ember-debug/index', ['exports', 'ember-metal/core', 'ember-metal/debug',
     Warnings are invoked by calls made to [Ember.warn](http://emberjs.com/api/classes/Ember.html#method_warn).
     The following example demonstrates its usage by registering a handler that does nothing overriding Ember's
     default warning behavior.
-     ```javascript
+  
+    ```javascript
     // next is not called, so no warnings get the default behavior
     Ember.Debug.registerWarnHandler(() => {});
     ```
-     The handler function takes the following arguments:
-     <ul>
+  
+    The handler function takes the following arguments:
+  
+    <ul>
       <li> <code>message</code> - The message received from the warn call. </li>
       <li> <code>options</code> - An object passed in with the warn call containing additional information including:</li>
         <ul>
@@ -587,7 +578,8 @@ enifed('ember-debug/index', ['exports', 'ember-metal/core', 'ember-metal/debug',
         </ul>
       <li> <code>next</code> - A function that calls into the previously registered handler.</li>
     </ul>
-     @public
+  
+    @public
     @static
     @method registerWarnHandler
     @param handler {Function} A function to handle warnings.
@@ -607,15 +599,6 @@ enifed('ember-debug/index', ['exports', 'ember-metal/core', 'ember-metal/debug',
   exports.runningNonEmberDebugJS = runningNonEmberDebugJS;
   if (runningNonEmberDebugJS) {
     _emberMetalDebug.warn('Please use `ember.debug.js` instead of `ember.js` for development and debugging.');
-  }
-});
-enifed('ember-debug/is-plain-function', ['exports'], function (exports) {
-  'use strict';
-
-  exports.default = isPlainFunction;
-
-  function isPlainFunction(test) {
-    return typeof test === 'function' && test.PrototypeMixin === undefined;
   }
 });
 enifed('ember-debug/warn', ['exports', 'ember-metal/logger', 'ember-metal/debug', 'ember-debug/handlers'], function (exports, _emberMetalLogger, _emberMetalDebug, _emberDebugHandlers) {
@@ -12639,6 +12622,98 @@ define('ember-qunit', ['exports', 'ember-qunit/module-for', 'ember-qunit/module-
   exports.only = _emberQunitOnly['default'];
   exports.setResolver = _emberTestHelpers.setResolver;
 });
+define('ember-test-helpers/-legacy-overrides', ['exports', 'ember', 'ember-test-helpers/has-ember-version'], function (exports, _ember, _emberTestHelpersHasEmberVersion) {
+  'use strict';
+
+  exports.preGlimmerSetupIntegrationForComponent = preGlimmerSetupIntegrationForComponent;
+
+  function preGlimmerSetupIntegrationForComponent() {
+    var module = this;
+    var context = this.context;
+
+    this.actionHooks = {};
+
+    context.dispatcher = this.container.lookup('event_dispatcher:main') || _ember['default'].EventDispatcher.create();
+    context.dispatcher.setup({}, '#ember-testing');
+    context.actions = module.actionHooks;
+
+    (this.registry || this.container).register('component:-test-holder', _ember['default'].Component.extend());
+
+    context.render = function (template) {
+      // in case `this.render` is called twice, make sure to teardown the first invocation
+      module.teardownComponent();
+
+      if (!template) {
+        throw new Error("in a component integration test you must pass a template to `render()`");
+      }
+      if (_ember['default'].isArray(template)) {
+        template = template.join('');
+      }
+      if (typeof template === 'string') {
+        template = _ember['default'].Handlebars.compile(template);
+      }
+      module.component = module.container.lookupFactory('component:-test-holder').create({
+        layout: template
+      });
+
+      module.component.set('context', context);
+      module.component.set('controller', context);
+
+      _ember['default'].run(function () {
+        module.component.appendTo('#ember-testing');
+      });
+    };
+
+    context.$ = function () {
+      return module.component.$.apply(module.component, arguments);
+    };
+
+    context.set = function (key, value) {
+      var ret = _ember['default'].run(function () {
+        return _ember['default'].set(context, key, value);
+      });
+
+      if ((0, _emberTestHelpersHasEmberVersion['default'])(2, 0)) {
+        return ret;
+      }
+    };
+
+    context.setProperties = function (hash) {
+      var ret = _ember['default'].run(function () {
+        return _ember['default'].setProperties(context, hash);
+      });
+
+      if ((0, _emberTestHelpersHasEmberVersion['default'])(2, 0)) {
+        return ret;
+      }
+    };
+
+    context.get = function (key) {
+      return _ember['default'].get(context, key);
+    };
+
+    context.getProperties = function () {
+      var args = Array.prototype.slice.call(arguments);
+      return _ember['default'].getProperties(context, args);
+    };
+
+    context.on = function (actionName, handler) {
+      module.actionHooks[actionName] = handler;
+    };
+
+    context.send = function (actionName) {
+      var hook = module.actionHooks[actionName];
+      if (!hook) {
+        throw new Error("integration testing template received unexpected action " + actionName);
+      }
+      hook.apply(module, Array.prototype.slice.call(arguments, 1));
+    };
+
+    context.clearRender = function () {
+      module.teardownComponent();
+    };
+  }
+});
 define('ember-test-helpers/abstract-test-module', ['exports', 'klassy', 'ember-test-helpers/wait', 'ember-test-helpers/test-context', 'ember'], function (exports, _klassy, _emberTestHelpersWait, _emberTestHelpersTestContext, _ember) {
   'use strict';
 
@@ -12961,8 +13036,15 @@ define('ember-test-helpers/test-module-for-acceptance', ['exports', 'ember-test-
     }
   });
 });
-define('ember-test-helpers/test-module-for-component', ['exports', 'ember-test-helpers/test-module', 'ember', 'ember-test-helpers/test-resolver', 'ember-test-helpers/has-ember-version'], function (exports, _emberTestHelpersTestModule, _ember, _emberTestHelpersTestResolver, _emberTestHelpersHasEmberVersion) {
+define('ember-test-helpers/test-module-for-component', ['exports', 'ember-test-helpers/test-module', 'ember', 'ember-test-helpers/test-resolver', 'ember-test-helpers/has-ember-version', 'ember-test-helpers/-legacy-overrides'], function (exports, _emberTestHelpersTestModule, _ember, _emberTestHelpersTestResolver, _emberTestHelpersHasEmberVersion, _emberTestHelpersLegacyOverrides) {
   'use strict';
+
+  var ACTION_KEY = undefined;
+  if ((0, _emberTestHelpersHasEmberVersion['default'])(2, 0)) {
+    ACTION_KEY = 'actions';
+  } else {
+    ACTION_KEY = '_actions';
+  }
 
   exports['default'] = _emberTestHelpersTestModule['default'].extend({
     isComponentTestModule: true,
@@ -13072,92 +13154,114 @@ define('ember-test-helpers/test-module-for-component', ['exports', 'ember-test-h
       };
     },
 
-    setupComponentIntegrationTest: function setupComponentIntegrationTest() {
-      var module = this;
-      var context = this.context;
+    setupComponentIntegrationTest: (function () {
+      if (!(0, _emberTestHelpersHasEmberVersion['default'])(1, 13)) {
+        return _emberTestHelpersLegacyOverrides.preGlimmerSetupIntegrationForComponent;
+      } else {
+        return function () {
+          var module = this;
+          var context = this.context;
 
-      this.actionHooks = {};
+          this.actionHooks = context[ACTION_KEY] = {};
+          context.dispatcher = this.container.lookup('event_dispatcher:main') || _ember['default'].EventDispatcher.create();
+          context.dispatcher.setup({}, '#ember-testing');
 
-      context.dispatcher = this.container.lookup('event_dispatcher:main') || _ember['default'].EventDispatcher.create();
-      context.dispatcher.setup({}, '#ember-testing');
-      context.actions = module.actionHooks;
+          var OutletView = module.container.lookupFactory('view:-outlet');
+          var toplevelView = module.component = OutletView.create();
+          toplevelView.setOutletState({ render: {}, outlets: {} });
 
-      (this.registry || this.container).register('component:-test-holder', _ember['default'].Component.extend());
+          var element = document.getElementById('ember-testing');
+          _ember['default'].run(module.component, 'appendTo', '#ember-testing');
 
-      context.render = function (template) {
-        // in case `this.render` is called twice, make sure to teardown the first invocation
-        module.teardownComponent();
+          context.render = function (template) {
+            if (!template) {
+              throw new Error("in a component integration test you must pass a template to `render()`");
+            }
+            if (_ember['default'].isArray(template)) {
+              template = template.join('');
+            }
+            if (typeof template === 'string') {
+              template = _ember['default'].Handlebars.compile(template);
+            }
 
-        if (!template) {
-          throw new Error("in a component integration test you must pass a template to `render()`");
-        }
-        if (_ember['default'].isArray(template)) {
-          template = template.join('');
-        }
-        if (typeof template === 'string') {
-          template = _ember['default'].Handlebars.compile(template);
-        }
-        module.component = module.container.lookupFactory('component:-test-holder').create({
-          layout: template
-        });
+            _ember['default'].run(function () {
+              toplevelView.setOutletState({
+                render: {
+                  controller: module.context,
+                  template: template
+                },
 
-        module.component.set('context', context);
-        module.component.set('controller', context);
+                outlets: {}
+              });
+            });
 
-        _ember['default'].run(function () {
-          module.component.appendTo('#ember-testing');
-        });
-      };
+            // ensure the element is based on the wrapping toplevel view
+            // Ember still wraps the main application template with a
+            // normal tagged view
+            element = _ember['default'].$('#ember-testing > .ember-view');
+          };
 
-      context.$ = function () {
-        return module.component.$.apply(module.component, arguments);
-      };
+          context.$ = function (selector) {
+            // emulates Ember internal behavor of `this.$` in a component
+            // https://github.com/emberjs/ember.js/blob/v2.5.1/packages/ember-views/lib/views/states/has_element.js#L18
+            return selector ? _ember['default'].$(selector, element) : _ember['default'].$(element);
+          };
 
-      context.set = function (key, value) {
-        var ret = _ember['default'].run(function () {
-          return _ember['default'].set(context, key, value);
-        });
+          context.set = function (key, value) {
+            var ret = _ember['default'].run(function () {
+              return _ember['default'].set(context, key, value);
+            });
 
-        if ((0, _emberTestHelpersHasEmberVersion['default'])(2, 0)) {
-          return ret;
-        }
-      };
+            if ((0, _emberTestHelpersHasEmberVersion['default'])(2, 0)) {
+              return ret;
+            }
+          };
 
-      context.setProperties = function (hash) {
-        var ret = _ember['default'].run(function () {
-          return _ember['default'].setProperties(context, hash);
-        });
+          context.setProperties = function (hash) {
+            var ret = _ember['default'].run(function () {
+              return _ember['default'].setProperties(context, hash);
+            });
 
-        if ((0, _emberTestHelpersHasEmberVersion['default'])(2, 0)) {
-          return ret;
-        }
-      };
+            if ((0, _emberTestHelpersHasEmberVersion['default'])(2, 0)) {
+              return ret;
+            }
+          };
 
-      context.get = function (key) {
-        return _ember['default'].get(context, key);
-      };
+          context.get = function (key) {
+            return _ember['default'].get(context, key);
+          };
 
-      context.getProperties = function () {
-        var args = Array.prototype.slice.call(arguments);
-        return _ember['default'].getProperties(context, args);
-      };
+          context.getProperties = function () {
+            var args = Array.prototype.slice.call(arguments);
+            return _ember['default'].getProperties(context, args);
+          };
 
-      context.on = function (actionName, handler) {
-        module.actionHooks[actionName] = handler;
-      };
+          context.on = function (actionName, handler) {
+            module.actionHooks[actionName] = handler;
+          };
 
-      context.send = function (actionName) {
-        var hook = module.actionHooks[actionName];
-        if (!hook) {
-          throw new Error("integration testing template received unexpected action " + actionName);
-        }
-        hook.apply(module, Array.prototype.slice.call(arguments, 1));
-      };
+          context.send = function (actionName) {
+            var hook = module.actionHooks[actionName];
+            if (!hook) {
+              throw new Error("integration testing template received unexpected action " + actionName);
+            }
+            hook.apply(module.context, Array.prototype.slice.call(arguments, 1));
+          };
 
-      context.clearRender = function () {
-        module.teardownComponent();
-      };
-    },
+          context.clearRender = function () {
+            _ember['default'].run(function () {
+              toplevelView.setOutletState({
+                render: {
+                  controller: module.context,
+                  randomKey: 'empty'
+                },
+                outlets: {}
+              });
+            });
+          };
+        };
+      }
+    })(),
 
     setupContext: function setupContext() {
       this._super.call(this);
@@ -13627,12 +13731,20 @@ define('ember-test-helpers/test-module', ['exports', 'ember', 'ember-test-helper
         _ember['default'].setOwner(context, this.container.owner);
       }
 
+      this.setupInject();
+    },
+
+    setupInject: function setupInject() {
+      var module = this;
+      var context = this.context;
+
       if (_ember['default'].inject) {
         var keys = (Object.keys || _ember['default'].keys)(_ember['default'].inject);
+
         keys.forEach(function (typeName) {
           context.inject[typeName] = function (name, opts) {
             var alias = opts && opts.as || name;
-            _ember['default'].set(context, alias, context.container.lookup(typeName + ':' + name));
+            _ember['default'].set(context, alias, module.container.lookup(typeName + ':' + name));
           };
         });
       }
@@ -13825,6 +13937,29 @@ define('ember-test-helpers/wait', ['exports', 'ember'], function (exports, _embe
     jQuery(document).on('ajaxComplete', decrementAjaxPendingRequests);
   }
 
+  var _internalCheckWaiters;
+  if (_ember['default'].__loader.registry['ember-testing/test/waiters']) {
+    _internalCheckWaiters = _ember['default'].__loader.require('ember-testing/test/waiters').checkWaiters;
+  }
+
+  function checkWaiters() {
+    if (_internalCheckWaiters) {
+      return _internalCheckWaiters();
+    } else if (_ember['default'].Test.waiters) {
+      if (_ember['default'].Test.waiters.any(function (_ref) {
+        var _ref2 = _slicedToArray(_ref, 2);
+
+        var context = _ref2[0];
+        var callback = _ref2[1];
+        return !callback.call(context);
+      })) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   function wait(_options) {
     var options = _options || {};
     var waitForTimers = options.hasOwnProperty('waitForTimers') ? options.waitForTimers : true;
@@ -13841,14 +13976,7 @@ define('ember-test-helpers/wait', ['exports', 'ember'], function (exports, _embe
           return;
         }
 
-        if (waitForWaiters && _ember['default'].Test.waiters && _ember['default'].Test.waiters.any(function (_ref) {
-          var _ref2 = _slicedToArray(_ref, 2);
-
-          var context = _ref2[0];
-          var callback = _ref2[1];
-
-          return !callback.call(context);
-        })) {
+        if (waitForWaiters && checkWaiters()) {
           return;
         }
 
