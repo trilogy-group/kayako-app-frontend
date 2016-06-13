@@ -290,7 +290,7 @@ define('frontend-cp/tests/acceptance/admin/account/trial/index-test', ['exports'
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('clicking on next step without selecting the rateplan should not work', function (assert) {
+  (0, _frontendCpTestsHelpersQunit.test)('clicking on next step without selecting the rateplan should work', function (assert) {
     visit('/admin/account/trial');
 
     andThen(function () {
@@ -298,8 +298,8 @@ define('frontend-cp/tests/acceptance/admin/account/trial/index-test', ['exports'
     });
 
     andThen(function () {
-      assert.equal(find('.' + _frontendCpComponentsKoAdminTrialIndexStyles['default'].step + ':eq(0)').hasClass(_frontendCpComponentsKoAdminTrialIndexStyles['default'].expanded), true);
-      assert.equal(find('.' + _frontendCpComponentsKoAdminTrialIndexStyles['default'].step + ':eq(1)').hasClass(_frontendCpComponentsKoAdminTrialIndexStyles['default'].expanded), false);
+      assert.equal(find('.' + _frontendCpComponentsKoAdminTrialIndexStyles['default'].step + ':eq(0)').hasClass(_frontendCpComponentsKoAdminTrialIndexStyles['default'].expanded), false);
+      assert.equal(find('.' + _frontendCpComponentsKoAdminTrialIndexStyles['default'].step + ':eq(1)').hasClass(_frontendCpComponentsKoAdminTrialIndexStyles['default'].expanded), true);
     });
   });
 

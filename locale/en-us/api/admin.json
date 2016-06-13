@@ -657,6 +657,7 @@
   "account.trial.step.next.label": "Next Step",
   "account.trial.step.prev.label": "Previous Step",
   "account.trial.upgrade.label": "Upgrade Your Account",
+  "account.trial.upgrade.inprocess": "Please wait, we are upgrading your account...",
 
   "account.overview.title": "Overview",
   "account.overview.list.title": "Billing Overview",
