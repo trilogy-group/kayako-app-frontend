@@ -15026,6 +15026,34 @@ define('frontend-cp/tests/acceptance/agent/users/edit-test', ['exports', 'fronte
 
     click('.button--primary');
   });
+
+  (0, _frontendCpTestsHelpersQunit.test)('editing a customer\'s locale', function (assert) {
+    window.confirm = function () {
+      return true;
+    };
+
+    assert.expect(1);
+
+    server.create('locale', {
+      id: 4,
+      name: 'Deutsch',
+      native_name: 'Deutsch',
+      locale: 'de'
+    });
+
+    server.put('/api/v1/users/' + owner.id, function (_, _ref5) {
+      var requestBody = _ref5.requestBody;
+
+      var body = JSON.parse(requestBody);
+      assert.equal(body.locale_id, '4', 'locale_id correctly set in request payload');
+    });
+
+    visit('/agent/users/' + owner.id);
+
+    selectChoose('.qa-user-content__locale-select .ember-power-select', 'Deutsch');
+
+    click('.button--primary');
+  });
 });
 define('frontend-cp/tests/acceptance/login/login-test', ['exports', 'qunit', 'frontend-cp/tests/helpers/qunit'], function (exports, _qunit, _frontendCpTestsHelpersQunit) {
 

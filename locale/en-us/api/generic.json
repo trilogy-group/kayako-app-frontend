@@ -13,6 +13,7 @@
   "filesize": "{size} {unit}",
   "drilldown.back": "Back",
   "logout": "Logout",
+  "need_help": "Need some help?",
   "view_your_profile": "View your profile",
   "paginatorof": "of {number, number}",
   "popover.next": "next",
