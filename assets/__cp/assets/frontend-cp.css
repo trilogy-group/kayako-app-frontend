@@ -695,7 +695,7 @@ textarea {
 .t-base {
   font-size: 14px !important; }
 
-.ko-sidebar__item_6aclzg,
+.ko-admin_sidebar__item_1a61wp, .ko-sidebar__item_6aclzg,
 .t-naked-link {
   text-decoration: none;
   color: inherit; }
@@ -5460,6 +5460,43 @@ span#HW_badge.HW_softHidden {
 .session__nav-secondary__sidebar_1qdlgo {
   width: 300px; }
 
+/* styles for frontend-cp/components/ko-layout/admin/styles.css */
+.ko-layout_admin__index_1dfrbn {
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch; }
+
+.ko-layout_admin__sidebar_1dfrbn {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 200px;
+          flex: 0 0 200px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+
+.ko-layout_admin__content-outer_1dfrbn {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 0;
+          flex: 1 1 0; }
+
+.ko-layout_admin__content-inner_1dfrbn {
+  margin: auto;
+  max-width: 1000px;
+  padding: 18px;
+  min-height: calc(100vh - 42px - 42px - 198px);
+  background-color: #ffffff;
+  border: 1px solid #d1d5d7;
+  border-radius: 0 5px 5px 0;
+  position: relative; }
+
 /* styles for frontend-cp/components/ko-layout/two-columns/styles.css */
 .ko-layout_two-columns__index_3mn307 {
   -webkit-box-pack: center;
@@ -6321,6 +6358,39 @@ a.ko-admin_plans_index__cancel_1pprhr {
 
 .ko-admin_roles_list-item__action_1ubcxi:last-child::after {
   content: ''; }
+
+/* styles for frontend-cp/components/ko-admin/sidebar/styles.css */
+.ko-admin_sidebar__sidebar_1a61wp {
+  min-height: 100vh;
+  padding: 24px 0;
+  width: 100%; }
+
+.ko-admin_sidebar__group_1a61wp {
+  margin-bottom: 27px; }
+
+.ko-admin_sidebar__header_1a61wp {
+  padding: 3px 6px 3px 0;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 600;
+  color: #838D94;
+  text-indent: 10px; }
+
+.ko-admin_sidebar__item_1a61wp {
+  display: block;
+  position: relative;
+  padding: 3px 6px 3px 0;
+  text-indent: 13px;
+  cursor: pointer; }
+
+.ko-admin_sidebar__item_1a61wp.active:not(.ember-transitioning-out), .ko-admin_sidebar__item_1a61wp.ember-transitioning-in {
+  /* set by ember :( */
+  background-color: #F7F8F9;
+  color: #4EAFCB;
+  font-weight: 600; }
+
+.ko-admin_sidebar__item--is-disabled_1a61wp {
+  color: rgba(0, 0, 0, 0.3); }
 
 /* styles for frontend-cp/components/ko-admin/sla/edit/operational-hours/styles.css */
 .ko-admin_sla_edit_operational-hours__operationalHours_19ecaq {
