@@ -3,6 +3,8 @@
   "agents.page.title": "Insights / Agents",
   "teams.page.title": "Insights / Teams",
   "cases.page.title": "Insights / Cases",
+  "searches.page.title": "Insights / Searches",
+  "articles.page.title": "Insights / Articles",
 
   "insights.vs": "vs",
 
@@ -10,6 +12,10 @@
   "sidebar.general.agents.title": "Agents",
   "sidebar.general.teams.title": "Teams",
   "sidebar.general.cases.title": "Cases",
+
+  "sidebar.help_center.title": "Help Center",
+  "sidebar.help_center.searches.title": "Searches",
+  "sidebar.help_center.articles.title": "Articles",
 
   "metric.total_assigned": "Total Assigned",
   "metric.total_created": "Total Created",
@@ -32,6 +38,18 @@
   "agents.cases_completed_explanation": "<b>{value}</b> cases completed",
   "agents.csat": "CSAT",
   "agents.csat_explanation": "Average <b>{csatValue}</b> CSAT in current period vs <b>{csatPreviousValue}</b> CSAT in previous period",
+
+  "searches.popular_searches": "Popular Searches",
+  "searches.failed_searches": "Failed Searches",
+  "searches.query": "Query",
+  "searches.count": "Count",
+
+  "articles.most_popular": "Most popular articles",
+  "articles.title": "Title",
+  "articles.up_vote_count": "Upvotes",
+  "articles.view_count": "Views",
+  "articles.comment_count": "Comments",
+
   "agents.sla_resolution_target": "SLA Resolution Target",
   "agents.sla_resolution_target_explanation": "Beautiful answer here, in the last quarter",
 
