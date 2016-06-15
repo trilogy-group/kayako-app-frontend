@@ -8091,31 +8091,6 @@ a.ko-timeline_item_link-to__title_1a49q7:hover {
   color: #5F6C73; }
 
 /* styles for frontend-cp/components/ko-timeline/item/styles.css */
-pre {
-  font-size: 14px; }
-
-blockquote {
-  border-left: solid 2px #40364D;
-  margin-left: 0;
-  padding-left: 5px;
-  color: #40364D; }
-
-blockquote blockquote {
-  border-left: solid 2px #40364D;
-  margin-left: 0;
-  padding-left: 5px;
-  color: #40364D; }
-
-blockquote blockquote blockquote {
-  border-left: solid 2px #40364D;
-  margin-left: 0;
-  padding-left: 5px;
-  color: #40364D; }
-
-ol,
-ul {
-  margin-left: 20px; }
-
 .ko-timeline_item__item_vt1m5j {
   box-sizing: content-box;
   min-height: 48px;
@@ -8192,6 +8167,19 @@ a.ko-timeline_item__subtitle_vt1m5j:hover {
   font-size: 16px;
   line-height: 24px;
   padding-right: 20px; }
+
+.ko-timeline_item__content_vt1m5j ol,
+.ko-timeline_item__content_vt1m5j ul {
+  margin-left: 20px; }
+
+.ko-timeline_item__content_vt1m5j blockquote {
+  border-left: solid 2px #40364D;
+  margin-left: 0;
+  padding-left: 5px;
+  color: #40364D; }
+
+.ko-timeline_item__content_vt1m5j pre {
+  font-size: 14px; }
 
 .ko-timeline_item__cc_vt1m5j {
   color: #838D94;
