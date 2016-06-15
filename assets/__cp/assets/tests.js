@@ -13104,7 +13104,8 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
 
   var targetCase = undefined,
       identityEmail = undefined,
-      agent = undefined;
+      agent = undefined,
+      originalConfirm = undefined;
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Case | Timeline', {
     beforeEach: function beforeEach() {
@@ -13177,9 +13178,12 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
       });
 
       login(session.id);
+
+      originalConfirm = window.confirm;
     },
 
     afterEach: function afterEach() {
+      window.confirm = originalConfirm;
       logout();
       targetCase = null;
     }
@@ -13268,6 +13272,13 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
   });
 
   (0, _qunit.test)('add notes', function (assert) {
+    assert.expect(6);
+
+    window.confirm = function (message) {
+      assert.equal(message, 'Switching to this channel will clear any text formatting you’ve applied to your reply. Do you want to continue?', 'The proper confirm message is shown');
+      return true;
+    };
+
     visit('/agent/cases/' + targetCase.id);
 
     andThen(function () {
