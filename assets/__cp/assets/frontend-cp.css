@@ -2498,7 +2498,7 @@ img {
   .availablePage:last-child {
     margin-bottom: 0; }
 
-.modalTitle, .no-pages {
+.no-pages {
   font-size: 18px; }
 
 .no-pages {
@@ -3343,42 +3343,6 @@ img {
 
 .editable-text:hover .editable-text__pencil {
   visibility: visible; }
-
-.ko-editor-modal .ko-editor-modal__modal {
-  position: absolute;
-  left: 50%;
-  -webkit-transform: translateX(-50%);
-          transform: translateX(-50%);
-  margin: 0 auto;
-  width: 40%;
-  top: 25%;
-  background-color: #FFFFFF;
-  border: 1px solid #CFD4D8;
-  z-index: 61;
-  border-radius: 2px; }
-
-.ko-editor-modal .ko-editor-modal__title {
-  margin: 0; }
-
-.ko-editor-modal .ko-editor-modal__overlay {
-  height: 100%;
-  width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: rgba(255, 255, 255, 0.5);
-  z-index: 60; }
-
-.ko-editor-modal .ko-editor-modal__cancel {
-  cursor: pointer;
-  padding-right: 18px; }
-
-.ko-editor-modal .box:last-of-type {
-  border-top: 1px solid #CFD4D8; }
-
-.ko-editor-modal .ko-editor-modal__submit-message {
-  padding-top: 4.5px;
-  color: #838D94; }
 
 .metric {
   font-size: 42px;
@@ -6129,7 +6093,7 @@ span#HW_badge.HW_softHidden {
 .ko-admin_facebook_index__availablePage_52r50f:last-child {
   margin-bottom: 0; }
 
-.ko-admin_facebook_index__modalTitle_52r50f, .ko-admin_facebook_index__no-pages_52r50f {
+.ko-admin_facebook_index__no-pages_52r50f {
   font-size: 18px; }
 
 .ko-admin_facebook_index__no-pages_52r50f {
@@ -7663,7 +7627,8 @@ a.ko-admin_plans_index__cancel_1pprhr {
   position: relative;
   padding: 18px;
   background-color: #fafafa;
-  border-bottom: 1px solid #D1D5D7; }
+  border-bottom: 1px solid #D1D5D7;
+  margin: 0; }
 
 .ko-modal__footer_q4hi99 {
   position: relative;
@@ -8298,6 +8263,14 @@ a.ko-timeline_item__subtitle_vt1m5j:hover {
 .ko-user-content__signatureInput_1hb3jv:focus {
   outline: none; }
 
+.ko-user-content__message_1hb3jv {
+  padding-top: 4.5px;
+  color: #838D94; }
+
+.ko-user-content__closeModal_1hb3jv {
+  padding-right: 18px;
+  color: #E86048; }
+
 /* styles for frontend-cp/session/admin/apps/api/styles.css */
 .session_admin_apps_api__header_1t2sf4 {
   text-align: center; }
@@ -8465,10 +8438,6 @@ a.ko-timeline_item__subtitle_vt1m5j:hover {
   bottom: 0; }
 
 /* styles for frontend-cp/session/agent/cases/index/suspended-messages/show/styles.css */
-.session_agent_cases_index_suspended-messages_show__header-text_84d628 {
-  font-size: 18px;
-  font-weight: 600; }
-
 .session_agent_cases_index_suspended-messages_show__footer_84d628 {
   display: -webkit-box;
   display: -ms-flexbox;

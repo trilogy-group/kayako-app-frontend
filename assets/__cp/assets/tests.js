@@ -6644,7 +6644,7 @@ define('frontend-cp/tests/acceptance/admin/manage/facebook/manage-pages-test', [
     });
 
     andThen(function () {
-      assert.equal(find('.' + _frontendCpComponentsKoAdminFacebookIndexStyles['default'].modalTitle).length, 1);
+      assert.equal(find('.qa-admin-facebook-page__add-page-modal-title').length, 1);
       click('.' + _frontendCpComponentsKoAdminFacebookIndexStyles['default'].availablePage + ' [role="checkbox"]');
       click('.qa-admin-facebook-page__save');
     });
