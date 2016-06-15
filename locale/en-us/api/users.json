@@ -12,6 +12,7 @@
   "infobar.organization": "Organization",
   "infobar.role": "Role",
   "infobar.timezone": "Timezone",
+  "infobar.locale": "Language",
 
   "addteam": "Add a team...",
   "teams": "Teams",
