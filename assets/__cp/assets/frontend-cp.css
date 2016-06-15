@@ -7270,6 +7270,10 @@ a.ko-admin_plans_index__cancel_1pprhr {
   font-size: 14px;
   color: #838D94; }
 
+/* styles for frontend-cp/components/ko-insights/articles-list/styles.css */
+.ko-insights_articles-list__row_me785g:hover {
+  cursor: default; }
+
 /* styles for frontend-cp/components/ko-insights/interval-toggle/styles.css */
 .ko-insights_interval-toggle__toggle_15znjw {
   display: -webkit-box;
@@ -7379,6 +7383,10 @@ a.ko-admin_plans_index__cancel_1pprhr {
 .ko-insights_metric__sizeLarge_1h3qp2 .ko-insights_metric__name_1h3qp2 {
   margin-top: 5px; }
 
+/* styles for frontend-cp/components/ko-insights/searches-list/styles.css */
+.ko-insights_searches-list__row_olbn57:hover {
+  cursor: default; }
+
 /* styles for frontend-cp/components/ko-insights/section/agents-teams/styles.css */
 .ko-insights_section_agents-teams__header_1qxjcv {
   display: -webkit-box;
@@ -7471,6 +7479,10 @@ a.ko-admin_plans_index__cancel_1pprhr {
       -ms-flex-pack: justify;
           justify-content: space-between; }
 
+/* styles for frontend-cp/components/ko-insights/section/articles/styles.css */
+.ko-insights_section_articles__table_nuv5v1 {
+  margin-top: 30px; }
+
 /* styles for frontend-cp/components/ko-insights/section/cases/styles.css */
 .ko-insights_section_cases__header_11ovh3 {
   display: -webkit-box;
@@ -7562,6 +7574,40 @@ a.ko-admin_plans_index__cancel_1pprhr {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between; }
+
+/* styles for frontend-cp/components/ko-insights/section/searches/styles.css */
+.ko-insights_section_searches__header_196cth {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-grid-column-align: center;
+      justify-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
+
+.ko-insights_section_searches__entity_196cth {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+
+.ko-insights_section_searches__filters_196cth {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center; }
+
+.ko-insights_section_searches__table_196cth {
+  margin-top: 30px; }
 
 /* styles for frontend-cp/components/ko-layout/container/styles.css */
 .ko-layout_container__root_160oc3 {
