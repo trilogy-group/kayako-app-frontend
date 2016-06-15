@@ -5485,17 +5485,33 @@ span#HW_badge.HW_softHidden {
 .ko-layout_admin__content-outer_1dfrbn {
   -webkit-box-flex: 1;
       -ms-flex: 1 1 0;
-          flex: 1 1 0; }
+          flex: 1 1 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: stretch;
+      -ms-flex-align: stretch;
+          align-items: stretch;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  padding-right: 200px; }
 
 .ko-layout_admin__content-inner_1dfrbn {
-  margin: auto;
-  max-width: 1000px;
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 0;
+          flex: 1 1 0;
+  max-width: 1200px;
   padding: 18px;
   min-height: calc(100vh - 42px - 42px - 198px);
   background-color: #ffffff;
   border: 1px solid #d1d5d7;
   border-radius: 0 5px 5px 0;
   position: relative; }
+
+@media (max-width: 1400px) {
+  .ko-layout_admin__content-outer_1dfrbn {
+    padding-right: 0; } }
 
 /* styles for frontend-cp/components/ko-layout/two-columns/styles.css */
 .ko-layout_two-columns__index_3mn307 {
@@ -6361,8 +6377,7 @@ a.ko-admin_plans_index__cancel_1pprhr {
 
 /* styles for frontend-cp/components/ko-admin/sidebar/styles.css */
 .ko-admin_sidebar__sidebar_1a61wp {
-  min-height: 100vh;
-  padding: 24px 0;
+  padding: 10px 0;
   width: 100%; }
 
 .ko-admin_sidebar__group_1a61wp {
