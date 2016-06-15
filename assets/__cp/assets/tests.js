@@ -1478,7 +1478,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
       label: 'Email a user',
       name: 'notificationuser',
       options: ['SEND'],
-      input_type: 'NOTIFICATION',
+      input_type: 'NOTIFICATION_USER',
       value_type: 'ATTRIBUTES',
       values: {
         '-2': '(Last active user)',
@@ -1525,7 +1525,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
       label: 'Email a team',
       name: 'notificationteam',
       options: ['SEND'],
-      input_type: 'NOTIFICATION',
+      input_type: 'NOTIFICATION_TEAM',
       value_type: 'ATTRIBUTES',
       values: {
         '-5': '(Assigned team)',
