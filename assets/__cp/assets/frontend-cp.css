@@ -759,6 +759,10 @@ textarea {
   font-size: 20px;
   line-height: 1.8; }
 
+.i-size-30 {
+  font-size: 30px;
+  line-height: 1.2; }
+
 .i-size-14 {
   font-size: 14px;
   line-height: 1.28571; }
@@ -5358,10 +5362,10 @@ span#HW_badge.HW_softHidden {
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
-  -webkit-transition: -webkit-box-flex 750ms ease-in-out 200ms;
-  transition: -webkit-box-flex 750ms ease-in-out 200ms;
-  transition: flex 750ms ease-in-out 200ms;
-  transition: flex 750ms ease-in-out 200ms, -webkit-box-flex 750ms ease-in-out 200ms, -ms-flex 750ms ease-in-out 200ms;
+  -webkit-transition: background .3s ease-out, -webkit-box-flex 750ms ease-in-out 200ms;
+  transition: background .3s ease-out, -webkit-box-flex 750ms ease-in-out 200ms;
+  transition: flex 750ms ease-in-out 200ms, background .3s ease-out;
+  transition: flex 750ms ease-in-out 200ms, background .3s ease-out, -webkit-box-flex 750ms ease-in-out 200ms, -ms-flex 750ms ease-in-out 200ms;
   max-width: 180px;
   overflow: hidden;
   display: -webkit-box;
@@ -5377,17 +5381,17 @@ span#HW_badge.HW_softHidden {
   border-top: 2px solid #4EAFCB; }
 
 .session__tab_1qdlgo.active .session__tab-close_1qdlgo {
-  padding-top: 6px; }
+  padding-top: 8px; }
 
 .session__tab_1qdlgo:hover {
-  -webkit-box-flex: 10;
-      -ms-flex: 10;
-          flex: 10; }
+  background: #231D2A;
+  -webkit-transition: background .3s ease-in;
+  transition: background .3s ease-in; }
 
 .session__tab_1qdlgo:last-of-type {
   border-right: none; }
 
-.session__tab-label_1qdlgo {
+.session__tab-link_1qdlgo {
   width: 100%;
   padding: 13px 0 10px 9px;
   overflow: hidden;
@@ -5395,11 +5399,17 @@ span#HW_badge.HW_softHidden {
   text-overflow: ellipsis;
   color: #b3b6ba; }
 
-.session__tab-label_1qdlgo.active {
-  padding: 11px 0 10px 9px; }
+.session__tab-link_1qdlgo.active {
+  padding: 11 px 0 10 px 9 px; }
+
+.session__tab-label_1qdlgo {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  pointer-events: none; }
 
 .session__tab-close_1qdlgo {
-  padding-top: 8px;
+  padding-top: 10px;
   color: #b3b6ba;
   cursor: pointer; }
 
