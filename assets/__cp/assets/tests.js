@@ -3615,7 +3615,7 @@ define('frontend-cp/tests/acceptance/admin/manage/brands/edit-test', ['exports',
     beforeEach: function beforeEach() {
       var en = server.create('locale', { id: 1, locale: 'en-us', name: 'English', is_public: true, is_localised: true });
 
-      server.create('brand', { id: 1, locale: en, is_enabled: true, name: 'Default', domain: 'kayako.com', sub_domain: 'support', is_default: true });
+      var brand = server.create('brand', { id: 1, locale: en, is_enabled: true, name: 'Default', domain: 'kayako.com', sub_domain: 'support', is_default: true });
       server.create('brand', { id: 2, locale: en, is_enabled: true, name: 'Custom Alias', domain: 'kayako.com', sub_domain: 'custom_alias', is_default: false, alias: 'example.com' });
       server.create('brand', { id: 3, locale: en, is_enabled: false, name: 'Disabled', domain: 'kayako.com', sub_domain: 'disabled', is_default: false });
 
@@ -3631,6 +3631,27 @@ define('frontend-cp/tests/acceptance/admin/manage/brands/edit-test', ['exports',
       server.create('locale', { id: 2, locale: 'fr-fr', name: 'French', is_public: true, is_localised: true });
       server.create('locale', { id: 3, locale: 'de-de', name: 'German', is_public: true, is_localised: true });
       server.create('locale', { id: 4, locale: 'ru-ru', name: 'Russian', is_public: true, is_localised: true });
+
+      server.create('template', {
+        brand: brand,
+        name: 'cases_email_notification',
+        contents: '{{ foo }}',
+        resource_url: 'http://localhost:4200/api/v1/brands/' + brand.id + '/templates/cases_email_notification'
+      });
+
+      server.create('template', {
+        brand: brand,
+        name: 'base_email_notification',
+        contents: '{{ bar }}',
+        resource_url: 'http://localhost:4200/api/v1/brands/' + brand.id + '/templates/base_email_notification'
+      });
+
+      server.create('template', {
+        brand: brand,
+        name: 'cases_email_satisfaction',
+        contents: '{{ baz }}',
+        resource_url: 'http://localhost:4200/api/v1/brands/' + brand.id + '/templates/cases_email_satisfaction'
+      });
 
       server.create('plan', {
         limits: [],
@@ -3690,6 +3711,32 @@ define('frontend-cp/tests/acceptance/admin/manage/brands/edit-test', ['exports',
     visit('/admin/manage/brands/2');
     andThen(function () {
       return assert.ok(find('.qa-brand-edit-ssl-edit').text().includes('Replace certificate'), 'button says "Replace certificate"');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('editing brand templates', function (assert) {
+    visit('/admin/manage/brands/1/templates');
+    andThen(function () {
+      return assert.equal(find('.qa-brand-edit-templates-reply').val(), '{{ foo }}', 'Reply says "{{ foo }}"');
+    });
+    andThen(function () {
+      return assert.equal(find('.qa-brand-edit-templates-notification').val(), '{{ bar }}', 'Reply says "{{ bar }}"');
+    });
+    andThen(function () {
+      return assert.equal(find('.qa-brand-edit-templates-satisfaction-survey').val(), '{{ baz }}', 'Reply says "{{ baz }}"');
+    });
+    andThen(function () {
+      return fillIn('.qa-brand-edit-templates-reply', '{{ contents }}');
+    });
+    andThen(function () {
+      return click('button[type=button].button--primary');
+    });
+    andThen(function () {
+      return assert.equal(currentURL(), '/admin/manage/brands/1');
+    });
+    visit('/admin/manage/brands/1/templates');
+    andThen(function () {
+      return assert.equal(find('.qa-brand-edit-templates-reply').val(), '{{ contents }}', 'Reply says "{{ contents }}"');
     });
   });
 });
