@@ -217,6 +217,8 @@
   "caseforms.label.system": "(System)",
   "caseforms.heading.customer_settings": "Customers",
   "caseforms.heading.configure_form": "Configure Form",
+  "caseforms.label.brand": "Brand",
+  "caseforms.help.brand": "Case forms can be linked to specific Brands. Kayako will only show this case form to your customers when they start a new conversation in this Brand’s Help Center.",
   "caseforms.new.heading": "Case Forms / New",
   "caseforms.edit.heading": "Case Forms / Edit",
   "caseforms.heading.agent_settings": "Agents",
@@ -233,6 +235,7 @@
   "caseforms.edit.description_off.is_enabled": "Form is disabled",
   "caseforms.confirm_delete.title": "Delete case form",
   "caseforms.confirm_delete.body": "Are you sure you want to delete the case form? This cannot be undone.",
+  "caseforms.form.brand.all": "All Brands",
 
   "casefields.title": "Case Fields",
   "casefields.headings.enabled_fields": "Enabled Fields",
@@ -645,6 +648,10 @@
   "facebook.no_pages": "No pages found",
   "facebook.see_facebook_account": "Don't see your Facebook page?",
   "facebook.connect_facebook_account": "Connect your Facebook account",
+  "facebook.edit.heading": "Facebook / @{pageTitle}",
+  "facebook.heading.page_settings": "Page settings",
+  "facebook.label.brand": "Brand",
+  "facebook.help.brand": "Your channel accounts are linked to specific Brands. When you have multiple Brands set up, Kayako will link any cases created as a result of events over this channel account to this Brand.",
 
   "account.trial.title": "Upgrade Account",
   "account.trial.upgrade.note": "You have {daysLeft} left on your trial. Upgrade your plan today, to keep the good times rolling.",
