@@ -4083,7 +4083,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
   var customerTitle = 'customer title';
   var description = 'description';
   var optionTitle = 'option title';
-  var optionTag = 'option tag';
   var regEx = 'regEx';
 
   var originalConfirm = window.confirm;
@@ -4503,7 +4502,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
-      fillIn('.ko-reorderable-list-item:first input:last', optionTag);
 
       click('.ko-toggle__container');
 
@@ -4523,7 +4521,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=false]');
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
-      assert.equal(find('.ko-reorderable-list-item:first input:last').val(), optionTag);
     });
   });
 
@@ -4547,7 +4544,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
-      fillIn('.ko-reorderable-list-item:first input:last', optionTag);
 
       click('.ko-toggle__container');
 
@@ -4567,7 +4563,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=false]');
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
-      assert.equal(find('.ko-reorderable-list-item:first input:last').val(), optionTag);
     });
   });
 
@@ -4591,7 +4586,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
-      fillIn('.ko-reorderable-list-item:first input:last', optionTag);
 
       click('.ko-toggle__container');
 
@@ -4611,7 +4605,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=false]');
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
-      assert.equal(find('.ko-reorderable-list-item:first input:last').val(), optionTag);
     });
   });
 
@@ -4791,7 +4784,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
-      fillIn('.ko-reorderable-list-item:first input:last', optionTag);
 
       click('.ko-toggle__container');
 
@@ -4811,7 +4803,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=false]');
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
-      assert.equal(find('.ko-reorderable-list-item:first input:last').val(), optionTag);
     });
   });
 
@@ -5449,7 +5440,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new radio field', function (assert) {
-    assert.expect(11);
+    assert.expect(9);
 
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
@@ -5459,9 +5450,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
     var customerTitle = 'customer title';
     var description = 'description';
     var option1Title = 'option 1 title';
-    var option1Tag = 'option1tag';
     var option2Title = 'option 2 title';
-    var option2Tag = 'option2tag';
 
     visit('/admin/manage/case-fields/new/RADIO');
 
@@ -5476,11 +5465,9 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('.ko-reorderable-list-item:first input:first', option1Title);
-      fillIn('.ko-reorderable-list-item:first input:last', option1Tag);
 
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
-      fillIn('.ko-reorderable-list-item:last input:last', option2Tag);
     });
 
     andThen(function () {
@@ -5499,14 +5486,12 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
-      assert.equal(find('.ko-reorderable-list-item:first input:last').val(), option1Tag);
       assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
-      assert.equal(find('.ko-reorderable-list-item:last input:last').val(), option2Tag);
     });
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new dropdown box field', function (assert) {
-    assert.expect(11);
+    assert.expect(9);
 
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
@@ -5516,9 +5501,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
     var customerTitle = 'customer title';
     var description = 'description';
     var option1Title = 'option 1 title';
-    var option1Tag = 'option1tag';
     var option2Title = 'option 2 title';
-    var option2Tag = 'option2tag';
 
     visit('/admin/manage/case-fields/new/SELECT');
 
@@ -5533,11 +5516,9 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('.ko-reorderable-list-item:first input:first', option1Title);
-      fillIn('.ko-reorderable-list-item:first input:last', option1Tag);
 
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
-      fillIn('.ko-reorderable-list-item:last input:last', option2Tag);
     });
 
     andThen(function () {
@@ -5556,14 +5537,12 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
-      assert.equal(find('.ko-reorderable-list-item:first input:last').val(), option1Tag);
       assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
-      assert.equal(find('.ko-reorderable-list-item:last input:last').val(), option2Tag);
     });
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new checkbox field', function (assert) {
-    assert.expect(11);
+    assert.expect(9);
 
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
@@ -5573,9 +5552,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
     var customerTitle = 'customer title';
     var description = 'description';
     var option1Title = 'option 1 title';
-    var option1Tag = 'option1tag';
     var option2Title = 'option 2 title';
-    var option2Tag = 'option2tag';
 
     visit('/admin/manage/case-fields/new/CHECKBOX');
 
@@ -5590,11 +5567,9 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('.ko-reorderable-list-item:first input:first', option1Title);
-      fillIn('.ko-reorderable-list-item:first input:last', option1Tag);
 
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
-      fillIn('.ko-reorderable-list-item:last input:last', option2Tag);
     });
 
     andThen(function () {
@@ -5613,9 +5588,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
-      assert.equal(find('.ko-reorderable-list-item:first input:last').val(), option1Tag);
       assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
-      assert.equal(find('.ko-reorderable-list-item:last input:last').val(), option2Tag);
     });
   });
 
@@ -5788,7 +5761,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new cascading select field', function (assert) {
-    assert.expect(11);
+    assert.expect(9);
 
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
@@ -5798,9 +5771,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
     var customerTitle = 'customer title';
     var description = 'description';
     var option1Title = 'option 1 title';
-    var option1Tag = 'option1tag';
     var option2Title = 'option 2 title';
-    var option2Tag = 'option2tag';
 
     visit('/admin/manage/case-fields/new/CASCADINGSELECT');
 
@@ -5815,11 +5786,9 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('.ko-reorderable-list-item:first input:first', option1Title);
-      fillIn('.ko-reorderable-list-item:first input:last', option1Tag);
 
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
-      fillIn('.ko-reorderable-list-item:last input:last', option2Tag);
     });
 
     andThen(function () {
@@ -5838,9 +5807,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
-      assert.equal(find('.ko-reorderable-list-item:first input:last').val(), option1Tag);
       assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
-      assert.equal(find('.ko-reorderable-list-item:last input:last').val(), option2Tag);
     });
   });
 
@@ -6345,7 +6312,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
       var user = server.create('user', { emails: emails, role: server.create('role'), locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: user });
       server.create('plan', { limits: {}, features: [] });
-      brand = server.create('brand', { locale: locale });
+      brand = server.create('brand', { name: 'Brewfictus', locale: locale });
       originalConfirm = window.confirm;
       login(session.id);
     },
@@ -6511,7 +6478,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
 
     visit('/admin/manage/case-forms');
     andThen(function () {
-      assert.equal(find('.ko-reorderable-list .' + _frontendCpComponentsKoSimpleListCellStyles['default'].cell + ':eq(0)').text().trim(), 'The Default Case Form (Default)');
+      assert.equal(find('.ko-reorderable-list .' + _frontendCpComponentsKoSimpleListCellStyles['default'].cell + ':eq(0)').text().trim().replace(/[\s\n]+/g, ' '), 'The Default Case Form (Brewfictus) (Default)');
     });
   });
 
@@ -8031,7 +7998,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
   var customerTitle = 'customer title';
   var description = 'description';
   var optionTitle = 'option title';
-  var optionTag = 'option tag';
   var regEx = 'regEx';
 
   var originalConfirm = window.confirm;
@@ -8434,7 +8400,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
-      fillIn('.ko-reorderable-list-item:first input:last', optionTag);
 
       click('.ko-toggle__container');
 
@@ -8452,7 +8417,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
-      assert.equal(find('.ko-reorderable-list-item:first input:last').val(), optionTag);
     });
   });
 
@@ -8475,7 +8439,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
-      fillIn('.ko-reorderable-list-item:first input:last', optionTag);
 
       click('.ko-toggle__container');
 
@@ -8493,7 +8456,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
-      assert.equal(find('.ko-reorderable-list-item:first input:last').val(), optionTag);
     });
   });
 
@@ -8516,7 +8478,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
-      fillIn('.ko-reorderable-list-item:first input:last', optionTag);
 
       click('.ko-toggle__container');
 
@@ -8534,7 +8495,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
-      assert.equal(find('.ko-reorderable-list-item:first input:last').val(), optionTag);
     });
   });
 
@@ -8701,7 +8661,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
-      fillIn('.ko-reorderable-list-item:first input:last', optionTag);
 
       click('.ko-toggle__container');
 
@@ -8719,7 +8678,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
-      assert.equal(find('.ko-reorderable-list-item:first input:last').val(), optionTag);
     });
   });
 
@@ -8987,7 +8945,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new radio field', function (assert) {
-    assert.expect(11);
+    assert.expect(9);
 
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
@@ -8997,9 +8955,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
     var customerTitle = 'customer title';
     var description = 'description';
     var option1Title = 'option 1 title';
-    var option1Tag = 'option1tag';
     var option2Title = 'option 2 title';
-    var option2Tag = 'option2tag';
 
     visit('/admin/people/organization-fields/new/RADIO');
 
@@ -9014,11 +8970,9 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('.ko-reorderable-list-item:first input:first', option1Title);
-      fillIn('.ko-reorderable-list-item:first input:last', option1Tag);
 
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
-      fillIn('.ko-reorderable-list-item:last input:last', option2Tag);
     });
 
     andThen(function () {
@@ -9037,14 +8991,12 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
-      assert.equal(find('.ko-reorderable-list-item:first input:last').val(), option1Tag);
       assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
-      assert.equal(find('.ko-reorderable-list-item:last input:last').val(), option2Tag);
     });
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new dropdown box field', function (assert) {
-    assert.expect(11);
+    assert.expect(9);
 
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
@@ -9054,9 +9006,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
     var customerTitle = 'customer title';
     var description = 'description';
     var option1Title = 'option 1 title';
-    var option1Tag = 'option1tag';
     var option2Title = 'option 2 title';
-    var option2Tag = 'option2tag';
 
     visit('/admin/people/organization-fields/new/SELECT');
 
@@ -9071,11 +9021,9 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('.ko-reorderable-list-item:first input:first', option1Title);
-      fillIn('.ko-reorderable-list-item:first input:last', option1Tag);
 
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
-      fillIn('.ko-reorderable-list-item:last input:last', option2Tag);
     });
 
     andThen(function () {
@@ -9094,14 +9042,12 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
-      assert.equal(find('.ko-reorderable-list-item:first input:last').val(), option1Tag);
       assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
-      assert.equal(find('.ko-reorderable-list-item:last input:last').val(), option2Tag);
     });
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new checkbox field', function (assert) {
-    assert.expect(11);
+    assert.expect(9);
 
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
@@ -9111,9 +9057,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
     var customerTitle = 'customer title';
     var description = 'description';
     var option1Title = 'option 1 title';
-    var option1Tag = 'option1tag';
     var option2Title = 'option 2 title';
-    var option2Tag = 'option2tag';
 
     visit('/admin/people/organization-fields/new/CHECKBOX');
 
@@ -9128,11 +9072,9 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('.ko-reorderable-list-item:first input:first', option1Title);
-      fillIn('.ko-reorderable-list-item:first input:last', option1Tag);
 
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
-      fillIn('.ko-reorderable-list-item:last input:last', option2Tag);
     });
 
     andThen(function () {
@@ -9151,9 +9093,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
-      assert.equal(find('.ko-reorderable-list-item:first input:last').val(), option1Tag);
       assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
-      assert.equal(find('.ko-reorderable-list-item:last input:last').val(), option2Tag);
     });
   });
 
@@ -9326,7 +9266,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new cascading select field', function (assert) {
-    assert.expect(11);
+    assert.expect(9);
 
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
@@ -9336,9 +9276,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
     var customerTitle = 'customer title';
     var description = 'description';
     var option1Title = 'option 1 title';
-    var option1Tag = 'option1tag';
     var option2Title = 'option 2 title';
-    var option2Tag = 'option2tag';
 
     visit('/admin/people/organization-fields/new/CASCADINGSELECT');
 
@@ -9353,11 +9291,9 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('.ko-reorderable-list-item:first input:first', option1Title);
-      fillIn('.ko-reorderable-list-item:first input:last', option1Tag);
 
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
-      fillIn('.ko-reorderable-list-item:last input:last', option2Tag);
     });
 
     andThen(function () {
@@ -9376,9 +9312,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
-      assert.equal(find('.ko-reorderable-list-item:first input:last').val(), option1Tag);
       assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
-      assert.equal(find('.ko-reorderable-list-item:last input:last').val(), option2Tag);
     });
   });
 
@@ -10276,7 +10210,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
   var customerTitle = 'customer title';
   var description = 'description';
   var optionTitle = 'option title';
-  var optionTag = 'option tag';
   var regEx = 'regEx';
 
   var originalConfirm = window.confirm;
@@ -10683,7 +10616,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
-      fillIn('.ko-reorderable-list-item:first input:last', optionTag);
 
       click('.ko-toggle__container');
 
@@ -10703,7 +10635,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
-      assert.equal(find('.ko-reorderable-list-item:first input:last').val(), optionTag);
     });
   });
 
@@ -10727,7 +10658,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
-      fillIn('.ko-reorderable-list-item:first input:last', optionTag);
 
       click('.ko-toggle__container');
 
@@ -10747,7 +10677,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
-      assert.equal(find('.ko-reorderable-list-item:first input:last').val(), optionTag);
     });
   });
 
@@ -10771,7 +10700,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
-      fillIn('.ko-reorderable-list-item:first input:last', optionTag);
 
       click('.ko-toggle__container');
 
@@ -10791,7 +10719,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
-      assert.equal(find('.ko-reorderable-list-item:first input:last').val(), optionTag);
     });
   });
 
@@ -10971,7 +10898,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
-      fillIn('.ko-reorderable-list-item:first input:last', optionTag);
 
       click('.ko-toggle__container');
 
@@ -10991,7 +10917,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
       findWithAssert('div .ko-toggle__container[aria-checked=false]');
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
-      assert.equal(find('.ko-reorderable-list-item:first input:last').val(), optionTag);
     });
   });
 
@@ -11268,7 +11193,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new radio field', function (assert) {
-    assert.expect(11);
+    assert.expect(9);
 
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
@@ -11278,9 +11203,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
     var customerTitle = 'customer title';
     var description = 'description';
     var option1Title = 'option 1 title';
-    var option1Tag = 'option1tag';
     var option2Title = 'option 2 title';
-    var option2Tag = 'option2tag';
 
     visit('/admin/people/user-fields/new/RADIO');
 
@@ -11295,11 +11218,9 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('.ko-reorderable-list-item:first input:first', option1Title);
-      fillIn('.ko-reorderable-list-item:first input:last', option1Tag);
 
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
-      fillIn('.ko-reorderable-list-item:last input:last', option2Tag);
     });
 
     andThen(function () {
@@ -11318,14 +11239,12 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
-      assert.equal(find('.ko-reorderable-list-item:first input:last').val(), option1Tag);
       assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
-      assert.equal(find('.ko-reorderable-list-item:last input:last').val(), option2Tag);
     });
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new dropdown box field', function (assert) {
-    assert.expect(11);
+    assert.expect(9);
 
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
@@ -11335,9 +11254,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
     var customerTitle = 'customer title';
     var description = 'description';
     var option1Title = 'option 1 title';
-    var option1Tag = 'option1tag';
     var option2Title = 'option 2 title';
-    var option2Tag = 'option2tag';
 
     visit('/admin/people/user-fields/new/SELECT');
 
@@ -11352,11 +11269,9 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('.ko-reorderable-list-item:first input:first', option1Title);
-      fillIn('.ko-reorderable-list-item:first input:last', option1Tag);
 
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
-      fillIn('.ko-reorderable-list-item:last input:last', option2Tag);
     });
 
     andThen(function () {
@@ -11375,14 +11290,12 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
-      assert.equal(find('.ko-reorderable-list-item:first input:last').val(), option1Tag);
       assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
-      assert.equal(find('.ko-reorderable-list-item:last input:last').val(), option2Tag);
     });
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new checkbox field', function (assert) {
-    assert.expect(11);
+    assert.expect(9);
 
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
@@ -11392,9 +11305,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
     var customerTitle = 'customer title';
     var description = 'description';
     var option1Title = 'option 1 title';
-    var option1Tag = 'option1tag';
     var option2Title = 'option 2 title';
-    var option2Tag = 'option2tag';
 
     visit('/admin/people/user-fields/new/CHECKBOX');
 
@@ -11409,11 +11320,9 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('.ko-reorderable-list-item:first input:first', option1Title);
-      fillIn('.ko-reorderable-list-item:first input:last', option1Tag);
 
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
-      fillIn('.ko-reorderable-list-item:last input:last', option2Tag);
     });
 
     andThen(function () {
@@ -11432,9 +11341,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
-      assert.equal(find('.ko-reorderable-list-item:first input:last').val(), option1Tag);
       assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
-      assert.equal(find('.ko-reorderable-list-item:last input:last').val(), option2Tag);
     });
   });
 
@@ -11607,7 +11514,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new cascading select field', function (assert) {
-    assert.expect(11);
+    assert.expect(9);
 
     window.confirm = function () {
       return assert.ok(false, 'dialogue not expected to be shown');
@@ -11617,9 +11524,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
     var customerTitle = 'customer title';
     var description = 'description';
     var option1Title = 'option 1 title';
-    var option1Tag = 'option1tag';
     var option2Title = 'option 2 title';
-    var option2Tag = 'option2tag';
 
     visit('/admin/people/user-fields/new/CASCADINGSELECT');
 
@@ -11634,11 +11539,9 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('.ko-reorderable-list-item:first input:first', option1Title);
-      fillIn('.ko-reorderable-list-item:first input:last', option1Tag);
 
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
-      fillIn('.ko-reorderable-list-item:last input:last', option2Tag);
     });
 
     andThen(function () {
@@ -11657,9 +11560,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
-      assert.equal(find('.ko-reorderable-list-item:first input:last').val(), option1Tag);
       assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
-      assert.equal(find('.ko-reorderable-list-item:last input:last').val(), option2Tag);
     });
   });
 
