@@ -5,6 +5,7 @@
   "cases.page.title": "Insights / Cases",
   "searches.page.title": "Insights / Searches",
   "articles.page.title": "Insights / Articles",
+  "sla.overview.title": "Insights / SLA / Overview",
 
   "insights.vs": "vs",
 
@@ -12,6 +13,9 @@
   "sidebar.general.agents.title": "Agents",
   "sidebar.general.teams.title": "Teams",
   "sidebar.general.cases.title": "Cases",
+
+  "sidebar.sla.title": "SLA",
+  "sidebar.sla.overview.title": "Overview",
 
   "sidebar.help_center.title": "Help Center",
   "sidebar.help_center.searches.title": "Searches",
@@ -51,7 +55,6 @@
   "articles.comment_count": "Comments",
 
   "agents.sla_resolution_target": "SLA Resolution Target",
-  "agents.sla_resolution_target_explanation": "Beautiful answer here, in the last quarter",
 
   "cases.average_response_time_by_interval": "Average response time by interval",
   "cases.average_resolution_time_by_interval": "Average resolution time by interval",
@@ -75,6 +78,8 @@
   "chart.sla_resolution.age": "Age",
   "chart.sla_resolution.effort_score": "Effort score",
 
+  "chart.sla_resolution.percentage_achieved": "Percentage Achieved",
+
   "chart.channel_stats.FACEBOOK": "Facebook",
   "chart.channel_stats.TWITTER": "Twitter",
   "chart.channel_stats.MESSENGER": "Messenger",
@@ -82,7 +87,15 @@
   "chart.channel_stats.MAIL": "Mail",
   "chart.channel_stats.HELPCENTER": "Help Centre",
 
-  "day": "DAY",
-  "week": "WEEK",
-  "month": "MONTH"
+  "sla.metrics.FIRST_REPLY_TIME": "First Reply Time",
+  "sla.metrics.NEXT_REPLY_TIME": "Next Reply Time",
+  "sla.metrics.RESOLUTION_TIME": "Resolution Time",
+  "sla.metrics.percentage_achieved": "Percentage Achieved",
+  "sla.metrics.total_breached": "Total Breached",
+  "sla.metrics.average_time_to_target": "Average Time To Target",
+  "sla.metrics.average_time_overdue_to_breach": "Average Time Overdue To Breach",
+
+  "day": "Day",
+  "week": "Week",
+  "month": "Month"
 }

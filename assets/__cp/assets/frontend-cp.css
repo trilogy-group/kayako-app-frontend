@@ -7306,7 +7306,7 @@ a.ko-admin_plans_index__cancel_1pprhr {
 .ko-insights_metric__metric_1h3qp2 {
   border-bottom: 2px solid #EBEEF0;
   padding: 5px;
-  width: 150px; }
+  width: 160px; }
 
 .ko-insights_metric__values_1h3qp2 {
   display: -webkit-box;
@@ -7411,28 +7411,24 @@ a.ko-admin_plans_index__cancel_1pprhr {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: end;
-      -ms-flex-align: end;
-          align-items: flex-end;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   -webkit-box-pack: end;
       -ms-flex-pack: end;
-          justify-content: flex-end; }
-
-.ko-insights_section_agents-teams__intervalToggle_1qxjcv {
-  margin-right: 20px; }
+          justify-content: flex-end;
+  width: 100%; }
 
 .ko-insights_section_agents-teams__metrics_1qxjcv {
   margin-top: 30px;
   margin-right: 30px;
+  margin-bottom: 30px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between; }
-
-.ko-insights_section_agents-teams__chart_1qxjcv {
-  margin-top: 30px; }
 
 .ko-insights_section_agents-teams__questionBlock_1qxjcv {
   display: -webkit-box;
@@ -7448,9 +7444,35 @@ a.ko-admin_plans_index__cancel_1pprhr {
 .ko-insights_section_agents-teams__question_1qxjcv {
   margin-top: 20px; }
 
+.ko-insights_section_agents-teams__slaQuestion_1qxjcv {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  width: 100%;
+  margin-bottom: 30px; }
+
+.ko-insights_section_agents-teams__slaFilter_1qxjcv {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end; }
+
 .ko-insights_section_agents-teams__questionTitle_1qxjcv {
   margin-bottom: 0;
-  line-height: 26px; }
+  line-height: 26px;
+  min-width: 400px; }
 
 .ko-insights_section_agents-teams__answer_1qxjcv {
   margin-bottom: 30px;
@@ -7512,23 +7534,19 @@ a.ko-admin_plans_index__cancel_1pprhr {
           align-items: flex-end;
   -webkit-box-pack: end;
       -ms-flex-pack: end;
-          justify-content: flex-end; }
-
-.ko-insights_section_cases__intervalToggle_11ovh3 {
-  margin-right: 20px; }
+          justify-content: flex-end;
+  width: 100%; }
 
 .ko-insights_section_cases__metrics_11ovh3 {
   margin-top: 30px;
   margin-right: 30px;
+  margin-bottom: 30px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between; }
-
-.ko-insights_section_cases__chart_11ovh3 {
-  margin-top: 30px; }
 
 .ko-insights_section_cases__questionBlock_11ovh3 {
   display: -webkit-box;
@@ -7597,6 +7615,144 @@ a.ko-admin_plans_index__cancel_1pprhr {
 
 .ko-insights_section_searches__table_196cth {
   margin-top: 30px; }
+
+/* styles for frontend-cp/components/ko-insights/section/sla-overview/styles.css */
+.ko-insights_section_sla-overview__header_chs57u {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-grid-column-align: center;
+      justify-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
+
+.ko-insights_section_sla-overview__entity_chs57u {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+
+.ko-insights_section_sla-overview__filters_chs57u {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center; }
+
+.ko-insights_section_sla-overview__filtersControls_chs57u {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end; }
+
+.ko-insights_section_sla-overview__intervalToggle_chs57u {
+  margin-right: 20px; }
+
+.ko-insights_section_sla-overview__charts_chs57u {
+  margin-top: 30px; }
+
+/* styles for frontend-cp/components/ko-insights/sla-resolution-target/styles.css */
+.ko-insights_sla-resolution-target__targets_m5dw0t {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin-bottom: 30px;
+  padding-bottom: 20px; }
+
+.ko-insights_sla-resolution-target__target_m5dw0t {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: 20px; }
+
+.ko-insights_sla-resolution-target__title_m5dw0t {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  min-width: 180px;
+  text-align: center; }
+
+.ko-insights_sla-resolution-target__metrics_m5dw0t {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
+
+.ko-insights_sla-resolution-target__charts_m5dw0t {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin-top: 30px; }
+
+.ko-insights_sla-resolution-target__chart_m5dw0t {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  padding-right: 50px;
+  width: 50%;
+  border-right: 1px solid #d1d5d7;
+  margin-right: 20px;
+  margin-bottom: 30px; }
+
+.ko-insights_sla-resolution-target__chart_m5dw0t:last-child {
+  padding-right: 0;
+  border-right: none;
+  margin-right: 0; }
+
+.ko-insights_sla-resolution-target__chartTitle_m5dw0t {
+  text-align: center; }
+
+.ko-insights_sla-resolution-target__filters_m5dw0t {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center; }
+
+.ko-insights_sla-resolution-target__filtersControls_m5dw0t {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end; }
 
 /* styles for frontend-cp/components/ko-layout/container/styles.css */
 .ko-layout_container__root_160oc3 {
