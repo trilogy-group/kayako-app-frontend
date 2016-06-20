@@ -6945,7 +6945,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/edit-test', ['exports', 
         locale: 'en-us'
       });
 
-      var columns = [server.create('column', { name: 'caseid' }), server.create('column', { name: 'subject' }), server.create('column', { name: 'casestatusid' }), server.create('column', { name: 'casepriorityid' }), server.create('column', { name: 'casetypeid' }), server.create('column', { name: 'assigneeagentid' }), server.create('column', { name: 'assigneeteamid' }), server.create('column', { name: 'brandid' }), server.create('column', { name: 'channeltype' }), server.create('column', { name: 'createdat' }), server.create('column', { name: 'updatedat' }), server.create('column', { name: 'requesterid' })];
+      var columns = [server.create('column', { name: 'caseid', title: 'Case ID' }), server.create('column', { name: 'subject', title: 'Subject' }), server.create('column', { name: 'casestatusid', title: 'Status' }), server.create('column', { name: 'casepriorityid', title: 'Priority' }), server.create('column', { name: 'casetypeid', title: 'Type' }), server.create('column', { name: 'assigneeagentid', title: 'Assigned agent' }), server.create('column', { name: 'assigneeteamid', title: 'Assigned team' }), server.create('column', { name: 'brandid', title: 'Brand' }), server.create('column', { name: 'channeltype', title: 'Channel type' }), server.create('column', { name: 'createdat', title: 'Created at' }), server.create('column', { name: 'updatedat', title: 'Updated at' }), server.create('column', { name: 'requesterid', title: 'Requester' })];
 
       var businesshour = server.create('business-hour', { title: 'Default Business Hours' });
       var teams = [server.create('team', { title: 'Sales', businesshour: businesshour }), server.create('team', { title: 'Support', businesshour: businesshour }), server.create('team', { title: 'Finance', businesshour: businesshour }), server.create('team', { title: 'Human Resources', businesshour: businesshour }), server.create('team', { title: 'Contractors', businesshour: businesshour })];
@@ -7203,18 +7203,18 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
         locale: 'en-us'
       });
 
-      server.create('column', { name: 'caseid' });
-      server.create('column', { name: 'subject' });
-      server.create('column', { name: 'casestatusid' });
-      server.create('column', { name: 'casepriorityid' });
-      server.create('column', { name: 'casetypeid' });
-      server.create('column', { name: 'assigneeagentid' });
-      server.create('column', { name: 'assigneeteamid' });
-      server.create('column', { name: 'brandid' });
-      server.create('column', { name: 'channeltype' });
-      server.create('column', { name: 'createdat' });
-      server.create('column', { name: 'updatedat' });
-      server.create('column', { name: 'requesterid' });
+      server.create('column', { name: 'caseid', title: 'Case ID' });
+      server.create('column', { name: 'subject', title: 'Subject' });
+      server.create('column', { name: 'casestatusid', title: 'Status' });
+      server.create('column', { name: 'casepriorityid', title: 'Priority' });
+      server.create('column', { name: 'casetypeid', title: 'Type' });
+      server.create('column', { name: 'assigneeagentid', title: 'Assigned agent' });
+      server.create('column', { name: 'assigneeteamid', title: 'Assigned team' });
+      server.create('column', { name: 'brandid', title: 'Brand' });
+      server.create('column', { name: 'channeltype', title: 'Channel type' });
+      server.create('column', { name: 'createdat', title: 'Created at' });
+      server.create('column', { name: 'updatedat', title: 'Updated at' });
+      server.create('column', { name: 'requesterid', title: 'Requester' });
 
       var businesshour = server.create('business-hour', { title: 'Default Business Hours' });
 
