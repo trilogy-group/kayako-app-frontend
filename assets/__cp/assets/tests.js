@@ -2108,6 +2108,30 @@ define('frontend-cp/tests/acceptance/admin/automation/sla/index-test', ['exports
       assert.equal(find('.qa-disabled-slas .qa-sla-row').length, 1, 'SLA is disabled');
     });
   });
+
+  (0, _qunit.test)('enabling an SLA', function (assert) {
+    assert.expect(4);
+
+    server.create('sla', { title: 'test sla', is_enabled: false, execution_order: 1 });
+
+    visit('/admin/automation/sla');
+
+    andThen(function () {
+      assert.equal(find('.qa-disabled-slas .qa-sla-row').length, 1, 'SLA is disabled');
+      assert.equal(find('.qa-enabled-slas .qa-sla-row').length, 0, 'Enabled SLA list is empty');
+    });
+
+    andThen(function () {
+      triggerEvent('.qa-disabled-slas .qa-sla-row:eq(0)', 'mouseenter');
+    });
+
+    click('.qa-enable-sla');
+
+    andThen(function () {
+      assert.equal(find('.qa-disabled-slas .qa-sla-row').length, 0, 'Disabled SLA list is empty');
+      assert.equal(find('.qa-enabled-slas .qa-sla-row').length, 1, 'SLA is enabled');
+    });
+  });
 });
 define('frontend-cp/tests/acceptance/admin/automation/triggers/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles) {
 
