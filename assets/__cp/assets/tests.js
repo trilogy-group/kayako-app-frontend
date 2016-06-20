@@ -6914,7 +6914,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/edit-test', ['exports', 
   var originalConfirm = undefined;
   var view = undefined;
 
-  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/manage/views/new', {
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/manage/views/edit', {
     beforeEach: function beforeEach() {
       /*eslint-disable quote-props*/
       server.create('locale', {
@@ -7396,173 +7396,6 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
     }
   });
 
-  // TODO uncomment when API accepts is_enabled flag
-  // test('creating a new view that is active', function(assert) {
-  //   visit('/admin/manage/views/new');
-  //
-  //   andThen(function() {
-  //     assert.equal(currentURL(), '/admin/manage/views/new');
-  //
-  //     fillIn('input.ko-admin_views_edit__title', fieldTitle);
-  //     // click('.ko-toggle__container');
-  //     click('.ko-radio__label:contains(Just myself)');
-  //     fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
-  //     click('.button[name=submit]:first');
-  //   });
-  //
-  //   andThen(function() {
-  //     assert.equal(currentURL(), '/admin/manage/views');
-  //     findWithAssert('.qa-view-list-active--title:contains(' + fieldTitle + ')');
-  //     click('.qa-view-list-active--title:contains(' + fieldTitle + ')');
-  //   });
-  //
-  //   andThen(function() {
-  //     assert.equal(currentURL(), '/admin/manage/views/2');
-  //     assert.equal(find('input.ko-admin_views_edit__title').val(), fieldTitle);
-  //     // findWithAssert('.ko-toggle__container[aria-checked=true]');
-  //     findWithAssert('.qa-just-myself div[aria-checked=true]');
-  //   });
-  // });
-
-  (0, _frontendCpTestsHelpersQunit.test)('creating a new view that is inactive', function (assert) {
-    visit('/admin/manage/views/new');
-
-    andThen(function () {
-      assert.equal(currentURL(), '/admin/manage/views/new');
-
-      fillIn('input.ko-admin_views_edit__title', fieldTitle);
-      // findWithAssert('.ko-toggle__container[aria-checked=false]');
-      click('.ko-radio__label:contains(Just myself)');
-
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Subject');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'string does not contain');
-
-      fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
-      click('.button[name=submit]:first');
-    });
-
-    andThen(function () {
-      assert.equal(currentURL(), '/admin/manage/views');
-      findWithAssert('.qa-view-list-inactive--title:contains(' + fieldTitle + ')');
-    });
-  });
-
-  // test('creating a new view that is assigned to just myself', function(assert) {
-  //   visit('/admin/manage/views/new');
-  //
-  //   andThen(function() {
-  //     assert.equal(currentURL(), '/admin/manage/views/new');
-  //
-  //     fillIn('input.ko-admin_views_edit__title', fieldTitle);
-  //     // click('.ko-toggle__container');
-  //     click('.ko-radio__label:contains(Just myself)');
-  //     fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
-  //     click('.button[name=submit]:first');
-  //   });
-  //
-  //   andThen(function() {
-  //     assert.equal(currentURL(), '/admin/manage/views');
-  //     findWithAssert('.qa-view-list-active--title:contains(' + fieldTitle + ')');
-  //     click('.qa-view-list-active--title:contains(' + fieldTitle + ')');
-  //   });
-  //
-  //   andThen(function() {
-  //     assert.equal(currentURL(), '/admin/manage/views/2');
-  //     assert.equal(find('input.ko-admin_views_edit__title').val(), fieldTitle);
-  //     // findWithAssert('.ko-toggle__container[aria-checked=true]');
-  //     findWithAssert('.qa-just-myself div[aria-checked=true]');
-  //   });
-  // });
-  //
-  // test('creating a new view that is assigned to every agent', function(assert) {
-  //   visit('/admin/manage/views/new');
-  //
-  //   andThen(function() {
-  //     assert.equal(currentURL(), '/admin/manage/views/new');
-  //
-  //     fillIn('input.ko-admin_views_edit__title', fieldTitle);
-  //     // click('.ko-toggle__container');
-  //     click('.ko-radio__label:contains(Every agent)');
-  //     fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
-  //     click('.button[name=submit]:first');
-  //   });
-  //
-  //   andThen(function() {
-  //     assert.equal(currentURL(), '/admin/manage/views');
-  //     findWithAssert('.qa-view-list-active--title:contains(' + fieldTitle + ')');
-  //     click('.qa-view-list-active--title:contains(' + fieldTitle + ')');
-  //   });
-  //
-  //   andThen(function() {
-  //     assert.equal(currentURL(), '/admin/manage/views/2');
-  //     assert.equal(find('input.ko-admin_views_edit__title').val(), fieldTitle);
-  //     // findWithAssert('.ko-toggle__container[aria-checked=true]');
-  //     findWithAssert('.qa-every-agent div[aria-checked=true]');
-  //   });
-  // });
-
-  // test('creating a new view that is assigned to specific teams', function(assert) {
-  //   visit('/admin/manage/views/new');
-  //
-  //   andThen(function() {
-  //     assert.equal(currentURL(), '/admin/manage/views/new');
-  //
-  //     fillIn('input.ko-admin_views_edit__title', fieldTitle);
-  //     // click('.ko-toggle__container');
-  //     click('.ko-radio__label:contains(Specific teams)');
-  //     selectChoose('.ko-admin_views_edit_team-selector', 'Human Resources');
-  //     selectChoose('.ko-admin_views_edit_team-selector', 'Contractors');
-  //     fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
-  //     click('.button[name=submit]:first');
-  //   });
-  //
-  //   andThen(function() {
-  //     assert.equal(currentURL(), '/admin/manage/views');
-  //     findWithAssert('.qa-view-list-active--title:contains(' + fieldTitle + ')');
-  //     click('.qa-view-list-active--title:contains(' + fieldTitle + ')');
-  //   });
-  //
-  //   andThen(function() {
-  //     assert.equal(currentURL(), '/admin/manage/views/2');
-  //     assert.equal(find('input.ko-admin_views_edit__title').val(), fieldTitle);
-  //     // findWithAssert('.ko-toggle__container[aria-checked=true]');
-  //     findWithAssert('.qa-specific-team div[aria-checked=true]');
-  //   });
-  // });
-  //
-  // test('creating a new view with a single proposition using string contains', function(assert) {
-  //   visit('/admin/manage/views/new');
-  //
-  //   andThen(function() {
-  //     assert.equal(currentURL(), '/admin/manage/views/new');
-  //
-  //     fillIn('input.ko-admin_views_edit__title', fieldTitle);
-  //     // click('.ko-toggle__container');
-  //     click('.ko-radio__label:contains(Just myself)');
-  //     selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Subject');
-  //     selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'string contains');
-  //     fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
-  //     click('.button[name=submit]:first');
-  //   });
-  //
-  //   andThen(function() {
-  //     assert.equal(currentURL(), '/admin/manage/views');
-  //     findWithAssert('.qa-view-list-active--title:contains(' + fieldTitle + ')');
-  //     click('.qa-view-list-active--title:contains(' + fieldTitle + ')');
-  //   });
-  //
-  //   andThen(function() {
-  //     assert.equal(currentURL(), '/admin/manage/views/2');
-  //     assert.equal(find('input.ko-admin_views_edit__title').val(), fieldTitle);
-  //     // findWithAssert('.ko-toggle__container[aria-checked=true]');
-  //     findWithAssert('.qa-just-myself div[aria-checked=true]');
-  //     assert.equal(find('.qa-predicate-builder--proposition:first .qa-proposition--column .ember-power-select-trigger').text().trim(), 'Cases: Subject');
-  //     //Finish edit tests first they will flag this problem more clearly
-  //     //assert.equal(find('.qa-predicate-builder--proposition:first .qa-proposition--operator div').text().trim(), 'String contains');
-  //     //assert.equal(find('.qa-predicate-builder--proposition:first input:last').val(), rule1String);
-  //   });
-  // });
-
   (0, _frontendCpTestsHelpersQunit.test)('creating a new view with a single proposition using string does not contain', function (assert) {
     visit('/admin/manage/views/new');
 
@@ -7578,7 +7411,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/views');
-      findWithAssert('.qa-view-list-inactive--title:contains(' + fieldTitle + ')');
+      findWithAssert('.qa-view-list-active--title:contains(' + fieldTitle + ')');
     });
   });
 
@@ -7598,31 +7431,9 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/views');
-      findWithAssert('.qa-view-list-inactive--title:contains(' + fieldTitle + ')');
+      findWithAssert('.qa-view-list-active--title:contains(' + fieldTitle + ')');
     });
   });
-
-  // test('creating a new view with a single proposition using is equal to on an autocomplete field', function(assert) {
-  //   visit('/admin/manage/views/new');
-  //
-  //   andThen(function() {
-  //     assert.equal(currentURL(), '/admin/manage/views/new');
-  //
-  //     fillIn('input.ko-admin_views_edit__title', fieldTitle);
-  //     click('.ko-radio__label:contains(Just myself)');
-  //     selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Assigned Agent');
-  //     selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'is equal to');
-  //
-  //     selectSearch('.qa-predicate-builder--proposition:first .qa-proposition--property', 'current user');
-  //     selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--property', '(current user)');
-  //     click('.button[name=submit]:first');
-  //   });
-  //
-  //   andThen(function() {
-  //     assert.equal(currentURL(), '/admin/manage/views');
-  //     findWithAssert('.qa-view-list-inactive--title:contains(' + fieldTitle + ')');
-  //   });
-  // });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new view with a single proposition using is not equal to', function (assert) {
     visit('/admin/manage/views/new');
@@ -7640,7 +7451,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/views');
-      findWithAssert('.qa-view-list-inactive--title:contains(' + fieldTitle + ')');
+      findWithAssert('.qa-view-list-active--title:contains(' + fieldTitle + ')');
     });
   });
 
@@ -7660,7 +7471,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/views');
-      findWithAssert('.qa-view-list-inactive--title:contains(' + fieldTitle + ')');
+      findWithAssert('.qa-view-list-active--title:contains(' + fieldTitle + ')');
     });
   });
 
@@ -7680,7 +7491,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/views');
-      findWithAssert('.qa-view-list-inactive--title:contains(' + fieldTitle + ')');
+      findWithAssert('.qa-view-list-active--title:contains(' + fieldTitle + ')');
     });
   });
 
@@ -7700,7 +7511,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/views');
-      findWithAssert('.qa-view-list-inactive--title:contains(' + fieldTitle + ')');
+      findWithAssert('.qa-view-list-active--title:contains(' + fieldTitle + ')');
     });
   });
 
@@ -7720,7 +7531,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/views');
-      findWithAssert('.qa-view-list-inactive--title:contains(' + fieldTitle + ')');
+      findWithAssert('.qa-view-list-active--title:contains(' + fieldTitle + ')');
     });
   });
 
@@ -7740,7 +7551,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/views');
-      findWithAssert('.qa-view-list-inactive--title:contains(' + fieldTitle + ')');
+      findWithAssert('.qa-view-list-active--title:contains(' + fieldTitle + ')');
     });
   });
 
@@ -7762,7 +7573,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/views');
-      findWithAssert('.qa-view-list-inactive--title:contains(' + fieldTitle + ')');
+      findWithAssert('.qa-view-list-active--title:contains(' + fieldTitle + ')');
     });
   });
 
