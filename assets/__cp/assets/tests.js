@@ -12813,6 +12813,8 @@ define('frontend-cp/tests/acceptance/agent/cases/replying-to-a-facebook-message-
       contents: 'An answer via Facebook',
       channel: 'FACEBOOK',
       channel_id: context['case'].source_channel.account.id,
+      subject: 'ERS Audit 1',
+      requester_id: '2',
       in_reply_to_uuid: null,
       status_id: null,
       priority_id: null,
