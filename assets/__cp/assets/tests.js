@@ -642,13 +642,13 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/edit-test', ['exp
       click('.ko-predicate-builder__add');
 
       selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--column', 'Subject');
-      selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--operator', 'string does not contain');
+      selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--operator', 'does not contain');
       fillIn('.qa-predicate-builder--proposition:eq(1) input:last', 'collection1proposition2');
 
       click('.ko-predicate-builder__new');
 
       selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--column', 'Subject');
-      selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--operator', 'string does not contain');
+      selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--operator', 'does not contain');
       fillIn('.qa-predicate-builder--proposition:eq(2) input:last', 'collection2proposition1');
 
       click('.ko-predicate-builder_proposition__remove:eq(0)');
@@ -911,19 +911,19 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
   function fillPredicateCollections() {
     selectChoose('.qa-predicate-builder--proposition:eq(0) .qa-proposition--column', 'Subject');
-    selectChoose('.qa-predicate-builder--proposition:eq(0) .qa-proposition--operator', 'string does not contain');
+    selectChoose('.qa-predicate-builder--proposition:eq(0) .qa-proposition--operator', 'does not contain');
     fillIn('.qa-predicate-builder--proposition:eq(0) input:last', 'collection1proposition1');
 
     click('.ko-predicate-builder__add');
 
     selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--column', 'Subject');
-    selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--operator', 'string does not contain');
+    selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--operator', 'does not contain');
     fillIn('.qa-predicate-builder--proposition:eq(1) input:last', 'collection1proposition2');
 
     click('.ko-predicate-builder__new');
 
     selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--column', 'Subject');
-    selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--operator', 'string does not contain');
+    selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--operator', 'does not contain');
     fillIn('.qa-predicate-builder--proposition:eq(2) input:last', 'collection2proposition1');
   }
 
@@ -2349,13 +2349,13 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/edit-test', ['exp
       selectChoose('.qa-events', 'Facebook Wall Post');
 
       selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--column', 'Subject');
-      selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--operator', 'string does not contain');
+      selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--operator', 'does not contain');
       fillIn('.qa-predicate-builder--proposition:eq(1) input:last', 'collection1proposition2');
 
       click('.ko-predicate-builder__new');
 
       selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--column', 'Subject');
-      selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--operator', 'string does not contain');
+      selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--operator', 'does not contain');
       fillIn('.qa-predicate-builder--proposition:eq(2) input:last', 'collection2proposition1');
 
       click('.ko-predicate-builder_proposition__remove:eq(0)');
@@ -2684,19 +2684,19 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
 
   function fillPredicateCollections() {
     selectChoose('.qa-predicate-builder--proposition:eq(0) .qa-proposition--column', 'Subject');
-    selectChoose('.qa-predicate-builder--proposition:eq(0) .qa-proposition--operator', 'string does not contain');
+    selectChoose('.qa-predicate-builder--proposition:eq(0) .qa-proposition--operator', 'does not contain');
     fillIn('.qa-predicate-builder--proposition:eq(0) input:last', 'collection1proposition1');
 
     click('.ko-predicate-builder__add');
 
     selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--column', 'Subject');
-    selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--operator', 'string does not contain');
+    selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--operator', 'does not contain');
     fillIn('.qa-predicate-builder--proposition:eq(1) input:last', 'collection1proposition2');
 
     click('.ko-predicate-builder__new');
 
     selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--column', 'Subject');
-    selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--operator', 'string does not contain');
+    selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--operator', 'does not contain');
     fillIn('.qa-predicate-builder--proposition:eq(2) input:last', 'collection2proposition1');
   }
 
@@ -7396,7 +7396,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
     }
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('creating a new view with a single proposition using string does not contain', function (assert) {
+  (0, _frontendCpTestsHelpersQunit.test)('creating a new view with a single proposition using does not contain', function (assert) {
     visit('/admin/manage/views/new');
 
     andThen(function () {
@@ -7404,7 +7404,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       fillIn('input.ko-admin_views_edit__title', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Subject');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'string does not contain');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'does not contain');
       fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
       click('.button[name=submit]:first');
     });
@@ -7415,7 +7415,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('creating a new view with a single proposition using is equal to', function (assert) {
+  (0, _frontendCpTestsHelpersQunit.test)('creating a new view with a single proposition using `equal to`', function (assert) {
     visit('/admin/manage/views/new');
 
     andThen(function () {
@@ -7424,7 +7424,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       fillIn('input.ko-admin_views_edit__title', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Status');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'is equal to');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'equal to');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--property', 'New');
       click('.button[name=submit]:first');
     });
@@ -7435,7 +7435,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('creating a new view with a single proposition using is not equal to', function (assert) {
+  (0, _frontendCpTestsHelpersQunit.test)('creating a new view with a single proposition using `not equal to`', function (assert) {
     visit('/admin/manage/views/new');
 
     andThen(function () {
@@ -7444,7 +7444,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       fillIn('input.ko-admin_views_edit__title', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Status');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'is not equal to');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'not equal to');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--property', 'New');
       click('.button[name=submit]:first');
     });
@@ -7455,7 +7455,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('creating a new view with a single proposition using is less than', function (assert) {
+  (0, _frontendCpTestsHelpersQunit.test)('creating a new view with a single proposition using `less than`', function (assert) {
     visit('/admin/manage/views/new');
 
     andThen(function () {
@@ -7464,7 +7464,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       fillIn('input.ko-admin_views_edit__title', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Priority');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'is less than');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'less than');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--property', 'Low');
       click('.button[name=submit]:first');
     });
@@ -7475,7 +7475,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('creating a new view with a single proposition using is greater than', function (assert) {
+  (0, _frontendCpTestsHelpersQunit.test)('creating a new view with a single proposition using is `greater than`', function (assert) {
     visit('/admin/manage/views/new');
 
     andThen(function () {
@@ -7484,7 +7484,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       fillIn('input.ko-admin_views_edit__title', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Priority');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'is greater than');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'greater than');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--property', 'Low');
       click('.button[name=submit]:first');
     });
@@ -7564,7 +7564,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       fillIn('input.ko-admin_views_edit__title', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Subject');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'string contains');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'contains');
       fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
       selectChoose('.qa-configure-column', 'Created at');
       selectChoose('.qa-sorted-by', 'Created at');
