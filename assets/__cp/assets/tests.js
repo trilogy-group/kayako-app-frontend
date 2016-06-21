@@ -1963,7 +1963,8 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
       fillPredicateCollections();
       selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Yes / No');
-      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'Yes');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'change');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'Yes');
       click('.button[name=submit]');
     });
 
@@ -1977,7 +1978,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors/1');
       assertPredicateCollestionsAreCorrect(assert);
-      assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1) .ember-power-select-trigger').text().trim(), 'Yes', 'The value is YES');
+      assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2) .ember-power-select-trigger').text().trim(), 'Yes', 'The value is YES');
     });
   });
 
