@@ -2049,13 +2049,17 @@ img {
   .ko-dropdown_list__item a {
     display: block;
     color: #2D3138; }
-  .ko-dropdown_list__item:hover {
+  .ko-dropdown_list__item:hover:not(.ko-dropdown_list__item--disabled) {
     background-color: #4EAFCB;
     border: 1px solid #3496b2;
     color: #FFFFFF; }
-    .ko-dropdown_list__item:hover a,
-    .ko-dropdown_list__item:hover .t-caption {
+    .ko-dropdown_list__item:hover:not(.ko-dropdown_list__item--disabled) a,
+    .ko-dropdown_list__item:hover:not(.ko-dropdown_list__item--disabled) .t-caption {
       color: #FFFFFF; }
+
+.ko-dropdown_list__item--disabled {
+  color: #A1AAAF;
+  cursor: default; }
 
 .dropdown {
   width: 100%;
@@ -5237,29 +5241,6 @@ span#HW_badge.HW_softHidden {
 .ko-advanced-search__not-found {
   margin-top: 18px; }
 
-.ko-user-action-menu__dropdown .button--dropdown {
-  height: 32px;
-  width: 32px;
-  padding: 0; }
-
-.ko-user-action-menu__dropdown .ember-basic-dropdown-trigger[aria-expanded="true"] .button--dropdown {
-  /* Allows menu button to overlap menu */
-  padding-bottom: 1px;
-  z-index: 60;
-  border-bottom: #FFFFFF;
-  border-radius: 2px 2px 0 0;
-  background-color: #FFFFFF;
-  background-image: none;
-  box-shadow: none; }
-
-.ko-user-action-menu__dropdown .ember-basic-dropdown-content {
-  border: 1px solid #d1d5d7;
-  width: 160px;
-  position: absolute;
-  right: 0;
-  top: 31px;
-  z-index: 30; }
-
 .billing-address {
   padding: 20px 0; }
 
@@ -8405,6 +8386,29 @@ a.ko-timeline_item__subtitle_vt1m5j:hover {
   line-height: 16px;
   padding: 8px 10px;
   text-align: center; }
+
+/* styles for frontend-cp/components/ko-user-content/action-menu/styles.css */
+.ko-user-content_action-menu__dropdown_v3cdfg .button--dropdown {
+  width: 32px;
+  padding: 0; }
+
+.ko-user-content_action-menu__dropdown_v3cdfg .ember-basic-dropdown-trigger[aria-expanded="true"] .button--dropdown {
+  /* Allows menu button to overlap menu */
+  padding-bottom: 1px;
+  z-index: 60;
+  border-bottom: #FFFFFF;
+  border-radius: 2px 2px 0 0;
+  background-color: #FFFFFF;
+  background-image: none;
+  box-shadow: none; }
+
+.ko-user-content_action-menu__dropdown_v3cdfg .ember-basic-dropdown-content {
+  border: 1px solid #d1d5d7;
+  width: 160px;
+  position: absolute;
+  right: 0;
+  top: 31px;
+  z-index: 30; }
 
 /* styles for frontend-cp/components/ko-user-content/styles.css */
 .ko-user-content__modalBottom_1hb3jv {
