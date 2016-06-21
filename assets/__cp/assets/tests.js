@@ -11846,6 +11846,148 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/reorder-test', ['e
     });
   });
 });
+define('frontend-cp/tests/acceptance/admin/settings/security-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/helpers/expect-request'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsHelpersExpectRequest) {
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/settings/security', {
+    beforeEach: function beforeEach() {
+      useDefaultScenario();
+      login();
+    },
+
+    afterEach: function afterEach() {
+      logout();
+    }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('display settings', function (assert) {
+    visit('/admin/settings/security');
+    andThen(function () {
+      assert.ok(find('.ko-admin-settings-security-authentication').text().includes('Kayako standard'));
+      assert.equal(find('.ko-admin-settings-security-session-expiry').val(), '8');
+      assert.equal(find('.ko-admin-settings-security-login-attempt-limit').val(), '10');
+      assert.equal(find('.ko-admin-settings-security-password-expires-in').val(), '0');
+      assert.equal(find('.ko-admin-settings-security-minimum-length').val(), '8');
+      assert.equal(find('.ko-admin-settings-security-minimum-numbers').val(), '1');
+      assert.equal(find('.ko-admin-settings-security-minimum-symbols').val(), '1');
+      assert.ok(find('.ko-admin-settings-security-mixed-case').text().includes('Yes'));
+      assert.equal(find('.ko-admin-settings-security-maximum-consecutive').val(), '0');
+      assert.equal(find('.ko-admin-settings-security-ip-restrictions').val(), '');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('toggle authentication dropdown', function (assert) {
+    visit('/admin/settings/security');
+    andThen(function () {
+      assert.equal(find('.ko-admin-settings-security-login-url').length, 0);
+      assert.equal(find('.ko-admin-settings-security-logout-url').length, 0);
+      assert.equal(find('.ko-admin-settings-security-shared-secret').length, 0);
+      selectChoose('.ko-admin-settings-security-authentication', 'SSO (JWT)');
+    });
+    andThen(function () {
+      assert.equal(find('.ko-admin-settings-security-login-url').val(), 'login url');
+      assert.equal(find('.ko-admin-settings-security-logout-url').val(), 'logout url');
+      assert.equal(find('.ko-admin-settings-security-shared-secret').val(), 'shared secret');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('display customer settings', function (assert) {
+    visit('/admin/settings/security/customers');
+    andThen(function () {
+      assert.ok(find('.ko-admin-settings-security-authentication').text().includes('Kayako standard'));
+      assert.ok(find('.ko-admin-settings-security-twitter-login[aria-checked=true]').length === 1);
+      assert.ok(find('.ko-admin-settings-security-facebook-login[aria-checked=true]').length === 1);
+      assert.equal(find('.ko-admin-settings-security-session-expiry').val(), '72');
+      assert.equal(find('.ko-admin-settings-security-login-attempt-limit').val(), '10');
+      assert.equal(find('.ko-admin-settings-security-password-expires-in').val(), '0');
+      assert.equal(find('.ko-admin-settings-security-minimum-length').val(), '5');
+      assert.equal(find('.ko-admin-settings-security-minimum-numbers').val(), '1');
+      assert.equal(find('.ko-admin-settings-security-minimum-symbols').val(), '0');
+      assert.ok(find('.ko-admin-settings-security-mixed-case').text().includes('No'));
+      assert.equal(find('.ko-admin-settings-security-maximum-consecutive').val(), '0');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('toggle customer authentication dropdown', function (assert) {
+    visit('/admin/settings/security/customers');
+    andThen(function () {
+      assert.equal(find('.ko-admin-settings-security-login-url').length, 0);
+      assert.equal(find('.ko-admin-settings-security-logout-url').length, 0);
+      assert.equal(find('.ko-admin-settings-security-shared-secret').length, 0);
+      selectChoose('.ko-admin-settings-security-authentication', 'SSO (JWT)');
+    });
+    andThen(function () {
+      assert.equal(find('.ko-admin-settings-security-login-url').val(), 'customer login url');
+      assert.equal(find('.ko-admin-settings-security-logout-url').val(), 'customer logout url');
+      assert.equal(find('.ko-admin-settings-security-shared-secret').val(), 'customer shared secret');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('edit agent settings', function (assert) {
+    visit('/admin/settings/security');
+    selectChoose('.ko-admin-settings-security-authentication', 'SSO (JWT)');
+    fillIn('.ko-admin-settings-security-login-url', 'http://example.com');
+    fillIn('.ko-admin-settings-security-logout-url', 'http://example.com/logout');
+    fillIn('.ko-admin-settings-security-shared-secret', 'new shared secter');
+    fillIn('.ko-admin-settings-security-session-expiry', '9');
+    fillIn('.ko-admin-settings-security-login-attempt-limit', '11');
+    fillIn('.ko-admin-settings-security-password-expires-in', '1');
+    fillIn('.ko-admin-settings-security-minimum-length', '9');
+    fillIn('.ko-admin-settings-security-minimum-numbers', '2');
+    fillIn('.ko-admin-settings-security-minimum-symbols', '2');
+    selectChoose('.ko-admin-settings-security-mixed-case', 'No');
+    fillIn('.ko-admin-settings-security-maximum-consecutive', '1');
+    fillIn('.ko-admin-settings-security-ip-restrictions', '192.168.0.1');
+    click('button[name=submit].button');
+    (0, _frontendCpTestsHelpersExpectRequest['default'])(server.pretender, {
+      verb: 'PUT',
+      path: '/api/v1/settings',
+      headers: {
+        'X-Options': 'flat',
+        'X-Session-ID': 'pPW6tnOyJG6TmWCVea175d1bfc5dbf073a89ffeb6a2a198c61aae941Aqc7ahmzw8a'
+      },
+      payload: {
+        values: {
+          'security.agent.authentication_type': 'jwt',
+          'security.agent.sso.jwt.login_url': 'http://example.com',
+          'security.agent.sso.jwt.logout_url': 'http://example.com/logout',
+          'security.agent.sso.jwt.shared_secret': 'new shared secter',
+          'security.agent.session_expiry': '9',
+          'security.agent.login_attempt_limit': '11',
+          'security.agent.password.expires_in': '1',
+          'security.agent.password.min_characters': '9',
+          'security.agent.password.min_numbers': '2',
+          'security.agent.password.min_symbols': '2',
+          'security.agent.password.require_mixed_case': '0',
+          'security.agent.password.max_consecutive': '1',
+          'security.agent.ip_restriction': '192.168.0.1'
+        }
+      }
+    });
+  });
+});
+define('frontend-cp/tests/acceptance/admin/settings/users-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/settings/users', {
+    beforeEach: function beforeEach() {
+      useDefaultScenario();
+      login();
+    },
+
+    afterEach: function afterEach() {
+      logout();
+    }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('display settings', function (assert) {
+    visit('/admin/settings/users');
+    andThen(function () {
+      assert.ok(find('.ko-admin-settings-users-allow-from-unregistered[aria-checked=true]').length === 1);
+      assert.ok(find('.ko-admin-settings-users-require-captcha[aria-checked=true]').length === 1);
+      assert.equal(find('.ko-admin-settings-users-email-whitelist').val(), 'email whitelist');
+      assert.equal(find('.ko-admin-settings-users-email-blacklist').val(), 'email blacklist');
+    });
+  });
+});
 define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-tabs/styles', 'frontend-cp/session/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoTabsStyles, _frontendCpSessionStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Case | Create case', {
@@ -15716,6 +15858,167 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
   };
 });
 define('frontend-cp/tests/helpers/ember-sortable/test-helpers', ['exports', 'ember-sortable/helpers/drag', 'ember-sortable/helpers/reorder'], function (exports, _emberSortableHelpersDrag, _emberSortableHelpersReorder) {});
+define('frontend-cp/tests/helpers/expect-request', ['exports', 'ember'], function (exports, _ember) {
+  exports['default'] = expectRequest;
+  var copy = _ember['default'].copy;
+  var typeOf = _ember['default'].typeOf;
+
+  var STANDARD_RESPONSE = [200, {}, ''];
+
+  /**
+    Installs a mock endpoint for *exactly* the specified request and adds an
+    async-aware assertion that the request will be made at the expected time.
+    Example:
+    ```js
+    expectRequest(pretender, {
+      verb: 'POST',
+      path: '/favourites',
+      headers: {
+        Authorization: 'bearer some-cool-token'
+      },
+      payload: {
+        favourite: {
+          sport_id: 1,
+          position: 0
+        }
+      },
+      response: [
+        201,
+        { 'Content-Type': 'application/json' },
+        '{"favourite":{"id":101,"sport_id":1,"position":0}'
+      ]
+    });
+    ```
+    Note that in acceptance tests we monkey patch an `expectRequest` method onto
+    the pretender instance returned by `startPretender`. As such you use this
+    instead:
+    ```js
+    pretender.expectRequest({
+      // ...
+    });
+    ```
+    @public
+    @method expectRequest
+    @param {Pretender} [pretender]
+    @param {Object} [options]
+    @param {String} [options.message]
+      Optional message/nickname for this request. Appears in test output.
+      Useful for differentiating occurences of requests.
+    @param {String} [options.verb]
+      The HTTP method to use. Aliased as [options.method].
+      Default 'GET'.
+    @param {String} [options.path]
+      The request path.
+      Default '/'.
+    @param {Object} [options.headers]
+      Expected HTTP headers. We ignore `Accept`, `Content-Type`, and
+      `X-Requested-With` for convenience.
+      Default { Authorization: 'test-access-token' }.
+    @param {Object} [options.payload]
+      The expected JSON-encoded body of the request.
+      No default
+    @param {Object} [options.query]
+      The expected query params.
+    @param {Number} [options.count]
+      The number of times this request is expected to be made.
+      Default 1.
+    @param {Array|Function} [options.response]
+      The response when this request matches in Pretender-standard format
+      `[status, headers, body]`.
+  */
+
+  function expectRequest(pretender, options) {
+    var message = options.message || 'request';
+    var expectedVerb = (options.verb || options.method || 'get').toUpperCase();
+    var expectedPath = options.path || '/';
+    var expectedHeaders = options.headers || { Authorization: 'bearer test-access-token' };
+    var expectedPayload = options.payload || {};
+    var expectedQuery = options.query || {};
+    var expectedCount = options.count || 1;
+    var response = options.response || STANDARD_RESPONSE;
+    var actualCount = 0;
+
+    // Create key for this handler. We’ll use it in the generic
+    // request handler to pluck this specialised handler from
+    // the queue.
+    var key = generateKey(expectedVerb, expectedPath, expectedHeaders, expectedQuery, expectedPayload);
+
+    function genericHandler(req) {
+      var headers = sanitizeHeaders(req.requestHeaders, expectedHeaders);
+      var payload = JSON.parse(req.requestBody) || {};
+      var query = req.queryParams;
+      var reqKey = generateKey(expectedVerb, expectedPath, headers, query, payload);
+      var handler = fetchHandler(pretender, reqKey);
+
+      if (!handler) {
+        console.error('Unexpected request ' + reqKey); // eslint-disable-line
+        throw new Error('Unexpected request ' + reqKey);
+      }
+
+      return Reflect.apply(handler, this, [req]);
+    }
+
+    function specialisedHandler(req) {
+      actualCount++;
+
+      if (typeOf(response) === 'function') {
+        return response(req);
+      } else {
+        return response;
+      }
+    }
+
+    function assertion() {
+      equal(actualCount, expectedCount, 'Expected ' + message + ' ' + key);
+    }
+
+    // Register our specialised handler in the queue as many
+    // times as specified in `count`.
+    for (var i = 0; i < expectedCount; i++) {
+      storeHandler(pretender, key, specialisedHandler);
+    }
+
+    // This is our generic handler. Its job is to pop a specialised
+    // handler off the queue or complain if none exists.
+    pretender.register(expectedVerb, expectedPath, genericHandler);
+
+    // Whatever happens, we’ll queue up our assertion.
+    andThen(assertion);
+  }
+
+  function generateKey(verb, path, headers, query, payload) {
+    return JSON.stringify([verb.toUpperCase(), path, headers, query, payload]);
+  }
+
+  function storeHandler(pretender, key, handler) {
+    pretender.__handlers__ = pretender.__handlers__ || {};
+    pretender.__handlers__[key] = pretender.__handlers__[key] || [];
+    pretender.__handlers__[key].push(handler);
+  }
+
+  function fetchHandler(pretender, key) {
+    var handlers = pretender.__handlers__[key];
+    var handler = handlers && handlers.shift();
+    return handler;
+  }
+
+  function sanitizeHeaders(headers, expectedHeaders) {
+    var result = copy(headers, false);
+
+    if (!expectedHeaders.hasOwnProperty('Accept')) {
+      Reflect.deleteProperty(result, 'Accept');
+    }
+    if (!expectedHeaders.hasOwnProperty('Content-Type')) {
+      Reflect.deleteProperty(result, 'Content-Type');
+    }
+    if (!expectedHeaders.hasOwnProperty('X-Requested-With')) {
+      Reflect.deleteProperty(result, 'X-Requested-With');
+    }
+
+    return result;
+  }
+});
+/* global equal */
 define('frontend-cp/tests/helpers/fill-in-rich-text-editor', ['exports', 'ember', 'frontend-cp/components/ko-text-editor/styles'], function (exports, _ember, _frontendCpComponentsKoTextEditorStyles) {
   exports['default'] = _ember['default'].Test.registerAsyncHelper('fillInRichTextEditor', function (app, html) {
     var editor = _ember['default'].$('.' + _frontendCpComponentsKoTextEditorStyles['default'].froalaTextArea);

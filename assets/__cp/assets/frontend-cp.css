@@ -687,7 +687,7 @@ textarea {
 * Adds an ellipsis once the content has reached the width passed in.
 * Note: 100% is valid.
 */
-.ko-agent-dropdown__nav-item, .ko-agent-dropdown__footer, .ko-form_field__error, .ko-form_field_errors__error, .ko-form_field_help, .ko-simple-list__header_1uqjo0,
+.ko-agent-dropdown__nav-item, .ko-agent-dropdown__footer, .ko-form_field__error, .ko-form_field_errors__error, .ko-form_field_help, .ko-simple-list__header_1uqjo0, .session_admin_settings_security_customers__description_e3ldqh, .session_admin_settings_security_index__description_mwqrmo,
 .t-small {
   font-size: 12px !important; }
 
@@ -2208,10 +2208,10 @@ img {
   -webkit-transform: rotateY(180deg);
           transform: rotateY(180deg); }
 
-.ko-agent-dropdown__nav-item, .ko-agent-dropdown__footer, .ko-form_field_help, .ko-info-bar_item__header, .ko-info-bar_field_select-multiple_trigger__title_1m2eux, .ko-simple-list__header_1uqjo0,
+.ko-agent-dropdown__nav-item, .ko-agent-dropdown__footer, .ko-form_field_help, .ko-info-bar_item__header, .ko-info-bar_field_select-multiple_trigger__title_1m2eux, .ko-simple-list__header_1uqjo0, .session_admin_settings_security_customers__description_e3ldqh, .session_admin_settings_security_index__description_mwqrmo,
 .t-caption {
   color: #838D94; }
-  .is-active.ko-agent-dropdown__nav-item, .is-active.ko-agent-dropdown__footer, .is-active.ko-form_field_help, .is-active.ko-info-bar_item__header, .is-active.ko-info-bar_field_select-multiple_trigger__title_1m2eux, .is-active.ko-simple-list__header_1uqjo0,
+  .is-active.ko-agent-dropdown__nav-item, .is-active.ko-agent-dropdown__footer, .is-active.ko-form_field_help, .is-active.ko-info-bar_item__header, .is-active.ko-info-bar_field_select-multiple_trigger__title_1m2eux, .is-active.ko-simple-list__header_1uqjo0, .is-active.session_admin_settings_security_customers__description_e3ldqh, .is-active.session_admin_settings_security_index__description_mwqrmo,
   .t-caption.is-active {
     color: inherit; }
 
@@ -5286,7 +5286,6 @@ span#HW_badge.HW_softHidden {
   border-radius: 2px;
   border: 1px solid #D1D5D7;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05);
-  width: 285px;
   -webkit-transition: border-color 0.1s, box-shadow 0.1s;
   transition: border-color 0.1s, box-shadow 0.1s; }
 
@@ -5296,6 +5295,12 @@ span#HW_badge.HW_softHidden {
 
 .ko-input__monospace_33c6q8 {
   font-family: monospace; }
+
+.ko-input__small_33c6q8 {
+  width: 80px; }
+
+.ko-input__medium_33c6q8 {
+  width: 285px; }
 
 .ko-input__full_33c6q8 {
   width: 100%; }
@@ -5674,6 +5679,9 @@ span#HW_badge.HW_softHidden {
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1; }
+
+.ko-select__select--small_yahmzy {
+  width: 80px; }
 
 .ko-select__select--medium_yahmzy {
   width: 225px; }
@@ -8550,6 +8558,44 @@ a.ko-timeline_item__subtitle_vt1m5j:hover {
 .session_admin_people_teams_index__team_1tvsvh {
   width: 50%;
   padding-left: 18px; }
+
+/* styles for frontend-cp/session/admin/settings/security/customers/styles.css */
+.session_admin_settings_security_customers__field_e3ldqh {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: 10px; }
+
+.session_admin_settings_security_customers__field-column_e3ldqh {
+  width: 50%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
+
+.session_admin_settings_security_customers__description_e3ldqh {
+  margin-left: 10px; }
+
+/* styles for frontend-cp/session/admin/settings/security/index/styles.css */
+.session_admin_settings_security_index__field_mwqrmo {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: 10px; }
+
+.session_admin_settings_security_index__field-column_mwqrmo {
+  width: 50%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
+
+.session_admin_settings_security_index__description_mwqrmo {
+  margin-left: 10px; }
 
 /* styles for frontend-cp/session/agent/cases/index/styles.css */
 .session_agent_cases_index__index_1luxbl {
