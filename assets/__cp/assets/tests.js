@@ -2703,6 +2703,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/index-test', ['ex
   });
 });
 define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-admin/automation-actions-builder/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoAdminAutomationActionsBuilderStyles) {
+  function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
   var originalConfirm = undefined,
       role = undefined;
@@ -3096,6 +3097,8 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('Creating a trigger with a "assignee" action', function (assert) {
+    var _values;
+
     assert.expect(11);
     server.create('automation-action-definition', {
       label: 'Assignee',
@@ -3103,7 +3106,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
       options: ['CHANGE'],
       input_type: 'AUTOCOMPLETE',
       value_type: 'NUMERIC',
-      values: [],
+      values: (_values = {}, _defineProperty(_values, '(current_user)', 'Current User'), _defineProperty(_values, '(requester)', 'Requester'), _values),
       attributes: [],
       group: 'CASE',
       resource_type: 'automation_action_definition'
@@ -3139,6 +3142,54 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
       assertChannelAndEventAreCorrect(assert);
       assertPredicateCollestionsAreCorrect(assert);
       assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2) .ember-power-select-trigger').text().trim(), 'Alicia Morris', 'The assignee is selected');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Creating a trigger with a "assignee" action (using preset)', function (assert) {
+    var _values2;
+
+    assert.expect(11);
+    server.create('automation-action-definition', {
+      label: 'Assignee',
+      name: 'assignee',
+      options: ['CHANGE'],
+      input_type: 'AUTOCOMPLETE',
+      value_type: 'NUMERIC',
+      values: (_values2 = {}, _defineProperty(_values2, '(current_user)', 'Current User'), _defineProperty(_values2, '(requester)', 'Requester'), _values2),
+      attributes: [],
+      group: 'CASE',
+      resource_type: 'automation_action_definition'
+    });
+    server.create('user', { full_name: 'Jane Morris', role: role });
+    server.create('user', { full_name: 'Alicia Morris', role: role });
+    server.create('user', { full_name: 'Ben Morris', role: role });
+    visit('/admin/automation/triggers/new');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/triggers/new');
+      fillIn('input[name="title"]', 'Sample trigger name');
+
+      fillChannelAndEvent();
+      fillPredicateCollections();
+
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Assignee');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'change');
+      selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'Requester');
+      click('.button[name=submit]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/triggers');
+      assert.equal(find('.qa-admin_triggers--enabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 1, 'The trigger has been created and it is enabled');
+      assert.equal(find('.qa-admin_triggers--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row).length, 0, 'There are no disabled triggers');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default']['row--actionable']);
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/automation/triggers/1');
+      assertChannelAndEventAreCorrect(assert);
+      assertPredicateCollestionsAreCorrect(assert);
+      assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2) .ember-power-select-trigger').text().trim(), 'Requester', 'The preset is selected');
     });
   });
 
