@@ -636,7 +636,7 @@ textarea {
 /*
 	Brand configuration
    ========================================================================== */
-.ko-agent-dropdown__nav-item:focus, .ko-case_macro-selector .ember-power-select-search input:focus, .checkbox:focus, .ko-radio__container:focus, .ko-toggle__container:focus, .ko-input__input_33c6q8:focus, .ko-admin_brands_form_domain-input__container_1hdt0q.ko-admin_brands_form_domain-input__focused_1hdt0q, .ko-case_macro-selector_trigger__trigger_6p3bsw:focus, .ko-checkbox__checkbox_va0kgl:focus {
+.ko-agent-dropdown__nav-item:focus, .ko-case_macro-selector .ember-power-select-search input:focus, .checkbox:focus, .ko-radio__container:focus, .ko-toggle__container:focus, .ko-input__input_33c6q8:focus, .ko-admin_brands_form_domain-input__container_1hdt0q.ko-admin_brands_form_domain-input__focused_1hdt0q, .ko-admin_trial_form-input__prefixed-input_8a9rk6.ko-admin_trial_form-input__focused_8a9rk6, .ko-case_macro-selector_trigger__trigger_6p3bsw:focus, .ko-checkbox__checkbox_va0kgl:focus {
   outline: none;
   border-color: #4EAFCB;
   box-shadow: 0 0 4px 0 rgba(78, 174, 203, 0.65), inset 0 1px 1px 0 rgba(0, 0, 0, 0.08); }
@@ -4699,7 +4699,8 @@ span#HW_badge.HW_softHidden {
   cursor: pointer;
   -webkit-box-flex: 1;
       -ms-flex: 1;
-          flex: 1; }
+          flex: 1;
+  width: 258px; }
 
 .ko-session-widgets__notification {
   line-height: 42px;
@@ -5611,9 +5612,6 @@ span#HW_badge.HW_softHidden {
       -ms-flex: 1;
           flex: 1; }
 
-.session__nav-secondary__sidebar_1qdlgo {
-  width: 300px; }
-
 /* styles for frontend-cp/components/ko-layout/admin/styles.css */
 .ko-layout_admin__index_1dfrbn {
   -webkit-box-pack: center;
@@ -6301,6 +6299,19 @@ a.ko-admin_plans_index__cancel_1pprhr {
   top: 3px;
   margin-left: 5px; }
 
+.ko-admin_plans_index__plans-container_1pprhr {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 30px 0; }
+
+.ko-admin_plans_index__plans-label_1pprhr {
+  width: 25%;
+  font-size: 16px; }
+
+.ko-admin_plans_index__plans-body_1pprhr {
+  width: 75%; }
+
 /* styles for frontend-cp/components/ko-admin/plans/notification/styles.css */
 .ko-admin_plans_notification__notification_tzt8x0 {
   font-size: 14px;
@@ -6319,96 +6330,74 @@ a.ko-admin_plans_index__cancel_1pprhr {
 
 /* styles for frontend-cp/components/ko-admin/rateplans/item/styles.css */
 .ko-admin_rateplans_item__cell_cw0pha {
-  -webkit-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
-  padding-left: 18px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center; }
-
-.ko-admin_rateplans_item__cell_cw0pha:first-child {
-  padding-left: 0; }
-
-.ko-admin_rateplans_item__planitem_cw0pha {
-  padding: 30px 24px;
-  text-align: center;
-  width: 100%;
-  border: 1px solid #D1D5D7;
-  position: relative;
-  border-radius: 4px;
+  background: #F7F8F9;
+  border: 2px solid #fff;
   cursor: pointer;
-  -webkit-transition: border 300ms ease;
-  transition: border 300ms ease; }
-
-.ko-admin_rateplans_item__planitem_cw0pha:hover, .ko-admin_rateplans_item__planitem_cw0pha.ko-admin_rateplans_item__selected_cw0pha {
-  border-color: #89a83b !important;
-  box-shadow: 0px 0px 2px 0px rgba(137, 168, 59, 0.55), inset 0px 1px 1px 0px rgba(0, 0, 0, 0.08); }
-
-.ko-admin_rateplans_item__planitem_cw0pha.ko-admin_rateplans_item__selected_cw0pha:before {
-  height: 18px;
-  width: 18px;
-  text-align: center;
-  font-family: 'icomoon';
-  content: "\E61D";
-  speak: none;
-  color: #fff;
-  position: absolute;
-  right: 0;
-  top: 0;
-  background: #89a83b; }
-
-.ko-admin_rateplans_item__planitem_cw0pha.ko-admin_rateplans_item__disabled_cw0pha {
-  opacity: 0.4;
-  cursor: not-allowed; }
-
-.ko-admin_rateplans_item__planname_cw0pha {
-  font-weight: 600;
-  font-size: 14px;
-  margin-bottom: 6px;
-  line-height: 18px; }
-
-.ko-admin_rateplans_item__planprice_cw0pha {
-  font-size: 30px;
-  line-height: 38px; }
-
-.ko-admin_rateplans_item__plancaption_cw0pha {
-  font-size: 12px;
-  color: #838D94; }
-
-.ko-admin_rateplans_item__plancollaborators_cw0pha {
-  font-size: 13px;
-  margin-top: 27px;
-  padding-top: 10px;
+  border-radius: 4px;
   position: relative; }
 
-.ko-admin_rateplans_item__plancollaborators_cw0pha:before {
-  content: "";
-  background: #D1D5D7;
-  height: 2px;
-  border-radius: 8px;
-  position: absolute;
-  top: 0;
-  left: 27%;
-  right: 27%; }
+.ko-admin_rateplans_item__cell_cw0pha.ko-admin_rateplans_item__selected_cw0pha {
+  background: #fff;
+  border-color: #89a83b;
+  padding-bottom: 34px; }
 
-/* styles for frontend-cp/components/ko-admin/rateplans/list/styles.css */
-.ko-admin_rateplans_list__planslist_kou2ll {
-  margin-top: 40px; }
+.ko-admin_rateplans_item__cell_cw0pha.ko-admin_rateplans_item__disabled_cw0pha {
+  opacity: 0.3;
+  pointer-events: none;
+  cursor: not-allowed; }
 
-.ko-admin_rateplans_list__row_kou2ll {
+.ko-admin_rateplans_item__plan-item_cw0pha {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: stretch;
-      -ms-flex-align: stretch;
-          align-items: stretch; }
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 24px 27px; }
 
+.ko-admin_rateplans_item__plan-name_cw0pha {
+  color: #2D3138;
+  font-size: 16px;
+  font-weight: 600;
+  width: 150px; }
+
+.ko-admin_rateplans_item__plan-description_cw0pha {
+  color: #838D94;
+  font-size: 14px;
+  width: 300px; }
+
+.ko-admin_rateplans_item__plan-maths_cw0pha {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 180px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end; }
+
+/* styles for frontend-cp/components/ko-admin/rateplans/list/styles.css */
 .ko-admin_rateplans_list__listfilters_kou2ll {
   margin-top: 25px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+
+.ko-admin_rateplans_list__radio_kou2ll {
+  margin-right: 15px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+
+.ko-admin_rateplans_list__term_savings_kou2ll {
+  color: #89a83b;
+  font-weight: 600;
+  margin-left: 5px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -6416,9 +6405,76 @@ a.ko-admin_plans_index__cancel_1pprhr {
       -ms-flex-pack: justify;
           justify-content: space-between; }
 
-.ko-admin_rateplans_list__agentscount_kou2ll {
+/* styles for frontend-cp/components/ko-admin/rateplans/price/styles.css */
+.ko-admin_rateplans_price__plan-price-amount_li6k6e {
+  font-size: 30px;
+  line-height: 30px;
+  color: #2D3138; }
+
+.ko-admin_rateplans_price__plan-price_li6k6e {
+  text-align: center;
+  width: 80px; }
+
+.ko-admin_rateplans_price__label-helper_li6k6e {
+  color: #838D94;
+  font-size: 12px;
+  margin-top: 4px; }
+
+/* styles for frontend-cp/components/ko-admin/rateplans/summary/styles.css */
+.ko-admin_rateplans_summary__plan-notification_hzi5l3 {
+  background: #EEF7FA;
+  padding: 8px 27px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  -webkit-transition: position 300ms ease, padding 300ms ease;
+  transition: position 300ms ease, padding 300ms ease;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
+
+.ko-admin_rateplans_summary__sticky_hzi5l3 {
+  position: fixed;
+  top: 84px;
+  left: 232px;
+  right: 45px;
+  bottom: auto;
+  padding: 27px 27px;
+  border-bottom: 1px solid #D1D5D7;
+  box-shadow: 0px 2px 5px #D1D5D7;
+  z-index: 1; }
+
+/* styles for frontend-cp/components/ko-admin/rateplans/units/styles.css */
+.ko-admin_rateplans_units__plan-units_cuepi6 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   width: 80px;
+  margin-right: 20px;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
+
+.ko-admin_rateplans_units__agents-count_cuepi6 {
+  width: 55px;
   display: inline-block; }
+
+.ko-admin_rateplans_units__label-helper_cuepi6 {
+  color: #838D94;
+  font-size: 12px;
+  margin-top: 4px; }
+
+.ko-admin_rateplans_units__operator_cuepi6 {
+  color: #BFC5D1;
+  font-weight: 600;
+  font-size: 20px; }
 
 /* styles for frontend-cp/components/ko-admin/roles/form/styles.css */
 .ko-admin_roles_form__help-link_1nljr2 {
@@ -6533,87 +6589,59 @@ a.ko-admin_plans_index__cancel_1pprhr {
   width: calc(100% / 3);
   padding-left: 18px; }
 
-/* styles for frontend-cp/components/ko-admin/trial/index/styles.css */
-.ko-admin_trial_index__notification_gzo7px {
+/* styles for frontend-cp/components/ko-admin/trial/form-input/styles.css */
+.ko-admin_trial_form-input__prefixed-input_8a9rk6 {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-align: center;
       -ms-flex-align: center;
-          align-items: center; }
-
-.ko-admin_trial_index__steps-container_gzo7px {
-  margin-top: 36px;
-  counter-reset: section; }
-
-.ko-admin_trial_index__step_gzo7px {
-  padding: 20px 0;
-  border-bottom: 1px solid #EBEEF0;
-  margin-left: 40px;
-  position: relative; }
-
-.ko-admin_trial_index__step_gzo7px:before {
-  counter-increment: section;
-  content: counter(section);
-  width: 30px;
-  height: 30px;
-  border-radius: 100%;
-  color: #838D94;
+          align-items: center;
   border: 1px solid #D1D5D7;
-  background: #F7F8F9;
-  position: absolute;
-  text-align: center;
-  line-height: 30px;
-  font-size: 16px;
-  left: -40px;
-  top: 15px;
-  z-index: 1; }
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05);
+  border-radius: 2px;
+  width: 285px;
+  -webkit-transition: border-color 0.1s, box-shadow 0.1s;
+  transition: border-color 0.1s, box-shadow 0.1s; }
 
-.ko-admin_trial_index__step_gzo7px:after {
-  content: "";
-  width: 1px;
-  height: 100%;
-  position: absolute;
-  left: -25px;
-  top: 15px;
-  background: #EBEEF0; }
+.ko-admin_trial_form-input__prefixed-input-prefix_8a9rk6 {
+  background-color: #eeeeee;
+  padding: 8px 10px;
+  padding: 5px 9px; }
 
-.ko-admin_trial_index__step-header_gzo7px {
-  font-size: 16px;
-  color: #838D94;
-  cursor: pointer; }
+.ko-admin_trial_form-input__prefixed-input-input_8a9rk6 {
+  line-height: 18px;
+  padding: 5px 9px;
+  border: none;
+  width: 100%; }
+
+.ko-admin_trial_form-input__prefixed-input-input_8a9rk6:focus {
+  outline: none; }
+
+.ko-admin_trial_form-input__prefixed-input-input_8a9rk6:disabled {
+  background-color: #eeeeee;
+  color: #A1AAAF; }
+
+/* styles for frontend-cp/components/ko-admin/trial/index/styles.css */
+.ko-admin_trial_index__step_gzo7px {
+  border-bottom: 1px solid #EBEEF0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 30px 0; }
+
+.ko-admin_trial_index__step_gzo7px:first-child {
+  padding-top: 0; }
+
+.ko-admin_trial_index__step-label_gzo7px {
+  width: 25%;
+  font-size: 16px; }
 
 .ko-admin_trial_index__step-body_gzo7px {
-  overflow: hidden;
-  max-height: 0;
-  -webkit-transition: max-height 200ms linear;
-  transition: max-height 200ms linear; }
+  width: 75%; }
 
-.ko-admin_trial_index__form-wrapper_gzo7px {
-  margin-top: 40px; }
-
-.ko-admin_trial_index__expanded_gzo7px .ko-admin_trial_index__step-header_gzo7px {
-  color: #2D3138; }
-
-.ko-admin_trial_index__expanded_gzo7px .ko-admin_trial_index__step-body_gzo7px {
-  max-height: 1200px;
-  -webkit-transition: max-height 100ms linear;
-  transition: max-height 100ms linear; }
-
-.ko-admin_trial_index__expanded_gzo7px:before {
-  background: #fff;
-  color: #2D3138; }
-
-.ko-admin_trial_index__step-actions_gzo7px {
-  margin-top: 45px;
-  text-align: right; }
-
-.ko-admin_trial_index__prev_gzo7px {
-  margin-right: 10px;
-  color: #2D3138; }
-
-.ko-admin_trial_index__button_gzo7px {
-  min-width: 172px; }
+.ko-admin_trial_index__step-footer_gzo7px {
+  margin-top: 25px; }
 
 /* styles for frontend-cp/components/ko-admin/triggers/form/styles.css */
 .ko-admin_triggers_form__title-input-layout_1n627y {
@@ -8410,6 +8438,21 @@ a.ko-timeline_item__subtitle_vt1m5j:hover {
   line-height: 16px;
   padding: 8px 10px;
   text-align: center; }
+
+/* styles for frontend-cp/components/ko-trial-notification/styles.css */
+.ko-trial-notification__upgrade_jhhnes {
+  line-height: 42px;
+  height: 42px;
+  border-left: 1px solid #D1D5D7;
+  padding: 0 18px; }
+
+.ko-trial-notification__upgrade-action_jhhnes {
+  color: #89a83b;
+  font-weight: 600; }
+
+.ko-trial-notification__expired_jhhnes {
+  font-weight: 600;
+  margin-right: 5px; }
 
 /* styles for frontend-cp/components/ko-user-content/action-menu/styles.css */
 .ko-user-content_action-menu__dropdown_v3cdfg .button--dropdown {
