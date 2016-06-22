@@ -158,6 +158,9 @@
   "units.GB": "GB",
   "units.B": "B",
 
+  "at_time": "at {time}",
+  "on_date": "on {date}",
+
   "confirm_delete.header": "Delete",
   "confirm_delete.body": "Delete this item?",
 
