@@ -5463,7 +5463,8 @@ span#HW_badge.HW_softHidden {
   border: 1px solid #D1D5D7;
   box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05);
   -webkit-transition: border-color 0.1s, box-shadow 0.1s;
-  transition: border-color 0.1s, box-shadow 0.1s; }
+  transition: border-color 0.1s, box-shadow 0.1s;
+  resize: vertical; }
 
 .ko-input__input_33c6q8:disabled {
   background-color: #eeeeee;
