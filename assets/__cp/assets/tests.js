@@ -148,13 +148,15 @@ define('frontend-cp/tests/acceptance/admin/account/overview/index-test', ['expor
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-admin/plans/index/styles', 'frontend-cp/components/ko-admin/rateplans/item/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoAdminPlansIndexStyles, _frontendCpComponentsKoAdminRateplansItemStyles) {
+define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-admin/plans/index/styles', 'frontend-cp/components/ko-admin/rateplans/item/styles', 'frontend-cp/components/ko-admin/rateplans/price/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoAdminPlansIndexStyles, _frontendCpComponentsKoAdminRateplansItemStyles, _frontendCpComponentsKoAdminRateplansPriceStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/account/plans Index', {
     beforeEach: function beforeEach() {
       /*eslint-disable camelcase*/
       var locale = server.create('locale', { locale: 'en-us' });
-      server.create('plan', { limits: {}, features: [] });
+      server.create('plan', { limits: {
+          agents: 20
+        }, features: [] });
       var adminRole = server.create('role', { type: 'ADMIN' });
       var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
@@ -171,16 +173,16 @@ define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports'
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/account/plans');
-      assert.equal(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planitem).length, 5);
+      assert.equal(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].cell).length, 5);
     });
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('switching plan', function (assert) {
     visit('/admin/account/plans');
-    click('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planitem + ':eq(2)');
+    click('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].cell + ':eq(2)');
 
     andThen(function () {
-      assert.equal(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planitem + ':eq(2)').hasClass(_frontendCpComponentsKoAdminRateplansItemStyles['default'].selected), true);
+      assert.equal(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].cell + ':eq(2)').hasClass(_frontendCpComponentsKoAdminRateplansItemStyles['default'].selected), true);
       assert.equal(find('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].cancel).length, 1);
     });
   });
@@ -190,16 +192,16 @@ define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports'
     visit('/admin/account/plans');
     andThen(function () {
       selectedIndex = find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].selected).index();
-      selectChoose('.payment-terms', 'Billed Annually');
+      click('.ko-radio__label:eq(1)');
     });
     andThen(function () {
-      assert.equal(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planitem + ':eq(' + selectedIndex + ')').hasClass(_frontendCpComponentsKoAdminRateplansItemStyles['default'].selected), true);
+      assert.equal(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].cell + ':eq(' + selectedIndex + ')').hasClass(_frontendCpComponentsKoAdminRateplansItemStyles['default'].selected), true);
     });
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('updating plan', function (assert) {
     visit('/admin/account/plans');
-    click('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planitem + ':eq(2)');
+    click('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].cell + ':eq(2)');
     click('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].button);
     andThen(function () {
       assert.equal(find('.ko-toast').length, 1);
@@ -211,15 +213,15 @@ define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports'
     visit('/admin/account/plans');
     andThen(function () {
       selectedPlanIndex = find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].selected).index();
-      click('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planitem + ':eq(2)');
+      click('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].cell + ':eq(2)');
     });
     andThen(function () {
-      assert.equal(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planitem + ':eq(2)').hasClass(_frontendCpComponentsKoAdminRateplansItemStyles['default'].selected), true);
-      click('a:contains(Cancel)');
+      assert.equal(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].cell + ':eq(2)').hasClass(_frontendCpComponentsKoAdminRateplansItemStyles['default'].selected), true);
+      click('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].cancel);
     });
     andThen(function () {
-      assert.equal(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planitem + ':eq(2)').hasClass(_frontendCpComponentsKoAdminRateplansItemStyles['default'].selected), false);
-      assert.equal(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planitem + ':eq(' + selectedPlanIndex + ')').hasClass(_frontendCpComponentsKoAdminRateplansItemStyles['default'].selected), true);
+      assert.equal(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].cell + ':eq(2)').hasClass(_frontendCpComponentsKoAdminRateplansItemStyles['default'].selected), false);
+      assert.equal(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].cell + ':eq(' + selectedPlanIndex + ')').hasClass(_frontendCpComponentsKoAdminRateplansItemStyles['default'].selected), true);
     });
   });
 
@@ -227,15 +229,15 @@ define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports'
     var selectedPlanAmount = 0;
     visit('/admin/account/plans');
     andThen(function () {
-      selectedPlanAmount = find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planitem + ' .' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planprice).text();
-      selectChoose('.payment-terms', 'Billed Annually');
+      selectedPlanAmount = find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].selected + ' .' + _frontendCpComponentsKoAdminRateplansPriceStyles['default']['plan-price-amount']).text().trim();
+      click('.ko-radio__label:eq(1)');
     });
     andThen(function () {
-      assert.notEqual(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planitem + ' .' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planprice).text(), selectedPlanAmount);
+      assert.notEqual(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].selected + ' .' + _frontendCpComponentsKoAdminRateplansPriceStyles['default']['plan-price-amount']).text().trim(), selectedPlanAmount);
       click('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].cancel);
     });
     andThen(function () {
-      assert.equal(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planitem + ' .' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planprice).text(), selectedPlanAmount);
+      assert.equal(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].selected + ' .' + _frontendCpComponentsKoAdminRateplansPriceStyles['default']['plan-price-amount']).text().trim(), selectedPlanAmount);
     });
   });
 
@@ -255,13 +257,23 @@ define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports'
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/account/trial/index-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-admin/rateplans/item/styles', 'frontend-cp/components/ko-admin/trial/index/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoAdminRateplansItemStyles, _frontendCpComponentsKoAdminTrialIndexStyles) {
+define('frontend-cp/tests/acceptance/admin/account/trial/index-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-admin/rateplans/item/styles', 'frontend-cp/components/ko-admin/rateplans/price/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoAdminRateplansItemStyles, _frontendCpComponentsKoAdminRateplansPriceStyles) {
+
+  var currencyToNumber = function currencyToNumber(value) {
+    return Number(value.replace(/[^0-9\.]+/g, ''));
+  };
+
+  var addVat = function addVat(amount) {
+    return amount + amount * 20 / 100;
+  };
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/account/trial Index', {
     beforeEach: function beforeEach() {
       /*eslint-disable camelcase*/
       var locale = server.create('locale', { locale: 'en-us' });
-      server.create('plan', { limits: [], features: [] });
+      server.create('plan', { limits: {
+          agents: 20
+        }, features: [] });
       var adminRole = server.create('role', { type: 'ADMIN' });
       var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
@@ -278,58 +290,119 @@ define('frontend-cp/tests/acceptance/admin/account/trial/index-test', ['exports'
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/account/trial');
-      assert.equal(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planitem).length, 5);
+      assert.equal(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].cell).length, 5);
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('rateplans step should be active by default', function (assert) {
+  (0, _frontendCpTestsHelpersQunit.test)('trial selected plan should be active by default', function (assert) {
     visit('/admin/account/trial');
 
     andThen(function () {
-      assert.equal(find('.' + _frontendCpComponentsKoAdminTrialIndexStyles['default'].step + ':eq(0)').hasClass(_frontendCpComponentsKoAdminTrialIndexStyles['default'].expanded), true);
+      var selectedPlan = find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].selected);
+      assert.equal(selectedPlan.find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default']['plan-name']).text(), 'Standard');
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('clicking on next step without selecting the rateplan should work', function (assert) {
+  (0, _frontendCpTestsHelpersQunit.test)('display correct subscription amount by multiplying the agents count and subscription price', function (assert) {
     visit('/admin/account/trial');
 
     andThen(function () {
-      click('.move-to-vat');
-    });
-
-    andThen(function () {
-      assert.equal(find('.' + _frontendCpComponentsKoAdminTrialIndexStyles['default'].step + ':eq(0)').hasClass(_frontendCpComponentsKoAdminTrialIndexStyles['default'].expanded), false);
-      assert.equal(find('.' + _frontendCpComponentsKoAdminTrialIndexStyles['default'].step + ':eq(1)').hasClass(_frontendCpComponentsKoAdminTrialIndexStyles['default'].expanded), true);
+      var selectedPlan = find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].selected);
+      var price = currencyToNumber(selectedPlan.find('.' + _frontendCpComponentsKoAdminRateplansPriceStyles['default']['plan-price-amount']).text());
+      var numOfAgents = selectedPlan.find('.agents-count').val();
+      var subscriptionAmount = currencyToNumber(selectedPlan.find('.gross-total').text());
+      assert.equal(price * numOfAgents, subscriptionAmount);
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('clicking next on rateplans step after selecting new plan should move to vat step', function (assert) {
+  (0, _frontendCpTestsHelpersQunit.test)('update subscription amount when number of seats are increased', function (assert) {
     visit('/admin/account/trial');
 
     andThen(function () {
-      click('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planitem + ':eq(2)');
-      click('.move-to-vat');
+      fillIn('.agents-count', 3);
     });
 
     andThen(function () {
-      assert.equal(find('.' + _frontendCpComponentsKoAdminTrialIndexStyles['default'].step + ':eq(0)').hasClass(_frontendCpComponentsKoAdminTrialIndexStyles['default'].expanded), false);
-      assert.equal(find('.' + _frontendCpComponentsKoAdminTrialIndexStyles['default'].step + ':eq(1)').hasClass(_frontendCpComponentsKoAdminTrialIndexStyles['default'].expanded), true);
+      var selectedPlan = find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].selected);
+      var price = currencyToNumber(selectedPlan.find('.' + _frontendCpComponentsKoAdminRateplansPriceStyles['default']['plan-price-amount']).text());
+      var subscriptionAmount = currencyToNumber(selectedPlan.find('.gross-total').text());
+      assert.equal(price * 3, subscriptionAmount);
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('clicking next on vatid step should move to billing step', function (assert) {
+  (0, _frontendCpTestsHelpersQunit.test)('increase subscription amount when billing term is set to annual', function (assert) {
+    var initialSubscriptionAmount = 0;
     visit('/admin/account/trial');
 
     andThen(function () {
-      click('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].planitem + ':eq(2)');
-      click('.move-to-vat');
-      click('.move-to-billing');
+      var selectedPlan = find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].selected);
+      initialSubscriptionAmount = currencyToNumber(selectedPlan.find('.gross-total').text());
+      click('.ko-radio__label:eq(1)');
     });
 
     andThen(function () {
-      assert.equal(find('.' + _frontendCpComponentsKoAdminTrialIndexStyles['default'].step + ':eq(0)').hasClass(_frontendCpComponentsKoAdminTrialIndexStyles['default'].expanded), false);
-      assert.equal(find('.' + _frontendCpComponentsKoAdminTrialIndexStyles['default'].step + ':eq(1)').hasClass(_frontendCpComponentsKoAdminTrialIndexStyles['default'].expanded), false);
-      assert.equal(find('.' + _frontendCpComponentsKoAdminTrialIndexStyles['default'].step + ':eq(2)').hasClass(_frontendCpComponentsKoAdminTrialIndexStyles['default'].expanded), true);
+      var selectedPlan = find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].selected);
+      var subscriptionAmount = currencyToNumber(selectedPlan.find('.gross-total').text());
+      assert.equal(initialSubscriptionAmount < subscriptionAmount, true);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('add 20% VAT to the subscription amount when one of the european countries is selected', function (assert) {
+    var initialSubscriptionAmount = 0;
+    visit('/admin/account/trial');
+
+    andThen(function () {
+      var selectedPlan = find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].selected);
+      initialSubscriptionAmount = currencyToNumber(selectedPlan.find('.gross-total').text());
+      selectChoose('.countries', 'Greece');
+    });
+
+    andThen(function () {
+      var selectedPlan = find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].selected);
+      var subscriptionAmount = currencyToNumber(selectedPlan.find('.gross-total').text());
+      assert.equal(addVat(initialSubscriptionAmount), subscriptionAmount);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('remove VAT charges when VAT ID is present', function (assert) {
+    var initialSubscriptionAmount = 0;
+    visit('/admin/account/trial');
+
+    andThen(function () {
+      var selectedPlan = find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].selected);
+      initialSubscriptionAmount = currencyToNumber(selectedPlan.find('.gross-total').text());
+      selectChoose('.countries', 'Greece');
+    });
+
+    andThen(function () {
+      fillIn('.vat-id', '100120102');
+    });
+
+    andThen(function () {
+      var selectedPlan = find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].selected);
+      var subscriptionAmount = currencyToNumber(selectedPlan.find('.gross-total').text());
+      assert.equal(initialSubscriptionAmount, subscriptionAmount);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('should charge 20% VAT when country is UK even if VAT ID is present', function (assert) {
+    var initialSubscriptionAmount = 0;
+    visit('/admin/account/trial');
+
+    andThen(function () {
+      var selectedPlan = find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].selected);
+      initialSubscriptionAmount = currencyToNumber(selectedPlan.find('.gross-total').text());
+      selectChoose('.countries', 'United Kingdom');
+    });
+
+    andThen(function () {
+      fillIn('.vat-id', '100120102');
+    });
+
+    andThen(function () {
+      var selectedPlan = find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].selected);
+      var subscriptionAmount = currencyToNumber(selectedPlan.find('.gross-total').text());
+      assert.equal(addVat(initialSubscriptionAmount), subscriptionAmount);
     });
   });
 });
