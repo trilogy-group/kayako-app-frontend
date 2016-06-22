@@ -656,7 +656,7 @@
   "settings.security.customers.password_policy.minumum_length.title": "Minimum password length",
   "settings.security.customers.password_policy.minumum_numbers.title": "Minimum numbers",
   "settings.security.customers.password_policy.minumum_symbols.title": "Minimum symbols",
-  "settings.security.customers.password_policy.require_mixed_case.title": "Require a MiXed case",
+  "settings.security.customers.password_policy.require_mixed_case.title": "Require a mixed case",
   "settings.security.customers.password_policy.require_mixed_case.options.1": "Yes",
   "settings.security.customers.password_policy.require_mixed_case.options.0": "No",
   "settings.security.customers.password_policy.maximum_consecutive_characters.title": "Maximum consecutive characters",
