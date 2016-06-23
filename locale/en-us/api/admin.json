@@ -839,7 +839,7 @@
   "account.plans.subscription.updated": "Your plan has been updated successfully",
   "account.plans.terms.monthly": "Billed monthly",
   "account.plans.terms.annually": "Billed annually",
-  "account.plans.collaborators": "{collaborators} Collaborators",
+  "account.plans.collaborators": "{count, plural, =1 {# Collaborator} other {# Collaborators}}",
   "account.plans.priceFor.flatFee": "up to {seats} agents",
   "account.plans.priceFor.perAgent": "per agent / mo",
   "account.plans.notAvailable": "not available",

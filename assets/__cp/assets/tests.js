@@ -241,12 +241,19 @@ define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports'
     });
   });
 
+  (0, _frontendCpTestsHelpersQunit.test)('seats should be equal to plan seats limit', function (assert) {
+    visit('/admin/account/plans');
+    andThen(function () {
+      assert.equal(find('.agents-count').val(), '20');
+    });
+  });
+
   (0, _frontendCpTestsHelpersQunit.test)('cancelling changed seats count', function (assert) {
     var selectedSeats = 0;
     visit('/admin/account/plans');
     andThen(function () {
       selectedSeats = find('.agents-count').val();
-      fillIn('.agents-count', 20);
+      fillIn('.agents-count', 10);
     });
     andThen(function () {
       assert.notEqual(find('.agents-count').val(), selectedSeats);
@@ -403,6 +410,25 @@ define('frontend-cp/tests/acceptance/admin/account/trial/index-test', ['exports'
       var selectedPlan = find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].selected);
       var subscriptionAmount = currencyToNumber(selectedPlan.find('.gross-total').text());
       assert.equal(addVat(initialSubscriptionAmount), subscriptionAmount);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('redirect to /overview when not in trial', function (assert) {
+    server.create('plan', {
+      account_id: 1212,
+      subscription_id: 120020,
+      limits: {
+        agents: 40
+      },
+      features: []
+    });
+
+    andThen(function () {
+      visit('/admin/account/trial');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/account/overview');
     });
   });
 });
