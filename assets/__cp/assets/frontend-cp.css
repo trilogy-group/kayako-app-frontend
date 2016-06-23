@@ -6335,6 +6335,14 @@ a.ko-admin_plans_index__cancel_1pprhr {
       -ms-flex-pack: end;
           justify-content: flex-end; }
 
+.ko-admin_rateplans_item__label-helper_cw0pha {
+  color: #2D3138;
+  font-size: 14px;
+  margin-top: 6px;
+  display: inline-block;
+  font-style: italic;
+  font-weight: 600; }
+
 /* styles for frontend-cp/components/ko-admin/rateplans/list/styles.css */
 .ko-admin_rateplans_list__listfilters_kou2ll {
   margin-top: 25px;
@@ -6394,7 +6402,7 @@ a.ko-admin_plans_index__cancel_1pprhr {
 .ko-admin_rateplans_summary__sticky_hzi5l3 {
   position: fixed;
   top: 84px;
-  left: 232px;
+  left: 245px;
   right: 45px;
   bottom: auto;
   padding: 27px 27px;
