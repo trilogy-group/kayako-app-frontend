@@ -103,6 +103,7 @@
   "businesshours.holidays.saveholiday": "Save Holiday",
 
   "triggers.title": "Triggers",
+  "triggers.last_triggered": "last triggered {date}",
   "triggers.buttons.add": "Add New",
   "triggers.headings.new": "Triggers / New",
   "triggers.headings.edit": "Triggers / {title}",
@@ -512,6 +513,7 @@
   "macros.assign.current_agent": "(current agent)",
 
   "monitors.title": "Monitors",
+  "monitors.last_fired": "last fired {date}",
   "monitors.buttons.add": "Add New",
   "monitors.headings.new": "Monitors / New",
   "monitors.headings.edit": "Monitors / {title}",

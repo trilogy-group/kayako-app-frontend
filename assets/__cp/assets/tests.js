@@ -2664,19 +2664,6 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/index-test', ['ex
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('disabled triggers cannot be deleted', function (assert) {
-    assert.expect(2);
-
-    server.create('trigger', { title: 'test trigger', is_enabled: false, execution_order: 1 });
-
-    visit('/admin/automation/triggers');
-
-    andThen(function () {
-      assert.equal(currentURL(), '/admin/automation/triggers');
-      assert.notOk(find('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("test trigger") a:contains(Delete)').length > 0);
-    });
-  });
-
   (0, _frontendCpTestsHelpersQunit.test)('disabled triggers can be enabled', function (assert) {
     assert.expect(6);
 
@@ -4262,7 +4249,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/delete-test', ['ex
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-checkbox/styles', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoCheckboxStyles, _frontendCpComponentsKoSimpleListRowStyles) {
+define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-checkbox/styles', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-toggle/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoCheckboxStyles, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoToggleStyles) {
 
   var textFieldTitle = 'text field';
   var textAreaFieldTitle = 'text area field';
@@ -4620,7 +4607,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -4636,7 +4623,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=false]');
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
     });
   });
 
@@ -4659,7 +4646,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -4675,7 +4662,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=false]');
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
     });
   });
 
@@ -4700,7 +4687,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -4716,7 +4703,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=false]');
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
     });
   });
@@ -4742,7 +4729,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -4758,7 +4745,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=false]');
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
     });
   });
@@ -4784,7 +4771,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -4800,7 +4787,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=false]');
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
     });
   });
@@ -4824,7 +4811,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -4840,7 +4827,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=false]');
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
     });
   });
 
@@ -4863,7 +4850,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -4879,7 +4866,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=false]');
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
     });
   });
 
@@ -4902,7 +4889,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -4918,7 +4905,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=false]');
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
     });
   });
 
@@ -4941,7 +4928,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -4957,7 +4944,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=false]');
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
     });
   });
 
@@ -4982,7 +4969,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -4998,7 +4985,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=false]');
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
     });
   });
@@ -5022,7 +5009,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -5038,7 +5025,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=false]');
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
     });
   });
 
@@ -5063,7 +5050,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
 
       fillIn('input.ko-admin_case-fields_edit_regex__input', regEx);
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -5080,7 +5067,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       assert.equal(find('input.ko-admin_case-fields_edit_regex__input').val(), regEx);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=false]');
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
     });
   });
 
@@ -5104,7 +5091,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       fillIn('textarea.ko-admin_case-fields_edit__description', 'edited description');
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button[name=cancel]');
     });
@@ -5120,7 +5107,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), 'locale specific text here');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
-      findWithAssert('div .ko-toggle__container[aria-checked=true]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=true]');
     });
   });
 });
@@ -6497,7 +6484,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/reorder-test', ['e
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'npm:lodash', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-simple-list/cell/styles'], function (exports, _frontendCpTestsHelpersQunit, _npmLodash, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoSimpleListCellStyles) {
+define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'npm:lodash', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-simple-list/cell/styles', 'frontend-cp/components/ko-simple-list/actions/styles', 'frontend-cp/components/ko-toggle/styles'], function (exports, _frontendCpTestsHelpersQunit, _npmLodash, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoSimpleListCellStyles, _frontendCpComponentsKoSimpleListActionsStyles, _frontendCpComponentsKoToggleStyles) {
 
   var brand = undefined,
       locale = undefined,
@@ -6689,7 +6676,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
     visit('/admin/manage/case-forms');
     triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':first', 'mouseenter');
     andThen(function () {
-      assert.deepEqual(_npmLodash['default'].map(find('.ko-reorderable-list .' + _frontendCpComponentsKoSimpleListCellStyles['default'].cell + ':eq(1) a'), function (element) {
+      assert.deepEqual(_npmLodash['default'].map(find('.ko-reorderable-list .' + _frontendCpComponentsKoSimpleListActionsStyles['default'].actions + ' a'), function (element) {
         return $(element).text().trim();
       }), ['Edit', 'Disable', 'Make default', 'Delete']);
     });
@@ -6705,7 +6692,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
     visit('/admin/manage/case-forms');
     triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':first', 'mouseenter');
     andThen(function () {
-      assert.deepEqual(_npmLodash['default'].map(find('.ko-reorderable-list .' + _frontendCpComponentsKoSimpleListCellStyles['default'].cell + ':eq(1) a'), function (element) {
+      assert.deepEqual(_npmLodash['default'].map(find('.ko-reorderable-list .' + _frontendCpComponentsKoSimpleListActionsStyles['default'].actions + ' a'), function (element) {
         return $(element).text().trim();
       }), ['Edit']);
     });
@@ -6715,7 +6702,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
     visit('/admin/manage/case-forms/new');
 
     andThen(function () {
-      assert.equal(typeof $('.ko-toggle__toggle')[0], 'undefined');
+      assert.equal(typeof $('.' + _frontendCpComponentsKoToggleStyles['default'].slider)[0], 'undefined');
     });
   });
 
@@ -6734,14 +6721,14 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
 
     andThen(function () {
       assert.equal(find('.qa-admin_case-forms__enabled-list .qa-admin_case-forms__list-row').length, 1);
-      click('.qa-admin_case-forms__enabled-list .' + _frontendCpComponentsKoSimpleListCellStyles['default'].cell + ':eq(1) a:contains("Disable")');
+      click('.qa-admin_case-forms__enabled-list .' + _frontendCpComponentsKoSimpleListActionsStyles['default'].actions + ' a:contains("Disable")');
     });
 
     andThen(function () {
       assert.equal(find('.qa-admin_case-forms__enabled-list .qa-admin_case-forms__list-row').length, 0);
       assert.equal(find('.qa-admin_case-forms__disabled-list .qa-admin_case-forms__list-row').length, 1);
       triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':first', 'mouseenter');
-      click('.qa-admin_case-forms__disabled-list .' + _frontendCpComponentsKoSimpleListCellStyles['default'].cell + ':eq(1) a:contains("Enable")');
+      click('.qa-admin_case-forms__disabled-list .' + _frontendCpComponentsKoSimpleListActionsStyles['default'].actions + ' a:contains("Enable")');
     });
 
     andThen(function () {
@@ -7988,7 +7975,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/delete-tes
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles) {
+define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-toggle/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoToggleStyles) {
 
   var textFieldTitle = 'text field';
   var textAreaFieldTitle = 'text area field';
@@ -8335,7 +8322,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -8349,7 +8336,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), textFieldTitle);
       assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
     });
   });
 
@@ -8371,7 +8358,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -8385,7 +8372,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), textAreaFieldTitle);
       assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
     });
   });
 
@@ -8409,7 +8396,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -8423,7 +8410,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), radioFieldTitle);
       assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
     });
   });
@@ -8448,7 +8435,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -8462,7 +8449,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), normalSelectFieldTitle);
       assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
     });
   });
@@ -8487,7 +8474,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -8501,7 +8488,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), checkboxFieldTitle);
       assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
     });
   });
@@ -8524,7 +8511,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -8538,7 +8525,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), numericFieldTitle);
       assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
     });
   });
 
@@ -8560,7 +8547,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -8574,7 +8561,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), decimalFieldTitle);
       assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
     });
   });
 
@@ -8596,7 +8583,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -8610,7 +8597,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fileFieldTitle);
       assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
     });
   });
 
@@ -8632,7 +8619,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -8646,7 +8633,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), yesNoFieldTitle);
       assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
     });
   });
 
@@ -8670,7 +8657,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -8684,7 +8671,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), cascadingSelectFieldTitle);
       assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
     });
   });
@@ -8707,7 +8694,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -8721,7 +8708,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), dateFieldTitle);
       assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
     });
   });
 
@@ -8745,7 +8732,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
       fillIn('input.ko-admin_case-fields_edit_regex__input', regEx);
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -8760,7 +8747,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
       assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       assert.equal(find('input.ko-admin_case-fields_edit_regex__input').val(), regEx);
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
     });
   });
 
@@ -8783,7 +8770,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
       fillIn('input.ko-admin_case-fields_edit__customer-title', 'edited customer title');
       fillIn('textarea.ko-admin_case-fields_edit__description', 'edited description');
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button[name=cancel]');
     });
@@ -8797,7 +8784,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), 'text field');
       assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), 'locale specific text here');
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), 'locale specific text here');
-      findWithAssert('div .ko-toggle__container[aria-checked=true]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=true]');
     });
   });
 });
@@ -10200,7 +10187,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/delete-test', ['ex
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-checkbox/styles', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoCheckboxStyles, _frontendCpComponentsKoSimpleListRowStyles) {
+define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-checkbox/styles', 'frontend-cp/components/ko-toggle/styles', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoCheckboxStyles, _frontendCpComponentsKoToggleStyles, _frontendCpComponentsKoSimpleListRowStyles) {
 
   var textFieldTitle = 'text field';
   var textAreaFieldTitle = 'text area field';
@@ -10546,7 +10533,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -10562,7 +10549,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
     });
   });
 
@@ -10584,7 +10571,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -10600,7 +10587,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
     });
   });
 
@@ -10625,7 +10612,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -10641,7 +10628,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
     });
   });
@@ -10667,7 +10654,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -10683,7 +10670,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
     });
   });
@@ -10709,7 +10696,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -10725,7 +10712,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
     });
   });
@@ -10749,7 +10736,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -10765,7 +10752,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
     });
   });
 
@@ -10788,7 +10775,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -10804,7 +10791,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
     });
   });
 
@@ -10827,7 +10814,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -10843,7 +10830,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
     });
   });
 
@@ -10866,7 +10853,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -10882,7 +10869,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
     });
   });
 
@@ -10907,7 +10894,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
 
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -10923,7 +10910,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
     });
   });
@@ -10947,7 +10934,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -10963,7 +10950,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
     });
   });
 
@@ -10988,7 +10975,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
 
       fillIn('input.ko-admin_case-fields_edit_regex__input', regEx);
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button--primary:first');
     });
@@ -11005,7 +10992,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       assert.equal(find('input.ko-admin_case-fields_edit_regex__input').val(), regEx);
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
-      findWithAssert('div .ko-toggle__container[aria-checked=false]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
     });
   });
 
@@ -11029,7 +11016,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       fillIn('textarea.ko-admin_case-fields_edit__description', 'edited description');
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
-      click('.ko-toggle__container');
+      click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button[name=cancel]');
     });
@@ -11045,7 +11032,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), 'locale specific text here');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
-      findWithAssert('div .ko-toggle__container[aria-checked=true]');
+      findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=true]');
     });
   });
 });
@@ -19179,10 +19166,9 @@ define('frontend-cp/tests/unit/components/ko-timeline/item/link-to/-href-generat
 define('frontend-cp/tests/unit/components/ko-toggle/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/lib/keycodes'], function (exports, _ember, _frontendCpTestsHelpersQunit, _frontendCpLibKeycodes) {
 
   var component = undefined;
-  var radio = 'div:first';
-  var label = 'label:first';
 
   (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-toggle', {
+    needs: ['helper:qa-cls'],
     unit: true,
     setup: function setup() {
       component = this.subject();
@@ -19198,7 +19184,7 @@ define('frontend-cp/tests/unit/components/ko-toggle/component-test', ['exports',
     this.render();
 
     _ember['default'].run(function () {
-      component.keyUp({ keyCode: _frontendCpLibKeycodes.space });
+      component.send('keyUp', { keyCode: _frontendCpLibKeycodes.space });
     });
 
     assert.equal(component.activated, true, 'it has been activated');
@@ -19217,7 +19203,7 @@ define('frontend-cp/tests/unit/components/ko-toggle/component-test', ['exports',
     });
 
     _ember['default'].run(function () {
-      component.keyUp({ keyCode: _frontendCpLibKeycodes.space });
+      component.send('keyUp', { keyCode: _frontendCpLibKeycodes.space });
     });
   });
 
@@ -19231,7 +19217,7 @@ define('frontend-cp/tests/unit/components/ko-toggle/component-test', ['exports',
     });
 
     _ember['default'].run(function () {
-      component.keyUp({ keyCode: _frontendCpLibKeycodes.space });
+      component.send('keyUp', { keyCode: _frontendCpLibKeycodes.space });
     });
 
     assert.equal(component.activated, false, 'it has been deactivated');
@@ -19254,155 +19240,7 @@ define('frontend-cp/tests/unit/components/ko-toggle/component-test', ['exports',
     });
 
     _ember['default'].run(function () {
-      component.keyUp({ keyCode: _frontendCpLibKeycodes.space });
-    });
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('can be activated by clicking on radio', function (assert) {
-    var _this = this;
-
-    assert.expect(1);
-
-    this.render();
-
-    _ember['default'].run(function () {
-      _this.$(radio).click();
-    });
-
-    assert.equal(component.activated, true, 'it has been activated');
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('can be activated by clicking on toggle (DDAU)', function (assert) {
-    var _this2 = this;
-
-    assert.expect(1);
-
-    this.render();
-
-    component.set('onToggle', 'activated');
-    component.set('targetObject', {
-      activated: function activated(value) {
-        assert.equal(value, true, 'it has been activated');
-      }
-    });
-
-    _ember['default'].run(function () {
-      _this2.$(radio).click();
-    });
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('can be deactivated by clicking on radio', function (assert) {
-    var _this3 = this;
-
-    assert.expect(1);
-
-    this.render();
-
-    _ember['default'].run(function () {
-      component.set('activated', true);
-    });
-
-    _ember['default'].run(function () {
-      _this3.$(radio).click();
-    });
-
-    assert.equal(component.activated, false, 'it has been deactivated');
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('can be deactivated by clicking on radio (DDAU)', function (assert) {
-    var _this4 = this;
-
-    assert.expect(1);
-
-    this.render();
-
-    _ember['default'].run(function () {
-      component.set('activated', true);
-    });
-
-    component.set('onToggle', 'activated');
-    component.set('targetObject', {
-      activated: function activated(value) {
-        assert.equal(value, false, 'it has been deactivated');
-      }
-    });
-
-    _ember['default'].run(function () {
-      _this4.$(radio).click();
-    });
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('can be activated by clicking on label', function (assert) {
-    var _this5 = this;
-
-    assert.expect(1);
-
-    this.render();
-
-    _ember['default'].run(function () {
-      _this5.$(label).click();
-    });
-
-    assert.equal(component.activated, true, 'it has been activated');
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('can be activated by clicking on label (DDAU)', function (assert) {
-    var _this6 = this;
-
-    assert.expect(1);
-
-    this.render();
-
-    component.set('onToggle', 'activated');
-    component.set('targetObject', {
-      activated: function activated(value) {
-        assert.equal(value, true, 'it has been activated');
-      }
-    });
-
-    _ember['default'].run(function () {
-      _this6.$(label).click();
-    });
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('can be deactivated by clicking on label', function (assert) {
-    var _this7 = this;
-
-    assert.expect(1);
-
-    this.render();
-
-    _ember['default'].run(function () {
-      component.set('activated', true);
-    });
-
-    _ember['default'].run(function () {
-      _this7.$(label).click();
-    });
-
-    assert.equal(component.activated, false, 'it has been deactivated');
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('can be deactivated by clicking on label (DDAU)', function (assert) {
-    var _this8 = this;
-
-    assert.expect(1);
-
-    this.render();
-
-    _ember['default'].run(function () {
-      component.set('activated', true);
-    });
-
-    component.set('onToggle', 'activated');
-    component.set('targetObject', {
-      activated: function activated(value) {
-        assert.equal(value, false, 'it has been deactivated');
-      }
-    });
-
-    _ember['default'].run(function () {
-      _this8.$(label).click();
+      component.send('keyUp', { keyCode: _frontendCpLibKeycodes.space });
     });
   });
 });
