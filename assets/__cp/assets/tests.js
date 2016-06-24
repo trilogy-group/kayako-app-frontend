@@ -922,7 +922,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/index-test', ['ex
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
-      assert.equal(find('.qa-admin_monitors--enabled li').length, 1);
+      assert.equal(find('.qa-admin_monitors--enabled .qa-sortable-item').length, 1);
       assert.equal(find('.qa-admin_monitors--disabled').length, 0);
     });
   });
@@ -936,7 +936,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/index-test', ['ex
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
-      assert.ok(find('.qa-admin_monitors--enabled li').length === 1);
+      assert.ok(find('.qa-admin_monitors--enabled .qa-sortable-item').length === 1);
       assert.ok(find('.qa-admin_monitors--disabled').length === 0);
       triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("test monitor")', 'mouseenter');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("test monitor") a:contains(Disable)');
@@ -944,7 +944,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/index-test', ['ex
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
-      assert.ok(find('.qa-admin_monitors--enabled li').length === 0);
+      assert.ok(find('.qa-admin_monitors--enabled .qa-sortable-item').length === 0);
       assert.ok(find('.qa-admin_monitors--disabled').length === 1);
     });
   });
@@ -2699,7 +2699,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/index-test', ['ex
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/triggers');
-      assert.ok(find('.qa-admin_triggers--enabled li').length === 0);
+      assert.ok(find('.qa-admin_triggers--enabled .qa-sortable-item').length === 0);
       assert.ok(find('.qa-admin_triggers--disabled').length === 1);
       triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("test trigger")', 'mouseenter');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("test trigger") a:contains(Enable)');
@@ -2707,7 +2707,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/index-test', ['ex
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/triggers');
-      assert.ok(find('.qa-admin_triggers--enabled li').length === 1);
+      assert.ok(find('.qa-admin_triggers--enabled .qa-sortable-item').length === 1);
       assert.ok(find('.qa-admin_triggers--disabled').length === 0);
     });
   });
@@ -2721,7 +2721,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/index-test', ['ex
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/triggers');
-      assert.ok(find('.qa-admin_triggers--enabled li').length === 1);
+      assert.ok(find('.qa-admin_triggers--enabled .qa-sortable-item').length === 1);
       assert.ok(find('.qa-admin_triggers--disabled').length === 0);
       triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("test trigger")', 'mouseenter');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("test trigger") a:contains(Disable)');
@@ -2729,7 +2729,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/index-test', ['ex
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/triggers');
-      assert.ok(find('.qa-admin_triggers--enabled li').length === 0);
+      assert.ok(find('.qa-admin_triggers--enabled').length === 0);
       assert.ok(find('.qa-admin_triggers--disabled').length === 1);
     });
   });
