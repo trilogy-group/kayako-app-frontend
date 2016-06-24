@@ -4951,6 +4951,8 @@ span#HW_badge.HW_softHidden {
 .ko-toast__link {
   font-weight: 800;
   color: white; }
+  .ko-toast__link:hover {
+    text-decoration: underline; }
 
 .ko-toast__body {
   margin-top: 1px; }
