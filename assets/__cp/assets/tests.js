@@ -13210,7 +13210,7 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
 
     andThen(function () {
       assert.equal(find('.qa-feed_item--note').length, 20, 'Notes displayed');
-      assert.equal(find('.ko-feed_activity').length, 0, 'Activities and events not displayed');
+      assert.equal(find('.qa-feed_activity').length, 0, 'Activities and events not displayed');
     });
   });
 
@@ -13223,7 +13223,7 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
 
     andThen(function () {
       assert.equal(find('.qa-feed_item--note').length, 0, 'Notes not displayed');
-      assert.equal(find('.ko-feed_activity').length, 20, 'Events displayed');
+      assert.equal(find('.qa-feed_activity').length, 20, 'Events displayed');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-timeline_activity__summary:first'), 'Test event', 'Event text displayed');
     });
   });
@@ -13237,7 +13237,7 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
 
     andThen(function () {
       assert.equal(find('.qa-feed_item--note').length, 0, 'Notes not displayed');
-      assert.equal(find('.ko-feed_activity').length, 20, 'Activities displayed');
+      assert.equal(find('.qa-feed_activity').length, 20, 'Activities displayed');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-timeline_activity__summary:eq(0)'), 'Test activity', 'Activity text displayed');
     });
   });
@@ -13303,14 +13303,14 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
     selectChoose('.qa-timeline__filter .ember-power-select', 'Activities');
 
     andThen(function () {
-      assert.equal(find('.ko-feed_activity').length, 20, 'Default number of activities displayed');
+      assert.equal(find('.qa-feed_activity').length, 20, 'Default number of activities displayed');
       assert.equal(find('.qa-timeline__load-more-below').length, 1, 'Load more link available due to more activities to load');
     });
 
     click('.qa-timeline__load-more-below');
 
     andThen(function () {
-      assert.equal(find('.ko-feed_activity').length, 25, 'Load more activities below');
+      assert.equal(find('.qa-feed_activity').length, 25, 'Load more activities below');
       assert.equal(find('.qa-timeline__load-more-below').length, 0, 'Load more link hidden due to no more activities to load');
     });
   });
@@ -13323,14 +13323,14 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
     selectChoose('.qa-timeline__filter .ember-power-select', 'Events');
 
     andThen(function () {
-      assert.equal(find('.ko-feed_activity').length, 20, 'Default number of events displayed');
+      assert.equal(find('.qa-feed_activity').length, 20, 'Default number of events displayed');
       assert.equal(find('.qa-timeline__load-more-below').length, 1, 'Load more link available due to more events to load');
     });
 
     click('.qa-timeline__load-more-below');
 
     andThen(function () {
-      assert.equal(find('.ko-feed_activity').length, 25, 'Load more events below');
+      assert.equal(find('.qa-feed_activity').length, 25, 'Load more events below');
       assert.equal(find('.qa-timeline__load-more-below').length, 0, 'Load more link hidden due to no more events to load');
     });
   });
@@ -13985,7 +13985,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
 
     andThen(function () {
       assert.equal(find('.qa-feed_item--note').length, 20, 'Notes displayed');
-      assert.equal(find('.ko-feed_activity').length, 0, 'Activities and events not displayed');
+      assert.equal(find('.qa-feed_activity').length, 0, 'Activities and events not displayed');
     });
   });
 
@@ -13998,7 +13998,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
 
     andThen(function () {
       assert.equal(find('.qa-feed_item--note').length, 0, 'Notes not displayed');
-      assert.equal(find('.ko-feed_activity').length, 20, 'Events displayed');
+      assert.equal(find('.qa-feed_activity').length, 20, 'Events displayed');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-timeline_activity__summary:first'), 'Test event', 'Event text displayed');
     });
   });
@@ -14012,7 +14012,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
 
     andThen(function () {
       assert.equal(find('.qa-feed_item--note').length, 0, 'Notes not displayed');
-      assert.equal(find('.ko-feed_activity').length, 20, 'Activities displayed');
+      assert.equal(find('.qa-feed_activity').length, 20, 'Activities displayed');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-timeline_activity__summary:eq(0)'), 'Test activity', 'Activity text displayed');
     });
   });
@@ -14078,14 +14078,14 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
     selectChoose('.qa-timeline__filter .ember-power-select', 'Activities');
 
     andThen(function () {
-      assert.equal(find('.ko-feed_activity').length, 20, 'Default number of activities displayed');
+      assert.equal(find('.qa-feed_activity').length, 20, 'Default number of activities displayed');
       assert.equal(find('.qa-timeline__load-more-below').length, 1, 'Load more link available due to more activities to load');
     });
 
     click('.qa-timeline__load-more-below');
 
     andThen(function () {
-      assert.equal(find('.ko-feed_activity').length, 25, 'Load more activities below');
+      assert.equal(find('.qa-feed_activity').length, 25, 'Load more activities below');
       assert.equal(find('.qa-timeline__load-more-below').length, 0, 'Load more link hidden due to no more activities to load');
     });
   });
@@ -14098,14 +14098,14 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
     selectChoose('.qa-timeline__filter .ember-power-select', 'Events');
 
     andThen(function () {
-      assert.equal(find('.ko-feed_activity').length, 20, 'Default number of events displayed');
+      assert.equal(find('.qa-feed_activity').length, 20, 'Default number of events displayed');
       assert.equal(find('.qa-timeline__load-more-below').length, 1, 'Load more link available due to more events to load');
     });
 
     click('.qa-timeline__load-more-below');
 
     andThen(function () {
-      assert.equal(find('.ko-feed_activity').length, 25, 'Load more events below');
+      assert.equal(find('.qa-feed_activity').length, 25, 'Load more events below');
       assert.equal(find('.qa-timeline__load-more-below').length, 0, 'Load more link hidden due to no more events to load');
     });
   });
@@ -19452,6 +19452,58 @@ define("frontend-cp/tests/unit/components/ko-table-row/component-test", ["export
 //     assert.equal(row, component);
 //   });
 // });
+define('frontend-cp/tests/unit/components/ko-timeline/activity/utils-test', ['exports', 'qunit', 'frontend-cp/components/ko-timeline/activity/utils'], function (exports, _qunit, _frontendCpComponentsKoTimelineActivityUtils) {
+
+  (0, _qunit.module)('Unit | Component | ko-timeline/item/activity/utils', function () {
+    (0, _qunit.module)('parseSummary', function () {
+      (0, _qunit.test)('parses tokens into text, actors and entities', function (assert) {
+        var tokens = (0, _frontendCpComponentsKoTimelineActivityUtils.parseSummary)('<@http://user.com|Gary Test> created something <http://item.com|A Case>');
+
+        assert.equal(tokens.length, 3);
+
+        assert.deepEqual(tokens[0], {
+          type: 'actor',
+          content: 'Gary Test',
+          url: 'http://user.com'
+        });
+
+        assert.deepEqual(tokens[1], {
+          type: 'text',
+          content: 'created something'
+        });
+
+        assert.deepEqual(tokens[2], {
+          type: 'entity',
+          content: 'A Case',
+          url: 'http://item.com'
+        });
+      });
+
+      (0, _qunit.test)('parses tokens without URLs', function (assert) {
+        var tokens = (0, _frontendCpComponentsKoTimelineActivityUtils.parseSummary)('<@|Gary Test> created something <|A Case>');
+
+        assert.equal(tokens.length, 3);
+
+        assert.deepEqual(tokens[0], {
+          type: 'actor',
+          content: 'Gary Test',
+          url: ''
+        });
+
+        assert.deepEqual(tokens[1], {
+          type: 'text',
+          content: 'created something'
+        });
+
+        assert.deepEqual(tokens[2], {
+          type: 'entity',
+          content: 'A Case',
+          url: ''
+        });
+      });
+    });
+  });
+});
 define('frontend-cp/tests/unit/components/ko-timeline/item/link-to/-href-generators-test', ['exports', 'qunit', 'frontend-cp/components/ko-timeline/item/link-to/-href-generators'], function (exports, _qunit, _frontendCpComponentsKoTimelineItemLinkToHrefGenerators) {
 
   (0, _qunit.module)('Unit | Component | ko-timeline/item/link-to/-href generators', function () {

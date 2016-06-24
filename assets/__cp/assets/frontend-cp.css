@@ -8261,28 +8261,51 @@ a.ko-admin_plans_index__cancel_1pprhr {
 
 /* styles for frontend-cp/components/ko-timeline/activity/styles.css */
 .ko-timeline_activity__activity_1tukzf {
+  color: #838D94;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 5px 0; }
+
+.ko-timeline_activity__right_1tukzf {
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  padding-right: 14px; }
+
+.ko-timeline_activity__content_1tukzf {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 0;
+          flex: 1 1 0;
+  max-width: 600px;
+  line-height: 24px; }
+
+.ko-timeline_activity__right_1tukzf .ko-timeline_activity__content_1tukzf {
+  text-align: right;
+  margin-right: 10px; }
+
+.ko-timeline_activity__left_1tukzf .ko-timeline_activity__content_1tukzf {
+  margin-left: 10px; }
+
+.ko-timeline_activity__icon_1tukzf {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 auto;
+          flex: 0 0 auto; }
+
+.ko-timeline_activity__entity_1tukzf {
+  font-weight: 600;
+  word-break: break-all; }
+
+/* styles for frontend-cp/components/ko-timeline/event/styles.css */
+.ko-timeline_event__event_qor83i {
   min-height: 24px;
   position: relative;
   padding: 4.5px 0 4.5px 36px; }
 
-.ko-timeline_activity__activity_1tukzf:first-of-type .ko-timeline_activity__border_1tukzf {
-  top: 18px; }
-
-.ko-timeline_activity__activity_1tukzf:last-of-type .ko-timeline_activity__border_1tukzf {
-  height: 18px; }
-
-.ko-timeline_activity__border_1tukzf {
-  border-left: 2px solid #EBEEF0;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0; }
-
-.ko-timeline_activity__contents_1tukzf {
+.ko-timeline_event__contents_qor83i {
   color: #40364D; }
 
-.ko-timeline_activity__summary_1tukzf {
+.ko-timeline_event__body_qor83i {
   font-weight: 600; }
 
 /* styles for frontend-cp/components/ko-timeline/item/link-to/styles.css */
