@@ -106,6 +106,8 @@
 
   "user_logged_out": "You have been logged out",
   "session_expired": "Your session has expired",
+  "license_expired": "Your request wasn't saved because your subscription has expired.",
+  "license_expired_href": "Click here to renew your subscription",
   "permissions_denied": "Sorry, you don't have access to perform this action. Please ask for permissions from an admin.",
   "user_credential_expired": "The credential (e.g. password) is valid but has expired",
   "resource_not_found": "Resource does not exist or has been removed",
@@ -172,5 +174,7 @@
   "input_date_range.this_month": "This Month",
   "input_date_range.last_month": "Last Month",
 
-  "select.select_or_type_to_search": "Select an option or type to search"
+  "select.select_or_type_to_search": "Select an option or type to search",
+
+  "copy_to_clipboard": "Copy to clipboard"
 }
