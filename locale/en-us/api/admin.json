@@ -60,6 +60,18 @@
   "apps.api.ideas.description": "Have an idea, question or looking for an integration? Join the community of Kayako experts, developers and integration partners to get answers and inspiration.",
   "apps.api.cta": "Visit the developer center",
 
+  "apps.webhooks.heading.settings": "Webhook settings",
+  "apps.webhooks.heading.token": "Webhook token",
+  "apps.webhooks.heading.edit": "Event webhooks / Edit",
+  "apps.webhooks.heading.new": "Event webhooks / New",
+  "apps.webhooks.title": "Event webhooks",
+  "apps.webhooks.button.add": "Add New",
+  "apps.webhooks.description": "Event webhooks are a simple way to push user activites to external apps and systems into the user timeline in Kayako, such as a billing failure or an account cancellation. Important events can also be shown in cases, giving your team all the context they need when talking to your customers.",
+  "apps.webhooks.label.label": "Label",
+  "apps.webhooks.label.description": "Description",
+  "apps.webhooks.descriptions.help": "A description of what you'll use the webhook for, so remember the next time you see it.",
+  "apps.webhooks.token.help": "This is your webhook token. Keep it safe and share it securely - anyone can push events to user timelines in your Kayako using this webhook token",
+  "apps.webhooks.delete.success_message": "Event Webhook deleted successfully",
 
   "views.title": "Views",
   "views.buttons.add_new": "Add new",
@@ -103,6 +115,7 @@
   "businesshours.holidays.saveholiday": "Save Holiday",
 
   "triggers.title": "Triggers",
+  "triggers.last_triggered": "last triggered {date}",
   "triggers.buttons.add": "Add New",
   "triggers.headings.new": "Triggers / New",
   "triggers.headings.edit": "Triggers / {title}",
@@ -512,6 +525,7 @@
   "macros.assign.current_agent": "(current agent)",
 
   "monitors.title": "Monitors",
+  "monitors.last_fired": "last fired {date}",
   "monitors.buttons.add": "Add New",
   "monitors.headings.new": "Monitors / New",
   "monitors.headings.edit": "Monitors / {title}",
@@ -837,7 +851,7 @@
   "account.plans.subscription.updated": "Your plan has been updated successfully",
   "account.plans.terms.monthly": "Billed monthly",
   "account.plans.terms.annually": "Billed annually",
-  "account.plans.collaborators": "{collaborators} Collaborators",
+  "account.plans.collaborators": "{count, plural, =1 {# Collaborator} other {# Collaborators}}",
   "account.plans.priceFor.flatFee": "up to {seats} agents",
   "account.plans.priceFor.perAgent": "per agent / mo",
   "account.plans.notAvailable": "not available",

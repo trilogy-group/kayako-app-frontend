@@ -124,9 +124,15 @@
   "sort_options.newest_first": "Newest first",
   "sort_options.oldest_first": "Oldest first",
 
-  "timeline.item.from": "From:",
-  "timeline.item.cc": "CC:",
-  "timeline.item.via": "via",
+  "timeline.item.via.help_center": "via Help Center",
+  "timeline.item.via.mail": "via email",
+  "timeline.item.via.messenger": "via Messenger",
+  "timeline.item.via.twitter_dm": "via Twitter (Direct Message)",
+  "timeline.item.via.twitter": "via Twitter",
+  "timeline.item.via.facebook": "via Facebook",
+  "timeline.item.via.note": "left a private note",
+  "timeline.item.via.none": "NONE",
+
   "filter_options.all": "All",
   "filter_options.posts": "Posts",
   "filter_options.notes": "Notes",
@@ -173,5 +179,6 @@
   "reply.reply": "Reply",
 
   "viewers.updating": "updating this case",
-  "viewers.viewing": "viewing this case"
+  "viewers.viewing": "viewing this case",
+  "agent": "AGENT"
 }
