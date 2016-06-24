@@ -5801,6 +5801,46 @@ span#HW_badge.HW_softHidden {
       -ms-flex-align: center;
           align-items: center; }
 
+/* styles for frontend-cp/components/ko-admin/apps/webhooks/form/styles.css */
+.ko-admin_apps_webhooks_form__title-input-layout_7k4bcy {
+  width: 362px; }
+
+.ko-admin_apps_webhooks_form__copy-button_7k4bcy {
+  margin-top: 13px; }
+
+/* styles for frontend-cp/components/ko-admin/apps/webhooks/index/styles.css */
+.ko-admin_apps_webhooks_index__sectionDescription_mxkp0q {
+  color: #838D94;
+  font-size: 14px;
+  margin-bottom: 22px; }
+
+.ko-admin_apps_webhooks_index__row_mxkp0q {
+  padding-top: 20px;
+  padding-bottom: 20px; }
+
+.ko-admin_apps_webhooks_index__rowDetail_mxkp0q {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start; }
+
+.ko-admin_apps_webhooks_index__label_mxkp0q {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  font-weight: 600;
+  margin-bottom: 5px; }
+
+.ko-admin_apps_webhooks_index__description_mxkp0q {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  color: #838D94;
+  font-size: 12px; }
+
 /* styles for frontend-cp/components/ko-admin/automation-actions-builder/styles.css */
 .ko-admin_automation-actions-builder__automation-action_10ryr1 {
   position: relative;

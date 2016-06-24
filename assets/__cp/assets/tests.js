@@ -432,6 +432,363 @@ define('frontend-cp/tests/acceptance/admin/account/trial/index-test', ['exports'
     });
   });
 });
+define('frontend-cp/tests/acceptance/admin/apps/webhooks/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+
+  var originalConfirm = undefined;
+  var webhook = undefined;
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/apps/webhooks/edit', {
+    beforeEach: function beforeEach() {
+      var locale = server.create('locale', {
+        id: 1,
+        locale: 'en-us'
+      });
+
+      var adminRole = server.create('role', { type: 'ADMIN' });
+      var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
+      var session = server.create('session', { user: agent });
+      login(session.id);
+
+      server.create('plan', {
+        limits: {},
+        features: []
+      });
+
+      webhook = server.create('token', {
+        label: 'test webhook label',
+        description: 'test webhook description',
+        token: 'abc',
+        is_enabled: true
+      });
+
+      originalConfirm = window.confirm;
+    },
+
+    afterEach: function afterEach() {
+      window.confirm = originalConfirm;
+      logout();
+    }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Edit an existing webhook', function (assert) {
+    assert.expect(11);
+
+    visit('/admin/apps/webhooks/' + webhook.id);
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/apps/webhooks/' + webhook.id);
+      assert.equal(find('input[name="label"]').val(), 'test webhook label');
+      assert.equal(find('input[name="description"]').val(), 'test webhook description');
+      assert.equal(find('input[name="token"]').val(), 'abc');
+      fillIn('input[name="label"]', 'Sample webhook label');
+      fillIn('input[name="description"]', 'Sample webhook description');
+      click('.button[name=submit]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/apps/webhooks');
+      assert.ok(find('.qa-admin_webhooks--enabled').length === 1, 'The webhook is still enabled');
+      assert.ok(find('.qa-admin_webhooks--disabled').length === 0, 'There are no disabled webhooks');
+      click('.qa-admin_webhooks--enabled .qa-admin_row div:contains("Sample webhook label")');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/apps/webhooks/' + webhook.id);
+      assert.equal(find('input[name="label"]').val(), 'Sample webhook label');
+      assert.equal(find('input[name="description"]').val(), 'Sample webhook description');
+      assert.equal(find('input[name="token"]').val(), 'abc');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Exit having pending changes ask for confirmation', function (assert) {
+    assert.expect(3);
+
+    window.confirm = function (message) {
+      assert.equal(message, 'You have unsaved changes on this page. Are you sure you want to discard these changes?', 'The proper confirm message is shown');
+      return true;
+    };
+
+    visit('/admin/apps/webhooks/' + webhook.id);
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/apps/webhooks/' + webhook.id);
+      fillIn('input[name="label"]', 'Sample webhook label');
+      click('.button[name=cancel]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/apps/webhooks');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Exit without having pending changes doesn\'t ask for confirmation', function (assert) {
+    assert.expect(4);
+
+    window.confirm = function (message) {
+      assert.ok(false, 'This should never be called');
+      return false;
+    };
+
+    visit('/admin/apps/webhooks/' + webhook.id);
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/apps/webhooks/' + webhook.id);
+      click('.button[name=cancel]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/apps/webhooks');
+      assert.ok(find('.qa-admin_webhooks--enabled').length === 1, 'The webhook is still enabled');
+      assert.ok(find('.qa-admin_webhooks--disabled').length === 0, 'There are no disabled webhooks');
+    });
+  });
+});
+define('frontend-cp/tests/acceptance/admin/apps/webhooks/index-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+
+  var originalConfirm = undefined;
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/apps/webhooks/index', {
+    beforeEach: function beforeEach() {
+      var locale = server.create('locale', {
+        id: 1,
+        locale: 'en-us'
+      });
+
+      var adminRole = server.create('role', { type: 'ADMIN' });
+      var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
+      var session = server.create('session', { user: agent });
+      login(session.id);
+
+      server.create('plan', {
+        limits: {},
+        features: []
+      });
+      originalConfirm = window.confirm;
+    },
+
+    afterEach: function afterEach() {
+      window.confirm = originalConfirm;
+      logout();
+    }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('deleting an enabled webhook', function (assert) {
+    assert.expect(4);
+
+    server.create('token', { label: 'test webhook', is_enabled: true });
+
+    visit('/admin/apps/webhooks');
+
+    window.confirm = function (message) {
+      assert.equal(message, 'Are you sure you want to delete this?', 'The proper confirm message is shown');
+      return true;
+    };
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/apps/webhooks');
+      triggerEvent('.qa-admin_webhooks--enabled .qa-admin_row div:contains("test webhook")', 'mouseenter');
+      click('.qa-admin_webhooks--enabled .qa-admin_row div:contains("test webhook") a:contains(Delete)');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/apps/webhooks');
+      assert.notOk(find('span:contains("test webhook")').length > 0);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('deleting an disabled webhook', function (assert) {
+    assert.expect(4);
+
+    server.create('token', { label: 'test webhook', is_enabled: false });
+
+    visit('/admin/apps/webhooks');
+
+    window.confirm = function (message) {
+      assert.equal(message, 'Are you sure you want to delete this?', 'The proper confirm message is shown');
+      return true;
+    };
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/apps/webhooks');
+      triggerEvent('.qa-admin_webhooks--disabled .qa-admin_row div:contains("test webhook")', 'mouseenter');
+      click('.qa-admin_webhooks--disabled .qa-admin_row div:contains("test webhook") a:contains(Delete)');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/apps/webhooks');
+      assert.notOk(find('span:contains("test webhook")').length > 0);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('disabled webhooks can be enabled', function (assert) {
+    assert.expect(6);
+
+    server.create('token', { label: 'test webhook', is_enabled: false });
+
+    visit('/admin/apps/webhooks');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/apps/webhooks');
+      assert.ok(find('.qa-admin_webhooks--enabled').length === 0);
+      assert.ok(find('.qa-admin_webhooks--disabled').length === 1);
+      triggerEvent('.qa-admin_webhooks--disabled .qa-admin_row div:contains("test webhook")', 'mouseenter');
+      click('.qa-admin_webhooks--disabled .qa-admin_row div:contains("test webhook") a:contains(Enable)');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/apps/webhooks');
+      assert.ok(find('.qa-admin_webhooks--enabled').length === 1);
+      assert.ok(find('.qa-admin_webhooks--disabled').length === 0);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('enabled webhooks can be disabled', function (assert) {
+    assert.expect(6);
+
+    server.create('token', { label: 'test webhook', is_enabled: true });
+
+    visit('/admin/apps/webhooks');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/apps/webhooks');
+      assert.ok(find('.qa-admin_webhooks--enabled').length === 1);
+      assert.ok(find('.qa-admin_webhooks--disabled').length === 0);
+      triggerEvent('.qa-admin_webhooks--enabled .qa-admin_row div:contains("test webhook")', 'mouseenter');
+      click('.qa-admin_webhooks--enabled .qa-admin_row div:contains("test webhook") a:contains(Disable)');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/apps/webhooks');
+      assert.ok(find('.qa-admin_webhooks--enabled').length === 0);
+      assert.ok(find('.qa-admin_webhooks--disabled').length === 1);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('webhooks are ordered by their title and then grouped by enabled and disabled', function (assert) {
+    assert.expect(6);
+
+    server.create('token', { label: 'test webhook 5', is_enabled: false });
+    server.create('token', { label: 'test webhook 4', is_enabled: true });
+    server.create('token', { label: 'test webhook 3', is_enabled: true });
+    server.create('token', { label: 'test webhook 2', is_enabled: true });
+    server.create('token', { label: 'test webhook 1', is_enabled: false });
+
+    visit('/admin/apps/webhooks');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/apps/webhooks');
+      assert.equal(find('.qa-admin_webhooks--enabled .qa-admin_row:nth-of-type(1) .qa-admin_row_label').text().trim(), 'test webhook 2');
+      assert.equal(find('.qa-admin_webhooks--enabled .qa-admin_row:nth-of-type(2) .qa-admin_row_label').text().trim(), 'test webhook 3');
+      assert.equal(find('.qa-admin_webhooks--enabled .qa-admin_row:nth-of-type(3) .qa-admin_row_label').text().trim(), 'test webhook 4');
+      assert.equal(find('.qa-admin_webhooks--disabled .qa-admin_row:nth-of-type(1) .qa-admin_row_label').text().trim(), 'test webhook 1');
+      assert.equal(find('.qa-admin_webhooks--disabled .qa-admin_row:nth-of-type(2) .qa-admin_row_label').text().trim(), 'test webhook 5');
+    });
+  });
+});
+define('frontend-cp/tests/acceptance/admin/apps/webhooks/new-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+
+  var originalConfirm = undefined;
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/apps/webhooks/new', {
+    beforeEach: function beforeEach() {
+      var locale = server.create('locale', {
+        id: 1,
+        locale: 'en-us'
+      });
+
+      var adminRole = server.create('role', { type: 'ADMIN' });
+      var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
+      var session = server.create('session', { user: agent });
+      login(session.id);
+
+      server.create('plan', {
+        limits: {},
+        features: []
+      });
+      originalConfirm = window.confirm;
+    },
+
+    afterEach: function afterEach() {
+      window.confirm = originalConfirm;
+      logout();
+    }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Creating a webhook', function (assert) {
+    assert.expect(8);
+
+    visit('/admin/apps/webhooks/new');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/apps/webhooks/new');
+
+      fillIn('input[name="label"]', 'Sample webhook label');
+      fillIn('input[name="description"]', 'Sample webhook description');
+
+      click('.button[name=submit]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/apps/webhooks/1');
+      assert.equal(find('input[name="label"]').val(), 'Sample webhook label');
+      assert.equal(find('input[name="description"]').val(), 'Sample webhook description');
+      assert.equal(find('input[name="token"]').val(), 'abc');
+      click('.button[name=cancel]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/apps/webhooks');
+      assert.ok(find('.qa-admin_webhooks--enabled').length === 1);
+      assert.ok(find('.qa-admin_webhooks--disabled').length === 0);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Exit having pending changes ask for confirmation', function (assert) {
+    assert.expect(3);
+
+    window.confirm = function (message) {
+      assert.equal(message, 'You have unsaved changes on this page. Are you sure you want to discard these changes?', 'The proper confirm message is shown');
+      return true;
+    };
+
+    visit('/admin/apps/webhooks/new');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/apps/webhooks/new');
+
+      fillIn('input[name="label"]', 'Sample webhook label');
+      fillIn('input[name="description"]', 'Sample webhook title');
+
+      click('.button[name=cancel]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/apps/webhooks');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Exit without having pending changes doesn\'t ask for confirmation', function (assert) {
+    assert.expect(4);
+
+    window.confirm = function (message) {
+      assert.ok(false, 'This should never be called');
+      return false;
+    };
+
+    visit('/admin/apps/webhooks/new');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/apps/webhooks/new');
+      click('.button[name=cancel]');
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/apps/webhooks');
+      assert.ok(find('.qa-admin_webhooks--enabled').length === 0, 'The are no enabled webhooks');
+      assert.ok(find('.qa-admin_webhooks--disabled').length === 0, 'There are no disabled webhooks');
+    });
+  });
+});
 define('frontend-cp/tests/acceptance/admin/automation/businesshours/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/automation/businesshours Edit', {

@@ -174,5 +174,7 @@
   "input_date_range.this_month": "This Month",
   "input_date_range.last_month": "Last Month",
 
-  "select.select_or_type_to_search": "Select an option or type to search"
+  "select.select_or_type_to_search": "Select an option or type to search",
+
+  "copy_to_clipboard": "Copy to clipboard"
 }
