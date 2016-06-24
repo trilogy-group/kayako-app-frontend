@@ -16367,6 +16367,7 @@ define('frontend-cp/tests/helpers/qunit', ['exports', 'ember', 'qunit', 'ember-q
           Reflect.apply(callbacks.afterEach, this, [this.application]);
         }
         _ember['default'].run(this.application, 'destroy');
+        server.shutdown();
       }
     });
   }
