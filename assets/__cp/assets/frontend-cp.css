@@ -6386,8 +6386,19 @@ a.ko-admin_plans_index__cancel_1pprhr {
   font-weight: 600; }
 
 /* styles for frontend-cp/components/ko-admin/rateplans/list/styles.css */
+.ko-admin_rateplans_list__plans-footer_kou2ll {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-top: 25px; }
+
 .ko-admin_rateplans_list__listfilters_kou2ll {
-  margin-top: 25px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex; }
