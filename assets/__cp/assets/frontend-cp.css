@@ -2528,19 +2528,6 @@ img {
       -ms-flex-pack: end;
           justify-content: flex-end; }
 
-.ko-admin_holidays_edit {
-  padding-top: 18px;
-  padding-bottom: 18px; }
-
-.ko-admin_holidays_edit__title {
-  width: 140px;
-  height: 30px;
-  line-height: 30px;
-  text-align: right;
-  margin-right: 9px; }
-  .ko-admin_holidays_edit__title.error {
-    color: #E86048; }
-
 .ko-admin_inline-locale-edit__container {
   display: inline-block; }
 
@@ -3142,7 +3129,8 @@ img {
   min-height: 2em;
   padding: 0 16px 0 8px;
   position: relative;
-  text-overflow: ellipsis; }
+  text-overflow: ellipsis;
+  white-space: nowrap; }
   .ko-date-select__trigger:focus {
     outline: none; }
 
@@ -6215,6 +6203,18 @@ span#HW_badge.HW_softHidden {
 
 .ko-admin_forms_group__contents_8wtptf {
   width: 75%; }
+
+/* styles for frontend-cp/components/ko-admin/holidays/edit/styles.css */
+.ko-admin_holidays_edit__root_pyuuw {
+  padding-top: 18px;
+  padding-bottom: 18px; }
+
+.ko-admin_holidays_edit__title_pyuuw {
+  min-width: 140px;
+  margin-right: 9px; }
+
+.ko-admin_holidays_edit__title_pyuuw.ko-admin_holidays_edit__error_pyuuw {
+  color: #E86048; }
 
 /* styles for frontend-cp/components/ko-admin/overview/index/styles.css */
 .ko-admin_overview_index__billing-address_13wym3 {
