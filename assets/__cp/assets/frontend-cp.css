@@ -8910,14 +8910,26 @@ a.ko-admin_plans_index__cancel_1pprhr {
 .session_agent_cases_index_suspended-messages_show__button_84d628 {
   margin-left: 9px; }
 
-.session_agent_cases_index_suspended-messages_show__table-row_84d628 {
+.session_agent_cases_index_suspended-messages_show__table_84d628 {
+  width: 100%; }
+
+.session_agent_cases_index_suspended-messages_show__table-header_84d628 {
+  font-weight: bold;
+  vertical-align: top;
+  padding: 9px;
+  text-align: left;
+  min-width: 150px; }
+
+.session_agent_cases_index_suspended-messages_show__table-cell_84d628 {
   vertical-align: top;
   padding: 9px; }
 
-.session_agent_cases_index_suspended-messages_show__modal-text_84d628 {
+.session_agent_cases_index_suspended-messages_show__message-wrapper_84d628 {
   height: 200px;
-  overflow-y: scroll;
-  word-break: break-all; }
+  overflow: auto; }
+
+.session_agent_cases_index_suspended-messages_show__message-text_84d628 {
+  white-space: pre-wrap; }
 
 /* styles for frontend-cp/session/agent/cases/index/suspended-messages/styles.css */
 .session_agent_cases_index_suspended-messages__section_1qhp96 {
