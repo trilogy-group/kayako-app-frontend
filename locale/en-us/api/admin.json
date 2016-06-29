@@ -154,10 +154,6 @@
   "triggers.event.TRIGGER": "Trigger",
   "triggers.event.MONITOR": "Monitor",
 
-  "staff.title": "Team directory",
-  "staff.labels.filter": "Filter",
-  "staff.view_user": "View user",
-
   "teams.title": "Teams",
   "teams.agent": "{numAgents, plural, =1 {agent} other {agents}}",
   "teams.headings.index": "Teams",
@@ -846,7 +842,6 @@
   "localization.enabled.message": "Language enabled successfully",
   "localization.disabled.message": "Language disabled successfully",
   "account.plans.title": "Plans",
-  "account.plans.compare.title": "Compare Plans",
   "account.plans.select.title": "Choose Plans",
   "account.plans.upgrade": "Update Subscription",
   "account.plans.upgradeCancel": "Cancel",
@@ -864,8 +859,7 @@
   "account.plans.renewal.data.title": "Renewal date",
   "account.plans.paying.title": "Paying now",
   "account.plans.subscription.key": "per {term, select, monthly {month} annually {year}}",
-  "account.plans.term.savings.title": "save",
-  "account.plans.term.savings.term": "/year",
+  "account.plans.term.savings.title": "Save",
   "localization.tabs.languages": "Languages",
   "localization.tabs.settings": "Settings",
   "localization.settings.title": "Settings",
