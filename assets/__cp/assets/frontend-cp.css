@@ -6564,6 +6564,16 @@ a.ko-admin_plans_index__cancel_1pprhr {
   display: flex;
   width: 25%; }
 
+/* styles for frontend-cp/components/ko-admin/staff/list-row/styles.css */
+.ko-admin_staff_list-row__username_12oxru {
+  font-weight: 800; }
+
+.ko-admin_staff_list-row__team-list_12oxru {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 200px; }
+
 /* styles for frontend-cp/components/ko-admin/team/styles.css */
 .ko-admin_team__loader_u5wpiz {
   height: 100px;
@@ -8786,6 +8796,16 @@ a.ko-admin_plans_index__cancel_1pprhr {
 
 .session_admin_apps_zapier__findOutCTA_zxnhet {
   padding: 0 10px; }
+
+/* styles for frontend-cp/session/admin/people/staff/index/styles.css */
+.session_admin_people_staff_index__search_1355zo {
+  margin-bottom: 18px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end; }
 
 /* styles for frontend-cp/session/admin/people/teams/index/styles.css */
 .session_admin_people_teams_index__search_1tvsvh {
