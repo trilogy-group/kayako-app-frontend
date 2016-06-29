@@ -5710,11 +5710,6 @@ span#HW_badge.HW_softHidden {
   margin-top: 13px; }
 
 /* styles for frontend-cp/components/ko-admin/apps/webhooks/index/styles.css */
-.ko-admin_apps_webhooks_index__sectionDescription_mxkp0q {
-  color: #838D94;
-  font-size: 14px;
-  margin-bottom: 22px; }
-
 .ko-admin_apps_webhooks_index__row_mxkp0q {
   padding-top: 20px;
   padding-bottom: 20px; }
@@ -6096,6 +6091,12 @@ span#HW_badge.HW_softHidden {
   -webkit-box-pack: end;
       -ms-flex-pack: end;
           justify-content: flex-end; }
+
+/* styles for frontend-cp/components/ko-admin/forms/description/styles.css */
+.ko-admin_forms_description__description_wwz9ca {
+  color: #838D94;
+  margin-bottom: 22px;
+  line-height: 24px; }
 
 /* styles for frontend-cp/components/ko-admin/forms/group/styles.css */
 .ko-admin_forms_group__group_8wtptf {
