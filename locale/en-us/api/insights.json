@@ -117,6 +117,13 @@
   "sla.sla_target_performance_for": "SLA target performance for",
   "sla.overall_performance_for": "Overall performance for",
 
+  "trial.notification.title": "We’re showing demo data so you can get a feel for Insights in Kayako during your trial.",
+  "trial.notification.link": "Show my real Kayako data",
+
+  "helpcenter.popular_searches.description": "Use the popular searches report to see what your customers are looking for, and learn what your customers are most interested in or struggling with the most. You can use these insights to tailor the look, feel and content organization of your Help Center to surface the things people are looking for more prominently, or develop extra self-service content.",
+  "helpcenter.failed_searches.description": "Use the failed searches report to see what customers are searching for in your Help Center that return no matching results. You can use these insights to find opportunities to help your customers find their own answers, such as by developing more self-service content or tailoring existing content to the vocabulary of your customers.",
+
+
   "day": "Day",
   "week": "Week",
   "month": "Month"
