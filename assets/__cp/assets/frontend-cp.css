@@ -4858,88 +4858,6 @@ span#HW_badge.HW_softHidden {
     cursor: pointer;
     background-color: rgba(80, 131, 219, 0.05); }
 
-.ko-toast {
-  pointer-events: none; }
-
-.ko-toast + .ko-toast {
-  margin: 15px auto 0; }
-
-.ko-toast__container {
-  position: relative;
-  border-radius: 4px;
-  padding: 6px 12px 6px 36px;
-  color: white;
-  max-width: 456px;
-  display: inline-block;
-  text-align: left;
-  pointer-events: auto; }
-  .ko-toast__container.ko-toast__container--dismissable, .ko-toast__container.ko-toast__container--multiline {
-    padding-right: 34px; }
-  .ko-toast__container.ko-toast__container--multiline {
-    padding-top: 12px;
-    padding-bottom: 12px; }
-  .ko-toast__container.ko-toast__container--error {
-    background-color: #E86048; }
-  .ko-toast__container.ko-toast__container--warning {
-    background-color: #ECC645; }
-  .ko-toast__container.ko-toast__container--info {
-    background-color: #4EAFCB; }
-  .ko-toast__container.ko-toast__container--success {
-    background-color: #89a83b; }
-
-.ko-toast.ko-toast--add {
-  -webkit-transform: translate(0, -10px);
-          transform: translate(0, -10px);
-  opacity: 0;
-  -webkit-transition: all 100ms ease-out;
-  transition: all 100ms ease-out; }
-  .ko-toast.ko-toast--add.ko-toast--add-active {
-    -webkit-transform: translate(0, 0);
-            transform: translate(0, 0);
-    opacity: 1; }
-
-.ko-toast.ko-toast--remove {
-  -webkit-transform: scale(1, 1) translateY(0);
-          transform: scale(1, 1) translateY(0);
-  margin-bottom: 0;
-  opacity: 1;
-  -webkit-transition: all 100ms ease-out;
-  transition: all 100ms ease-out; }
-  .ko-toast.ko-toast--remove.ko-toast--remove-active {
-    -webkit-transform: scale(1.05, 1.05) translateY(-10px);
-            transform: scale(1.05, 1.05) translateY(-10px);
-    opacity: 0.1; }
-
-.ko-toast__close {
-  position: absolute;
-  top: 4px;
-  right: 4px; }
-  .ko-toast__close:focus {
-    box-shadow: none; }
-
-.ko-toast__container--multiline .ko-toast__close {
-  top: 6px; }
-
-.ko-toast__icon {
-  position: absolute;
-  top: 5px;
-  left: 12px; }
-
-.ko-toast__container--multiline .ko-toast__icon {
-  top: 12px; }
-
-.ko-toast__title {
-  font-weight: 600; }
-
-.ko-toast__link {
-  font-weight: 800;
-  color: white; }
-  .ko-toast__link:hover {
-    text-decoration: underline; }
-
-.ko-toast__body {
-  margin-top: 1px; }
-
 .ko-universal-search {
   position: relative;
   line-height: initial; }
@@ -7552,7 +7470,7 @@ a.ko-admin_plans_index__cancel_1pprhr {
 
 /* styles for frontend-cp/components/ko-insights/section/articles/styles.css */
 .ko-insights_section_articles__table_nuv5v1 {
-  margin-top: 30px; }
+  margin-top: 0; }
 
 /* styles for frontend-cp/components/ko-insights/section/cases/styles.css */
 .ko-insights_section_cases__header_11ovh3 {
@@ -7675,6 +7593,16 @@ a.ko-admin_plans_index__cancel_1pprhr {
 
 .ko-insights_section_searches__table_196cth {
   margin-top: 30px; }
+
+.ko-insights_section_searches__table_196cth.ko-insights_section_searches__first_196cth {
+  margin-top: 0; }
+
+.ko-insights_section_searches__title_196cth {
+  margin-bottom: 0; }
+
+.ko-insights_section_searches__description_196cth {
+  margin-bottom: 20px;
+  color: #838D94; }
 
 /* styles for frontend-cp/components/ko-insights/section/sla-overview/styles.css */
 .ko-insights_section_sla-overview__header_chs57u {
@@ -8552,6 +8480,103 @@ a.ko-admin_plans_index__cancel_1pprhr {
 
 .ko-timeline__feed_1klp8h {
   padding: 0 18px 0 18px; }
+
+/* styles for frontend-cp/components/ko-toast/styles.css */
+.ko-toast__toast_slxbnf {
+  pointer-events: none; }
+
+.ko-toast__toast_slxbnf + .ko-toast__toast_slxbnf {
+  margin: 15px auto 0; }
+
+.ko-toast__container_slxbnf {
+  position: relative;
+  border-radius: 4px;
+  padding: 6px 12px 6px 36px;
+  color: white;
+  max-width: 456px;
+  display: inline-block;
+  text-align: left;
+  pointer-events: auto; }
+
+.ko-toast__container_slxbnf.ko-toast__dismissable_slxbnf,
+.ko-toast__container_slxbnf.ko-toast__multiline_slxbnf {
+  padding-right: 34px; }
+
+.ko-toast__container_slxbnf.ko-toast__multiline_slxbnf {
+  padding-top: 12px;
+  padding-bottom: 12px; }
+
+.ko-toast__container_slxbnf.ko-toast__error_slxbnf {
+  background-color: #E86048; }
+
+.ko-toast__container_slxbnf.ko-toast__warning_slxbnf {
+  background-color: #ECC645; }
+
+.ko-toast__container_slxbnf.ko-toast__info_slxbnf {
+  background-color: #4EAFCB; }
+
+.ko-toast__container_slxbnf.ko-toast__success_slxbnf {
+  background-color: #89a83b; }
+
+.ko-toast__addModifier_slxbnf {
+  -webkit-transform: translate(0, -10px);
+          transform: translate(0, -10px);
+  opacity: 0;
+  -webkit-transition: all 100ms ease-out;
+  transition: all 100ms ease-out; }
+
+.ko-toast__addModifier_slxbnf.ko-toast__addModifierActive_slxbnf {
+  -webkit-transform: translate(0, 0);
+          transform: translate(0, 0);
+  opacity: 1; }
+
+.ko-toast__toast_slxbnf.ko-toast__removeModifier_slxbnf {
+  -webkit-transform: scale(1, 1) translateY(0);
+          transform: scale(1, 1) translateY(0);
+  margin-bottom: 0;
+  opacity: 1;
+  -webkit-transition: all 100ms ease-out;
+  transition: all 100ms ease-out; }
+
+.ko-toast__toast_slxbnf.ko-toast__removeModifier_slxbnf.ko-toast__removeModifierActive_slxbnf {
+  -webkit-transform: scale(1.05, 1.05) translateY(-10px);
+          transform: scale(1.05, 1.05) translateY(-10px);
+  opacity: 0.1; }
+
+.ko-toast__close_slxbnf {
+  position: absolute;
+  top: 4px;
+  right: 4px; }
+
+.ko-toast__close_slxbnf:focus {
+  box-shadow: none; }
+
+.ko-toast__multiline_slxbnf .ko-toast__close_slxbnf {
+  top: 6px; }
+
+.ko-toast__icon_slxbnf {
+  position: absolute;
+  top: 5px;
+  left: 12px; }
+
+.ko-toast__multiline_slxbnf .ko-toast__icon_slxbnf {
+  top: 12px; }
+
+.ko-toast__title_slxbnf {
+  font-weight: 600; }
+
+.ko-toast__href_slxbnf {
+  margin-top: 5px; }
+
+.ko-toast__link_slxbnf {
+  font-weight: 800;
+  color: white; }
+
+.ko-toast__link_slxbnf:hover {
+  text-decoration: underline; }
+
+.ko-toast__body_slxbnf {
+  margin-top: 1px; }
 
 /* styles for frontend-cp/components/ko-toggle/styles.css */
 .ko-toggle__toggle_l41cb8 {

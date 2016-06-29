@@ -61,7 +61,7 @@ define('frontend-cp/tests/acceptance/admin/account/billing/index-test', ['export
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/account/overview/index-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+define('frontend-cp/tests/acceptance/admin/account/overview/index-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-toast/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoToastStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/account/overview Index', {
     beforeEach: function beforeEach() {
@@ -130,7 +130,7 @@ define('frontend-cp/tests/acceptance/admin/account/overview/index-test', ['expor
     });
 
     andThen(function () {
-      assert.equal(find('.ko-toast').length, 1);
+      assert.equal(find('.' + _frontendCpComponentsKoToastStyles['default'].toast).length, 1);
     });
   });
 
@@ -144,11 +144,11 @@ define('frontend-cp/tests/acceptance/admin/account/overview/index-test', ['expor
     });
 
     andThen(function () {
-      assert.equal(find('.ko-toast').length, 1);
+      assert.equal(find('.' + _frontendCpComponentsKoToastStyles['default'].toast).length, 1);
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-admin/plans/index/styles', 'frontend-cp/components/ko-admin/rateplans/item/styles', 'frontend-cp/components/ko-admin/rateplans/price/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoAdminPlansIndexStyles, _frontendCpComponentsKoAdminRateplansItemStyles, _frontendCpComponentsKoAdminRateplansPriceStyles) {
+define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-admin/plans/index/styles', 'frontend-cp/components/ko-admin/rateplans/item/styles', 'frontend-cp/components/ko-admin/rateplans/price/styles', 'frontend-cp/components/ko-toast/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoAdminPlansIndexStyles, _frontendCpComponentsKoAdminRateplansItemStyles, _frontendCpComponentsKoAdminRateplansPriceStyles, _frontendCpComponentsKoToastStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/account/plans Index', {
     beforeEach: function beforeEach() {
@@ -204,7 +204,7 @@ define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports'
     click('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].cell + ':eq(2)');
     click('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].button);
     andThen(function () {
-      assert.equal(find('.ko-toast').length, 1);
+      assert.equal(find('.' + _frontendCpComponentsKoToastStyles['default'].toast).length, 1);
     });
   });
 
@@ -14353,7 +14353,7 @@ define("frontend-cp/tests/acceptance/agent/macros/select-macro-test", ["exports"
 //     assert.equal(find(textAreaSelector).text().trim(), 'I am Cat 1 / Bar', 'Selected macro should apply');
 //   });
 // });
-define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-toast/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoToastStyles) {
 
   var originalConfirm = undefined;
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Manage Email Identities', {
@@ -14390,7 +14390,7 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
     });
 
     andThen(function () {
-      assert.equal(find('.ko-toast__container').text().trim(), 'An email has been sent to your email id', 'Display a notification message');
+      assert.equal(find('.' + _frontendCpComponentsKoToastStyles['default'].container).text().trim(), 'An email has been sent to your email id', 'Display a notification message');
     });
   });
 
