@@ -7406,10 +7406,10 @@ define('frontend-cp/tests/acceptance/admin/manage/macros/new-test', ['exports', 
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new macro', function (assert) {
-    var actionSelect = '.ember-power-select:contains("Please select an action")';
+    var actionSelect = '.ko-admin_macros_edit__actions-selector:contains("Please select an action")';
 
     function formSelectFor(id) {
-      return '.qa-ko-admin-macros-action-' + id + '\n           .ko-admin-macros-action__form .ember-power-select';
+      return '.qa-ko-admin-macros-action-' + id + '\n           .ko-admin-macros-action__form';
     }
 
     function formOptionFor(id, value) {
@@ -13052,7 +13052,7 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
 
     andThen(function () {
       assert.equal(find('.ko-bulk-sidebar__title').text().trim(), 'Update Cases');
-      selectChoose('.fields div:nth-child(2) .ember-power-select', 'Open');
+      selectChoose('.fields div:nth-child(2)', 'Open');
       click('button[name=update-cases]');
     });
 
@@ -13077,9 +13077,9 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
 
     andThen(function () {
       assert.equal(find('.ko-bulk-sidebar__title').text().trim(), 'Update Cases');
-      selectChoose('.fields div:nth-child(2) .ember-power-select', 'Open');
-      selectChoose('.fields div:nth-child(3) .ember-power-select', 'Question');
-      selectChoose('.fields div:nth-child(4) .ember-power-select', 'Low');
+      selectChoose('.fields div:nth-child(2)', 'Open');
+      selectChoose('.fields div:nth-child(3)', 'Question');
+      selectChoose('.fields div:nth-child(4)', 'Low');
     });
 
     andThen(function () {
@@ -13209,7 +13209,7 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
 
     visit('/agent/cases/' + targetCase.id + '/organisation');
 
-    selectChoose('.qa-timeline__filter .ember-power-select', 'Notes');
+    selectChoose('.qa-timeline__filter', 'Notes');
 
     andThen(function () {
       assert.equal(find('.qa-feed_item--note').length, 20, 'Notes displayed');
@@ -13222,7 +13222,7 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
 
     visit('/agent/cases/' + targetCase.id + '/organisation');
 
-    selectChoose('.qa-timeline__filter .ember-power-select', 'Events');
+    selectChoose('.qa-timeline__filter', 'Events');
 
     andThen(function () {
       assert.equal(find('.qa-feed_item--note').length, 0, 'Notes not displayed');
@@ -13236,7 +13236,7 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
 
     visit('/agent/cases/' + targetCase.id + '/organisation');
 
-    selectChoose('.qa-timeline__filter .ember-power-select', 'Activities');
+    selectChoose('.qa-timeline__filter', 'Activities');
 
     andThen(function () {
       assert.equal(find('.qa-feed_item--note').length, 0, 'Notes not displayed');
@@ -13260,7 +13260,7 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
 
     visit('/agent/cases/' + targetCase.id + '/organisation');
 
-    selectChoose('.qa-timeline__filter .ember-power-select', 'Notes');
+    selectChoose('.qa-timeline__filter', 'Notes');
 
     andThen(function () {
       assert.equal(find('.qa-feed_item--note').length, 20, 'Default number of notes displayed');
@@ -13283,7 +13283,7 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
 
     visit('/agent/cases/' + targetCase.id + '/organisation?postId=' + postId);
 
-    selectChoose('.qa-timeline__filter .ember-power-select', 'Notes');
+    selectChoose('.qa-timeline__filter', 'Notes');
 
     andThen(function () {
       assert.equal(find('.qa-feed_item--note').length, 20, 'Last 8 notes displayed');
@@ -13303,7 +13303,7 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
 
     visit('/agent/cases/' + targetCase.id + '/organisation');
 
-    selectChoose('.qa-timeline__filter .ember-power-select', 'Activities');
+    selectChoose('.qa-timeline__filter', 'Activities');
 
     andThen(function () {
       assert.equal(find('.qa-feed_activity').length, 20, 'Default number of activities displayed');
@@ -13323,7 +13323,7 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
 
     visit('/agent/cases/' + targetCase.id + '/organisation');
 
-    selectChoose('.qa-timeline__filter .ember-power-select', 'Events');
+    selectChoose('.qa-timeline__filter', 'Events');
 
     andThen(function () {
       assert.equal(find('.qa-feed_activity').length, 20, 'Default number of events displayed');
@@ -13348,7 +13348,7 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
     });
 
     andThen(function () {
-      selectChoose('.qa-timeline__filter .ember-power-select', 'Notes');
+      selectChoose('.qa-timeline__filter', 'Notes');
       click('.ko-layout_advanced_editor__placeholder');
       fillInRichTextEditor('Testing notes');
     });
@@ -13984,7 +13984,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
 
     visit('/agent/cases/' + targetCase.id + '/user');
 
-    selectChoose('.qa-timeline__filter .ember-power-select', 'Notes');
+    selectChoose('.qa-timeline__filter', 'Notes');
 
     andThen(function () {
       assert.equal(find('.qa-feed_item--note').length, 20, 'Notes displayed');
@@ -13997,7 +13997,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
 
     visit('/agent/cases/' + targetCase.id + '/user');
 
-    selectChoose('.qa-timeline__filter .ember-power-select', 'Events');
+    selectChoose('.qa-timeline__filter', 'Events');
 
     andThen(function () {
       assert.equal(find('.qa-feed_item--note').length, 0, 'Notes not displayed');
@@ -14011,7 +14011,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
 
     visit('/agent/cases/' + targetCase.id + '/user');
 
-    selectChoose('.qa-timeline__filter .ember-power-select', 'Activities');
+    selectChoose('.qa-timeline__filter', 'Activities');
 
     andThen(function () {
       assert.equal(find('.qa-feed_item--note').length, 0, 'Notes not displayed');
@@ -14035,7 +14035,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
 
     visit('/agent/cases/' + targetCase.id + '/user');
 
-    selectChoose('.qa-timeline__filter .ember-power-select', 'Notes');
+    selectChoose('.qa-timeline__filter', 'Notes');
 
     andThen(function () {
       assert.equal(find('.qa-feed_item--note').length, 20, 'Default number of notes displayed');
@@ -14058,7 +14058,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
 
     visit('/agent/cases/' + targetCase.id + '/user?postId=' + postId);
 
-    selectChoose('.qa-timeline__filter .ember-power-select', 'Notes');
+    selectChoose('.qa-timeline__filter', 'Notes');
 
     andThen(function () {
       assert.equal(find('.qa-feed_item--note').length, 20, 'Last 8 notes displayed');
@@ -14078,7 +14078,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
 
     visit('/agent/cases/' + targetCase.id + '/user');
 
-    selectChoose('.qa-timeline__filter .ember-power-select', 'Activities');
+    selectChoose('.qa-timeline__filter', 'Activities');
 
     andThen(function () {
       assert.equal(find('.qa-feed_activity').length, 20, 'Default number of activities displayed');
@@ -14098,7 +14098,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
 
     visit('/agent/cases/' + targetCase.id + '/user');
 
-    selectChoose('.qa-timeline__filter .ember-power-select', 'Events');
+    selectChoose('.qa-timeline__filter', 'Events');
 
     andThen(function () {
       assert.equal(find('.qa-feed_activity').length, 20, 'Default number of events displayed');
@@ -14123,7 +14123,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
     });
 
     andThen(function () {
-      selectChoose('.qa-timeline__filter .ember-power-select', 'Notes');
+      selectChoose('.qa-timeline__filter', 'Notes');
       click('.ko-layout_advanced_editor__placeholder');
       fillInRichTextEditor('Testing notes');
     });
@@ -14143,7 +14143,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
 
     visit('/agent/cases/' + targetCase.id + '/user');
 
-    selectChoose('.qa-timeline__filter .ember-power-select', 'Activities');
+    selectChoose('.qa-timeline__filter', 'Activities');
 
     andThen(function () {
       assert.equal(find('.qa-feed_item--note').length, 0, 'No notes displayed as filtering by activities');
@@ -14168,7 +14168,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
 
     visit('/agent/cases/' + targetCase.id + '/user');
 
-    selectChoose('.qa-timeline__filter .ember-power-select', 'Events');
+    selectChoose('.qa-timeline__filter', 'Events');
 
     andThen(function () {
       assert.equal(find('.qa-feed_item--note').length, 0, 'No notes displayed as filtering by events');
@@ -15197,8 +15197,11 @@ define('frontend-cp/tests/acceptance/agent/users/change-role-test', ['exports', 
     login(session.id);
 
     visit('/agent/users/' + other.id);
-    selectChoose('.ko-user-content__role-field', 'Agent');
-    click('button:contains(Submit)');
+
+    andThen(function () {
+      selectChoose('.ko-user-content__role-field', 'Agent');
+      click('button:contains(Submit)');
+    });
 
     andThen(function () {
       assert.ok(find('.ko-user-content__role-field').is(':contains(Agent)'), 'expected role field to contain "Agent"');
@@ -15322,7 +15325,7 @@ define('frontend-cp/tests/acceptance/agent/users/create-test', ['exports', 'fron
     andThen(function () {
       assert.equal(currentURL(), '/agent/users/2', 'We are in the show page of the created user');
 
-      assert.equal(find('.ko-agent-dropdown .ember-basic-dropdown-trigger[aria-expanded="false"]').length, 1, '"+" Dropdown content should be hidden');
+      assert.equal(find('.ko-agent-dropdown .ember-basic-dropdown-trigger').attr('aria-expanded'), undefined, '"+" Dropdown content should be hidden');
 
       assert.equal(find('.ko-layout_advanced_section__subject').text().trim(), 'Barney Stinson', 'The name of the user is vissible in the header');
       assert.equal(find('.' + _frontendCpComponentsKoTabsStyles['default'].item + ':eq(0)').text().trim(), 'Barney Stinson', 'Tabs are correct');
@@ -15419,7 +15422,7 @@ define('frontend-cp/tests/acceptance/agent/users/edit-test', ['exports', 'fronte
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-user-content__case-access-field .' + _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles['default'].placeholder), 'All cases', 'Case access field initial value is correct');
     });
 
-    selectChoose('.qa-user-content__case-access-field .ember-power-select', 'Cases assigned to agent');
+    selectChoose('.qa-user-content__case-access-field', 'Cases assigned to agent');
 
     andThen(function () {
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-user-content__case-access-field .' + _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles['default'].placeholder), 'Cases assigned to agent', 'Case access field changed value is correct');
@@ -15446,7 +15449,7 @@ define('frontend-cp/tests/acceptance/agent/users/edit-test', ['exports', 'fronte
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-user-content__case-access-field .' + _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles['default'].placeholder), 'Only requested cases', 'Case access field initial value is correct');
     });
 
-    selectChoose('.qa-user-content__case-access-field .ember-power-select', 'All organization\'s cases');
+    selectChoose('.qa-user-content__case-access-field', 'All organization\'s cases');
 
     andThen(function () {
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-user-content__case-access-field .' + _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles['default'].placeholder), 'All organization\'s cases', 'Case access field changed value is correct');
@@ -15477,8 +15480,8 @@ define('frontend-cp/tests/acceptance/agent/users/edit-test', ['exports', 'fronte
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-user-content__role-field .' + _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles['default'].placeholder), 'Customer', 'Role field initial value is correct');
     });
 
-    selectChoose('.ko-user-content__role-field .ember-power-select', 'Collaborator');
-    selectChoose('.qa-user-content__case-access-field .ember-power-select', 'Cases assigned to agent');
+    selectChoose('.ko-user-content__role-field', 'Collaborator');
+    selectChoose('.qa-user-content__case-access-field', 'Cases assigned to agent');
 
     click('.button--primary');
   });
@@ -15505,8 +15508,8 @@ define('frontend-cp/tests/acceptance/agent/users/edit-test', ['exports', 'fronte
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.ko-user-content__role-field .' + _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles['default'].placeholder), 'Owner', 'Role field initial value is correct');
     });
 
-    selectChoose('.ko-user-content__role-field .ember-power-select', 'Customer');
-    selectChoose('.qa-user-content__case-access-field .ember-power-select', 'All organization\'s cases');
+    selectChoose('.ko-user-content__role-field', 'Customer');
+    selectChoose('.qa-user-content__case-access-field', 'All organization\'s cases');
 
     click('.button--primary');
   });
@@ -15534,7 +15537,7 @@ define('frontend-cp/tests/acceptance/agent/users/edit-test', ['exports', 'fronte
 
     visit('/agent/users/' + owner.id);
 
-    selectChoose('.qa-user-content__locale-select .ember-power-select', 'Deutsch');
+    selectChoose('.qa-user-content__locale-select', 'Deutsch');
 
     click('.button--primary');
   });
@@ -16168,9 +16171,58 @@ define('frontend-cp/tests/helpers/drag', ['exports', 'ember'], function (exports
   exports['default'] = _ember['default'].Test.registerAsyncHelper('drag', drag);
 });
 //unashamedly stolen from ember-sortable test helper
-define('frontend-cp/tests/helpers/ember-basic-dropdown', ['exports'], function (exports) {
+define('frontend-cp/tests/helpers/ember-basic-dropdown', ['exports', 'ember-runloop'], function (exports, _emberRunloop) {
+  exports.nativeClick = nativeClick;
   exports.clickTrigger = clickTrigger;
   exports.tapTrigger = tapTrigger;
+  exports.fireKeydown = fireKeydown;
+
+  function focus(el) {
+    if (!el) {
+      return;
+    }
+    var $el = jQuery(el);
+    if ($el.is(':input, [contenteditable=true]')) {
+      var type = $el.prop('type');
+      if (type !== 'checkbox' && type !== 'radio' && type !== 'hidden') {
+        (0, _emberRunloop['default'])(null, function () {
+          // Firefox does not trigger the `focusin` event if the window
+          // does not have focus. If the document doesn't have focus just
+          // use trigger('focusin') instead.
+
+          if (!document.hasFocus || document.hasFocus()) {
+            el.focus();
+          } else {
+            $el.trigger('focusin');
+          }
+        });
+      }
+    }
+  }
+
+  function nativeClick(selector) {
+    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+    var mousedown = new window.Event('mousedown', { bubbles: true, cancelable: true, view: window });
+    var mouseup = new window.Event('mouseup', { bubbles: true, cancelable: true, view: window });
+    var click = new window.Event('click', { bubbles: true, cancelable: true, view: window });
+    Object.keys(options).forEach(function (key) {
+      mousedown[key] = options[key];
+      mouseup[key] = options[key];
+      click[key] = options[key];
+    });
+    var element = document.querySelector(selector);
+    (0, _emberRunloop['default'])(function () {
+      return element.dispatchEvent(mousedown);
+    });
+    focus(element);
+    (0, _emberRunloop['default'])(function () {
+      return element.dispatchEvent(mouseup);
+    });
+    (0, _emberRunloop['default'])(function () {
+      return element.dispatchEvent(click);
+    });
+  }
 
   function clickTrigger(scope) {
     var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
@@ -16179,13 +16231,7 @@ define('frontend-cp/tests/helpers/ember-basic-dropdown', ['exports'], function (
     if (scope) {
       selector = scope + ' ' + selector;
     }
-    var event = new window.Event('mousedown', { bubbles: true, cancelable: true, view: window });
-    Object.keys(options).forEach(function (key) {
-      return event[key] = options[key];
-    });
-    Ember.run(function () {
-      return Ember.$(selector)[0].dispatchEvent(event);
-    });
+    nativeClick(selector, options);
   }
 
   function tapTrigger(scope) {
@@ -16199,19 +16245,36 @@ define('frontend-cp/tests/helpers/ember-basic-dropdown', ['exports'], function (
     Object.keys(options).forEach(function (key) {
       return touchStartEvent[key] = options[key];
     });
-    Ember.run(function () {
-      return Ember.$(selector)[0].dispatchEvent(touchStartEvent);
+    (0, _emberRunloop['default'])(function () {
+      return document.querySelector(selector).dispatchEvent(touchStartEvent);
     });
     var touchEndEvent = new window.Event('touchend', { bubbles: true, cancelable: true, view: window });
     Object.keys(options).forEach(function (key) {
       return touchEndEvent[key] = options[key];
     });
-    Ember.run(function () {
-      return Ember.$(selector)[0].dispatchEvent(touchEndEvent);
+    (0, _emberRunloop['default'])(function () {
+      return document.querySelector(selector).dispatchEvent(touchEndEvent);
+    });
+  }
+
+  function fireKeydown(selector, k) {
+    var oEvent = document.createEvent('Events');
+    oEvent.initEvent('keydown', true, true);
+    $.extend(oEvent, {
+      view: window,
+      ctrlKey: false,
+      altKey: false,
+      shiftKey: false,
+      metaKey: false,
+      keyCode: k,
+      charCode: k
+    });
+    (0, _emberRunloop['default'])(function () {
+      return document.querySelector(selector).dispatchEvent(oEvent);
     });
   }
 });
-define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], function (exports, _ember) {
+define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'jquery', 'ember-runloop', 'ember-test'], function (exports, _jquery, _emberRunloop, _emberTest) {
   exports.nativeMouseDown = nativeMouseDown;
   exports.nativeMouseUp = nativeMouseUp;
   exports.triggerKeydown = triggerKeydown;
@@ -16223,7 +16286,7 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
   // Helpers for integration tests
 
   function typeText(selector, text) {
-    var $selector = $($(selector).get(0)); // Only interact with the first result
+    var $selector = (0, _jquery['default'])((0, _jquery['default'])(selector).get(0)); // Only interact with the first result
     $selector.val(text);
     var event = document.createEvent('Events');
     event.initEvent('input', true, true);
@@ -16239,11 +16302,11 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
     });
     var target = undefined;
     if (typeof selectorOrDomElement === 'string') {
-      target = _ember['default'].$(selectorOrDomElement)[0];
+      target = (0, _jquery['default'])(selectorOrDomElement)[0];
     } else {
       target = selectorOrDomElement;
     }
-    _ember['default'].run(function () {
+    (0, _emberRunloop['default'])(function () {
       return target.dispatchEvent(event);
     });
   }
@@ -16259,7 +16322,7 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
   function triggerKeydown(domElement, k) {
     var oEvent = document.createEvent('Events');
     oEvent.initEvent('keydown', true, true);
-    $.extend(oEvent, {
+    _jquery['default'].extend(oEvent, {
       view: window,
       ctrlKey: false,
       altKey: false,
@@ -16268,13 +16331,13 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
       keyCode: k,
       charCode: k
     });
-    _ember['default'].run(function () {
+    (0, _emberRunloop['default'])(function () {
       domElement.dispatchEvent(oEvent);
     });
   }
 
   function typeInSearch(text) {
-    _ember['default'].run(function () {
+    (0, _emberRunloop['default'])(function () {
       typeText('.ember-power-select-search-input, .ember-power-select-search input, .ember-power-select-trigger-multiple-input, input[type="search"]', text);
     });
   }
@@ -16294,14 +16357,14 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
     var target = undefined;
 
     if (typeof selectorOrDomElement === 'string') {
-      target = _ember['default'].$(selectorOrDomElement)[0];
+      target = (0, _jquery['default'])(selectorOrDomElement)[0];
     } else {
       target = selectorOrDomElement;
     }
-    _ember['default'].run(function () {
+    (0, _emberRunloop['default'])(function () {
       return target.dispatchEvent(event);
     });
-    _ember['default'].run(function () {
+    (0, _emberRunloop['default'])(function () {
       event = new window.Event('touchend', { bubbles: true, cancelable: true, view: window });
       target.dispatchEvent(event);
     });
@@ -16315,25 +16378,24 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
   // Helpers for acceptance tests
 
   exports['default'] = function () {
-    var isEmberOne = _ember['default'].VERSION.match(/1\.13/);
-
-    _ember['default'].Test.registerAsyncHelper('selectChoose', function (app, cssPath, value) {
-      var match = find(cssPath).find('.ember-power-select-trigger').attr('id').match(/\d+$/);
-      var id = match[0];
+    _emberTest['default'].registerAsyncHelper('selectChoose', function (app, cssPath, value) {
+      var $trigger = find(cssPath).find('.ember-power-select-trigger');
+      var contentId = '' + $trigger.attr('aria-controls');
+      var $content = find('#' + contentId);
       // If the dropdown is closed, open it
-      if (_ember['default'].$('.ember-power-select-dropdown-ember' + id).length === 0) {
+      if ($content.length === 0) {
         nativeMouseDown(cssPath + ' .ember-power-select-trigger');
         wait();
       }
 
       // Select the option with the given text
       andThen(function () {
-        var potentialTargets = $('.ember-power-select-dropdown-ember' + id + ' .ember-power-select-option:contains("' + value + '")').toArray();
+        var potentialTargets = (0, _jquery['default'])('#' + contentId + ' .ember-power-select-option:contains("' + value + '")').toArray();
         var target = undefined;
         if (potentialTargets.length > 1) {
-          target = _ember['default'].A(potentialTargets).find(function (t) {
+          target = potentialTargets.filter(function (t) {
             return t.textContent.trim() === value;
-          }) || potentialTargets[0];
+          })[0] || potentialTargets[0];
         } else {
           target = potentialTargets[0];
         }
@@ -16341,45 +16403,34 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
       });
     });
 
-    _ember['default'].Test.registerAsyncHelper('selectSearch', function (app, cssPath, value) {
-      var id = find(cssPath).find('.ember-power-select-trigger').attr('id').replace(/\D/g, '');
-      var isMultipleSelect = _ember['default'].$(cssPath + ' .ember-power-select-trigger-multiple-input').length > 0;
+    _emberTest['default'].registerAsyncHelper('selectSearch', function (app, cssPath, value) {
+      var $trigger = find(cssPath).find('.ember-power-select-trigger');
+      var contentId = '' + $trigger.attr('aria-controls');
+      var isMultipleSelect = (0, _jquery['default'])(cssPath + ' .ember-power-select-trigger-multiple-input').length > 0;
 
-      var dropdownIsClosed = _ember['default'].$('.ember-power-select-dropdown-ember' + id).length === 0;
+      var dropdownIsClosed = (0, _jquery['default'])('#' + contentId).length === 0;
       if (dropdownIsClosed) {
         nativeMouseDown(cssPath + ' .ember-power-select-trigger');
         wait();
       }
-      var isDefaultSingleSelect = _ember['default'].$('.ember-power-select-search-input').length > 0;
+      var isDefaultSingleSelect = (0, _jquery['default'])('.ember-power-select-search-input').length > 0;
 
       if (isMultipleSelect) {
         fillIn(cssPath + ' .ember-power-select-trigger-multiple-input', value);
-        if (isEmberOne) {
-          triggerEvent(cssPath + ' .ember-power-select-trigger-multiple-input', 'input');
-        }
       } else if (isDefaultSingleSelect) {
         fillIn('.ember-power-select-search-input', value);
-        if (isEmberOne) {
-          triggerEvent('.ember-power-select-dropdown-ember' + id + ' .ember-power-select-search-input', 'input');
-        }
       } else {
         // It's probably a customized version
         var inputIsInTrigger = !!find(cssPath + ' .ember-power-select-trigger input[type=search]')[0];
         if (inputIsInTrigger) {
           fillIn(cssPath + ' .ember-power-select-trigger input[type=search]', value);
-          if (isEmberOne) {
-            triggerEvent(cssPath + ' .ember-power-select-trigger input[type=search]', 'input');
-          }
         } else {
-          fillIn('.ember-power-select-dropdown-ember' + id + ' .ember-power-select-search-input[type=search]', 'input');
-          if (isEmberOne) {
-            triggerEvent('.ember-power-select-dropdown-ember' + id + ' .ember-power-select-search-input[type=search]', 'input');
-          }
+          fillIn('#' + contentId + ' .ember-power-select-search-input[type=search]', 'input');
         }
       }
     });
 
-    _ember['default'].Test.registerAsyncHelper('removeMultipleOption', function (app, cssPath, value) {
+    _emberTest['default'].registerAsyncHelper('removeMultipleOption', function (app, cssPath, value) {
       var elem = find(cssPath + ' .ember-power-select-multiple-options > li:contains(' + value + ') > .ember-power-select-multiple-remove-btn').get(0);
       try {
         nativeMouseDown(elem);
@@ -16390,7 +16441,7 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'ember'], fun
       }
     });
 
-    _ember['default'].Test.registerAsyncHelper('clearSelected', function (app, cssPath) {
+    _emberTest['default'].registerAsyncHelper('clearSelected', function (app, cssPath) {
       var elem = find(cssPath + ' .ember-power-select-clear-btn').get(0);
       try {
         nativeMouseDown(elem);
@@ -17558,7 +17609,6 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
 
     return (0, _emberTestHelpersWait['default'])().then(function () {
       var expectedList = ['Team A / Jesse Bennett-Chamberlain', 'Team A / Jamie Edwards', 'Team B / Jesse Bennett-Chamberlain'];
-
       var actualList = this.$(optionListItem).map(function (i, el) {
         return $(el).text().trim();
       }).get();
