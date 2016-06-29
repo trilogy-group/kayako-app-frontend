@@ -154,6 +154,10 @@
   "triggers.event.TRIGGER": "Trigger",
   "triggers.event.MONITOR": "Monitor",
 
+  "staff.title": "Team directory",
+  "staff.labels.filter": "Filter",
+  "staff.view_user": "View user",
+
   "teams.title": "Teams",
   "teams.agent": "{numAgents, plural, =1 {agent} other {agents}}",
   "teams.headings.index": "Teams",
