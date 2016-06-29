@@ -849,6 +849,10 @@ textarea {
   margin-left: 4.5px;
   padding-left: 20px; }
 
+/* The API uses an older ISO standard than our flag library. We won't ever need a canadian flag */
+.i-png-flag-ca {
+  background-image: url("/__apps/frontend/assets/__cp/images/icons/flags/catalonia.png"); }
+
 .i-png-flag-ad {
   background-image: url("/__apps/frontend/assets/__cp/images/icons/flags/ad.png"); }
 
@@ -953,9 +957,6 @@ textarea {
 
 .i-png-flag-bz {
   background-image: url("/__apps/frontend/assets/__cp/images/icons/flags/bz.png"); }
-
-.i-png-flag-ca {
-  background-image: url("/__apps/frontend/assets/__cp/images/icons/flags/ca.png"); }
 
 .i-png-flag-catalonia {
   background-image: url("/__apps/frontend/assets/__cp/images/icons/flags/catalonia.png"); }
