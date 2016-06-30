@@ -1,8 +1,8 @@
 {
   "assets": {
-    "assets/frontend-cp.css": "assets/frontend-cp-f8656f2ae58ea0fb5b4509eb0e9d1922.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-a868f90942dc1f7d1839f4eba93f5218.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-04c7796cc204603e96503dc5dce6762e.map",
+    "assets/frontend-cp.css": "assets/frontend-cp-a8ec103f2e6154cd47c3cad559b4e68f.css",
+    "assets/frontend-cp.js": "assets/frontend-cp-222018383614bedbcc234a7bb49c872d.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-2b5e71d70ede84a4b2e023d1d1740000.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-9f2ae624e9f622257363543be0860026.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-52b1312285e0d9102a5f76d4ce486290.map",
     "assets/intl/intl.js": "assets/intl/intl-d42891b6f893df4f9287bb343aff56d6.js",
@@ -18,6 +18,7 @@
     "assets/vendor.map": "assets/vendor-b729032ca0f0b741f0b702044cf4e5f2.map",
     "images/apps/api/platform-to-grow.png": "images/apps/api/platform-to-grow-3b8036ab8a29aeab37f6df85f25c5836.png",
     "images/apps/header.png": "images/apps/header-c8e2bb64a8cbe599db8a2f6c98ca0e03.png",
+    "images/apps/messenger.png": "images/apps/messenger-40782c904cd64e1d80bfbe5a84f600d9.png",
     "images/apps/zapier/integrations.png": "images/apps/zapier/integrations-3a4234ed34c07e59e6c2fd60636b1b3d.png",
     "images/icons/cards/cards-sprite.png": "images/icons/cards/cards-sprite-5b0735ea420fe810e9693e1ea68b705b.png",
     "images/icons/cascading-select.png": "images/icons/cascading-select-caac3065ad73656590904fcf10ada86a.png",
