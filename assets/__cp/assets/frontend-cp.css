@@ -690,7 +690,7 @@ textarea {
 * Adds an ellipsis once the content has reached the width passed in.
 * Note: 100% is valid.
 */
-.ko-agent-dropdown__nav-item, .ko-agent-dropdown__footer, .ko-form_field__error, .ko-form_field_errors__error, .ko-form_field_help, .ko-simple-list__header_1uqjo0, .session_admin_settings_security_customers__description_e3ldqh, .session_admin_settings_security_index__description_mwqrmo,
+.ko-agent-dropdown__nav-item, .ko-agent-dropdown__footer, .ko-form_field__error, .ko-form_field_errors__error, .ko-simple-list__header_1uqjo0, .session_admin_settings_security_customers__description_e3ldqh, .session_admin_settings_security_index__description_mwqrmo,
 .t-small {
   font-size: 12px !important; }
 
@@ -2807,6 +2807,16 @@ img {
 .ko-agent-dropdown__footer {
   margin: 13.5px 0 18px; }
 
+.ko-agent-dropdown__footer,
+.ko-agent-dropdown__nav-item,
+.ko-form_field__error,
+.ko-form_field_errors__error,
+.ko-form_field_help,
+.ko-simple-list__header_1uqjo0,
+.session_admin_settings_security_customers__description_e3ldqh,
+.session_admin_settings_security_index__description_mwqrmo {
+  font-size: 13px; }
+
 .ko-agent-dropdown-create-case__dropdown-user {
   line-height: initial;
   padding: 4.5px 0; }
@@ -3373,7 +3383,8 @@ img {
   margin-top: 9px; }
 
 .ko-form_field_help {
-  margin: 0 0 18px; }
+  margin: 0 0 18px;
+  max-width: 460px; }
   * + .ko-form_field_help {
     margin-top: 9px; }
 
