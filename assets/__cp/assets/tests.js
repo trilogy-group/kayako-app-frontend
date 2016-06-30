@@ -4175,6 +4175,131 @@ define('frontend-cp/tests/acceptance/admin/channels/email/new-test', ['exports',
     });
   });
 });
+define('frontend-cp/tests/acceptance/admin/channels/messenger/code-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/channels/messenger/code Code', {
+    beforeEach: function beforeEach() {
+      /*eslint-disable camelcase*/
+      var locale = server.create('locale', { locale: 'en-us' });
+      server.create('plan', { limits: {
+          agents: 20
+        }, features: [] });
+      var adminRole = server.create('role', { type: 'ADMIN' });
+      var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
+      var session = server.create('session', { user: agent });
+      login(session.id);
+    },
+
+    afterEach: function afterEach() {
+      logout();
+    }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('visiting /admin/channels/messenger/code', function (assert) {
+    visit('/admin/channels/messenger/code');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/channels/messenger/code');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('default brand should be selected by default', function (assert) {
+    server.create('brand', {
+      is_enabled: true,
+      is_default: true,
+      locale: null,
+      alias: null,
+      domain: 'kayako.com',
+      sub_domain: 'support',
+      name: 'Kayako Support',
+      resource_type: 'brand',
+      created_at: '2015-08-05T06:13:59Z',
+      resource_url: 'http://novo/api/index.php?/v1/brands/1',
+      updated_at: '2015-08-05T06:13:59Z',
+      url: null
+    });
+
+    visit('/admin/channels/messenger/code');
+
+    andThen(function () {
+      assert.equal(find('.brand').text().trim(), 'Kayako Support');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('inherit messenge title from selected brand', function (assert) {
+    server.create('brand', {
+      is_enabled: true,
+      is_default: true,
+      locale: null,
+      alias: null,
+      domain: 'kayako.com',
+      sub_domain: 'support',
+      name: 'Kayako Support',
+      resource_type: 'brand',
+      created_at: '2015-08-05T06:13:59Z',
+      resource_url: 'http://novo/api/index.php?/v1/brands/1',
+      updated_at: '2015-08-05T06:13:59Z',
+      url: null
+    });
+
+    visit('/admin/channels/messenger/code');
+
+    andThen(function () {
+      assert.equal(find('.messenger-title').val(), 'Kayako Support');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('inherit welcome message from selected brand', function (assert) {
+    server.create('brand', {
+      is_enabled: true,
+      is_default: true,
+      locale: null,
+      alias: null,
+      domain: 'kayako.com',
+      sub_domain: 'support',
+      name: 'Kayako Support',
+      resource_type: 'brand',
+      created_at: '2015-08-05T06:13:59Z',
+      resource_url: 'http://novo/api/index.php?/v1/brands/1',
+      updated_at: '2015-08-05T06:13:59Z',
+      url: null
+    });
+
+    visit('/admin/channels/messenger/code');
+
+    andThen(function () {
+      assert.equal(/Kayako Support/.test(find('.messenger-title').val()), true);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('should generate embed code with correct apiUrl and team name', function (assert) {
+    var brand = {
+      is_enabled: true,
+      is_default: true,
+      locale: null,
+      alias: null,
+      domain: 'kayako.com',
+      sub_domain: 'support',
+      name: 'Kayako Support',
+      resource_type: 'brand',
+      created_at: '2015-08-05T06:13:59Z',
+      resource_url: 'http://novo/api/index.php?/v1/brands/1',
+      updated_at: '2015-08-05T06:13:59Z',
+      url: null
+    };
+    server.create('brand', brand);
+
+    visit('/admin/channels/messenger/code');
+
+    andThen(function () {
+      var generatedCode = find('.generated-code').val();
+      var apiUrl = 'apiUrl:"https://' + brand.sub_domain + '.' + brand.domain + '/api/v1"';
+      var teamName = 'defaultName:"' + brand.name + '"';
+      assert.equal(generatedCode.indexOf(apiUrl) > -1, true);
+      assert.equal(generatedCode.indexOf(teamName) > -1, true);
+    });
+  });
+});
 define('frontend-cp/tests/acceptance/admin/manage/brands/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/acceptance/admin/manage/brands/helpers'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsAcceptanceAdminManageBrandsHelpers) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/manage/brands/edit', {
@@ -19739,6 +19864,14 @@ define('frontend-cp/tests/unit/components/ko-toggle/component-test', ['exports',
     _ember['default'].run(function () {
       component.send('keyUp', { keyCode: _frontendCpLibKeycodes.space });
     });
+  });
+});
+define('frontend-cp/tests/unit/helpers/join-classes-test', ['exports', 'frontend-cp/helpers/join-classes', 'qunit'], function (exports, _frontendCpHelpersJoinClasses, _qunit) {
+
+  (0, _qunit.module)('Unit | Helper | join classes');
+
+  (0, _qunit.test)('it joins with spaces', function (assert) {
+    assert.equal((0, _frontendCpHelpersJoinClasses.joinClasses)(['foo', 'bar', 'baz']), 'foo bar baz');
   });
 });
 define('frontend-cp/tests/unit/services/custom-fields/options-test', ['exports', 'ember', 'ember-qunit'], function (exports, _ember, _emberQunit) {

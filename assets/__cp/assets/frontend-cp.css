@@ -6142,6 +6142,76 @@ span#HW_badge.HW_softHidden {
 .ko-admin_holidays_edit__title_pyuuw.ko-admin_holidays_edit__error_pyuuw {
   color: #E86048; }
 
+/* styles for frontend-cp/components/ko-admin/messenger/code/styles.css */
+.ko-admin_messenger_code__form-section_13s4d1 {
+  border-bottom: 1px solid #EBEEF0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 30px 0; }
+
+.ko-admin_messenger_code__page-content_13s4d1 {
+  color: #838D94;
+  font-size: 14px;
+  line-height: 22px; }
+
+.ko-admin_messenger_code__form-label_13s4d1 {
+  width: 25%;
+  font-size: 16px; }
+
+.ko-admin_messenger_code__form-body_13s4d1 {
+  width: 75%; }
+
+.ko-admin_messenger_code__textarea_13s4d1 {
+  width: calc(100% - 120px); }
+
+/* styles for frontend-cp/components/ko-admin/messenger/index/styles.css */
+.ko-admin_messenger_index__page-title_e00mh0 {
+  font-size: 30px; }
+
+.ko-admin_messenger_index__messenger-intro_e00mh0 {
+  margin: auto;
+  margin-top: 20px; }
+
+.ko-admin_messenger_index__page-content_e00mh0 {
+  color: #838D94;
+  font-size: 14px;
+  line-height: 22px; }
+
+.ko-admin_messenger_index__about-messenger_e00mh0 {
+  margin-bottom: 55px; }
+
+.ko-admin_messenger_index__why-messenger_e00mh0 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
+
+.ko-admin_messenger_index__page-subtitle_e00mh0 {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px; }
+
+.ko-admin_messenger_index__messenger-feature_e00mh0 {
+  margin-bottom: 25px; }
+
+.ko-admin_messenger_index__messenger-features_e00mh0 {
+  width: 400px; }
+
+.ko-admin_messenger_index__messenger-graphic_e00mh0 {
+  padding-right: 60px; }
+
+.ko-admin_messenger_index__link_e00mh0 {
+  color: #4EAFCB;
+  display: block;
+  margin-top: 5px;
+  font-weight: 600; }
+
 /* styles for frontend-cp/components/ko-admin/overview/index/styles.css */
 .ko-admin_overview_index__billing-address_13wym3 {
   padding: 20px 0; }
