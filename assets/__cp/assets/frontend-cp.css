@@ -8384,21 +8384,26 @@ a.ko-admin_plans_index__cancel_1pprhr {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  padding: 16px 0;
+  padding: 8px 0;
   position: relative;
-  margin-bottom: 2px; }
+  margin: 10px; }
 
 .ko-timeline_item__side-column_vt1m5j {
   margin-right: 14px;
   -webkit-box-flex: 0;
-      -ms-flex: 0 0 48px;
-          flex: 0 0 48px;
+      -ms-flex: 0 0 42px;
+          flex: 0 0 42px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
-          justify-content: center; }
+          justify-content: center;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  margin-top: 1px;
+  margin-bottom: -1px; }
 
 .ko-timeline_item__body_vt1m5j {
   -webkit-box-flex: 1;
@@ -8408,7 +8413,12 @@ a.ko-admin_plans_index__cancel_1pprhr {
 
 .ko-timeline_item__joined-with-previous_vt1m5j {
   padding-top: 8px;
-  padding-bottom: 8px; }
+  padding-bottom: 8px;
+  margin-top: 0;
+  margin-bottom: 0; }
+
+.ko-timeline_item__joined-with-previous_vt1m5j:last-child {
+  margin-bottom: 10px; }
 
 .ko-timeline_item__joined-with-next_vt1m5j {
   padding-bottom: 8px;
@@ -8430,7 +8440,8 @@ a.ko-admin_plans_index__cancel_1pprhr {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  margin-bottom: 0; }
+  margin-bottom: 0;
+  margin-top: -4px; }
 
 .ko-timeline_item__time_vt1m5j {
   cursor: default; }
@@ -8479,6 +8490,9 @@ a.ko-admin_plans_index__cancel_1pprhr {
 .ko-timeline_item__content_vt1m5j .br-wrapper--multiple {
   height: 14px; }
 
+.ko-timeline_item__content_vt1m5j.ko-timeline_item__contentMessenger_vt1m5j {
+  line-height: 17px; }
+
 .ko-timeline_item__joined-with-previous_vt1m5j .ko-timeline_item__content_vt1m5j {
   padding-top: 0; }
 
@@ -8487,11 +8501,11 @@ a.ko-admin_plans_index__cancel_1pprhr {
   background: linear-gradient(to right, #FFFFFF 0, #FFFFFF 0, #F7F8F9 0, #F7F8F9 100%); }
 
 .ko-timeline_item__side-time_vt1m5j {
-  line-height: 24px;
+  line-height: 17px;
+  height: 15px;
   color: #838D94;
   opacity: 0;
-  margin-right: -11px;
-  margin-top: 2px; }
+  margin-right: -11px; }
 
 .ko-timeline_item__item_vt1m5j:hover .ko-timeline_item__side-time_vt1m5j {
   opacity: 1; }
