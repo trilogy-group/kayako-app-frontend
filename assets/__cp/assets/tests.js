@@ -12819,7 +12819,7 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
         locale: { id: enUsLocale.id, resource_type: 'locale' },
         organization: { id: organization.id, resource_type: 'organization' },
         role: { id: role.id, resource_type: 'role' },
-        teams: [{ id: team.id, resource_type: 'team' }],
+        teams: [{ id: team.id, title: team.title, resource_type: 'team' }],
         time_zone: 'Europe/London'
       });
 
