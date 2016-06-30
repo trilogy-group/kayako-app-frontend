@@ -1,6 +1,6 @@
 {
   "home": "Home",
-  "validation_errors": "Please fill in all required fields",
+  "validation_errors": "Please check you’ve filled everything in correctly",
   "next": "Next",
   "close": "close",
   "remove": "Remove",
@@ -159,6 +159,8 @@
   "units.MB": "MB",
   "units.GB": "GB",
   "units.B": "B",
+  "units.hours": "hours",
+  "units.days": "days",
 
   "at_time": "at {time}",
   "on_date": "on {date}",
@@ -176,5 +178,6 @@
 
   "select.select_or_type_to_search": "Select an option or type to search",
 
-  "copy_to_clipboard": "Copy to clipboard"
+  "copy_to_clipboard": "Copy to clipboard",
+  "copied_to_clipboard": "Copied to clipboard"
 }
