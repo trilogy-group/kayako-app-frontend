@@ -408,6 +408,9 @@ textarea {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
 
+.i-more:before {
+  content: "\e906"; }
+
 .i-cross-circle:before {
   content: "\e905"; }
 
@@ -8338,6 +8341,35 @@ a.ko-admin_plans_index__cancel_1pprhr {
   cursor: pointer;
   margin-left: 12px;
   color: #5F6C73; }
+
+/* styles for frontend-cp/components/ko-timeline/item/more-info/styles.css */
+.ko-timeline_item_more-info__dropdown_y7c932 {
+  display: inline-block; }
+
+.ko-timeline_item_more-info__trigger_y7c932 {
+  line-height: 14px;
+  cursor: pointer; }
+
+.ko-timeline_item_more-info__trigger_y7c932:focus {
+  outline: none; }
+
+.ko-timeline_item_more-info__trigger_y7c932[aria-expanded=true] {
+  color: #4EAFCB; }
+
+.ko-timeline_item_more-info__dropdown-content_y7c932 {
+  color: #2D3138;
+  border: 1px solid #D1D5D7;
+  border-radius: 2px;
+  display: table;
+  padding: 8px; }
+
+.ko-timeline_item_more-info__cell_y7c932 {
+  padding: 5px 4px; }
+
+.ko-timeline_item_more-info__left_y7c932 {
+  vertical-align: top;
+  text-align: right;
+  color: #838D93; }
 
 /* styles for frontend-cp/components/ko-timeline/item/styles.css */
 .ko-timeline_item__item_vt1m5j {
