@@ -6308,7 +6308,6 @@ a.ko-admin_plans_index__cancel_1pprhr {
   font-size: 14px;
   margin-top: 6px;
   display: inline-block;
-  font-style: italic;
   font-weight: 600; }
 
 /* styles for frontend-cp/components/ko-admin/rateplans/list/styles.css */
@@ -8474,10 +8473,11 @@ a.ko-admin_plans_index__cancel_1pprhr {
 .ko-timeline_item__content_vt1m5j pre {
   font-size: 14px; }
 
-.ko-timeline_item__content_vt1m5j br {
-  display: block;
-  content: " ";
-  height: 8px; }
+.ko-timeline_item__content_vt1m5j .br-wrapper br {
+  display: none; }
+
+.ko-timeline_item__content_vt1m5j .br-wrapper--multiple {
+  height: 14px; }
 
 .ko-timeline_item__joined-with-previous_vt1m5j .ko-timeline_item__content_vt1m5j {
   padding-top: 0; }
