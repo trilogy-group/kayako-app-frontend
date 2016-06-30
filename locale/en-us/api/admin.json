@@ -521,7 +521,7 @@
   "macros.description": "Macros let you to automate common replies and updates that your team finds themselves doing repeatedly. In addition to automating public replies and private notes, macros can also make updates to any case field. Your team can choose from a list of macros when replying to a case in the agent area, and save themselves many clicks with just one macro. {link}.",
   "macros.description_link": "Learn more about macros",
   "macros.usage_count": "Used {count, plural, =1 {1 time} other {# times}}",
-  "macros.last_used_at": "Last used at {date}",
+  "macros.last_used_at": "last used {date}",
   "macros.new.heading": "Macros / New",
   "macros.edit.heading": "Macros / Edit",
   "macros.heading.details": "Macro details",
