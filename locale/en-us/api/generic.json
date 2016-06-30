@@ -159,6 +159,8 @@
   "units.MB": "MB",
   "units.GB": "GB",
   "units.B": "B",
+  "units.hours": "hours",
+  "units.days": "days",
 
   "at_time": "at {time}",
   "on_date": "on {date}",
