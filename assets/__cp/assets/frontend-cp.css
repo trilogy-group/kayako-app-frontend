@@ -5123,6 +5123,80 @@ span#HW_badge.HW_softHidden {
 .invoices-list {
   margin-top: 18px; }
 
+/* styles for frontend-cp/components/ko-admin/forms/group/styles.css */
+.ko-admin_forms_group__group_8wtptf {
+  padding: 18px 0 27px 0;
+  border-bottom: 1px solid #EBEEF0; }
+
+.ko-admin_forms_group__group--with-legend_8wtptf {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+
+.ko-admin_forms_group__legend_8wtptf {
+  font-size: 16px;
+  line-height: 1.125;
+  color: #2D3138;
+  font-weight: 400;
+  width: 25%; }
+
+.ko-admin_forms_group__contents_8wtptf {
+  width: 75%; }
+
+/* styles for frontend-cp/components/ko-admin/case-fields/edit/priorities/styles.css */
+.ko-admin_case-fields_edit_priorities__buttons_255vxi {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end; }
+
+.ko-admin_case-fields_edit_priorities__add-priority_255vxi {
+  margin: 9px 0 18px; }
+
+.ko-admin_case-fields_edit_priorities__legend_255vxi {
+  margin-bottom: 9px; }
+
+/* styles for frontend-cp/components/ko-admin/case-fields/edit/statuses/styles.css */
+.ko-admin_case-fields_edit_statuses__buttons_1b29qb {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end; }
+
+.ko-admin_case-fields_edit_statuses__add-status_1b29qb {
+  margin: 9px 0 18px; }
+
+.ko-admin_case-fields_edit_statuses__legend_1b29qb {
+  margin-bottom: 9px; }
+
+/* styles for frontend-cp/components/ko-admin/case-fields/edit/types/styles.css */
+.ko-admin_case-fields_edit_types__buttons_1st90y {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end; }
+
+.ko-admin_case-fields_edit_types__add-type_1st90y {
+  margin: 9px 0 18px; }
+
+.ko-admin_case-fields_edit_types__legend_1st90y {
+  margin-bottom: 9px; }
+
 /* styles for frontend-cp/components/ko-select/shared.css */
 ._statusIcon_1ovczd .ember-power-select-status-icon {
   -webkit-transform: none !important;
@@ -6006,36 +6080,6 @@ span#HW_badge.HW_softHidden {
 .ko-admin_brands_form__textarea_zzsct3 {
   width: calc(100% - 120px); }
 
-/* styles for frontend-cp/components/ko-admin/case-fields/edit/priorities/styles.css */
-.ko-admin_case-fields_edit_priorities__buttons_255vxi {
-  -webkit-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: end;
-      -ms-flex-pack: end;
-          justify-content: flex-end; }
-
-.ko-admin_case-fields_edit_priorities__add-priority_255vxi {
-  margin: 9px 0 18px; }
-
-/* styles for frontend-cp/components/ko-admin/case-fields/edit/statuses/styles.css */
-.ko-admin_case-fields_edit_statuses__buttons_1b29qb {
-  -webkit-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: end;
-      -ms-flex-pack: end;
-          justify-content: flex-end; }
-
-.ko-admin_case-fields_edit_statuses__add-status_1b29qb {
-  margin: 9px 0 18px; }
-
 /* styles for frontend-cp/components/ko-admin/case-fields/edit/styles.css */
 .ko-admin_case-fields_edit__localizableGroup_1tosxr {
   display: -webkit-box;
@@ -6044,21 +6088,6 @@ span#HW_badge.HW_softHidden {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center; }
-
-/* styles for frontend-cp/components/ko-admin/case-fields/edit/types/styles.css */
-.ko-admin_case-fields_edit_types__buttons_1st90y {
-  -webkit-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: end;
-      -ms-flex-pack: end;
-          justify-content: flex-end; }
-
-.ko-admin_case-fields_edit_types__add-type_1st90y {
-  margin: 9px 0 18px; }
 
 /* styles for frontend-cp/components/ko-admin/facebook/index/styles.css */
 .ko-admin_facebook_index__availablePages_52r50f {
@@ -6100,26 +6129,6 @@ span#HW_badge.HW_softHidden {
   color: #838D94;
   margin-bottom: 22px;
   line-height: 24px; }
-
-/* styles for frontend-cp/components/ko-admin/forms/group/styles.css */
-.ko-admin_forms_group__group_8wtptf {
-  padding: 18px 0 27px 0;
-  border-bottom: 1px solid #EBEEF0; }
-
-.ko-admin_forms_group__group--with-legend_8wtptf {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex; }
-
-.ko-admin_forms_group__legend_8wtptf {
-  font-size: 16px;
-  line-height: 1.125;
-  color: #2D3138;
-  font-weight: 400;
-  width: 25%; }
-
-.ko-admin_forms_group__contents_8wtptf {
-  width: 75%; }
 
 /* styles for frontend-cp/components/ko-admin/holidays/edit/styles.css */
 .ko-admin_holidays_edit__root_pyuuw {
