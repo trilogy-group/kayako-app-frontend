@@ -3970,7 +3970,6 @@ define('frontend-cp/tests/acceptance/admin/channels/email/helpers', ['exports', 
 
     var isDefault = options.indexOf('isDefault') !== -1;
     assert[isDefault ? 'ok' : 'notOk'](row.text().indexOf('(Default)') !== -1, address + ' (Default)');
-
     triggerEvent(row, 'mouseenter');
     andThen(function () {
       var canEdit = options.indexOf('canEdit') !== -1;
@@ -4401,17 +4400,17 @@ define('frontend-cp/tests/acceptance/admin/manage/brands/list-test', ['exports',
   (0, _frontendCpTestsHelpersQunit.test)('listing brands', function (assert) {
     visit('/admin/manage/brands');
     andThen(function () {
-      (0, _frontendCpTestsAcceptanceAdminManageBrandsHelpers.assertRows)(assert, [['Default', 'support.kayako.com', ['isDefault', 'canEdit']], ['Custom Alias', 'example.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']]], [['Disabled', 'disabled.kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
+      (0, _frontendCpTestsAcceptanceAdminManageBrandsHelpers.assertRows)(assert, [['Custom Alias', 'example.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']], ['Default', 'support.kayako.com', ['isDefault', 'canEdit']]], [['Disabled', 'disabled.kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
     });
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('disabling a brand', function (assert) {
     visit('/admin/manage/brands');
     andThen(function () {
-      return triggerEvent((0, _frontendCpTestsAcceptanceAdminManageBrandsHelpers.getEnabledRows)().eq(1), 'mouseenter');
+      return triggerEvent((0, _frontendCpTestsAcceptanceAdminManageBrandsHelpers.getEnabledRows)().eq(0), 'mouseenter');
     });
     andThen(function () {
-      return click((0, _frontendCpTestsAcceptanceAdminManageBrandsHelpers.getEnabledRows)().eq(1).find('.qa-brand-disable'));
+      return click((0, _frontendCpTestsAcceptanceAdminManageBrandsHelpers.getEnabledRows)().eq(0).find('.qa-brand-disable'));
     });
     andThen(function () {
       (0, _frontendCpTestsAcceptanceAdminManageBrandsHelpers.assertRows)(assert, [['Default', 'support.kayako.com', ['isDefault', 'canEdit']]], [['Custom Alias', 'example.com', ['canEdit', 'canEnable', 'canDelete']], ['Disabled', 'disabled.kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
@@ -4427,7 +4426,7 @@ define('frontend-cp/tests/acceptance/admin/manage/brands/list-test', ['exports',
       return click((0, _frontendCpTestsAcceptanceAdminManageBrandsHelpers.getDisabledRows)().eq(0).find('.qa-brand-enable'));
     });
     andThen(function () {
-      (0, _frontendCpTestsAcceptanceAdminManageBrandsHelpers.assertRows)(assert, [['Default', 'support.kayako.com', ['isDefault', 'canEdit']], ['Custom Alias', 'example.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']], ['Disabled', 'disabled.kayako.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']]], []);
+      (0, _frontendCpTestsAcceptanceAdminManageBrandsHelpers.assertRows)(assert, [['Custom Alias', 'example.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']], ['Default', 'support.kayako.com', ['isDefault', 'canEdit']], ['Disabled', 'disabled.kayako.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']]], []);
     });
   });
 
@@ -4438,7 +4437,7 @@ define('frontend-cp/tests/acceptance/admin/manage/brands/list-test', ['exports',
     });
     andThen(function () {
       return confirming(true, function () {
-        click((0, _frontendCpTestsAcceptanceAdminManageBrandsHelpers.getEnabledRows)().eq(1).find('.qa-brand-delete'));
+        click((0, _frontendCpTestsAcceptanceAdminManageBrandsHelpers.getEnabledRows)().eq(0).find('.qa-brand-delete'));
       });
     });
     andThen(function () {
@@ -4452,10 +4451,10 @@ define('frontend-cp/tests/acceptance/admin/manage/brands/list-test', ['exports',
       return triggerEvent((0, _frontendCpTestsAcceptanceAdminManageBrandsHelpers.getEnabledRows)().eq(1), 'mouseenter');
     });
     andThen(function () {
-      return click((0, _frontendCpTestsAcceptanceAdminManageBrandsHelpers.getEnabledRows)().eq(1).find('.qa-brand-make-default'));
+      return click((0, _frontendCpTestsAcceptanceAdminManageBrandsHelpers.getEnabledRows)().eq(0).find('.qa-brand-make-default'));
     });
     andThen(function () {
-      (0, _frontendCpTestsAcceptanceAdminManageBrandsHelpers.assertRows)(assert, [['Default', 'support.kayako.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']], ['Custom Alias', 'example.com', ['isDefault', 'canEdit']]], [['Disabled', 'disabled.kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
+      (0, _frontendCpTestsAcceptanceAdminManageBrandsHelpers.assertRows)(assert, [['Custom Alias', 'example.com', ['isDefault', 'canEdit']], ['Default', 'support.kayako.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']]], [['Disabled', 'disabled.kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
     });
   });
   //
@@ -4465,7 +4464,7 @@ define('frontend-cp/tests/acceptance/admin/manage/brands/list-test', ['exports',
       return click((0, _frontendCpTestsAcceptanceAdminManageBrandsHelpers.getEnabledRows)().eq(0));
     });
     andThen(function () {
-      return assert.equal(currentURL(), '/admin/manage/brands/1');
+      return assert.equal(currentURL(), '/admin/manage/brands/2');
     });
   });
 
@@ -4478,7 +4477,7 @@ define('frontend-cp/tests/acceptance/admin/manage/brands/list-test', ['exports',
       return click((0, _frontendCpTestsAcceptanceAdminManageBrandsHelpers.getEnabledRows)().eq(0).find('.qa-brand-edit'));
     });
     andThen(function () {
-      return assert.equal(currentURL(), '/admin/manage/brands/1');
+      return assert.equal(currentURL(), '/admin/manage/brands/2');
     });
   });
 });
@@ -4506,7 +4505,9 @@ define('frontend-cp/tests/acceptance/admin/manage/brands/new-test', ['exports', 
       server.create('locale', { id: 4, locale: 'ru-ru', name: 'Russian', is_public: true, is_localised: true });
 
       server.create('plan', {
-        limits: {},
+        limits: {
+          brands: 10
+        },
         features: []
       });
 
@@ -4521,7 +4522,7 @@ define('frontend-cp/tests/acceptance/admin/manage/brands/new-test', ['exports', 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new brand', function (assert) {
     visit('/admin/manage/brands');
     andThen(function () {
-      return click('.qa-admin-brand-new-link');
+      return click('.button:contains("Create a new Brand")');
     });
     andThen(function () {
       return assert.equal(currentURL(), '/admin/manage/brands/new');
@@ -4556,7 +4557,7 @@ define('frontend-cp/tests/acceptance/admin/manage/brands/new-test', ['exports', 
     });
     visit('/admin/manage/brands');
     andThen(function () {
-      (0, _frontendCpTestsAcceptanceAdminManageBrandsHelpers.assertRows)(assert, [['Default', 'support.kayako.com', ['isDefault', 'canEdit']], ['Custom Alias', 'example.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']]], [['Disabled', 'disabled.kayako.com', ['canEdit', 'canEnable', 'canDelete']], ['My New Brand', 'mynewbrand.kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
+      (0, _frontendCpTestsAcceptanceAdminManageBrandsHelpers.assertRows)(assert, [['Custom Alias', 'example.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']], ['Default', 'support.kayako.com', ['isDefault', 'canEdit']]], [['Disabled', 'disabled.kayako.com', ['canEdit', 'canEnable', 'canDelete']], ['My New Brand', 'mynewbrand.kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
     });
   });
 });
@@ -5535,10 +5536,10 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-priorities-
         type: 'CUSTOM',
         is_sla_active: false // eslint-disable-line camelcase
       });
-
+      var prioritiesFeature = server.create('feature', { code: 'custom_case_priorities' });
       server.create('plan', {
         limits: {},
-        features: []
+        features: [prioritiesFeature]
       });
     },
 
@@ -5661,10 +5662,10 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-statuses-te
         type: 'CUSTOM',
         is_sla_active: false
       });
-
+      var statusesFeature = server.create('feature', { code: 'custom_case_statuses' });
       server.create('plan', {
         limits: {},
-        features: []
+        features: [statusesFeature]
       });
     },
 
@@ -5787,10 +5788,10 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-types-test'
         },
         type: 'CUSTOM'
       });
-
+      var typesFeature = server.create('feature', { code: 'custom_case_types' });
       server.create('plan', {
         limits: {},
-        features: []
+        features: [typesFeature]
       });
     },
 
@@ -10157,9 +10158,10 @@ define('frontend-cp/tests/acceptance/admin/people/roles/form-test', ['exports', 
         isDefault: true
       });
 
+      var rolesAndPermissionsFeature = server.create('feature', { code: 'custom_roles_and_permissions' });
       server.create('plan', {
         limits: {},
-        features: []
+        features: [rolesAndPermissionsFeature]
       });
 
       server.create('role', {
@@ -15391,9 +15393,15 @@ define('frontend-cp/tests/acceptance/agent/users/edit-test', ['exports', 'fronte
       var session = server.create('session', { user: agent });
       login(session.id);
 
+      var feature = server.create('feature', {
+        code: 'shared_organizations',
+        name: 'shared_organizations',
+        description: 'People who may log in as a team member'
+      });
+
       server.create('plan', {
         limits: {},
-        features: []
+        features: [feature]
       });
     },
 
@@ -20610,7 +20618,7 @@ define('frontend-cp/tests/unit/services/plan-test', ['exports', 'ember', 'ember-
       });
 
       var feature = server.create('feature', {
-        code: 3232,
+        code: 'collaborators',
         name: 'collaborators',
         description: 'People who may log in as a team member'
       });
@@ -20657,7 +20665,7 @@ define('frontend-cp/tests/unit/services/plan-test', ['exports', 'ember', 'ember-
     });
 
     var feature = server.create('feature', {
-      code: 3333,
+      code: 'agents',
       name: 'agents',
       description: 'People who may log in and talk to customers'
     });
