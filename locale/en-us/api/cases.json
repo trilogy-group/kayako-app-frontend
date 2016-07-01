@@ -9,7 +9,7 @@
   "copy-someone-in.not-found": "No users found.<br/>You could try typing an email address to add it.",
   "copy-someone-in.help-text": "These people will be copied in on your reply. <a href=\"#\">Find out more about CC recipients.</a>",
   "copy-someone-in.email-error": "Please enter a valid email address",
-  "contents.placeholder": "Detail the case here...",
+  "contents.placeholder": "Enter your reply here...",
   "notes.placeholder": "Type a note...",
   "linkedCasesInline": "Link a case",
   "assignee.agent": "Assigned agent",
