@@ -7440,10 +7440,10 @@ define('frontend-cp/tests/acceptance/admin/manage/localization/list-test', ['exp
   exports.assertRows = assertRows;
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/manage/localization', {
     beforeEach: function beforeEach() {
-      var en = server.create('locale', { id: 1, locale: 'en-us', name: 'English', is_public: true, is_localised: true });
-      server.create('locale', { id: 2, locale: 'fr-fr', name: 'French', is_public: true, is_localised: false });
-      server.create('locale', { id: 3, locale: 'de-de', name: 'German', is_public: false, is_localised: false });
-      server.create('locale', { id: 4, locale: 'ru-ru', name: 'Russian', is_public: false, is_localised: false });
+      var en = server.create('locale', { id: 1, locale: 'en-us', name: 'English', native_name: 'English', is_public: true, is_localised: true });
+      server.create('locale', { id: 2, locale: 'fr-fr', name: 'French', native_name: 'French', is_public: true, is_localised: false });
+      server.create('locale', { id: 3, locale: 'de-de', name: 'German', native_name: 'German', is_public: false, is_localised: false });
+      server.create('locale', { id: 4, locale: 'ru-ru', name: 'Russian', native_name: 'Russian', is_public: false, is_localised: false });
       var role = server.create('role', { type: 'ADMIN' });
       var user = server.create('user', { role: role, locale: en, time_zone: 'Europe/London' });
       var session = server.create('session', { user: user });
