@@ -96,7 +96,7 @@
   "views.label.configure_layout": "Customize what information is shown in this view by adding, removing and reordering fields below. You can add up to 10 columns in your view",
   "views.heading.sorting": "Sorting",
   "views.label.sorting": "In this view, default to sorting cases by",
-  "views.description.sorting": "Descending means largest to smallest, most recent to oldest, highest priority to lowest priority, Z to A.",
+  "views.description_sorting": "Descending means largest to smallest, most recent to oldest, highest priority to lowest priority, Z to A.",
   "views.edit.description_on.is_enabled": "View is active",
   "views.edit.description_off.is_enabled": "View is inactive",
   "views.edit.select_columns": "Please specify at least one column in \"Configure Columns\"",
