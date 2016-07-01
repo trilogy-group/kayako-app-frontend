@@ -90,7 +90,7 @@
   "create_user_panel.email_required": "Email address is required",
   "create_user_panel.email_invalid": "Invalid email address",
   "create_user_panel.submit": "Add user",
-  "create_user_panel.info": "Other identities can be added once the user has been created.",
+  "create_user_panel.info": "You can add additional contact details once you've created the user.",
   "create_user_panel.cancel": "cancel",
   "create_user_panel.user_exists": "This email already in use.",
   "create_user_panel.user_exists_toast": "This email already belongs to someone",
@@ -102,7 +102,7 @@
   "create_organisation_panel.domain_required": "Email address is required",
   "create_organisation_panel.domain_invalid": "Invalid email address",
   "create_organisation_panel.submit": "Add Organization",
-  "create_organisation_panel.info": "Other details can be added once the organization has been created.",
+  "create_organisation_panel.info": "You can add additional details and contact information once you've created the organization.",
 
   "user_logged_out": "You have been logged out",
   "session_expired": "Your session has expired",
@@ -118,7 +118,7 @@
   "create_case_panel.requester_required": "Required",
   "create_case_panel.loading_label": "Loading users…",
   "create_case_panel.filter_label": "Showing {numFilteredUsers, number} of {numUsers, number}",
-  "create_case_panel.info": "Other details can be added after continuing.",
+  "create_case_panel.info": "You can add more detail to this case after you've created it.",
   "create_case_panel.submit": "Create case",
   "create_case_panel.cancel": "cancel",
 
