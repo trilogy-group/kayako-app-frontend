@@ -1,8 +1,8 @@
 {
   "assets": {
-    "assets/frontend-cp.css": "assets/frontend-cp-a5e8fdb8191832efdfb98aa565e8adfe.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-e7e6d4a5b1a801ac3fd259222bc2adfa.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-957d8a92246c2cf0fcf9130b65ae8fd4.map",
+    "assets/frontend-cp.css": "assets/frontend-cp-270167f7dc8368134bc6e24cc71d2f71.css",
+    "assets/frontend-cp.js": "assets/frontend-cp-341830459bded015aa0646291996ebb3.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-4c5090fd93b0a5398180522c9d099962.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-9f2ae624e9f622257363543be0860026.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-52b1312285e0d9102a5f76d4ce486290.map",
     "assets/intl/intl.js": "assets/intl/intl-d42891b6f893df4f9287bb343aff56d6.js",
@@ -285,7 +285,10 @@
     "images/icons/text.png": "images/icons/text-7825cf70cded3e912782ce71fc6b1c31.png",
     "images/icons/textarea.png": "images/icons/textarea-41f8692eced6755720cd4931266dd627.png",
     "images/icons/yes-no.png": "images/icons/yes-no-f2a9d813847cf85bbfb759c238c32f21.png",
-    "images/user/avatar.png": "images/user/avatar-92b0c30c1c52334b322ad5857e6b8f0d.png"
+    "images/user/avatar.png": "images/user/avatar-92b0c30c1c52334b322ad5857e6b8f0d.png",
+    "images/welcome/channels.png": "images/welcome/channels-e16d30d43c4b96b2fe7435e8a00060b8.png",
+    "images/welcome/squiggle.png": "images/welcome/squiggle-a9d6649dd60c48bd0c2f57a95a48a979.png",
+    "images/welcome/views.png": "images/welcome/views-499e5738daf57382cc86b7b201f3b25b.png"
   },
   "prepend": ""
 }
