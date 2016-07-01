@@ -16304,12 +16304,13 @@ define('frontend-cp/tests/helpers/drag', ['exports', 'ember'], function (exports
   exports['default'] = _ember['default'].Test.registerAsyncHelper('drag', drag);
 });
 //unashamedly stolen from ember-sortable test helper
-define('frontend-cp/tests/helpers/ember-basic-dropdown', ['exports', 'ember-runloop'], function (exports, _emberRunloop) {
+define('frontend-cp/tests/helpers/ember-basic-dropdown', ['exports', 'ember', 'ember-runloop'], function (exports, _ember, _emberRunloop) {
   exports.nativeClick = nativeClick;
   exports.clickTrigger = clickTrigger;
   exports.tapTrigger = tapTrigger;
   exports.fireKeydown = fireKeydown;
 
+  // integration helpers
   function focus(el) {
     if (!el) {
       return;
@@ -16406,6 +16407,22 @@ define('frontend-cp/tests/helpers/ember-basic-dropdown', ['exports', 'ember-runl
       return document.querySelector(selector).dispatchEvent(oEvent);
     });
   }
+
+  // acceptance helpers
+
+  exports['default'] = function () {
+    _ember['default'].Test.registerAsyncHelper('clickDropdown', function (app, cssPath) {
+      var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
+      clickTrigger(cssPath, options);
+    });
+
+    _ember['default'].Test.registerAsyncHelper('tapDropdown', function (app, cssPath) {
+      var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
+      tapTrigger(cssPath, options);
+    });
+  };
 });
 define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'jquery', 'ember-runloop', 'ember-test'], function (exports, _jquery, _emberRunloop, _emberTest) {
   exports.nativeMouseDown = nativeMouseDown;
