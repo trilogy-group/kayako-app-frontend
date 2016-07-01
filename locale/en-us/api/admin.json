@@ -587,6 +587,8 @@
   "roles.form.help_center_group_legend": "Help Center",
   "roles.form.user_administration_group_legend": "User administration",
   "roles.form.system_administration_group_legend": "System administration",
+  "roles.form.insights_group_legend": "Insights",
+  "roles.form.insights_access_permission_label": "Can access insights",
   "roles.form.agent_case_access_field_label": "Cases this agent can access",
   "roles.form.agent_case_access_field_help": "This permission can be overridden per-agent, by editing an agent's profile.",
   "roles.form.cases_create_reply_permission_label": "Reply publicly to cases",
