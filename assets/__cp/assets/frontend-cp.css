@@ -8318,6 +8318,9 @@ a.ko-admin_plans_index__cancel_1pprhr {
 .ko-text-editor__froalaTextArea_1upkxj .fr-placeholder {
   font-family: "Source Sans Pro", Sans-Serif; }
 
+.ko-text-editor__disabled_1upkxj {
+  pointer-events: none; }
+
 /* styles for frontend-cp/components/ko-timeline/activity/styles.css */
 .ko-timeline_activity__activity_1tukzf {
   color: #838D94;
