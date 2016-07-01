@@ -13308,10 +13308,6 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
         summary: 'Test activity'
       });
 
-      server.createList('event', 25, {
-        body: 'Test event'
-      });
-
       var note = server.create('note');
 
       server.createList('post', 25, {
@@ -13340,21 +13336,7 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
 
     andThen(function () {
       assert.equal(find('.qa-feed_item--note').length, 20, 'Notes displayed');
-      assert.equal(find('.qa-feed_activity').length, 0, 'Activities and events not displayed');
-    });
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('it filters feed items to show only events', function (assert) {
-    assert.expect(3);
-
-    visit('/agent/cases/' + targetCase.id + '/organisation');
-
-    selectChoose('.qa-timeline__filter', 'Events');
-
-    andThen(function () {
-      assert.equal(find('.qa-feed_item--note').length, 0, 'Notes not displayed');
-      assert.equal(find('.qa-feed_activity').length, 20, 'Events displayed');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-timeline_activity__summary:first'), 'Test event', 'Event text displayed');
+      assert.equal(find('.qa-feed_activity').length, 0, 'Activities not displayed');
     });
   });
 
@@ -13442,26 +13424,6 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
     andThen(function () {
       assert.equal(find('.qa-feed_activity').length, 25, 'Load more activities below');
       assert.equal(find('.qa-timeline__load-more-below').length, 0, 'Load more link hidden due to no more activities to load');
-    });
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('loading more event entries below', function (assert) {
-    assert.expect(4);
-
-    visit('/agent/cases/' + targetCase.id + '/organisation');
-
-    selectChoose('.qa-timeline__filter', 'Events');
-
-    andThen(function () {
-      assert.equal(find('.qa-feed_activity').length, 20, 'Default number of events displayed');
-      assert.equal(find('.qa-timeline__load-more-below').length, 1, 'Load more link available due to more events to load');
-    });
-
-    click('.qa-timeline__load-more-below');
-
-    andThen(function () {
-      assert.equal(find('.qa-feed_activity').length, 25, 'Load more events below');
-      assert.equal(find('.qa-timeline__load-more-below').length, 0, 'Load more link hidden due to no more events to load');
     });
   });
 
@@ -14083,10 +14045,6 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
         summary: 'Test activity'
       });
 
-      server.createList('event', 25, {
-        body: 'Test event'
-      });
-
       var note = server.create('note');
 
       server.createList('post', 25, {
@@ -14115,21 +14073,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
 
     andThen(function () {
       assert.equal(find('.qa-feed_item--note').length, 20, 'Notes displayed');
-      assert.equal(find('.qa-feed_activity').length, 0, 'Activities and events not displayed');
-    });
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('it filters feed items to show only events', function (assert) {
-    assert.expect(3);
-
-    visit('/agent/cases/' + targetCase.id + '/user');
-
-    selectChoose('.qa-timeline__filter', 'Events');
-
-    andThen(function () {
-      assert.equal(find('.qa-feed_item--note').length, 0, 'Notes not displayed');
-      assert.equal(find('.qa-feed_activity').length, 20, 'Events displayed');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-timeline_activity__summary:first'), 'Test event', 'Event text displayed');
+      assert.equal(find('.qa-feed_activity').length, 0, 'Activities not displayed');
     });
   });
 
@@ -14220,26 +14164,6 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('loading more event entries below', function (assert) {
-    assert.expect(4);
-
-    visit('/agent/cases/' + targetCase.id + '/user');
-
-    selectChoose('.qa-timeline__filter', 'Events');
-
-    andThen(function () {
-      assert.equal(find('.qa-feed_activity').length, 20, 'Default number of events displayed');
-      assert.equal(find('.qa-timeline__load-more-below').length, 1, 'Load more link available due to more events to load');
-    });
-
-    click('.qa-timeline__load-more-below');
-
-    andThen(function () {
-      assert.equal(find('.qa-feed_activity').length, 25, 'Load more events below');
-      assert.equal(find('.qa-timeline__load-more-below').length, 0, 'Load more link hidden due to no more events to load');
-    });
-  });
-
   (0, _frontendCpTestsHelpersQunit.test)('adding a note updates the timeline when filtering by notes', function (assert) {
     assert.expect(3);
 
@@ -14274,31 +14198,6 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
 
     andThen(function () {
       assert.equal(find('.qa-feed_item--note').length, 0, 'No notes displayed as filtering by activities');
-    });
-
-    andThen(function () {
-      click('.ko-layout_advanced_editor__placeholder');
-      fillInRichTextEditor('Testing notes');
-    });
-
-    andThen(function () {
-      click('.button--primary');
-    });
-
-    andThen(function () {
-      assert.equal(find('.qa-feed_item--note').length, 0, 'Still no notes displayed');
-    });
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('adding a note doesn\'t update the timeline when filtering by events', function (assert) {
-    assert.expect(2);
-
-    visit('/agent/cases/' + targetCase.id + '/user');
-
-    selectChoose('.qa-timeline__filter', 'Events');
-
-    andThen(function () {
-      assert.equal(find('.qa-feed_item--note').length, 0, 'No notes displayed as filtering by events');
     });
 
     andThen(function () {
