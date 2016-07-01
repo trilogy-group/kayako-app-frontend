@@ -3034,12 +3034,12 @@ img {
 .ko-cases-list__heading {
   margin: 0; }
 
-.ko-case-action-menu__dropdown .button--dropdown {
+.dropdown :global(.button--dropdown) {
   height: 32px;
   width: 32px;
   padding: 0; }
 
-.ko-case-action-menu__dropdown .ember-basic-dropdown-trigger[aria-expanded="true"] .button--dropdown {
+.dropdown :global(.ember-basic-dropdown-trigger[aria-expanded="true"]) :global(.button--dropdown) {
   /* Allows menu button to overlap menu */
   padding-bottom: 1px;
   z-index: 60;
@@ -3049,7 +3049,7 @@ img {
   background-image: none;
   box-shadow: none; }
 
-.ko-case-action-menu__dropdown .ember-basic-dropdown-content {
+.dropdown :global(.ember-basic-dropdown-content) {
   border: 1px solid #d1d5d7;
   width: 120px;
   position: absolute;
@@ -3179,7 +3179,7 @@ img {
 .ko-date-select__trigger[aria-expanded="true"] .ko-date-select__trigger-icon::before {
   content: "\e603"; }
 
-.ko-date-select__dropdown[aria-disabled="true"] .ko-date-select__trigger {
+.ko-date-select__trigger[aria-disabled="true"] {
   background-color: #eeeeee; }
 
 .ko-datepicker {
@@ -6822,6 +6822,30 @@ a.ko-admin_plans_index__cancel_1pprhr {
   border-spacing: 0 9px;
   font-size: 12px;
   margin-top: 3px; }
+
+/* styles for frontend-cp/components/ko-case-action-menu/styles.css */
+.ko-case-action-menu__dropdown_1qtadz .button--dropdown {
+  height: 32px;
+  width: 32px;
+  padding: 0; }
+
+.ko-case-action-menu__dropdown_1qtadz .ember-basic-dropdown-trigger[aria-expanded="true"] .button--dropdown {
+  /* Allows menu button to overlap menu */
+  padding-bottom: 1px;
+  z-index: 60;
+  border-bottom: #FFFFFF;
+  border-radius: 2px 2px 0 0;
+  background-color: #FFFFFF;
+  background-image: none;
+  box-shadow: none; }
+
+.ko-case-action-menu__dropdown_1qtadz .ember-basic-dropdown-content {
+  border: 1px solid #d1d5d7;
+  width: 120px;
+  position: absolute;
+  right: 0;
+  top: 31px;
+  z-index: 30; }
 
 /* styles for frontend-cp/components/ko-cases-list/column/avatar/styles.css */
 .ko-cases-list_column_avatar__avatar_zybp6x {
