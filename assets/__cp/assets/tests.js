@@ -3153,7 +3153,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
 
   function assertChannelAndEventAreCorrect(assert) {
     assert.equal($('.qa-channels .ember-power-select-selected-item').text().trim(), 'System');
-    assert.equal($('.qa-events .ember-power-select-selected-item').text().trim(), 'Trigger');
+    assert.equal($('.qa-events .ember-power-select-selected-item').text().trim(), 'Trigger rule action');
   }
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/automation/triggers/new', {
@@ -5993,7 +5993,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields/new/TEXT');
       assert.equal(find('.qa-admin_case-fields_edit__api-key').length, 0);
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case Fields / Text / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / Text / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -6003,7 +6003,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -6036,7 +6036,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields/new/TEXTAREA');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case Fields / Multi-line Text / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / Multi-line text / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -6046,7 +6046,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -6080,7 +6080,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields/new/RADIO');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case Fields / Radio box (single choice) / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / Radio buttons (single choice) / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -6095,7 +6095,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -6131,7 +6131,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields/new/SELECT');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case Fields / Dropdown box (single choice) / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / Dropdown list (single choice) / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -6146,7 +6146,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -6182,7 +6182,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields/new/CHECKBOX');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case Fields / Checkbox (multi choice) / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / Checkboxes (multiple choices) / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -6197,7 +6197,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -6231,7 +6231,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields/new/NUMERIC');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case Fields / Numeric / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / Numerical input / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -6241,7 +6241,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -6273,7 +6273,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields/new/DECIMAL');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case Fields / Decimal / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / Decimal input / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -6283,7 +6283,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -6315,7 +6315,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields/new/FILE');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case Fields / File / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / File upload / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -6325,7 +6325,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -6357,7 +6357,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields/new/YESNO');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case Fields / Yes or no toggle / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / Yes/No toggle / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -6367,7 +6367,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -6401,7 +6401,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields/new/CASCADINGSELECT');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case Fields / Cascading select / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / Cascading select / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -6416,7 +6416,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -6450,7 +6450,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields/new/DATE');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case Fields / Date / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / Date / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -6460,7 +6460,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -6493,7 +6493,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields/new/REGEX');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case Fields / Regular expression / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / Regular expression / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -6505,7 +6505,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -7477,13 +7477,13 @@ define('frontend-cp/tests/acceptance/admin/manage/macros/new-test', ['exports', 
     visit('/admin/manage/macros/new');
 
     fillIn('.qa-admin_macros_edit__title-input', 'New Macro');
-    selectChoose(actionSelect, 'Reply Contents');
-    selectChoose(actionSelect, 'Reply Type');
-    selectChoose(actionSelect, 'Status');
-    selectChoose(actionSelect, 'Type');
-    selectChoose(actionSelect, 'Assignee');
-    selectChoose(actionSelect, 'Add Tags');
-    selectChoose(actionSelect, 'Remove Tags');
+    selectChoose(actionSelect, 'Add reply text');
+    selectChoose(actionSelect, 'Set reply type');
+    selectChoose(actionSelect, 'Change status');
+    selectChoose(actionSelect, 'Change type');
+    selectChoose(actionSelect, 'Change assignee');
+    selectChoose(actionSelect, 'Add tags');
+    selectChoose(actionSelect, 'Remove tags');
     selectChoose(actionSelect, 'Priority');
 
     fillIn('.qa-ko-admin-macros-action-reply-contents textarea', 'Some contents');
@@ -7508,11 +7508,11 @@ define('frontend-cp/tests/acceptance/admin/manage/macros/new-test', ['exports', 
     andThen(function () {
       assert.equal(find('.qa-admin_macros_edit__title-input').val(), 'New Macro');
       assert.equal(find('.qa-admin-macros-action-reply-contents__textarea').val(), 'Some contents');
-      assert.equal(find(typeOptionFor('reply-type', 'Change to')).length, 1);
-      assert.equal(find(typeOptionFor('assignee', 'Change to')).length, 1);
-      assert.equal(find(typeOptionFor('status', 'Change to')).length, 1);
-      assert.equal(find(typeOptionFor('type', 'Change to')).length, 1);
-      assert.equal(find(typeOptionFor('priority', 'Change to')).length, 1);
+      assert.equal(find(typeOptionFor('reply-type', 'change to')).length, 1);
+      assert.equal(find(typeOptionFor('assignee', 'change to')).length, 1);
+      assert.equal(find(typeOptionFor('status', 'change to')).length, 1);
+      assert.equal(find(typeOptionFor('type', 'change to')).length, 1);
+      assert.equal(find(typeOptionFor('priority', 'change to')).length, 1);
       assert.equal(find(formOptionFor('reply-type', 'Note')).length, 1);
       assert.equal(find(formOptionFor('assignee', 'Sales / Leeroy Jenkins')).length, 1);
       assert.equal(find(formOptionFor('status', 'New')).length, 1);
@@ -9282,7 +9282,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields/new/TEXT');
       assert.equal(find('.qa-admin_case-fields_edit__api-key').length, 0);
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization Fields / Text / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / Text / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -9292,7 +9292,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -9325,7 +9325,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields/new/TEXTAREA');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization Fields / Multi-line Text / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / Multi-line text / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -9335,7 +9335,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -9369,7 +9369,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields/new/RADIO');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization Fields / Radio box (single choice) / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / Radio buttons (single choice) / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -9384,7 +9384,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -9420,7 +9420,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields/new/SELECT');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization Fields / Dropdown box (single choice) / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / Dropdown list (single choice) / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -9435,7 +9435,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -9471,7 +9471,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields/new/CHECKBOX');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization Fields / Checkbox (multi choice) / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / Checkboxes (multiple choices) / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -9486,7 +9486,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -9520,7 +9520,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields/new/NUMERIC');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization Fields / Numeric / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / Numerical input / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -9530,7 +9530,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -9562,7 +9562,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields/new/DECIMAL');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization Fields / Decimal / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / Decimal input / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -9572,7 +9572,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -9604,7 +9604,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields/new/FILE');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization Fields / File / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / File upload / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -9614,7 +9614,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -9646,7 +9646,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields/new/YESNO');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization Fields / Yes or no toggle / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / Yes/No toggle / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -9656,7 +9656,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -9690,7 +9690,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields/new/CASCADINGSELECT');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization Fields / Cascading select / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / Cascading select / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -9705,7 +9705,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -9739,7 +9739,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields/new/DATE');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization Fields / Date / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / Date / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -9749,7 +9749,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -9782,7 +9782,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields/new/REGEX');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization Fields / Regular expression / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / Regular expression / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -9794,7 +9794,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -10209,7 +10209,7 @@ define('frontend-cp/tests/acceptance/admin/people/roles/form-test', ['exports', 
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new role', function (assert) {
     visit('/admin/people/roles');
-    click('.' + _frontendCpComponentsKoAdminPageStyles['default'].header + ' button:contains("Add New Role")');
+    click('.' + _frontendCpComponentsKoAdminPageStyles['default'].header + ' button:contains("New role")');
     fillIn('input.ko-admin_roles_form__title', 'Custom Role');
     selectChoose('.qa-ko-admin_roles_form__role-type', 'Agent');
     selectChoose('.qa-ko-admin_roles_form__agent-case-access-type', 'Assigned to agent');
@@ -10239,7 +10239,7 @@ define('frontend-cp/tests/acceptance/admin/people/roles/form-test', ['exports', 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new admin role', function (assert) {
     assert.expect(0);
     visit('/admin/people/roles');
-    click('.' + _frontendCpComponentsKoAdminPageStyles['default'].header + ' button:contains("Add New Role")');
+    click('.' + _frontendCpComponentsKoAdminPageStyles['default'].header + ' button:contains("New role")');
     fillIn('input.ko-admin_roles_form__title', 'Custom Role');
     selectChoose('.qa-ko-admin_roles_form__role-type', 'Administrator');
     selectChoose('.qa-ko-admin_roles_form__agent-case-access-type', 'Assigned to agent');
@@ -11514,7 +11514,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields/new/TEXT');
       assert.equal(find('.qa-admin_case-fields_edit__api-key').length, 0);
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User Fields / Text / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / Text / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -11524,7 +11524,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -11557,7 +11557,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields/new/TEXTAREA');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User Fields / Multi-line Text / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / Multi-line text / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -11567,7 +11567,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -11601,7 +11601,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields/new/RADIO');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User Fields / Radio box (single choice) / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / Radio buttons (single choice) / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -11616,7 +11616,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -11652,7 +11652,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields/new/SELECT');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User Fields / Dropdown box (single choice) / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / Dropdown list (single choice) / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -11667,7 +11667,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -11703,7 +11703,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields/new/CHECKBOX');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User Fields / Checkbox (multi choice) / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / Checkboxes (multiple choices) / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -11718,7 +11718,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -11752,7 +11752,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields/new/NUMERIC');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User Fields / Numeric / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / Numerical input / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -11762,7 +11762,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -11794,7 +11794,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields/new/DECIMAL');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User Fields / Decimal / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / Decimal input / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -11804,7 +11804,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -11836,7 +11836,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields/new/FILE');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User Fields / File / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / File upload / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -11846,7 +11846,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -11878,7 +11878,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields/new/YESNO');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User Fields / Yes or no toggle / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / Yes/No toggle / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -11888,7 +11888,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -11922,7 +11922,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields/new/CASCADINGSELECT');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User Fields / Cascading select / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / Cascading select / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -11937,7 +11937,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -11971,7 +11971,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields/new/DATE');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User Fields / Date / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / Date / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -11981,7 +11981,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -12014,7 +12014,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields/new/REGEX');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User Fields / Regular expression / New', 'Edit form default title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / Regular expression / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
@@ -12026,7 +12026,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
     });
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User Fields / ' + fieldTitle, 'Edit form title is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / ' + fieldTitle, 'Edit form title is correct');
 
       click('.button--primary:first');
     });
@@ -12415,7 +12415,7 @@ define('frontend-cp/tests/acceptance/admin/settings/security-test', ['exports', 
   (0, _frontendCpTestsHelpersQunit.test)('display settings', function (assert) {
     visit('/admin/settings/security');
     andThen(function () {
-      assert.ok(find('.ko-admin-settings-security-authentication').text().includes('Kayako standard'));
+      assert.ok(find('.ko-admin-settings-security-authentication').text().includes('Standard Kayako login'));
       assert.equal(find('.ko-admin-settings-security-session-expiry').val(), '8');
       assert.equal(find('.ko-admin-settings-security-login-attempt-limit').val(), '10');
       assert.equal(find('.ko-admin-settings-security-password-expires-in').val(), '0');
@@ -12434,7 +12434,7 @@ define('frontend-cp/tests/acceptance/admin/settings/security-test', ['exports', 
       assert.equal(find('.ko-admin-settings-security-login-url').length, 0);
       assert.equal(find('.ko-admin-settings-security-logout-url').length, 0);
       assert.equal(find('.ko-admin-settings-security-shared-secret').length, 0);
-      selectChoose('.ko-admin-settings-security-authentication', 'SSO (JWT)');
+      selectChoose('.ko-admin-settings-security-authentication', 'Single sign-on (JWT)');
     });
     andThen(function () {
       assert.equal(find('.ko-admin-settings-security-login-url').val(), 'login url');
@@ -12477,7 +12477,7 @@ define('frontend-cp/tests/acceptance/admin/settings/security-test', ['exports', 
 
   (0, _frontendCpTestsHelpersQunit.test)('edit agent settings', function (assert) {
     visit('/admin/settings/security');
-    selectChoose('.ko-admin-settings-security-authentication', 'SSO (JWT)');
+    selectChoose('.ko-admin-settings-security-authentication', 'Single sign-on (JWT)');
     fillIn('.ko-admin-settings-security-login-url', 'http://example.com');
     fillIn('.ko-admin-settings-security-logout-url', 'http://example.com/logout');
     fillIn('.ko-admin-settings-security-shared-secret', 'new shared secter');
