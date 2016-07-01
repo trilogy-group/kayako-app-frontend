@@ -6674,6 +6674,9 @@ a.ko-admin_plans_index__cancel_1pprhr {
 .ko-admin_trial_index__step-footer_gzo7px {
   margin-top: 25px; }
 
+.ko-admin_trial_index__step-form_gzo7px {
+  width: 300px; }
+
 /* styles for frontend-cp/components/ko-admin/triggers/form/styles.css */
 .ko-admin_triggers_form__title-input-layout_1n627y {
   width: 362px; }
