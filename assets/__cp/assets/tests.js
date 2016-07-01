@@ -4,7 +4,7 @@ define('frontend-cp/tests/acceptance/admin/account/billing/index-test', ['export
     beforeEach: function beforeEach() {
       /*eslint-disable camelcase*/
       var locale = server.create('locale', { locale: 'en-us' });
-      server.create('plan', { limits: {}, features: [] });
+      server.create('plan', { limits: {}, features: [], account_id: '123', subscription_id: '123' });
       var adminRole = server.create('role', { type: 'ADMIN' });
       var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
@@ -67,7 +67,7 @@ define('frontend-cp/tests/acceptance/admin/account/overview/index-test', ['expor
     beforeEach: function beforeEach() {
       /*eslint-disable camelcase*/
       var locale = server.create('locale', { locale: 'en-us' });
-      server.create('plan', { limits: {}, features: [] });
+      server.create('plan', { limits: {}, features: [], account_id: '123', subscription_id: '123' });
       var adminRole = server.create('role', { type: 'ADMIN' });
       var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
@@ -154,9 +154,8 @@ define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports'
     beforeEach: function beforeEach() {
       /*eslint-disable camelcase*/
       var locale = server.create('locale', { locale: 'en-us' });
-      server.create('plan', { limits: {
-          agents: 20
-        }, features: [] });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
+
       var adminRole = server.create('role', { type: 'ADMIN' });
       var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
@@ -278,9 +277,8 @@ define('frontend-cp/tests/acceptance/admin/account/trial/index-test', ['exports'
     beforeEach: function beforeEach() {
       /*eslint-disable camelcase*/
       var locale = server.create('locale', { locale: 'en-us' });
-      server.create('plan', { limits: {
-          agents: 20
-        }, features: [] });
+      server.create('plan', { limits: { agents: 20 }, features: [] });
+
       var adminRole = server.create('role', { type: 'ADMIN' });
       var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
@@ -449,10 +447,7 @@ define('frontend-cp/tests/acceptance/admin/apps/webhooks/edit-test', ['exports',
       var session = server.create('session', { user: agent });
       login(session.id);
 
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
 
       webhook = server.create('token', {
         label: 'test webhook label',
@@ -559,10 +554,7 @@ define('frontend-cp/tests/acceptance/admin/apps/webhooks/index-test', ['exports'
       var session = server.create('session', { user: agent });
       login(session.id);
 
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
       originalConfirm = window.confirm;
     },
 
@@ -701,10 +693,7 @@ define('frontend-cp/tests/acceptance/admin/apps/webhooks/new-test', ['exports', 
       var session = server.create('session', { user: agent });
       login(session.id);
 
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
       originalConfirm = window.confirm;
     },
 
@@ -799,7 +788,7 @@ define('frontend-cp/tests/acceptance/admin/automation/businesshours/edit-test', 
         locale: 'en-us',
         is_public: true
       });
-      server.create('plan', { limits: [], features: [] });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
       var adminRole = server.create('role', { type: 'ADMIN' });
       var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
@@ -1074,10 +1063,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/edit-test', ['exp
 
       login(session.id);
 
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
       originalConfirm = window.confirm;
       /*eslint-enable quote-props*/
     },
@@ -1198,10 +1184,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/index-test', ['ex
       var session = server.create('session', { user: agent });
       login(session.id);
 
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
       originalConfirm = window.confirm;
     },
 
@@ -1579,10 +1562,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
       login(session.id);
 
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
       originalConfirm = window.confirm;
       /*eslint-enable quote-props*/
     },
@@ -2531,10 +2511,7 @@ define('frontend-cp/tests/acceptance/admin/automation/sla/index-test', ['exports
       var session = server.create('session', { user: agent });
       login(session.id);
 
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
     },
 
     afterEach: function afterEach() {
@@ -2804,10 +2781,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/edit-test', ['exp
 
       login(session.id);
 
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
       originalConfirm = window.confirm;
       /*eslint-enable quote-props*/
     },
@@ -3007,10 +2981,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/index-test', ['ex
       var session = server.create('session', { user: agent });
       login(session.id);
 
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
       originalConfirm = window.confirm;
     },
 
@@ -3377,10 +3348,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
 
       login(session.id);
 
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
       originalConfirm = window.confirm;
       /*eslint-enable quote-props*/
     },
@@ -4018,10 +3986,7 @@ define('frontend-cp/tests/acceptance/admin/channels/email/list-test', ['exports'
       var user = server.create('user', { role: role, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: user });
 
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
 
       var brand = server.create('brand', { domain: 'kayako.com', name: 'Main Brand' });
       server.create('mailbox', { address: 'main@kayako.com', brand: brand, is_system: true });
@@ -4130,10 +4095,7 @@ define('frontend-cp/tests/acceptance/admin/channels/email/new-test', ['exports',
       var user = server.create('user', { role: role, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: user });
 
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
 
       var brand = server.create('brand', { domain: 'kayako.com', name: 'Main Brand' });
       server.create('brand', { domain: 'kayako.com', name: 'Second Brand' });
@@ -4181,9 +4143,7 @@ define('frontend-cp/tests/acceptance/admin/channels/messenger/code-test', ['expo
     beforeEach: function beforeEach() {
       /*eslint-disable camelcase*/
       var locale = server.create('locale', { locale: 'en-us' });
-      server.create('plan', { limits: {
-          agents: 20
-        }, features: [] });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
       var adminRole = server.create('role', { type: 'ADMIN' });
       var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
@@ -4344,10 +4304,7 @@ define('frontend-cp/tests/acceptance/admin/manage/brands/edit-test', ['exports',
         resource_url: 'http://localhost:4200/api/v1/brands/' + brand.id + '/templates/cases_email_satisfaction'
       });
 
-      server.create('plan', {
-        limits: [],
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
 
       login(session.id);
     },
@@ -4509,10 +4466,7 @@ define('frontend-cp/tests/acceptance/admin/manage/brands/list-test', ['exports',
       var user = server.create('user', { role: role, locale: en, time_zone: 'Europe/London' });
       var session = server.create('session', { user: user });
 
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
 
       login(session.id);
     },
@@ -4629,12 +4583,7 @@ define('frontend-cp/tests/acceptance/admin/manage/brands/new-test', ['exports', 
       server.create('locale', { id: 3, locale: 'de-de', name: 'German', is_public: true, is_localised: true });
       server.create('locale', { id: 4, locale: 'ru-ru', name: 'Russian', is_public: true, is_localised: true });
 
-      server.create('plan', {
-        limits: {
-          brands: 10
-        },
-        features: []
-      });
+      server.create('plan', { limits: { brands: 10 }, features: [], account_id: '123', subscription_id: '123' });
 
       login(session.id);
     },
@@ -4720,10 +4669,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/delete-test', ['ex
       var session = server.create('session', { user: agent });
       login(session.id);
 
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
       originalConfirm = window.confirm;
     },
 
@@ -5082,10 +5028,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       var session = server.create('session', { user: agent });
       login(session.id);
 
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
     },
 
     afterEach: function afterEach() {
@@ -5662,10 +5605,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-priorities-
         is_sla_active: false // eslint-disable-line camelcase
       });
       var prioritiesFeature = server.create('feature', { code: 'custom_case_priorities' });
-      server.create('plan', {
-        limits: {},
-        features: [prioritiesFeature]
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [prioritiesFeature], account_id: '123', subscription_id: '123' });
     },
 
     afterEach: function afterEach() {
@@ -5788,10 +5728,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-statuses-te
         is_sla_active: false
       });
       var statusesFeature = server.create('feature', { code: 'custom_case_statuses' });
-      server.create('plan', {
-        limits: {},
-        features: [statusesFeature]
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [statusesFeature], account_id: '123', subscription_id: '123' });
     },
 
     afterEach: function afterEach() {
@@ -5914,10 +5851,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-types-test'
         type: 'CUSTOM'
       });
       var typesFeature = server.create('feature', { code: 'custom_case_types' });
-      server.create('plan', {
-        limits: {},
-        features: [typesFeature]
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [typesFeature], account_id: '123', subscription_id: '123' });
     },
 
     afterEach: function afterEach() {
@@ -6005,10 +5939,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       var session = server.create('session', { user: agent });
       login(session.id);
 
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
     },
 
     afterEach: function afterEach() {
@@ -6785,10 +6716,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/reorder-test', ['e
       var session = server.create('session', { user: agent });
       login(session.id);
 
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
       /*eslint-enable camelcase*/
     },
 
@@ -7004,7 +6932,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
       locale = server.create('locale', { locale: 'en-us' });
       var user = server.create('user', { emails: emails, role: server.create('role'), locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: user });
-      server.create('plan', { limits: {}, features: [] });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
       brand = server.create('brand', { name: 'Brewfictus', locale: locale });
       originalConfirm = window.confirm;
       login(session.id);
@@ -7331,10 +7259,7 @@ define('frontend-cp/tests/acceptance/admin/manage/facebook/manage-pages-test', [
 
       login(session.id);
 
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
       /*eslint-enable quote-props*/
     },
 
@@ -7448,10 +7373,7 @@ define('frontend-cp/tests/acceptance/admin/manage/localization/list-test', ['exp
       var user = server.create('user', { role: role, locale: en, time_zone: 'Europe/London' });
       var session = server.create('session', { user: user });
 
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
 
       login(session.id);
     },
@@ -7519,10 +7441,7 @@ define('frontend-cp/tests/acceptance/admin/manage/macros/new-test', ['exports', 
 
       login(session.id);
 
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
       /*eslint-enable camelcase, quote-props*/
     },
 
@@ -7802,10 +7721,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/edit-test', ['exports', 
       var session = server.create('session', { user: agent });
       login(session.id);
       server.create('view');
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
       var stringProposition = server.create('proposition', {
         field: 'cases.subject',
         operator: 'string_contains',
@@ -8076,10 +7992,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       var session = server.create('session', { user: agent });
       login(session.id);
       server.create('view');
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
       /*eslint-enable quote-props*/
     },
 
@@ -8446,10 +8359,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/delete-tes
       var sessionId = server.create('session', { user: agent }).id;
       login(sessionId);
 
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
       originalConfirm = window.confirm;
     },
 
@@ -8797,10 +8707,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
       var session = server.create('session', { user: agent });
       login(session.id);
 
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
       /*eslint-enable camelcase*/
     },
 
@@ -9321,10 +9228,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       var session = server.create('session', { user: agent });
       login(session.id);
 
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
     },
 
     afterEach: function afterEach() {
@@ -10079,10 +9983,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/reorder-te
       var session = server.create('session', { user: agent });
       login(session.id);
 
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
       /*eslint-enable camelcase*/
     },
 
@@ -10284,10 +10185,8 @@ define('frontend-cp/tests/acceptance/admin/people/roles/form-test', ['exports', 
       });
 
       var rolesAndPermissionsFeature = server.create('feature', { code: 'custom_roles_and_permissions' });
-      server.create('plan', {
-        limits: {},
-        features: [rolesAndPermissionsFeature]
-      });
+
+      server.create('plan', { limits: { agents: 20 }, features: [rolesAndPermissionsFeature], account_id: '123', subscription_id: '123' });
 
       server.create('role', {
         id: 6,
@@ -10408,10 +10307,7 @@ define('frontend-cp/tests/acceptance/admin/people/roles/index-test', ['exports',
         isDefault: true
       });
 
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
 
       server.create('role', {
         id: 2,
@@ -10586,7 +10482,7 @@ define('frontend-cp/tests/acceptance/admin/people/teams-forms-test', ['exports',
       var user = server.create('user', { emails: emails, locale: locale, role: server.create('role', { roleType: 'ADMIN' }), time_zone: 'Europe/London' });
       var session = server.create('session', { user: user });
 
-      server.create('plan', { limits: {}, features: [] });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
 
       server.create('brand', { locale: server.create('locale') });
 
@@ -10659,10 +10555,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/delete-test', ['ex
       var session = server.create('session', { user: agent });
       login(session.id);
 
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
       originalConfirm = window.confirm;
     },
 
@@ -11009,10 +10902,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       var session = server.create('session', { user: agent });
       login(session.id);
 
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
     },
 
     afterEach: function afterEach() {
@@ -11570,10 +11460,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       var session = server.create('session', { user: agent });
       login(session.id);
 
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
     },
 
     afterEach: function afterEach() {
@@ -12327,10 +12214,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/reorder-test', ['e
       var session = server.create('session', { user: agent });
       login(session.id);
 
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
     },
 
     afterEach: function afterEach() {
@@ -12684,10 +12568,7 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
       server.createList('case-priority', 4);
       login(session.id);
 
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
     },
 
     afterEach: function afterEach() {
@@ -12945,10 +12826,7 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
         description: 'People who may log in as a team member'
       });
 
-      server.create('plan', {
-        limits: limit,
-        features: [feature]
-      });
+      server.create('plan', { limits: limit, features: [feature], account_id: '123', subscription_id: '123' });
 
       var macroAssignee = server.create('macro-assignee');
       var macroVisibility = server.create('macro-visibility');
@@ -13288,10 +13166,7 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
       server.createList('case-priority', 4);
       server.createList('attachment', 3);
 
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
       var status = server.create('case-status');
       targetCase = server.create('case', {
         source_channel: sourceChannel,
@@ -13553,7 +13428,7 @@ define('frontend-cp/tests/acceptance/agent/cases/replying-to-a-facebook-message-
       time_zone: 'Europe/London'
     });
 
-    server.create('plan');
+    server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
 
     return agent;
   }
@@ -13695,10 +13570,7 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
       server.createList('case-priority', 4);
       server.createList('attachment', 3);
 
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
       var status = server.create('case-status');
       targetCase = server.create('case', {
         source_channel: sourceChannel,
@@ -13963,10 +13835,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-test', ['exports', 'fronte
     server.createList('case-priority', 4);
     login(sessionId);
 
-    server.create('plan', {
-      limits: {},
-      features: []
-    });
+    server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
 
     assert.expect(1);
 
@@ -14025,10 +13894,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
       server.createList('case-priority', 4);
       server.createList('attachment', 3);
 
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
       var status = server.create('case-status');
       targetCase = server.create('case', {
         source_channel: sourceChannel,
@@ -14247,7 +14113,7 @@ define('frontend-cp/tests/acceptance/agent/index-test', ['exports', 'frontend-cp
       var locale = server.create('locale', { locale: 'en-us' });
       var user = server.create('user', { emails: emails, role: server.create('role'), locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: user });
-      server.create('plan', { limits: {}, features: [] });
+      server.create('plan', { limits: {}, features: [], account_id: '123', subscription_id: '123' });
 
       login(session.id);
     },
@@ -14393,7 +14259,7 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
       var locale = server.create('locale', { locale: 'en-us' });
       var user = server.create('user', { emails: emails, role: server.create('role'), locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: user });
-      server.create('plan', { limits: {}, features: [] });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
       login(session.id);
 
       visit('/agent/users/' + user.id);
@@ -14496,7 +14362,7 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
       var locale = server.create('locale', { locale: 'en-us' });
       var user = server.create('user', { twitter: twitter, role: server.create('role'), locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: user });
-      server.create('plan', { limits: {}, features: [] });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
       login(session.id);
 
       visit('/agent/users/' + user.id);
@@ -14563,7 +14429,7 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
       var locale = server.create('locale', { locale: 'en-us' });
       var user = server.create('user', { facebook: facebook, role: server.create('role'), locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: user });
-      server.create('plan', { limits: {}, features: [] });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
       login(session.id);
 
       visit('/agent/users/' + user.id);
@@ -14617,7 +14483,7 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
       var locale = server.create('locale', { locale: 'en-us' });
       var user = server.create('user', { phones: phones, role: server.create('role'), locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: user });
-      server.create('plan', { limits: {}, features: [] });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
       login(session.id);
 
       visit('/agent/users/' + user.id);
@@ -14696,10 +14562,7 @@ define('frontend-cp/tests/acceptance/agent/organisations/create-test', ['exports
       var session = server.create('session', { user: agent });
       login(session.id);
 
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
     },
 
     afterEach: function afterEach() {
@@ -14820,10 +14683,7 @@ define('frontend-cp/tests/acceptance/agent/organisations/edit-test', ['exports',
       });
 
       var session = server.create('session', { user: agent });
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
       login(session.id);
     },
 
@@ -15219,7 +15079,7 @@ define('frontend-cp/tests/acceptance/agent/users/change-role-test', ['exports', 
     var other = server.create('user', { role: this.roles.customer, time_zone: 'Europe/London' });
     var session = server.create('session', { user: me });
 
-    server.create('plan', { limits: {}, features: [] });
+    server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
     login(session.id);
 
     visit('/agent/users/' + other.id);
@@ -15242,7 +15102,7 @@ define('frontend-cp/tests/acceptance/agent/users/change-role-test', ['exports', 
     var other = server.create('user', { role: this.roles.agent, time_zone: 'Europe/London' });
     var session = server.create('session', { user: me });
 
-    server.create('plan', { limits: {}, features: [] });
+    server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
     login(session.id);
 
     visit('/agent/users/' + other.id);
@@ -15262,7 +15122,7 @@ define('frontend-cp/tests/acceptance/agent/users/change-role-test', ['exports', 
     var requested = false;
     var endpoint = '/api/v1/users/' + other.id;
 
-    server.create('plan', { limits: {}, features: [] });
+    server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
     login(session.id);
 
     server.put(endpoint, function () {
@@ -15287,7 +15147,7 @@ define('frontend-cp/tests/acceptance/agent/users/change-role-test', ['exports', 
     var other = server.create('user', { role: this.roles.customer, time_zone: 'Europe/London' });
     var session = server.create('session', { user: me });
 
-    server.create('plan', { limits: {}, features: [] });
+    server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
     login(session.id);
 
     visit('/agent/users/' + other.id);
@@ -15321,10 +15181,7 @@ define('frontend-cp/tests/acceptance/agent/users/create-test', ['exports', 'fron
       var session = server.create('session', { user: agent });
       login(session.id);
 
-      server.create('plan', {
-        limits: {},
-        features: []
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
     },
 
     afterEach: function afterEach() {
@@ -15423,10 +15280,7 @@ define('frontend-cp/tests/acceptance/agent/users/edit-test', ['exports', 'fronte
         description: 'People who may log in as a team member'
       });
 
-      server.create('plan', {
-        limits: {},
-        features: [feature]
-      });
+      server.create('plan', { limits: { agents: 20 }, features: [feature], account_id: '123', subscription_id: '123' });
     },
 
     afterEach: function afterEach() {
@@ -15636,7 +15490,9 @@ define('frontend-cp/tests/acceptance/login/login-test', ['exports', 'qunit', 'fr
 
     server.create('plan', {
       limits: {},
-      features: []
+      features: [],
+      account_id: '123',
+      subscription_id: '123'
     });
 
     var columns = server.createList('column', 5);
@@ -15687,7 +15543,9 @@ define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'fron
 
       server.create('plan', {
         limits: {},
-        features: []
+        features: [],
+        account_id: '123',
+        subscription_id: '123'
       });
 
       for (var i = 0; i < 22; i++) {
@@ -20672,10 +20530,8 @@ define('frontend-cp/tests/unit/services/plan-test', ['exports', 'ember', 'ember-
         description: 'People who may log in as a team member'
       });
 
-      server.create('plan', {
-        limits: limit,
-        features: [feature]
-      });
+      server.create('plan', { limits: limit, features: [feature], account_id: '123', subscription_id: '123' });
+
       /* eslint-enable no-undef, camelcase */
     }
   });
@@ -20721,10 +20577,8 @@ define('frontend-cp/tests/unit/services/plan-test', ['exports', 'ember', 'ember-
 
     server.db.plans.remove(1);
 
-    server.create('plan', {
-      limits: limit,
-      features: [feature]
-    });
+    server.create('plan', { limits: limit, features: [feature], account_id: '123', subscription_id: '123' });
+
     /* eslint-enable no-undef, camelcase */
     return service.fetchPlan().then(function () {
       assert.equal(service.limitFor('agents'), 2);

@@ -647,6 +647,9 @@ textarea {
 .i-chevron-small-up:before {
   content: "\e603"; }
 
+.i-map:before {
+  content: "\e907"; }
+
 /*
     Color settings and variables
    ========================================================================= */
@@ -9200,3 +9203,79 @@ a.ko-admin_plans_index__cancel_1pprhr {
   position: absolute;
   right: 0;
   bottom: 0; }
+
+/* styles for frontend-cp/session/agent/welcome/styles.css */
+.session_agent_welcome__title_1hvkii {
+  font-size: 30px;
+  font-weight: 300;
+  line-height: 38px;
+  color: #000000;
+  text-align: center;
+  margin-bottom: 9px; }
+
+.session_agent_welcome__subtitle_1hvkii {
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 24px;
+  color: #838D94;
+  text-align: center;
+  margin-bottom: 24px; }
+
+.session_agent_welcome__content_1hvkii {
+  max-width: 972px;
+  margin: 0 auto 40px;
+  padding: 36px 95px 36px 60px;
+  background-color: #ffffff;
+  border: 1px solid #d1d5d7;
+  border-radius: 5px;
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column; }
+
+.session_agent_welcome__row_1hvkii {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin: 18px 0;
+  background-image: url("/__apps/frontend/assets/__cp/images/welcome/squiggle.png");
+  background-position: left center;
+  background-repeat: no-repeat; }
+
+.session_agent_welcome__text_1hvkii {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  padding: 0 30px 0 35px; }
+
+.session_agent_welcome__header_1hvkii {
+  font-weight: 600;
+  font-size: 16px; }
+
+.session_agent_welcome__description_1hvkii {
+  color: #5F6C73;
+  margin-bottom: 16px; }
+
+.session_agent_welcome__image-container_1hvkii {
+  -webkit-box-flex: 0;
+      -ms-flex-positive: 0;
+          flex-grow: 0;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  width: 480px; }
+
+.session_agent_welcome__bar_1hvkii {
+  width: 100%; }
+
+.session_agent_welcome__image_1hvkii {
+  width: 100%;
+  border: 1px solid #D1D5D7;
+  border-width: 0 1px 1px;
+  border-radius: 0 0 3px 3px; }
