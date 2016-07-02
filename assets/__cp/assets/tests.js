@@ -154,8 +154,7 @@ define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports'
     beforeEach: function beforeEach() {
       /*eslint-disable camelcase*/
       var locale = server.create('locale', { locale: 'en-us' });
-      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
-
+      server.create('plan', { limits: {}, features: [] });
       var adminRole = server.create('role', { type: 'ADMIN' });
       var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
@@ -240,10 +239,10 @@ define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports'
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('seats should be equal to plan seats limit', function (assert) {
+  (0, _frontendCpTestsHelpersQunit.test)('seats should be equal to subscription agents default quantity', function (assert) {
     visit('/admin/account/plans');
     andThen(function () {
-      assert.equal(find('.agents-count').val(), '20');
+      assert.equal(find('.agents-count').val(), '10');
     });
   });
 
@@ -252,7 +251,7 @@ define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports'
     visit('/admin/account/plans');
     andThen(function () {
       selectedSeats = find('.agents-count').val();
-      fillIn('.agents-count', 10);
+      fillIn('.agents-count', 20);
     });
     andThen(function () {
       assert.notEqual(find('.agents-count').val(), selectedSeats);
@@ -277,11 +276,11 @@ define('frontend-cp/tests/acceptance/admin/account/trial/index-test', ['exports'
     beforeEach: function beforeEach() {
       /*eslint-disable camelcase*/
       var locale = server.create('locale', { locale: 'en-us' });
-      server.create('plan', { limits: { agents: 20 }, features: [] });
-
+      server.create('plan', { limits: {}, features: [] });
       var adminRole = server.create('role', { type: 'ADMIN' });
       var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
+      server.createList('user', 5);
       login(session.id);
     },
 

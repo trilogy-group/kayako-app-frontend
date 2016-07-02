@@ -6460,31 +6460,79 @@ a.ko-admin_plans_index__cancel_1pprhr {
 
 /* styles for frontend-cp/components/ko-admin/rateplans/summary/styles.css */
 .ko-admin_rateplans_summary__plan-notification_hzi5l3 {
-  background: #EEF7FA;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0; }
+
+.ko-admin_rateplans_summary__flex-empty-column_hzi5l3 {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 200px;
+          flex: 0 0 200px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+
+.ko-admin_rateplans_summary__flex-content-column_hzi5l3 {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 0;
+          flex: 1 1 0;
   padding: 8px 27px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  -webkit-transition: position 300ms ease, padding 300ms ease;
-  transition: position 300ms ease, padding 300ms ease;
+  background: #EEF7FA;
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
-          justify-content: space-between; }
+          justify-content: space-between;
+  margin-right: 0; }
 
 .ko-admin_rateplans_summary__sticky_hzi5l3 {
   position: fixed;
   top: 84px;
-  left: 245px;
-  right: 45px;
   bottom: auto;
+  z-index: 1;
+  -webkit-animation-duration: 300ms;
+          animation-duration: 300ms;
+  -webkit-animation-name: ko-admin_rateplans_summary__slidein_hzi5l3;
+          animation-name: ko-admin_rateplans_summary__slidein_hzi5l3; }
+
+.ko-admin_rateplans_summary__sticky_hzi5l3 .ko-admin_rateplans_summary__flex-box_hzi5l3 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  padding: 0 45px; }
+
+.ko-admin_rateplans_summary__sticky_hzi5l3 .ko-admin_rateplans_summary__flex-content-column_hzi5l3 {
+  margin-right: 200px;
   padding: 27px 27px;
   border-bottom: 1px solid #D1D5D7;
   box-shadow: 0px 2px 5px #D1D5D7;
-  z-index: 1; }
+  max-width: 1200px; }
+
+@media (max-width: 1400px) {
+  .ko-admin_rateplans_summary__sticky_hzi5l3 .ko-admin_rateplans_summary__flex-content-column_hzi5l3 {
+    margin-right: 0; } }
+
+@-webkit-keyframes ko-admin_rateplans_summary__slidein_hzi5l3 {
+  from {
+    top: 0; }
+  to {
+    top: 84px; } }
+
+@keyframes ko-admin_rateplans_summary__slidein_hzi5l3 {
+  from {
+    top: 0; }
+  to {
+    top: 84px; } }
+
+.ko-admin_rateplans_summary__inline-loader_hzi5l3 {
+  display: inline-block;
+  position: relative;
+  top: 4px; }
 
 /* styles for frontend-cp/components/ko-admin/rateplans/units/styles.css */
 .ko-admin_rateplans_units__plan-units_cuepi6 {
