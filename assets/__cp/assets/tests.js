@@ -12668,7 +12668,7 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
   }
 });
 /* eslint-disable new-cap */
-define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'ember', 'frontend-cp/session/styles', 'frontend-cp/components/ko-checkbox/styles', 'frontend-cp/components/ko-info-bar/field/select/trigger/styles'], function (exports, _frontendCpTestsHelpersQunit, _ember, _frontendCpSessionStyles, _frontendCpComponentsKoCheckboxStyles, _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles) {
+define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'ember', 'frontend-cp/session/styles', 'frontend-cp/components/ko-checkbox/styles', 'frontend-cp/components/ko-info-bar/field/select/trigger/styles', 'frontend-cp/components/ko-pagination/styles'], function (exports, _frontendCpTestsHelpersQunit, _ember, _frontendCpSessionStyles, _frontendCpComponentsKoCheckboxStyles, _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles, _frontendCpComponentsKoPaginationStyles) {
 
   var originalConfirm = window.confirm;
 
@@ -12942,13 +12942,13 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
     });
 
     andThen(function () {
-      assert.ok(find('.ko-pagination__container').length);
+      assert.ok(find('.' + _frontendCpComponentsKoPaginationStyles['default'].paginationContainer).length);
       click('tbody .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + ':first');
     });
 
     andThen(function () {
       assert.equal(find('.ko-cases-list__action-button').length, 1);
-      assert.notOk(find('.ko-pagination__container').length);
+      assert.notOk(find('.' + _frontendCpComponentsKoPaginationStyles['default'].paginationContainer).length);
       assert.equal(find('.ko-bulk-sidebar__title').text().trim(), 'Update Cases');
     });
   });
@@ -15520,7 +15520,7 @@ define('frontend-cp/tests/acceptance/login/login-test', ['exports', 'qunit', 'fr
     });
   }
 });
-define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-checkbox/styles', 'frontend-cp/components/ko-modal/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoCheckboxStyles, _frontendCpComponentsKoModalStyles) {
+define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-checkbox/styles', 'frontend-cp/components/ko-modal/styles', 'frontend-cp/components/ko-pagination/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoCheckboxStyles, _frontendCpComponentsKoModalStyles, _frontendCpComponentsKoPaginationStyles) {
 
   var originalConfirm = window.confirm;
 
@@ -15569,19 +15569,19 @@ define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'fron
 
     andThen(function () {
       assert.equal($('.suspended-messages-section__table tbody tr').length, 20, 'There is 20 mails in the first page');
-      assert.equal($('.ko-pagination__pageNumber').text().trim(), '1', 'This is page 1... ');
-      assert.equal($('.ko-pagination__pageCount').text().trim(), 'of 2', '... of 2');
+      assert.equal($('.' + _frontendCpComponentsKoPaginationStyles['default'].paginationPageNumber).text().trim(), '1', 'This is page 1... ');
+      assert.equal($('.' + _frontendCpComponentsKoPaginationStyles['default'].paginationPageCount).text().trim(), 'of 2', '... of 2');
 
       assert.equal($('.suspended-messages-section__table tbody tr:eq(0) td:eq(1)').text().trim(), 'client0@example.com');
-      click('.ko-pagination__next a');
+      click('.' + _frontendCpComponentsKoPaginationStyles['default'].paginationNext + ' a');
     });
 
     andThen(function () {
       assert.equal(currentURL(), '/agent/cases/suspended-messages?page=2');
       assert.equal($('.suspended-messages-section__table tbody tr').length, 2, 'There is 2 mails in the second page');
       assert.equal($('.suspended-messages-section__table tbody tr:eq(0) td:eq(1)').text().trim(), 'client20@example.com');
-      assert.equal($('.ko-pagination__pageNumber').text().trim(), '2', 'This is page 2... ');
-      assert.equal($('.ko-pagination__pageCount').text().trim(), 'of 2', '... of 2');
+      assert.equal($('.' + _frontendCpComponentsKoPaginationStyles['default'].paginationPageNumber).text().trim(), '2', 'This is page 2... ');
+      assert.equal($('.' + _frontendCpComponentsKoPaginationStyles['default'].paginationPageCount).text().trim(), 'of 2', '... of 2');
     });
   });
 
