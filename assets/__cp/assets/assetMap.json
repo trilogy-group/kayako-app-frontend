@@ -1,8 +1,8 @@
 {
   "assets": {
     "assets/frontend-cp.css": "assets/frontend-cp-efe4aa7b36a5dd3e756dcd90b3963223.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-676ca317d07c408d54caef3f92409c5f.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-316564102d18da2bc66e637542167ec8.map",
+    "assets/frontend-cp.js": "assets/frontend-cp-4e8a94498fc0a436e9cd7659ee70b745.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-8d9c8dac0058c16aa7bb558944cea382.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-9f2ae624e9f622257363543be0860026.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-52b1312285e0d9102a5f76d4ce486290.map",
     "assets/intl/intl.js": "assets/intl/intl-d42891b6f893df4f9287bb343aff56d6.js",
@@ -16,6 +16,7 @@
     "assets/vendor.css": "assets/vendor-4e03707929632a6fcbf29c9b000ce9df.css",
     "assets/vendor.js": "assets/vendor-70e3040747e49b7cb3d96cb4f48fb176.js",
     "assets/vendor.map": "assets/vendor-da293d80d9b7039bd7b3205d46f6840c.map",
+    "images/K-loader-grey-light.gif": "images/K-loader-grey-light-f540a6b516ce46e29f5be80642e65f19.gif",
     "images/apps/api/platform-to-grow.png": "images/apps/api/platform-to-grow-3b8036ab8a29aeab37f6df85f25c5836.png",
     "images/apps/header.png": "images/apps/header-c8e2bb64a8cbe599db8a2f6c98ca0e03.png",
     "images/apps/messenger.png": "images/apps/messenger-40782c904cd64e1d80bfbe5a84f600d9.png",
