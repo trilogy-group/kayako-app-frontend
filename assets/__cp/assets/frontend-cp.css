@@ -3024,9 +3024,6 @@ img {
 .ko-cases-list__row.ko-cases-list__row--trashed {
   color: #838D94; }
 
-.ko-cases-list__title {
-  height: 32px; }
-
 .ko-cases-list__action-button {
   height: 32px;
   min-width: 110px; }
