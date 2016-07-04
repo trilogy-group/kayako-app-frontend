@@ -140,7 +140,7 @@ define('frontend-cp/tests/acceptance/admin/account/overview/index-test', ['expor
     andThen(function () {
       click('.cancel-subscription');
       click('.end-subscription');
-      visit('/admin');
+      visit('/admin/account');
     });
 
     andThen(function () {
