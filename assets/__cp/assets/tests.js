@@ -12445,7 +12445,7 @@ define('frontend-cp/tests/acceptance/admin/settings/security-test', ['exports', 
   (0, _frontendCpTestsHelpersQunit.test)('display customer settings', function (assert) {
     visit('/admin/settings/security/customers');
     andThen(function () {
-      assert.ok(find('.ko-admin-settings-security-authentication').text().includes('Kayako standard'));
+      assert.ok(find('.ko-admin-settings-security-authentication').text().includes('Standard Kayako login'));
       assert.ok(find('.ko-admin-settings-security-twitter-login[aria-checked=true]').length === 1);
       assert.ok(find('.ko-admin-settings-security-facebook-login[aria-checked=true]').length === 1);
       assert.equal(find('.ko-admin-settings-security-session-expiry').val(), '72');
@@ -12465,7 +12465,7 @@ define('frontend-cp/tests/acceptance/admin/settings/security-test', ['exports', 
       assert.equal(find('.ko-admin-settings-security-login-url').length, 0);
       assert.equal(find('.ko-admin-settings-security-logout-url').length, 0);
       assert.equal(find('.ko-admin-settings-security-shared-secret').length, 0);
-      selectChoose('.ko-admin-settings-security-authentication', 'SSO (JWT)');
+      selectChoose('.ko-admin-settings-security-authentication', 'Single sign-on (JWT)');
     });
     andThen(function () {
       assert.equal(find('.ko-admin-settings-security-login-url').val(), 'customer login url');
@@ -13204,7 +13204,7 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
   (0, _frontendCpTestsHelpersQunit.test)('it filters feed items to show only notes', function (assert) {
     assert.expect(2);
 
-    visit('/agent/cases/' + targetCase.id + '/organisation');
+    visit('/agent/cases/' + targetCase.id + '/organization');
 
     selectChoose('.qa-timeline__filter', 'Notes');
 
@@ -13217,7 +13217,7 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
   (0, _frontendCpTestsHelpersQunit.test)('it filters feed items to show only activities', function (assert) {
     assert.expect(3);
 
-    visit('/agent/cases/' + targetCase.id + '/organisation');
+    visit('/agent/cases/' + targetCase.id + '/organization');
 
     selectChoose('.qa-timeline__filter', 'Activities');
 
@@ -13231,7 +13231,7 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
   (0, _frontendCpTestsHelpersQunit.test)('default filter', function (assert) {
     assert.expect(1);
 
-    visit('/agent/cases/' + targetCase.id + '/organisation');
+    visit('/agent/cases/' + targetCase.id + '/organization');
 
     andThen(function () {
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-timeline__filter .ember-power-select-placeholder'), 'Filter: Notes', 'Default filter is correct');
@@ -13241,7 +13241,7 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
   (0, _frontendCpTestsHelpersQunit.test)('loading more note entries below', function (assert) {
     assert.expect(4);
 
-    visit('/agent/cases/' + targetCase.id + '/organisation');
+    visit('/agent/cases/' + targetCase.id + '/organization');
 
     selectChoose('.qa-timeline__filter', 'Notes');
 
@@ -13264,7 +13264,7 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
     var allPosts = server.db.posts.sortBy('created_at').reverse();
     var postId = allPosts[2].id;
 
-    visit('/agent/cases/' + targetCase.id + '/organisation?postId=' + postId);
+    visit('/agent/cases/' + targetCase.id + '/organization?postId=' + postId);
 
     selectChoose('.qa-timeline__filter', 'Notes');
 
@@ -13284,7 +13284,7 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
   (0, _frontendCpTestsHelpersQunit.test)('loading more activity entries below', function (assert) {
     assert.expect(4);
 
-    visit('/agent/cases/' + targetCase.id + '/organisation');
+    visit('/agent/cases/' + targetCase.id + '/organization');
 
     selectChoose('.qa-timeline__filter', 'Activities');
 
@@ -13304,7 +13304,7 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
   (0, _frontendCpTestsHelpersQunit.test)('adding a note updates the timeline when filtering by notes', function (assert) {
     assert.expect(3);
 
-    visit('/agent/cases/' + targetCase.id + '/organisation');
+    visit('/agent/cases/' + targetCase.id + '/organization');
 
     andThen(function () {
       assert.equal(find('.qa-feed_item--note').length, 20, 'Begin with 20 notes');
@@ -14691,8 +14691,8 @@ define('frontend-cp/tests/acceptance/agent/organisations/edit-test', ['exports',
     }
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('Update an organisation with invalid info highlights the errors', function (assert) {
-    visit('/agent/cases/' + theCase.id + '/organisation');
+  (0, _frontendCpTestsHelpersQunit.test)('Update an organization with invalid info highlights the errors', function (assert) {
+    visit('/agent/cases/' + theCase.id + '/organization');
 
     andThen(function () {
       click('.organization-domains-field .ember-power-select-multiple-remove-btn');
