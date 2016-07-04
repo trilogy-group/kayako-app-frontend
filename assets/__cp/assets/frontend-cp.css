@@ -6810,19 +6810,22 @@ a.ko-admin_plans_index__cancel_1pprhr {
   border-top: 2px solid transparent;
   border-bottom: 2px solid #4EAFCB; }
 
-.ko-channel-selector__channel-selector_rf3s59 .ember-power-select {
-  height: 16px; }
-
-.ko-channel-selector__channel-selector_rf3s59 .ember-power-select:not([dir=rtl]) .ember-power-select-trigger {
-  padding-right: 0; }
-
 .ko-channel-selector__channel-selector_rf3s59 .ember-power-select-trigger {
+  height: 18px;
   border: none;
   padding: 0;
-  background-image: none; }
+  background-image: none;
+  line-height: 1;
+  min-height: 0; }
 
 .ko-channel-selector__channel-selector_rf3s59 .ember-power-select-trigger:focus {
   outline: none; }
+
+.ko-channel-selector__channel-selector_rf3s59 .ember-power-select-trigger[aria-disabled="true"] {
+  background: transparent; }
+
+.ko-channel-selector__channel-selector_rf3s59 .ember-power-select-trigger:not([dir=rtl]) {
+  padding-right: 0; }
 
 .ko-channel-selector__channel-selector_rf3s59 .ember-power-select-dropdown {
   min-width: 200px;
@@ -6841,12 +6844,6 @@ a.ko-admin_plans_index__cancel_1pprhr {
 .ko-channel-selector__channel-selector_rf3s59 .ember-power-select-option {
   padding-top: 5px;
   padding-bottom: 5px; }
-
-.ko-channel-selector__channel-selector_rf3s59 .ember-basic-dropdown-trigger {
-  line-height: 1; }
-
-.ko-channel-selector__channel-selector_rf3s59 .ember-power-select-trigger[aria-disabled="true"] {
-  background: transparent; }
 
 /* styles for frontend-cp/components/ko-checkbox/styles.css */
 .ko-checkbox__checkboxWrap_va0kgl {
