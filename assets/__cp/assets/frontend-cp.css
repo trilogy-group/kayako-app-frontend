@@ -2226,10 +2226,10 @@ img {
   -webkit-transform: rotateY(180deg);
           transform: rotateY(180deg); }
 
-.ko-agent-dropdown__nav-item, .ko-agent-dropdown__footer, .ko-form_field_help, .ko-info-bar_item__header, .ko-info-bar_field_select-multiple_trigger__title_1m2eux, .ko-simple-list__header_1uqjo0, .session_admin_settings_security_customers__description_e3ldqh, .session_admin_settings_security_index__description_mwqrmo,
+.ko-agent-dropdown__nav-item, .ko-agent-dropdown__footer, .help, .ko-info-bar_item__header, .ko-info-bar_field_select-multiple_trigger__title_1m2eux, .ko-form_field_help__help_1svai9, .ko-simple-list__header_1uqjo0, .session_admin_settings_security_customers__description_e3ldqh, .session_admin_settings_security_index__description_mwqrmo,
 .t-caption {
   color: #838D94; }
-  .is-active.ko-agent-dropdown__nav-item, .is-active.ko-agent-dropdown__footer, .is-active.ko-form_field_help, .is-active.ko-info-bar_item__header, .is-active.ko-info-bar_field_select-multiple_trigger__title_1m2eux, .is-active.ko-simple-list__header_1uqjo0, .is-active.session_admin_settings_security_customers__description_e3ldqh, .is-active.session_admin_settings_security_index__description_mwqrmo,
+  .is-active.ko-agent-dropdown__nav-item, .is-active.ko-agent-dropdown__footer, .is-active.help, .is-active.ko-info-bar_item__header, .is-active.ko-info-bar_field_select-multiple_trigger__title_1m2eux, .is-active.ko-form_field_help__help_1svai9, .is-active.ko-simple-list__header_1uqjo0, .is-active.session_admin_settings_security_customers__description_e3ldqh, .is-active.session_admin_settings_security_index__description_mwqrmo,
   .t-caption.is-active {
     color: inherit; }
 
@@ -3396,10 +3396,9 @@ img {
 .ko-form_field_errors__error {
   margin-top: 9px; }
 
-.ko-form_field_help {
-  margin: 0 0 18px;
-  max-width: 460px; }
-  * + .ko-form_field_help {
+.help {
+  margin: 0 0 18px; }
+  * + .help {
     margin-top: 9px; }
 
 .ko-form_field_label {
@@ -7055,6 +7054,13 @@ a.ko-admin_plans_index__cancel_1pprhr {
       -ms-flex-align: center;
           align-items: center;
   margin-right: 10px; }
+
+/* styles for frontend-cp/components/ko-form/field/help/styles.css */
+.ko-form_field_help__help_1svai9 {
+  margin: 0 0 18px; }
+
+* + .ko-form_field_help__help_1svai9 {
+  margin-top: 9px; }
 
 /* styles for frontend-cp/components/ko-identities/form/styles.css */
 .ko-identities_form__buttons_zvvgr3 {
