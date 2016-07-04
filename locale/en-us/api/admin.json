@@ -684,8 +684,8 @@
 
   "settings.security.customers.authentication.heading": "Authentication",
   "settings.security.customers.authentication.mode.title": "Customer authentication mode",
-  "settings.security.customers.authentication.mode.options.internal": "Kayako standard",
-  "settings.security.customers.authentication.mode.options.jwt": "SSO (JWT)",
+  "settings.security.customers.authentication.mode.options.internal": "Standard Kayako login",
+  "settings.security.customers.authentication.mode.options.jwt": "Single sign-on (JWT)",
   "settings.security.customers.authentication.mode.description": "The way your customers will be authenticated when logging in to the Help Center.",
   "settings.security.customers.authentication.twitter.title": "Log in via Twitter",
   "settings.security.customers.authentication.twitter.description": "Allow users to log in to the Help Center using their Twitter account.",
