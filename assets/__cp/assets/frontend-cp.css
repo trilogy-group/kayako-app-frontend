@@ -5511,6 +5511,7 @@ span#HW_badge.HW_softHidden {
   -webkit-box-flex: 1;
       -ms-flex: 1 1 0;
           flex: 1 1 0;
+  min-width: 720px;
   max-width: 1200px;
   padding: 18px;
   min-height: calc(100vh - 42px - 42px - 198px);
