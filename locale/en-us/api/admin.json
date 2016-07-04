@@ -356,12 +356,14 @@
   "casefields.edit.description_on.is_enabled": "Field is enabled",
   "casefields.edit.description_off.is_enabled": "Field is disabled",
   "casefields.edit.help.is_enabled": "Disabled case fields will not be available on cases or case forms, but any existing data will still be searchable and can be referenced in reporting.",
-  "casefields.edit.label.priorities": "The order of priorities matter: your priorities should go from highest to lowest. If you remove a priority, all cases using that priority will be set to no priority.",
+  "casefields.edit.label.priorities": "The case priority field can be used to prioritize cases in your workflow. On the Enterprise plan, you can customize the list of case priorities. The order of priorities matter: your priorities should go from highest to lowest. If you remove a priority, all cases using that priority will be set to no priority.",
   "casefields.help.regex": "Enter a regular expression that will be evaluated against your users' input. If the regular expression evaluates to false, the input will be deemed invalid.",
   "casefields.edit.add_new_status": "Add a new custom status",
   "casefields.edit.heading.statuses": "Statuses",
-  "casefields.edit.help.statuses.1": "Case statuses typically map to your workflow and how you handle customer requests and conversations. Throughout its life, a case will move through various statuses. There are some default system statuses and you can also create statuses to customize the workflow.",
+  "casefields.edit.help.statuses.1": "Case statuses typically map to your workflow and how you handle customer requests and conversations. Throughout its life, a case will move through various statuses. On the Enterprise plan, you can customize the list of case statuses.",
   "casefields.edit.help.statuses.2": "If SLAs are enabled in Kayako, you can determine whether or not SLA timers will pause on particular statuses. For example, you may not want the time a case spends while set to Pending (while you are waiting for a customer to get back to you) to count towards your SLA targets.",
+
+  "casefields.edit.help.types.1": "The case type field can be used to categorize the types of conversations you have with customers. For example, you might want to differentiate between things to do internally (tasks) from customer questions and from customer feedback. On the Enterprise plan, you can customize the list of case types.",
 
   "casefields.edit.statuses.label.is_sla_active": "SLA timers active",
   "casefields.edit.statuses.label.is_sla_inactive": "SLA timers inactive",
