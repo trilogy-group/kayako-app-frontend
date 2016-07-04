@@ -16819,6 +16819,123 @@ define('frontend-cp/tests/helpers/use-default-scenario', ['exports', 'ember', 'f
     (0, _frontendCpMirageScenariosDefault['default'])(server); //eslint-disable-line no-undef
   });
 });
+define('frontend-cp/tests/integration/components/ko-admin/sidebar-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
+
+  (0, _emberQunit.moduleForComponent)('ko-admin/sidebar', 'Integration | Component | ko-admin/sidebar', {
+    integration: true,
+
+    beforeEach: function beforeEach() {
+      // Mock services we’ll need for these tests.
+      this.set('features', { isEnabled: function isEnabled() {
+          return true;
+        } });
+      this.set('intl', { findTranslationByKey: function findTranslationByKey(key) {
+          return key;
+        } });
+      this.set('permissions', { has: function has() {
+          return true;
+        } });
+    }
+  });
+
+  (0, _emberQunit.test)('it shows account section for instances', function (assert) {
+    this.render(Ember.HTMLBars.template((function () {
+      return {
+        meta: {
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.6.1',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 7,
+              'column': 2
+            }
+          }
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode('\n    ');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode('\n  ');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [['inline', 'ko-admin/sidebar', [], ['features', ['subexpr', '@mut', [['get', 'features', ['loc', [null, [3, 15], [3, 23]]]]], [], []], 'intl', ['subexpr', '@mut', [['get', 'intl', ['loc', [null, [4, 11], [4, 15]]]]], [], []], 'permissions', ['subexpr', '@mut', [['get', 'permissions', ['loc', [null, [5, 18], [5, 29]]]]], [], []], 'hostname', 'brewfictus.kayako.com'], ['loc', [null, [2, 4], [6, 40]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.ok(this.$(':contains("admin.navigation.account")').length, 'expected to see the account section');
+  });
+
+  (0, _emberQunit.test)('it hides account section for support.kayako.com', function (assert) {
+    this.render(Ember.HTMLBars.template((function () {
+      return {
+        meta: {
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.6.1',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 7,
+              'column': 2
+            }
+          }
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode('\n    ');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode('\n  ');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [['inline', 'ko-admin/sidebar', [], ['features', ['subexpr', '@mut', [['get', 'features', ['loc', [null, [3, 15], [3, 23]]]]], [], []], 'intl', ['subexpr', '@mut', [['get', 'intl', ['loc', [null, [4, 11], [4, 15]]]]], [], []], 'permissions', ['subexpr', '@mut', [['get', 'permissions', ['loc', [null, [5, 18], [5, 29]]]]], [], []], 'hostname', 'support.kayako.com'], ['loc', [null, [2, 4], [6, 37]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.ok(!this.$(':contains("admin.navigation.account")').length, 'expected *not* to see the account section');
+  });
+});
 define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/component-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'ember', 'sinon', 'frontend-cp/components/ko-form/buttons/styles'], function (exports, _frontendCpTestsHelpersQunit, _ember, _sinon, _frontendCpComponentsKoFormButtonsStyles) {
   var getOwner = _ember['default'].getOwner;
 
