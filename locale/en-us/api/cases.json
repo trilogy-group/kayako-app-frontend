@@ -178,5 +178,9 @@
 
   "viewers.updating": "updating this case",
   "viewers.viewing": "viewing this case",
-  "agent": "AGENT"
+  "agent": "AGENT",
+
+  "more_info.from": "From:",
+  "more_info.to": "To:",
+  "more_info.cc": "CC:"
 }
