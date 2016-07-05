@@ -15468,6 +15468,39 @@ define('frontend-cp/tests/acceptance/login/login-test', ['exports', 'qunit', 'fr
     });
   });
 
+  (0, _qunit.test)('Redirecting to last URL after successful login', function (assert) {
+    setupDataForCasesView();
+
+    /*
+     * Create a requester
+     */
+    var enUsLocale = server.create('locale', { locale: 'en-us' });
+    var identityEmail = server.create('identity-email');
+    var organization = server.create('organization');
+    var role = server.create('role', { title: 'Admin', type: 'ADMIN' });
+    var team = server.create('team');
+    var requester = server.create('user', {
+      custom_fields: [],
+      emails: [{ id: identityEmail.id, resource_type: 'identityEmail' }],
+      locale: { id: enUsLocale.id, resource_type: 'locale' },
+      organization: { id: organization.id, resource_type: 'organization' },
+      role: { id: role.id, resource_type: 'role' },
+      teams: [{ id: team.id, title: team.title, resource_type: 'team' }],
+      time_zone: 'Europe/London'
+    });
+
+    visit('/agent/login?redirectTo=%2Fagent%2Fcases%2Fnew%2F2016-07-04-09-54-50%3Frequester_id%3D' + requester.id);
+
+    fillIn('.ko-login-password__email', 'main@kayako.com');
+    fillIn('.ko-login-password__password', 'valid');
+    click('.ko-login__submit');
+
+    andThen(function () {
+      // we should be redirected back to login screen
+      assert.equal(currentURL(), '/agent/cases/new/2016-07-04-09-54-50?requester_id=' + requester.id);
+    });
+  });
+
   function setupDataForCasesView() {
     var locale = server.create('locale', { locale: 'en-us' });
     var brand = server.create('brand', { locale: locale });
