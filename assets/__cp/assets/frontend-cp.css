@@ -774,11 +774,6 @@ textarea {
   font-size: 18px;
   line-height: 1; }
 
-.i-size-20,
-.session__nav-primary__static-item_1qdlgo {
-  font-size: 20px;
-  line-height: 1.8; }
-
 .i-size-30 {
   font-size: 30px;
   line-height: 1.2; }
@@ -786,10 +781,6 @@ textarea {
 .i-size-14 {
   font-size: 14px;
   line-height: 1.28571; }
-
-.i-size-11 {
-  font-size: 11px;
-  line-height: 1.63636; }
 
 .i-danger-solid:before {
   display: inline-block;
@@ -1950,6 +1941,9 @@ img {
   color: #2D3138;
   opacity: 0.6; }
 
+::-ms-clear {
+  display: none; }
+
 
 .button {
   display: inline-block;
@@ -2645,10 +2639,13 @@ img {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex; }
-  .channel-layout .ember-power-select {
-    margin-right: 20px; }
-  .channel-layout .ember-power-select-trigger {
-    width: 140px; }
+
+.channels {
+  width: 140px; }
+
+.events {
+  margin-left: 20px;
+  width: 140px; }
 
 .ko-admin_views_edit_predicate-header {
   margin-bottom: 18px; }
@@ -5278,8 +5275,8 @@ span#HW_badge.HW_softHidden {
   display: -ms-flexbox;
   display: flex;
   -webkit-box-flex: 1;
-      -ms-flex: 1 0 0;
-          flex: 1 0 0;
+      -ms-flex: 1 0;
+          flex: 1 0;
   font-size: 14px;
   line-height: 22px;
   margin: 2px;
@@ -5383,11 +5380,14 @@ span#HW_badge.HW_softHidden {
   background: url("/__apps/frontend/assets/__cp/images/brand/kayako-logo.svg") no-repeat center center; }
 
 .session__nav-primary__static-item_1qdlgo {
+  font-size: 20px;
   padding: 0 9px;
   border-top: 2px solid transparent;
   cursor: pointer;
   color: #FFFFFF;
-  line-height: 37px !important; }
+  line-height: 35px;
+  height: 38px;
+  border-bottom: 2px solid transparent; }
 
 .session__nav-primary__static-item_1qdlgo.active {
   background-color: #231D2A;
@@ -5471,9 +5471,6 @@ span#HW_badge.HW_softHidden {
 
 /* styles for frontend-cp/components/ko-layout/admin/styles.css */
 .ko-layout_admin__index_1dfrbn {
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
   margin-top: 40px;
   margin-bottom: 40px;
   display: -webkit-box;
@@ -5493,8 +5490,8 @@ span#HW_badge.HW_softHidden {
 
 .ko-layout_admin__content-outer_1dfrbn {
   -webkit-box-flex: 1;
-      -ms-flex: 1 1 0;
-          flex: 1 1 0;
+      -ms-flex: 1 1;
+          flex: 1 1;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -5508,8 +5505,8 @@ span#HW_badge.HW_softHidden {
 
 .ko-layout_admin__content-inner_1dfrbn {
   -webkit-box-flex: 1;
-      -ms-flex: 1 1 0;
-          flex: 1 1 0;
+      -ms-flex: 1 1;
+          flex: 1 1;
   min-width: 720px;
   max-width: 1200px;
   padding: 18px;
@@ -5583,10 +5580,11 @@ span#HW_badge.HW_softHidden {
   display: -ms-flexbox;
   display: flex;
   -webkit-box-flex: 1;
-      -ms-flex: 1 0 0;
-          flex: 1 0 0;
+      -ms-flex: 1 0;
+          flex: 1 0;
   font-size: 14px;
   line-height: 26px;
+  height: 26px;
   margin-left: 8px;
   min-width: 50px;
   outline: none;
@@ -5627,7 +5625,8 @@ span#HW_badge.HW_softHidden {
   border: none;
   width: 100%;
   padding: 0;
-  line-height: 28px; }
+  line-height: 28px;
+  height: 28px; }
 
 /* styles for frontend-cp/components/ko-select/typeahead-trigger/styles.css */
 .ko-select_typeahead-trigger__wrapper_13g081 {
@@ -6368,8 +6367,8 @@ a.ko-admin_plans_index__cancel_1pprhr {
 
 .ko-admin_rateplans_summary__flex-content-column_hzi5l3 {
   -webkit-box-flex: 1;
-      -ms-flex: 1 1 0;
-          flex: 1 1 0;
+      -ms-flex: 1 1;
+          flex: 1 1;
   padding: 8px 27px;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -6644,10 +6643,11 @@ a.ko-admin_plans_index__cancel_1pprhr {
   display: -ms-flexbox;
   display: flex; }
 
-.ko-admin_triggers_form__channel-layout_1n627y .ko-admin_triggers_form__ember-power-select_1n627y {
-  margin-right: 20px; }
+.ko-admin_triggers_form__channels_1n627y {
+  width: 140px; }
 
-.ko-admin_triggers_form__channel-layout_1n627y .ko-admin_triggers_form__ember-power-select-trigger_1n627y {
+.ko-admin_triggers_form__events_1n627y {
+  margin-left: 20px;
   width: 140px; }
 
 /* styles for frontend-cp/components/ko-avatar/styles.css */
@@ -8043,7 +8043,8 @@ a.ko-admin_plans_index__cancel_1pprhr {
 
 .ko-select_multiple_pill__pill_nw6jmv .ember-power-select-multiple-remove-btn {
   margin-right: -5px;
-  margin-left: -5px; }
+  margin-left: -5px;
+  overflow: hidden; }
   .ko-select_multiple_pill__pill_nw6jmv .ember-power-select-multiple-remove-btn[class*="i-"]:before {
     font-size: 28px;
     line-height: 14px;
@@ -8151,6 +8152,9 @@ a.ko-admin_plans_index__cancel_1pprhr {
   min-height: 48px;
   padding-right: 18px;
   border-bottom: 1px solid #D1D5D7; }
+
+.ko-simple-list_row__row_nxh6de > * {
+  min-height: 47px; }
 
 .ko-simple-list_row__row_nxh6de:hover {
   background: #F7F8F9; }
@@ -8431,8 +8435,8 @@ a.ko-admin_plans_index__cancel_1pprhr {
 
 .ko-timeline_activity__content_1tukzf {
   -webkit-box-flex: 1;
-      -ms-flex: 1 1 0;
-          flex: 1 1 0;
+      -ms-flex: 1 1;
+          flex: 1 1;
   max-width: 600px;
   line-height: 24px; }
 
@@ -8991,8 +8995,8 @@ a.ko-admin_plans_index__cancel_1pprhr {
 
 .session_admin_apps_api__messagesBlock_1t2sf4 {
   -webkit-box-flex: 1;
-      -ms-flex: 1 1 0;
-          flex: 1 1 0;
+      -ms-flex: 1 1;
+          flex: 1 1;
   margin-right: 10px; }
 
 .session_admin_apps_api__imageBlock_1t2sf4 {
