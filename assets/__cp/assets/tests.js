@@ -13536,6 +13536,130 @@ define('frontend-cp/tests/acceptance/agent/cases/replying-to-a-facebook-message-
     return response;
   }
 });
+define('frontend-cp/tests/acceptance/agent/cases/subject-created-at-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit', 'qunit'], function (exports, _ember, _frontendCpTestsHelpersQunit, _qunit) {
+
+  var customer = undefined,
+      caseStatus = undefined,
+      agent = undefined,
+      agentRole = undefined,
+      locale = undefined,
+      sourceChannel = undefined,
+      identityEmail = undefined;
+
+  var StubDateService = _ember['default'].Service.extend({
+    getNewDate: function getNewDate(dateTime) {
+      return new Date('2016', '6', '4', '13', '22', '33');
+    }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Case | Subject created at', {
+    beforeEach: function beforeEach(application) {
+      application.register('service:stubDate', StubDateService);
+      application.inject('helper:ko-intl-datetime-format', 'date', 'service:stubDate');
+
+      locale = server.create('locale', { locale: 'en-us' });
+      var customerRole = server.create('role', { type: 'AGENT' });
+      customer = server.create('user', { full_name: 'Mickey Bubbles', role: customerRole, locale: locale, time_zone: 'Europe/London' });
+
+      var brand = server.create('brand', { locale: locale });
+      var mailbox = server.create('mailbox', { brand: brand });
+      sourceChannel = server.create('channel', { account: mailbox });
+
+      agentRole = server.create('role', { type: 'AGENT' });
+
+      server.create('plan', {
+        limits: {},
+        features: []
+      });
+
+      identityEmail = server.create('identity-email');
+      caseStatus = server.create('case-status');
+    },
+
+    afterEach: function afterEach() {
+      logout();
+    }
+  });
+
+  (0, _qunit.test)('it shows the created date relative to Africa/Casablanca timezone', function (assert) {
+    assert.expect(1);
+
+    agent = server.create('user', { role: agentRole, locale: locale, time_zone: 'Africa/Casablanca' });
+    var session = server.create('session', { user: agent });
+    login(session.id);
+
+    var targetCase = server.create('case', {
+      source_channel: sourceChannel,
+      requester: customer,
+      creator: agent,
+      identity: identityEmail,
+      status: caseStatus,
+      created_at: '2016-07-04T13:22:33+00:00',
+      assignee: {
+        agent: agent
+      }
+    });
+
+    visit('/agent/cases/' + targetCase.id);
+
+    andThen(function () {
+      assert.equal(find('.qa-ko-case-content__subject-subtitle').text().trim(), 'Jul 4, 2016 – 1:22 PM created via email', 'No offset from UTC has been applied');
+    });
+  });
+
+  (0, _qunit.test)('it shows the created date relative to Indian/Maldives timezone', function (assert) {
+    assert.expect(1);
+
+    agent = server.create('user', { role: agentRole, locale: locale, time_zone: 'Indian/Maldives' });
+    var session = server.create('session', { user: agent });
+    login(session.id);
+
+    var targetCase = server.create('case', {
+      source_channel: sourceChannel,
+      requester: customer,
+      creator: agent,
+      identity: identityEmail,
+      status: caseStatus,
+      created_at: '2016-07-04T13:22:33+00:00',
+      assignee: {
+        agent: agent
+      }
+    });
+
+    visit('/agent/cases/' + targetCase.id);
+
+    andThen(function () {
+      assert.equal(find('.qa-ko-case-content__subject-subtitle').text().trim(), 'Jul 4, 2016 – 6:22 PM created via email', 'An offset of 5 hours from UTC has been applied');
+    });
+  });
+
+  (0, _qunit.test)('it shows the created date relative to the local time zone if none is specified', function (assert) {
+    assert.expect(1);
+
+    agent = server.create('user', { role: agentRole, locale: locale, time_zone: '' });
+    var session = server.create('session', { user: agent });
+    login(session.id);
+
+    var targetCase = server.create('case', {
+      source_channel: sourceChannel,
+      requester: customer,
+      creator: agent,
+      identity: identityEmail,
+      status: caseStatus,
+      created_at: '2016-07-04T13:22:33+00:00',
+      assignee: {
+        agent: agent
+      }
+    });
+
+    visit('/agent/cases/' + targetCase.id);
+
+    andThen(function () {
+      assert.equal(find('.qa-ko-case-content__subject-subtitle').text().trim(), 'Jul 4, 2016 – 1:22 PM created via email', 'No offset from UTC has been applied as stubbed date has been used');
+    });
+  });
+});
+/* eslint-disable new-cap */
 define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'qunit', 'sinon', 'frontend-cp/components/ko-text-editor/mode-selector/styles'], function (exports, _frontendCpTestsHelpersQunit, _qunit, _sinon, _frontendCpComponentsKoTextEditorModeSelectorStyles) {
 
   var targetCase = undefined,
