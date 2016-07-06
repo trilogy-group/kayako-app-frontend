@@ -3327,7 +3327,7 @@ img {
     background: transparent; }
 
 .editable-text__text {
-  word-break: break-all;
+  word-break: break-word;
   cursor: pointer;
   display: inline-block;
   border-bottom: 1px solid transparent; }
