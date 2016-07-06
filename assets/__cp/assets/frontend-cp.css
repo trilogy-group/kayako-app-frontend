@@ -3327,6 +3327,7 @@ img {
     background: transparent; }
 
 .editable-text__text {
+  word-break: break-all;
   cursor: pointer;
   display: inline-block;
   border-bottom: 1px solid transparent; }
@@ -8486,7 +8487,8 @@ a.ko-admin_plans_index__cancel_1pprhr {
           flex-direction: column;
   -webkit-box-align: start;
       -ms-flex-align: start;
-          align-items: flex-start; }
+          align-items: flex-start;
+  word-break: break-all; }
 
 .ko-timeline_item_attachment__image-wrapper_194j6m {
   margin-bottom: 6px;
@@ -8504,7 +8506,8 @@ a.ko-admin_plans_index__cancel_1pprhr {
   margin-right: 9px; }
 
 .ko-timeline_item_attachment__size_194j6m {
-  color: #BFC5D1; }
+  color: #BFC5D1;
+  min-width: 100px; }
 
 .ko-timeline_item_attachment__attachment_194j6m + .ko-timeline_item_attachment__attachment_194j6m {
   margin-top: 10px; }
@@ -8646,6 +8649,7 @@ a.ko-admin_plans_index__cancel_1pprhr {
 .ko-timeline_item__content_vt1m5j {
   word-wrap: break-word;
   word-break: break-word;
+  padding-right: 5px;
   padding-top: 5px;
   font-size: 15px;
   line-height: 27px; }
