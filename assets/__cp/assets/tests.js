@@ -13829,12 +13829,7 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
   });
 
   (0, _qunit.test)('add notes', function (assert) {
-    assert.expect(6);
-
-    window.confirm = function (message) {
-      assert.equal(message, 'Switching to this channel will clear any text formatting you’ve applied to your reply. Do you want to continue?', 'The proper confirm message is shown');
-      return true;
-    };
+    assert.expect(5);
 
     visit('/agent/cases/' + targetCase.id);
 
