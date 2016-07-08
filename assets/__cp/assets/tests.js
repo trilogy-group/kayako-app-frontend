@@ -4258,6 +4258,34 @@ define('frontend-cp/tests/acceptance/admin/channels/messenger/code-test', ['expo
       assert.equal(generatedCode.indexOf(teamName) > -1, true);
     });
   });
+
+  (0, _frontendCpTestsHelpersQunit.test)('cdnUrl should inherit from the brand subdomain', function (assert) {
+    var brand = {
+      is_enabled: true,
+      is_default: true,
+      locale: null,
+      alias: null,
+      domain: 'kayako.com',
+      sub_domain: 'foo',
+      name: 'Kayako Support',
+      resource_type: 'brand',
+      created_at: '2015-08-05T06:13:59Z',
+      resource_url: 'http://novo/api/index.php?/v1/brands/1',
+      updated_at: '2015-08-05T06:13:59Z',
+      url: null
+    };
+    server.create('brand', brand);
+
+    visit('/admin/channels/messenger/code');
+
+    andThen(function () {
+      var generatedCode = find('.generated-code').val();
+      var apiUrl = 'cdnUrl:"https://' + brand.sub_domain + '.' + brand.domain + '/__apps/widget/assets/visitor"';
+      var teamName = 'defaultName:"' + brand.name + '"';
+      assert.equal(generatedCode.indexOf(apiUrl) > -1, true);
+      assert.equal(generatedCode.indexOf(teamName) > -1, true);
+    });
+  });
 });
 define('frontend-cp/tests/acceptance/admin/manage/brands/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/acceptance/admin/manage/brands/helpers'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsAcceptanceAdminManageBrandsHelpers) {
 
