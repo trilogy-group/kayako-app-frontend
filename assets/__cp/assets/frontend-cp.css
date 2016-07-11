@@ -4108,14 +4108,14 @@ span#HW_badge {
 span#HW_badge.HW_softHidden {
   display: none; }
 
-.ko-organisation-action-menu.menu-active .button--dropdown {
+.ko-organization-action-menu.menu-active .button--dropdown {
   /* Allows menu button to overlap menu */
   padding-bottom: 9px;
   border-bottom: #FFFFFF;
   border-radius: 2px 2px 0 0;
   background-color: #FFFFFF;
   background-image: none; }
-  .ko-organisation-action-menu.menu-active .button--dropdown:focus {
+  .ko-organization-action-menu.menu-active .button--dropdown:focus {
     border: 1px solid #d1d5d7;
     border-bottom: #FFFFFF;
     box-shadow: none; }

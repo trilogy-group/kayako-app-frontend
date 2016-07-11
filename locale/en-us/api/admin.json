@@ -417,7 +417,7 @@
   "predicate_builder.label.addition_of_proposition": "+ Add a new condition",
   "predicate_builder.tags.name": "Case: Tags",
   "predicate_builder.followers.userid": "Case: Following",
-  "predicate_builder.users.organizationid": "Case: Organisation",
+  "predicate_builder.users.organizationid": "Case: Organization",
   "predicate_builder.cases.postcount": "Case: Number of Posts",
   "predicate_builder.languages.locale": "Languages: Locale",
   "predicate_builder.operators.none": "contains",
