@@ -1,0 +1,12 @@
+{
+  "domains": "Email domains",
+  "organizations": "Organizations",
+  "new_organization_placeholder": "Click to add a name",
+  "delete_organization": "Delete organization",
+  "organization.created": "Organization created",
+  "organization.updated": "Organization updated",
+  "infobar.cases.shared.true": "Can see each others' cases",
+  "infobar.cases.shared.false": "Cannot see each others' cases",
+  "infobar.accesslevel": "Case access",
+  "organizationid": "Organization ID"
+}
