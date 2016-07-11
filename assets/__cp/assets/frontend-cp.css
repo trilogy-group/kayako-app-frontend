@@ -6255,7 +6255,6 @@ a.ko-admin_plans_index__cancel_1pprhr {
   padding-bottom: 34px; }
 
 .ko-admin_rateplans_item__cell_cw0pha.ko-admin_rateplans_item__disabled_cw0pha {
-  opacity: 0.3;
   pointer-events: none;
   cursor: not-allowed; }
 
@@ -6426,6 +6425,9 @@ a.ko-admin_plans_index__cancel_1pprhr {
   display: inline-block;
   position: relative;
   top: 4px; }
+
+.ko-admin_rateplans_summary__disabled_hzi5l3 {
+  background: #EEEEEE; }
 
 /* styles for frontend-cp/components/ko-admin/rateplans/units/styles.css */
 .ko-admin_rateplans_units__plan-units_cuepi6 {
