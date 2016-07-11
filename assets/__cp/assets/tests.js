@@ -1010,7 +1010,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/edit-test', ['exp
       });
 
       server.create('definition', {
-        label: 'Organisation',
+        label: 'Organization',
         field: 'users.organizationid',
         type: 'NUMERIC',
         sub_type: 'INTEGER',
@@ -1523,7 +1523,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
       });
 
       server.create('definition', {
-        label: 'Organisation',
+        label: 'Organization',
         field: 'users.organizationid',
         type: 'NUMERIC',
         sub_type: 'INTEGER',
@@ -2726,7 +2726,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/edit-test', ['exp
       });
 
       server.create('definition', {
-        label: 'Organisation',
+        label: 'Organization',
         field: 'users.organizationid',
         type: 'NUMERIC',
         sub_type: 'INTEGER',
@@ -3309,7 +3309,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
       });
 
       server.create('definition', {
-        label: 'Organisation',
+        label: 'Organization',
         field: 'users.organizationid',
         type: 'NUMERIC',
         sub_type: 'INTEGER',
@@ -7706,7 +7706,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/edit-test', ['exports', 
       });
 
       server.create('definition', {
-        label: 'Organisation',
+        label: 'Organization',
         field: 'users.organizationid',
         type: 'NUMERIC',
         sub_type: 'INTEGER',
@@ -7977,7 +7977,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       });
 
       server.create('definition', {
-        label: 'Organisation',
+        label: 'Organization',
         field: 'users.organizationid',
         type: 'NUMERIC',
         sub_type: 'INTEGER',
@@ -14686,9 +14686,9 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
     });
   });
 });
-define('frontend-cp/tests/acceptance/agent/organisations/create-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+define('frontend-cp/tests/acceptance/agent/organizations/create-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
 
-  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Organisation | Create organisation', {
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Organization | Create organization', {
     beforeEach: function beforeEach() {
       var locale = server.create('locale');
       var brand = server.create('brand', { locale: locale });
@@ -14718,7 +14718,7 @@ define('frontend-cp/tests/acceptance/agent/organisations/create-test', ['exports
 
   // This test is failing randomly, need to find out what is causing this strange fail
   // https://travis-ci.com/kayako/frontend-cp/builds/18413801 - example of failing error.
-  //test('Creating a organisation using the "+" button in the main header', function(assert) {
+  //test('Creating a organization using the "+" button in the main header', function(assert) {
   //  visit('/agent');
   //
   //  click('.ko-agent-dropdown__add-icon');
@@ -14736,22 +14736,22 @@ define('frontend-cp/tests/acceptance/agent/organisations/create-test', ['exports
   //  });
   //
   //  andThen(function() {
-  //    assert.equal(currentURL(), '/agent/organisations/1', 'We are in the show page of the created user');
+  //    assert.equal(currentURL(), '/agent/organizations/1', 'We are in the show page of the created user');
   //    assert.equal(find('.ko-agent-dropdown__drop').length, 0, false, '"+" Dropdown content should be hidden');
-  //    assert.equal(find('.ko-organisation-content__header-title').text().trim(), 'Gadisa', 'The name of the organisation is vissible in the header');
+  //    assert.equal(find('.ko-organization-content__header-title').text().trim(), 'Gadisa', 'The name of the organization is vissible in the header');
   //    assert.equal(find('.breadcrumbs .breadcrumbs__item:eq(0)').text().trim(), 'Gadisa', 'Breadcrums are correct');
   //    assert.equal(find('.nav-tabs__item').length, 1, 'There is only one tab');
   //    assert.equal(find('.nav-tabs__item.active').length, 1, 'That tab is active');
-  //    assert.equal(find('.nav-tabs__item').text().trim(), 'Gadisa', 'That tab belongs to the created organisation');
+  //    assert.equal(find('.nav-tabs__item').text().trim(), 'Gadisa', 'That tab belongs to the created organization');
   //  });
   //});
 });
 /* eslint-disable camelcase, new-cap */
-define('frontend-cp/tests/acceptance/agent/organisations/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+define('frontend-cp/tests/acceptance/agent/organizations/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
 
   var theCase = undefined;
 
-  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Organisation | Update organisation', {
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Organization | Update organization', {
     beforeEach: function beforeEach() {
       var locale = server.create('locale', {
         id: 1,
