@@ -10524,23 +10524,19 @@ define('frontend-cp/tests/acceptance/admin/people/teams-forms-test', ['exports',
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('Trying to Delete Team and Cancelling operation, should leave you on the same page', function (assert) {
-    assert.expect(4);
+    assert.expect(3);
 
     visit('/admin/people/teams');
 
-    window.confirm = function (message) {
-      assert.equal(message, 'Are you sure you wish to delete this team?');
-      return false;
-    };
-
     andThen(function () {
       assert.equal(find('.ko-admin-card-team').length, 2);
-      find('.ko-admin-card-team:eq(0) a').click();
+      click('.ko-admin-card-team:eq(0) a');
     });
 
     andThen(function () {
       assert.equal(find('.qa-ko-admin_team__input-title').val(), 'Sales');
-      find('.qa-ko-admin_team__button-delete').click();
+      click('.qa-ko-form_buttons__delete');
+      click('.qa-ko-confirm-modal__cancel');
     });
 
     andThen(function () {
