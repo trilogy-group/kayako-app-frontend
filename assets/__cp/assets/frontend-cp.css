@@ -1937,7 +1937,6 @@ img {
     max-width: none; }
 
 ::-webkit-input-placeholder {
-  font-weight: 300;
   color: #2D3138;
   opacity: 0.6; }
 
