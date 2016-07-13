@@ -14876,7 +14876,7 @@ define('frontend-cp/tests/acceptance/agent/search/search-test', ['exports', 'fro
     visit('/agent/search/' + term);
 
     andThen(function () {
-      assert.equal(find('.' + _frontendCpSessionStyles['default']['tab-label']).text().trim(), '"' + term + '"');
+      assert.equal(find('.' + _frontendCpSessionStyles['default']['tab-label']).text().trim(), 'Search: "' + term + '"');
       assert.equal(find('.ko-universal-search_entry').val(), term);
     });
   });
@@ -14888,7 +14888,7 @@ define('frontend-cp/tests/acceptance/agent/search/search-test', ['exports', 'fro
 
     andThen(function () {
       assert.equal(find('.' + _frontendCpSessionStyles['default']['tab-label']).length, 1);
-      assert.equal(find('.' + _frontendCpSessionStyles['default']['tab-label']).text().trim(), '"' + term1 + '"');
+      assert.equal(find('.' + _frontendCpSessionStyles['default']['tab-label']).text().trim(), 'Search: "' + term1 + '"');
     });
 
     andThen(function () {
@@ -14898,7 +14898,7 @@ define('frontend-cp/tests/acceptance/agent/search/search-test', ['exports', 'fro
 
     andThen(function () {
       assert.equal(find('.' + _frontendCpSessionStyles['default']['tab-label']).length, 1);
-      assert.equal(find('.' + _frontendCpSessionStyles['default']['tab-label']).text().trim(), '"' + term2 + '"');
+      assert.equal(find('.' + _frontendCpSessionStyles['default']['tab-label']).text().trim(), 'Search: "' + term2 + '"');
     });
   });
 
@@ -14923,7 +14923,7 @@ define('frontend-cp/tests/acceptance/agent/search/search-test', ['exports', 'fro
 
     andThen(function () {
       assert.equal(find('.' + _frontendCpSessionStyles['default']['tab-label']).length, 1);
-      assert.equal(find('.' + _frontendCpSessionStyles['default'].tab + ' .active').text().trim(), '"' + term1 + '"');
+      assert.equal(find('.' + _frontendCpSessionStyles['default'].tab + ' .active').text().trim(), 'Search: "' + term1 + '"');
     });
 
     andThen(function () {
@@ -14936,7 +14936,7 @@ define('frontend-cp/tests/acceptance/agent/search/search-test', ['exports', 'fro
 
     andThen(function () {
       assert.equal(find('.' + _frontendCpSessionStyles['default']['tab-label']).length, 2);
-      assert.equal(find('.' + _frontendCpSessionStyles['default'].tab + ' .active').text().trim(), '"' + term2 + '"');
+      assert.equal(find('.' + _frontendCpSessionStyles['default'].tab + ' .active').text().trim(), 'Search: "' + term2 + '"');
     });
   });
 });
