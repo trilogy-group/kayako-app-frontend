@@ -1,6 +1,7 @@
 {
   "noresults": "No results found",
   "placeholder": "Search...",
+  "search": "Search",
 
   "nopreview": "Mouse over a search result to see a preview.",
   "start_typing_to_search": "Start typing to search",
@@ -21,13 +22,13 @@
   "CASES.updatedAt": "Last updated",
 
   "USERS.id": "User ID",
-  "USERS.fullName": "Subject",
+  "USERS.fullName": "Name",
   "USERS.primaryEmail.email": "Primary email",
   "USERS.organization.name": "Organization",
   "USERS.lastActivityAt": "Last seen",
   "USERS.notfound": "There are no users here.",
 
-  "ORGANIZATIONS.id": "Org ID",
+  "ORGANIZATIONS.id": "Organization ID",
   "ORGANIZATIONS.name": "Name",
   "ORGANIZATIONS.updatedAt": "Last updated",
   "ORGANIZATIONS.notfound": "There are no organizations here."
