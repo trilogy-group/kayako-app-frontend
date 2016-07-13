@@ -1,8 +1,8 @@
 {
   "assets": {
-    "assets/frontend-cp.css": "assets/frontend-cp-33853340f8a10c82bcf2000bcc13ed19.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-18ca68b205126408c70282b946a98e6a.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-edb1468b846e1f52c8992b794d02991c.map",
+    "assets/frontend-cp.css": "assets/frontend-cp-ebd8a02fb9416ec9bbf112420de9efd1.css",
+    "assets/frontend-cp.js": "assets/frontend-cp-46918ae06e3becb48cc9a0782525ee3f.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-3d93f372f37ed3119176a838415cce6f.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-9f2ae624e9f622257363543be0860026.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-52b1312285e0d9102a5f76d4ce486290.map",
     "assets/intl/intl.js": "assets/intl/intl-d42891b6f893df4f9287bb343aff56d6.js",
@@ -21,6 +21,7 @@
     "images/apps/header.png": "images/apps/header-c8e2bb64a8cbe599db8a2f6c98ca0e03.png",
     "images/apps/messenger.png": "images/apps/messenger-40782c904cd64e1d80bfbe5a84f600d9.png",
     "images/apps/zapier/integrations.png": "images/apps/zapier/integrations-3a4234ed34c07e59e6c2fd60636b1b3d.png",
+    "images/errors/sleeping-cat.png": "images/errors/sleeping-cat-5044e2f1eab6e8dbafce693569be978c.png",
     "images/icons/cards/cards-sprite.png": "images/icons/cards/cards-sprite-5b0735ea420fe810e9693e1ea68b705b.png",
     "images/icons/cascading-select.png": "images/icons/cascading-select-caac3065ad73656590904fcf10ada86a.png",
     "images/icons/checkbox.png": "images/icons/checkbox-79a02996a1a01472a381af713b2609a9.png",
