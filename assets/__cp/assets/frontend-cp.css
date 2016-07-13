@@ -2927,7 +2927,20 @@ img {
       -ms-flex-pack: end;
           justify-content: flex-end; }
 
-.ko-case-content_field_post__editor-overlay {
+.textEditor {
+  margin-bottom: 9px;
+  border-left: 1px solid #d1d5d7;
+  border-top: 1px solid #d1d5d7;
+  border-bottom: 1px solid #d1d5d7; }
+
+.textEditorExisting {
+  margin-left: -1px;
+  margin-top: -1px; }
+
+.editorOverlayContainer {
+  padding-bottom: 15px; }
+
+.editorOverlay {
   padding: 0 15px 0 15px;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -2939,7 +2952,7 @@ img {
       -ms-flex-pack: justify;
           justify-content: space-between; }
 
-.ko-case-content_field_post__twitter-reply-options {
+.replyOptions {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -2947,19 +2960,22 @@ img {
       -ms-flex-align: center;
           align-items: center; }
 
-.ko-case-content_field_post__twitter-reply-option-description {
+.replyOptionDescription {
   color: #838D94;
   font-size: 12px;
   line-height: 1.5;
   margin-left: 10px; }
 
-.ko-case-content_field_post__char-limit {
+.charLimit {
   color: #838D94;
   font-size: 12px;
   line-height: 1.5; }
 
-.ko-case-content_field_post__char-limit--negative {
+.charLimitNegative {
   color: #E86048; }
+
+.editorWithError {
+  border-color: #E86048; }
 
 .ko-case_macro-selector {
   width: 100px; }
@@ -3865,7 +3881,7 @@ label {
 .ko-layout_advanced__timeline-area {
   min-height: calc(100vh - 84px - 198px);
   background-color: #ffffff;
-  padding: 0; }
+  padding: 9px 0 0 0; }
 
 .ko-layout_advanced_heading {
   display: -webkit-box;
@@ -3914,7 +3930,7 @@ label {
           flex: 1; }
 
 .ko-layout_advanced_section__subject {
-  line-height: 30px;
+  line-height: 29px;
   margin: 0; }
 
 .ko-layout_advanced_section__subtitle {
@@ -3940,16 +3956,6 @@ label {
 .ko-layout_advanced__button-loading {
   margin: 0 auto; }
 
-.ko-layout_advanced__editor-overlay {
-  position: absolute;
-  bottom: 9px;
-  left: 18px;
-  font-size: 12px;
-  line-height: 1.5; }
-
-.ko-layout_advanced__note-reminder {
-  color: #838D94; }
-
 .ko-layout_advanced_editable-text--readonly .editable-text__text--disabled {
   opacity: 1;
   cursor: default; }
@@ -3960,14 +3966,6 @@ label {
 .ko-layout_advanced--is-new .ko-layout_advanced__main {
   border: none;
   background: transparent; }
-
-.ko-layout_advanced--is-new .ko-text-editor--reply {
-  border-left: 1px solid #d1d5d7;
-  border-top: 1px solid #d1d5d7; }
-
-.ko-layout_advanced--is-new .ko-text-editor--note {
-  border-left: 1px solid #d1d5d7;
-  border-top: 1px solid #d1d5d7; }
 
 .ko-loader {
   display: block;
@@ -6704,6 +6702,57 @@ a.ko-admin_plans_index__cancel_1pprhr {
   top: 31px;
   z-index: 30; }
 
+/* styles for frontend-cp/components/ko-case-content/field/post/styles.css */
+.ko-case-content_field_post__textEditor_1ly137 {
+  margin-bottom: 9px;
+  border-left: 1px solid #d1d5d7;
+  border-top: 1px solid #d1d5d7;
+  border-bottom: 1px solid #d1d5d7; }
+
+.ko-case-content_field_post__textEditorExisting_1ly137 {
+  margin-left: -1px;
+  margin-top: -1px; }
+
+.ko-case-content_field_post__editorOverlayContainer_1ly137 {
+  padding-bottom: 15px; }
+
+.ko-case-content_field_post__editorOverlay_1ly137 {
+  padding: 0 15px 0 15px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
+
+.ko-case-content_field_post__replyOptions_1ly137 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
+
+.ko-case-content_field_post__replyOptionDescription_1ly137 {
+  color: #838D94;
+  font-size: 12px;
+  line-height: 1.5;
+  margin-left: 10px; }
+
+.ko-case-content_field_post__charLimit_1ly137 {
+  color: #838D94;
+  font-size: 12px;
+  line-height: 1.5; }
+
+.ko-case-content_field_post__charLimitNegative_1ly137 {
+  color: #E86048; }
+
+.ko-case-content_field_post__editorWithError_1ly137 {
+  border-color: #E86048; }
+
 /* styles for frontend-cp/components/ko-cases-list/column/avatar/styles.css */
 .ko-cases-list_column_avatar__avatar_zybp6x {
   margin-right: 9px; }
@@ -7825,6 +7874,11 @@ span#HW_badge {
 span#HW_badge.HW_softHidden {
   display: none; }
 
+/* styles for frontend-cp/components/ko-organization-content/styles.css */
+.ko-organization-content__textEditor_16txh8 {
+  margin-bottom: 9px;
+  border-bottom: 1px solid #d1d5d7; }
+
 /* styles for frontend-cp/components/ko-pagination/styles.css */
 .ko-pagination__pagination_y9lne2 {
   background-color: #f8f8f8;
@@ -8325,6 +8379,28 @@ span#HW_badge.HW_softHidden {
   border-top: 2px solid transparent;
   border-bottom: 2px solid #4EAFCB; }
 
+/* styles for frontend-cp/components/ko-text-editor/note-reminder/styles.css */
+.ko-text-editor_note-reminder__noteReminderContainer_1ol1hh {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  font-size: 12px;
+  line-height: 1.5;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  padding-left: 18px;
+  height: 46px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 12px;
+  line-height: 1.5; }
+
+.ko-text-editor_note-reminder__noteReminder_1ol1hh {
+  color: #838D94; }
+
 /* styles for frontend-cp/components/ko-text-editor/styles.css */
 .ko-text-editor__header_1upkxj {
   height: 51px;
@@ -8378,15 +8454,11 @@ span#HW_badge.HW_softHidden {
 .ko-text-editor__dropzone-and-editor-container_1upkxj {
   position: relative;
   z-index: 20;
-  max-height: 320px;
-  border-bottom: 1px solid #CFD4D8; }
+  max-height: 320px; }
 
 .ko-text-editor__dropzone-and-editor-container--note_1upkxj {
-  padding-bottom: 40px;
+  padding-bottom: 45px;
   background: #FDF8EB; }
-
-.ko-text-editor__dropzone-and-editor-container--social_1upkxj {
-  padding-bottom: 9px; }
 
 .ko-text-editor__froalaTextArea_1upkxj {
   width: 100%;
@@ -8993,6 +9065,10 @@ span#HW_badge.HW_softHidden {
 .ko-user-content__closeModal_1hb3jv {
   padding-right: 18px;
   color: #E86048; }
+
+.ko-user-content__textEditor_1hb3jv {
+  margin-bottom: 9px;
+  border-bottom: 1px solid #d1d5d7; }
 
 /* styles for frontend-cp/session/admin/apps/api/styles.css */
 .session_admin_apps_api__header_1t2sf4 {
