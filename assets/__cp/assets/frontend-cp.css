@@ -8082,7 +8082,7 @@ span#HW_badge.HW_softHidden {
       -ms-flex-align: center;
           align-items: center;
   outline: none;
-  height: 100%; }
+  height: 42px; }
 
 .ko-session-widgets__root_qwy4bu .ember-basic-dropdown-content {
   position: initial;
@@ -8126,10 +8126,10 @@ span#HW_badge.HW_softHidden {
           user-select: none;
   cursor: pointer;
   -webkit-box-flex: 0;
-      -ms-flex: 0 0 258px;
-          flex: 0 0 258px;
-  width: 258px;
-  /* god knows why */ }
+      -ms-flex: 0 0 257px;
+          flex: 0 0 257px;
+  width: 257px;
+  /* http://stackoverflow.com/questions/38227597/difference-between-width-and-flex-basis */ }
 
 .ko-session-widgets__menu_qwy4bu {
   list-style-type: none; }
