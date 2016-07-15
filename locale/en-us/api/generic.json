@@ -179,5 +179,7 @@
   "select.select_or_type_to_search": "Select an option or type to search",
 
   "copy_to_clipboard": "Copy to clipboard",
-  "copied_to_clipboard": "Copied to clipboard"
+  "copied_to_clipboard": "Copied to clipboard",
+
+  "errors.not_found.heading": "Sorry{name}, we couldn't find that."
 }
