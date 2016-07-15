@@ -2445,15 +2445,6 @@ img {
   border: 1px solid #D2D2D2;
   border-radius: 2px; }
 
-[class*="ko-simple-box-row"]:hover .ko-admin_case-forms_edit_fields__action {
-  visibility: visible; }
-
-.ko-admin_case-forms_edit_fields__action {
-  visibility: hidden;
-  text-align: right;
-  color: #38a0be;
-  cursor: pointer; }
-
 .availablePages {
   min-height: 15px; }
   .availablePages ul {
@@ -2596,14 +2587,6 @@ img {
 .events {
   margin-left: 20px;
   width: 140px; }
-
-.ko-admin_views_edit_predicate-header {
-  margin-bottom: 18px; }
-
-.ko-admin_views_edit_team-selector {
-  margin-top: -6px;
-  margin-left: 12px;
-  width: 340px; }
 
 .ko-views-column [class*="ko-reorderable-list_item_handle"][class*="i-"]:before {
   top: 40%; }
@@ -4575,18 +4558,6 @@ label {
   overflow-x: hidden;
   text-overflow: ellipsis; }
 
-.ko-simple-box-row {
-  width: 100%;
-  padding: 9px;
-  margin-bottom: 9px;
-  border: 1px solid #D1D5D7;
-  border-radius: 2px;
-  background-image: -webkit-linear-gradient(top, rgba(250, 250, 250, 0.5) 0%, #FFFFFF 98%);
-  background-image: linear-gradient(-180deg, rgba(250, 250, 250, 0.5) 0%, #FFFFFF 98%);
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex; }
-
 .ko-stateful-button {
   width: 150px;
   height: 32px;
@@ -5284,13 +5255,12 @@ label {
 
 .session__nav-primary__static-item_1qdlgo {
   font-size: 20px;
-  padding: 0 9px;
+  padding: 0 9px 2px;
   border-top: 2px solid transparent;
   cursor: pointer;
   color: #FFFFFF;
   line-height: 35px;
-  height: 38px;
-  border-bottom: 2px solid transparent; }
+  height: 42px; }
 
 .session__nav-primary__static-item_1qdlgo.active {
   background-color: #231D2A;
@@ -5908,6 +5878,49 @@ label {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center; }
+
+/* styles for frontend-cp/components/ko-admin/case-forms/edit/fields/styles.css */
+.ko-admin_case-forms_edit_fields__row_1hejpo {
+  width: 100%;
+  padding: 9px;
+  margin: 6px 0;
+  border: 1px solid #D1D5D7;
+  border-radius: 2px;
+  background-image: -webkit-linear-gradient(top, rgba(250, 250, 250, 0.5) 0%, #FFFFFF 98%);
+  background-image: linear-gradient(-180deg, rgba(250, 250, 250, 0.5) 0%, #FFFFFF 98%);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+
+.ko-admin_case-forms_edit_fields__row_1hejpo:hover .ko-admin_case-forms_edit_fields__action_1hejpo {
+  visibility: visible; }
+
+.ko-admin_case-forms_edit_fields__cell_1hejpo {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+
+.ko-admin_case-forms_edit_fields__action-cell_1hejpo {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end; }
+
+.ko-admin_case-forms_edit_fields__action_1hejpo {
+  visibility: hidden;
+  cursor: pointer;
+  color: #38a0be; }
+
+.ko-admin_case-forms_edit_fields__list_1hejpo .sortable-item {
+  margin: 6px 0; }
 
 /* styles for frontend-cp/components/ko-admin/facebook/index/styles.css */
 .ko-admin_facebook_index__availablePages_52r50f {
@@ -6555,6 +6568,28 @@ a.ko-admin_plans_index__cancel_1pprhr {
 /* styles for frontend-cp/components/ko-admin/twitter/index/styles.css */
 .ko-admin_twitter_index__error_12gh3j {
   color: #E86048; }
+
+/* styles for frontend-cp/components/ko-admin/views/edit/styles.css */
+.ko-admin_views_edit__predicate-header_6tieiz {
+  margin-bottom: 18px; }
+
+.ko-admin_views_edit__sorting_6tieiz {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+
+.ko-admin_views_edit__sort-direction_6tieiz {
+  margin-left: 3px; }
+
+.ko-admin_views_edit__team-sharing_6tieiz {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+
+.ko-admin_views_edit__team-selector_6tieiz {
+  margin-top: -6px;
+  margin-left: 15px;
+  width: 340px; }
 
 /* styles for frontend-cp/components/ko-avatar/styles.css */
 .ko-avatar__avatar_6hgxvb {
@@ -8187,15 +8222,6 @@ span#HW_badge.HW_softHidden {
 
 .ko-sidebar__item--is-disabled_6aclzg {
   color: rgba(0, 0, 0, 0.3); }
-
-/* styles for frontend-cp/components/ko-simple-box-row/cell/styles.css */
-.ko-simple-box-row_cell__cell_1sjiu0 {
-  -webkit-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex; }
 
 /* styles for frontend-cp/components/ko-simple-list/actions/styles.css */
 .ko-simple-list_actions__actions_x6lkmd {

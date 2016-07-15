@@ -7103,7 +7103,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
     andThen(function () {
       assert.equal(find('.qa-admin_case-forms_edit_fields__row').length, 7);
       triggerEvent('.qa-admin_case-forms_edit_fields__row:eq(6)', 'hover');
-      click('.qa-admin_case-forms_edit_fields__row:eq(6) .ko-admin_case-forms_edit_fields__action');
+      click('.qa-admin_case-forms_edit_fields__row:eq(6) .qa-ko-admin_case-forms_edit_fields__action');
     });
 
     andThen(function () {
@@ -8211,17 +8211,13 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new view making changes and then cancelling', function (assert) {
-    window.confirm = function (message) {
-      assert.equal(message, 'You have unsaved changes on this page. Are you sure you want to discard these changes?');
-      return true;
-    };
-
     visit('/admin/manage/views/new');
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/views/new');
       fillIn('input.ko-admin_views_edit__title', fieldTitle);
       click('.button[name=cancel]:first');
+      click('.qa-ko-confirm-modal__confirm');
     });
 
     andThen(function () {
@@ -17201,8 +17197,8 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
 
     var $infoElement = this.$('.ko-agent-dropdown__footer');
 
-    var $nameLabelElement = $nameInputElement.closest('label');
-    var $emailLabelElement = $emailInputElement.closest('label');
+    var $nameLabelElement = $nameInputElement.closest('div');
+    var $emailLabelElement = $emailInputElement.closest('div');
 
     assert.equal($nameLabelElement.text().trim(), 'Name label');
     assert.equal($nameInputElement.val(), '');
