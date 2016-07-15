@@ -13346,6 +13346,127 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
     });
   });
 });
+define('frontend-cp/tests/acceptance/agent/cases/pusher-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Case | Update triggered by pusher', {
+    beforeEach: function beforeEach() {
+      useDefaultScenario();
+      login();
+    },
+
+    afterEach: function afterEach() {
+      logout();
+    }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('when a pusher message is received the case is reloaded and changes displayed', function (assert) {
+    assert.expect(5);
+
+    var responseSubject = 'Response data different to submitted';
+    var responseStatusId = '3';
+    var responseTypeId = '2';
+    var responsePriorityId = '1';
+
+    var pusherObject = {
+      changed_properties: {
+        last_agent_activity_at: 1467798926,
+        last_assigned_at: 1467798926,
+        last_completed_at: 1467798926,
+        last_opened_at: 1467798927,
+        status: '2',
+        status_id: '2',
+        updated_at: 1467798927
+      },
+      resource_id: 1,
+      resource_type: 'case'
+    };
+
+    visit('/agent/cases/1');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/agent/cases/1');
+
+      selectChoose('.qa-ko-case-content__status', 'Completed');
+      selectChoose('.qa-ko-case-content__type', 'Incident');
+      selectChoose('.qa-ko-case-content__priority', 'Urgent');
+      click('.button--primary');
+    });
+
+    andThen(function () {
+      server.get('/api/v1/cases/:id', function (schema, req) {
+        var body = JSON.parse(req.requestBody);
+        var targetCase = schema.db.cases.find(req.params.id, body);
+        targetCase.subject = responseSubject;
+        targetCase.status.id = responseStatusId;
+        targetCase.type.id = responseTypeId;
+        targetCase.priority.id = responsePriorityId;
+        return {
+          status: 200,
+          data: targetCase,
+          resource: 'case',
+          resources: {
+            locale: schema.db.locales,
+            brand: _arrayToObjectWithNumberedKeys(schema.db.brands),
+            business_hour: _arrayToObjectWithNumberedKeys(schema.db.businessHours),
+            mailbox: _arrayToObjectWithNumberedKeys(schema.db.mailboxes),
+            channel: _arrayToObjectWithNumberedKeys(schema.db.channels),
+            role: _arrayToObjectWithNumberedKeys(schema.db.roles),
+            identity_domain: _arrayToObjectWithNumberedKeys(schema.db.identityDomains),
+            organization: _arrayToObjectWithNumberedKeys(schema.db.organizations),
+            identity_email: _arrayToObjectWithNumberedKeys(schema.db.identityEmails),
+            user_field: _arrayToObjectWithNumberedKeys(schema.db.userFields),
+            field_option: _arrayToObjectWithNumberedKeys(schema.db.fieldOptions),
+            user: _arrayToObjectWithNumberedKeys(schema.db.users),
+            team: _arrayToObjectWithNumberedKeys(schema.db.teams),
+            case_status: _arrayToObjectWithNumberedKeys(schema.db.caseStatuses),
+            case_priority: _arrayToObjectWithNumberedKeys(schema.db.casePriorities),
+            case_type: _arrayToObjectWithNumberedKeys(schema.db.caseTypes),
+            sla_version: _arrayToObjectWithNumberedKeys(schema.db.slaVersions),
+            sla_metrics: _arrayToObjectWithNumberedKeys(schema.db.slaMetrics),
+            tag: _arrayToObjectWithNumberedKeys(schema.db.tags),
+            case_field: _arrayToObjectWithNumberedKeys(schema.db.caseFields),
+            locale_field: _arrayToObjectWithNumberedKeys(schema.db.localeFields)
+          }
+        };
+      });
+
+      window.FrontendCp.__container__.lookup('service:case-tab').updateCaseFromPusher(pusherObject, '/agent/cases/1', '1');
+    });
+
+    andThen(function () {
+      assert.equal(find('.qa-ko-case-content__subject input').val(), responseSubject, 'check subject is what was returned in the data fetched after pusher triggered a reload');
+      assert.equal(find('.qa-ko-case-content__status input').val(), 'Pending', 'check status is what was returned in the data fetched after pusher triggered a reload');
+      findWithAssert('.qa-ko-case-content__status .qa-is-pusher-edited');
+      assert.equal(find('.qa-ko-case-content__type input').val(), 'Task', 'check type is what was returned in the data fetched after pusher triggered a reload');
+      findWithAssert('.qa-ko-case-content__type .qa-is-pusher-edited');
+      assert.equal(find('.qa-ko-case-content__priority input').val(), 'Low', 'check priority from data fetched after pusher triggered a reload is used even though it was the original state of the field');
+    });
+  });
+
+  function _arrayToObjectWithNumberedKeys(source) {
+    var indexKey = arguments.length <= 1 || arguments[1] === undefined ? 'id' : arguments[1];
+
+    var object = {};
+
+    if (source) {
+      if (indexKey) {
+        source.forEach(function (item) {
+          return object[item[indexKey]] = item;
+        });
+      } else {
+        (function () {
+          var pos = 1;
+          source.forEach(function (item) {
+            object[pos] = item;
+            pos++;
+          });
+        })();
+      }
+    }
+
+    return object;
+  }
+});
 define('frontend-cp/tests/acceptance/agent/cases/replying-to-a-facebook-message-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'qunit', 'ember-platform'], function (exports, _frontendCpTestsHelpersQunit, _qunit, _emberPlatform) {
   function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -13930,6 +14051,110 @@ define('frontend-cp/tests/acceptance/agent/cases/update-test', ['exports', 'fron
       assert.notOk(find('.button--primary')[0].classList.contains('disabled'));
     });
   });
+
+  (0, _frontendCpTestsHelpersQunit.test)('when data returned in success payload is different from the users edits the success data is displayed on the screen', function (assert) {
+    assert.expect(5);
+
+    var responseSubject = 'Response data different to submitted';
+    var responseStatusId = '3';
+    var responseTypeId = '2';
+    var responsePriorityId = '1';
+
+    server.put('/api/v1/cases/:id', function (schema, req) {
+      var body = JSON.parse(req.requestBody);
+      var tags = String(body.tags).split(',');
+      Reflect.deleteProperty(body, 'tags');
+      tags.forEach(function (tag) {
+        if (!schema.db.tags.where({ name: tag })[0]) {
+          schema.db.tags.insert({ name: tag });
+        }
+      });
+      var targetCase = schema.db.cases.update(req.params.id, body);
+      Reflect.deleteProperty(targetCase, 'reply_channels');
+      Reflect.deleteProperty(targetCase, 'channel_id');
+      Reflect.deleteProperty(targetCase, 'form_id');
+      Reflect.deleteProperty(targetCase, 'priority_id');
+      Reflect.deleteProperty(targetCase, 'requester_id');
+      Reflect.deleteProperty(targetCase, 'status_id');
+      Reflect.deleteProperty(targetCase, 'type_id');
+      targetCase.subject = responseSubject;
+      targetCase.status.id = responseStatusId;
+      targetCase.type.id = responseTypeId;
+      targetCase.priority.id = responsePriorityId;
+      return {
+        status: 200,
+        data: targetCase,
+        resource: 'case',
+        resources: {
+          locale: schema.db.locales,
+          brand: _arrayToObjectWithNumberedKeys(schema.db.brands),
+          business_hour: _arrayToObjectWithNumberedKeys(schema.db.businessHours),
+          mailbox: _arrayToObjectWithNumberedKeys(schema.db.mailboxes),
+          channel: _arrayToObjectWithNumberedKeys(schema.db.channels),
+          role: _arrayToObjectWithNumberedKeys(schema.db.roles),
+          identity_domain: _arrayToObjectWithNumberedKeys(schema.db.identityDomains),
+          organization: _arrayToObjectWithNumberedKeys(schema.db.organizations),
+          identity_email: _arrayToObjectWithNumberedKeys(schema.db.identityEmails),
+          user_field: _arrayToObjectWithNumberedKeys(schema.db.userFields),
+          field_option: _arrayToObjectWithNumberedKeys(schema.db.fieldOptions),
+          user: _arrayToObjectWithNumberedKeys(schema.db.users),
+          team: _arrayToObjectWithNumberedKeys(schema.db.teams),
+          case_status: _arrayToObjectWithNumberedKeys(schema.db.caseStatuses),
+          case_priority: _arrayToObjectWithNumberedKeys(schema.db.casePriorities),
+          case_type: _arrayToObjectWithNumberedKeys(schema.db.caseTypes),
+          sla_version: _arrayToObjectWithNumberedKeys(schema.db.slaVersions),
+          sla_metrics: _arrayToObjectWithNumberedKeys(schema.db.slaMetrics),
+          tag: _arrayToObjectWithNumberedKeys(schema.db.tags),
+          case_field: _arrayToObjectWithNumberedKeys(schema.db.caseFields),
+          locale_field: _arrayToObjectWithNumberedKeys(schema.db.localeFields)
+        }
+      };
+    });
+
+    visit('/agent/cases/1');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/agent/cases/1');
+
+      selectChoose('.qa-ko-case-content__status', 'Completed');
+      selectChoose('.qa-ko-case-content__type', 'Incident');
+      selectChoose('.qa-ko-case-content__priority', 'Urgent');
+      click('.button--primary');
+    });
+
+    andThen(function () {
+      assert.equal(find('.qa-ko-case-content__subject input').val(), responseSubject, 'check subject is what was returned in the success data');
+      assert.equal(find('.qa-ko-case-content__status input').val(), 'Pending', 'check status is what was returned in the success data');
+      findWithAssert('.qa-ko-case-content__status .qa-is-pusher-edited');
+      assert.equal(find('.qa-ko-case-content__type input').val(), 'Task', 'check type is what was returned in the success data');
+      findWithAssert('.qa-ko-case-content__type .qa-is-pusher-edited');
+      assert.equal(find('.qa-ko-case-content__priority input').val(), 'Low', 'check priority from success data is used even though it was the original state of the field');
+    });
+  });
+
+  function _arrayToObjectWithNumberedKeys(source) {
+    var indexKey = arguments.length <= 1 || arguments[1] === undefined ? 'id' : arguments[1];
+
+    var object = {};
+
+    if (source) {
+      if (indexKey) {
+        source.forEach(function (item) {
+          return object[item[indexKey]] = item;
+        });
+      } else {
+        (function () {
+          var pos = 1;
+          source.forEach(function (item) {
+            object[pos] = item;
+            pos++;
+          });
+        })();
+      }
+    }
+
+    return object;
+  }
 });
 define('frontend-cp/tests/acceptance/agent/cases/user-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-tabs/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoTabsStyles) {
 
