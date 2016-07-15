@@ -98,7 +98,8 @@
   "views.label.configure_layout": "Customize what information is shown in this view by adding, removing and reordering fields below. You can add up to 10 columns in your view",
   "views.heading.sorting": "Sort order",
   "views.label.sorting": "Select the default sort order for cases in this view.",
-  "views.description_sorting": "Descending means largest to smallest, most recent to oldest, highest priority to lowest priority, Z to A.",
+  "views.description_sorting_ascending": "Ascending means smallest to largest, oldest to most recent, lowest priority to highest priority, A to Z.",
+  "views.description_sorting_descending": "Descending means largest to smallest, most recent to oldest, highest priority to lowest priority, Z to A.",
   "views.edit.description_on.is_enabled": "View is active",
   "views.edit.description_off.is_enabled": "View is inactive",
   "views.edit.select_columns": "Please specify at least one column in \"Configure Columns\"",
@@ -106,6 +107,8 @@
   "views.enabled.message": "View enabled successfully",
   "views.disabled.message": "View disabled successfully",
   "views.deleted.message": "View deleted successfully",
+  "views.confirm_delete.title": "Delete view",
+  "views.confirm_delete.body": "Are you sure you want to delete the view? This cannot be undone.",
 
   "businesshours.title": "Business hours",
   "businesshours.description": "Business hours tell Kayako what days and hours of the week your team is working. Once you add your business hours, you can make sure your SLAs and automations are only active when your team is. {link}.",
