@@ -2327,6 +2327,29 @@ img {
   white-space: nowrap;
   width: 350px; }
 
+.dropdown :global(.button--dropdown) {
+  height: 32px;
+  width: 32px;
+  padding: 0; }
+
+.dropdown :global(.ember-basic-dropdown-trigger[aria-expanded="true"]) :global(.button--dropdown) {
+  /* Allows menu button to overlap menu */
+  padding-bottom: 1px;
+  z-index: 60;
+  border-bottom: #FFFFFF;
+  border-radius: 2px 2px 0 0;
+  background-color: #FFFFFF;
+  background-image: none;
+  box-shadow: none; }
+
+.dropdown :global(.ember-basic-dropdown-content) {
+  border: 1px solid #d1d5d7;
+  width: 160px;
+  position: absolute;
+  right: 0;
+  top: 31px;
+  z-index: 30; }
+
 .ko-admin-card-team {
   width: 100%;
   margin-bottom: 18px;
@@ -5551,6 +5574,30 @@ label {
 .key-value-collection-builder__add-btn_1hs9l5 {
   color: #38a0be; }
 
+/* styles for frontend-cp/components/ko-action-menu/styles.css */
+.ko-action-menu__dropdown_1aoube .button--dropdown {
+  height: 32px;
+  width: 32px;
+  padding: 0; }
+
+.ko-action-menu__dropdown_1aoube .ember-basic-dropdown-trigger[aria-expanded="true"] .button--dropdown {
+  /* Allows menu button to overlap menu */
+  padding-bottom: 1px;
+  z-index: 60;
+  border-bottom: #FFFFFF;
+  border-radius: 2px 2px 0 0;
+  background-color: #FFFFFF;
+  background-image: none;
+  box-shadow: none; }
+
+.ko-action-menu__dropdown_1aoube .ember-basic-dropdown-content {
+  border: 1px solid #d1d5d7;
+  width: 160px;
+  position: absolute;
+  right: 0;
+  top: 31px;
+  z-index: 30; }
+
 /* styles for frontend-cp/components/ko-admin/add-new-card/footer/styles.css */
 .ko-admin_add-new-card_footer__form-footer_pqxoth {
   text-align: right; }
@@ -6709,13 +6756,13 @@ a.ko-admin_plans_index__cancel_1pprhr {
   font-size: 12px;
   margin-top: 3px; }
 
-/* styles for frontend-cp/components/ko-case-action-menu/styles.css */
-.ko-case-action-menu__dropdown_1qtadz .button--dropdown {
+/* styles for frontend-cp/components/ko-case-content/action-menu/styles.css */
+.ko-case-content_action-menu__dropdown_14z53r .button--dropdown {
   height: 32px;
   width: 32px;
   padding: 0; }
 
-.ko-case-action-menu__dropdown_1qtadz .ember-basic-dropdown-trigger[aria-expanded="true"] .button--dropdown {
+.ko-case-content_action-menu__dropdown_14z53r .ember-basic-dropdown-trigger[aria-expanded="true"] .button--dropdown {
   /* Allows menu button to overlap menu */
   padding-bottom: 1px;
   z-index: 60;
@@ -6725,7 +6772,7 @@ a.ko-admin_plans_index__cancel_1pprhr {
   background-image: none;
   box-shadow: none; }
 
-.ko-case-action-menu__dropdown_1qtadz .ember-basic-dropdown-content {
+.ko-case-content_action-menu__dropdown_14z53r .ember-basic-dropdown-content {
   border: 1px solid #d1d5d7;
   width: 120px;
   position: absolute;

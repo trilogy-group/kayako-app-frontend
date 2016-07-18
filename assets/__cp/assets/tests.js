@@ -14205,11 +14205,11 @@ define('frontend-cp/tests/acceptance/agent/cases/user-test', ['exports', 'fronte
     visit('/agent/cases/1/user');
 
     andThen(function () {
-      click('.qa-user-action-menu__dropdown .ember-basic-dropdown-trigger');
+      click('.qa-action-menu__dropdown .ember-basic-dropdown-trigger');
     });
 
     andThen(function () {
-      assert.equal(find('.qa-user-action-menu__dropdown .ko-dropdown_list__item').length, 3);
+      assert.equal(find('.qa-action-menu__dropdown .ko-dropdown_list__item').length, 3);
     });
   });
 
