@@ -4602,7 +4602,8 @@ define('frontend-cp/tests/acceptance/admin/manage/brands/new-test', ['exports', 
       var session = server.create('session', { user: user });
 
       server.create('setting', {
-        id: 'account.default_language',
+        category: 'account',
+        name: 'default_language',
         value: 'en-us'
       });
 
@@ -4756,12 +4757,9 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/manage/case fields/edit', {
     beforeEach: function beforeEach() {
       server.create('setting', {
-        id: 'account.default_language',
         category: 'account',
         name: 'default_language',
-        is_protected: false,
-        value: 'en-us',
-        resource_type: 'setting'
+        value: 'en-us'
       });
       server.create('locale', {
         id: 1,
@@ -5599,12 +5597,9 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-priorities-
       this.application = (0, _frontendCpTestsHelpersStartApp['default'])();
       var role = server.create('role', { type: 'ADMIN' });
       server.create('setting', {
-        id: 'account.default_language',
         category: 'account',
         name: 'default_language',
-        is_protected: false,
-        value: 'en-us',
-        resource_type: 'setting'
+        value: 'en-us'
       });
       var locale = server.create('locale', {
         id: 1,
@@ -5721,12 +5716,9 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-statuses-te
       this.application = (0, _frontendCpTestsHelpersStartApp['default'])();
 
       server.create('setting', {
-        id: 'account.default_language',
         category: 'account',
         name: 'default_language',
-        is_protected: false,
-        value: 'en-us',
-        resource_type: 'setting'
+        value: 'en-us'
       });
       var locale = server.create('locale', {
         id: 1,
@@ -5846,12 +5838,9 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-types-test'
       this.application = (0, _frontendCpTestsHelpersStartApp['default'])();
 
       server.create('setting', {
-        id: 'account.default_language',
         category: 'account',
         name: 'default_language',
-        is_protected: false,
-        value: 'en-us',
-        resource_type: 'setting'
+        value: 'en-us'
       });
       var locale = server.create('locale', {
         id: 1,
@@ -5949,12 +5938,9 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/manage/case fields/new', {
     beforeEach: function beforeEach() {
       server.create('setting', {
-        id: 'account.default_language',
         category: 'account',
         name: 'default_language',
-        is_protected: false,
-        value: 'en-us',
-        resource_type: 'setting'
+        value: 'en-us'
       });
       var locale = server.create('locale', {
         id: 1,
@@ -6568,12 +6554,9 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/reorder-test', ['e
       this.application = (0, _frontendCpTestsHelpersStartApp['default'])();
       /*eslint-disable camelcase*/
       server.create('setting', {
-        id: 'account.default_language',
         category: 'account',
         name: 'default_language',
-        is_protected: false,
-        value: 'en-us',
-        resource_type: 'setting'
+        value: 'en-us'
       });
       server.create('locale', {
         id: 1,
@@ -8443,12 +8426,9 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
     beforeEach: function beforeEach() {
       /*eslint-disable camelcase*/
       server.create('setting', {
-        id: 'account.default_language',
         category: 'account',
         name: 'default_language',
-        is_protected: false,
-        value: 'en-us',
-        resource_type: 'setting'
+        value: 'en-us'
       });
       server.create('locale', {
         id: 1,
@@ -9234,12 +9214,9 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/people/organization fields/new', {
     beforeEach: function beforeEach() {
       server.create('setting', {
-        id: 'account.default_language',
         category: 'account',
         name: 'default_language',
-        is_protected: false,
-        value: 'en-us',
-        resource_type: 'setting'
+        value: 'en-us'
       });
       var locale = server.create('locale', {
         id: 1,
@@ -9852,12 +9829,9 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/reorder-te
       this.application = (0, _frontendCpTestsHelpersStartApp['default'])();
       /*eslint-disable camelcase*/
       server.create('setting', {
-        id: 'account.default_language',
         category: 'account',
         name: 'default_language',
-        is_protected: false,
-        value: 'en-us',
-        resource_type: 'setting'
+        value: 'en-us'
       });
       server.create('locale', {
         id: 1,
@@ -10634,12 +10608,9 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/people/user fields/edit', {
     beforeEach: function beforeEach() {
       server.create('setting', {
-        id: 'account.default_language',
         category: 'account',
         name: 'default_language',
-        is_protected: false,
-        value: 'en-us',
-        resource_type: 'setting'
+        value: 'en-us'
       });
       server.create('locale', {
         id: 1,
@@ -11462,12 +11433,9 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/people/user fields/new', {
     beforeEach: function beforeEach() {
       server.create('setting', {
-        id: 'account.default_language',
         category: 'account',
         name: 'default_language',
-        is_protected: false,
-        value: 'en-us',
-        resource_type: 'setting'
+        value: 'en-us'
       });
       var locale = server.create('locale', {
         id: 1,
@@ -12079,12 +12047,9 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/reorder-test', ['e
     beforeEach: function beforeEach() {
       this.application = (0, _frontendCpTestsHelpersStartApp['default'])();
       server.create('setting', {
-        id: 'account.default_language',
         category: 'account',
         name: 'default_language',
-        is_protected: false,
-        value: 'en-us',
-        resource_type: 'setting'
+        value: 'en-us'
       });
       server.create('locale', {
         id: 1,
@@ -20854,6 +20819,56 @@ define('frontend-cp/tests/unit/utils/promise-queue-test', ['exports', 'ember', '
     queue.flush();
 
     assert.equal(0, queue.queue.length);
+  });
+});
+define('frontend-cp/tests/unit/utils/tweet-length-test', ['exports', 'frontend-cp/utils/tweet-length', 'qunit'], function (exports, _frontendCpUtilsTweetLength, _qunit) {
+
+  (0, _qunit.module)('Unit | Utility | tweet length');
+
+  // plain tweet (no links, no files)
+  (0, _qunit.test)('get length for a tweet', function (assert) {
+    var tweet = 'Hello, I am trying to say something';
+    var result = (0, _frontendCpUtilsTweetLength['default'])(tweet, false);
+    assert.equal(result, tweet.length);
+  });
+
+  // plain tweet with files
+  (0, _qunit.test)('get length for a tweet with files', function (assert) {
+    var tweet = 'Hello, I am trying to say something';
+    var result = (0, _frontendCpUtilsTweetLength['default'])(tweet, true);
+    assert.equal(result, tweet.length + 24);
+  });
+
+  // plain tweet with link(s)
+  (0, _qunit.test)('get length for a tweet with http links', function (assert) {
+    var tweet = 'Hello, I am trying to say something';
+    var link = 'http://google.com';
+    var result = (0, _frontendCpUtilsTweetLength['default'])(tweet + ' ' + link, false);
+    assert.equal(result, tweet.length + 24);
+  });
+
+  // plain tweet with https link(s)
+  (0, _qunit.test)('get length for a tweet with https links', function (assert) {
+    var tweet = 'Hello, I am trying to say something';
+    var link = 'https://google.com';
+    var result = (0, _frontendCpUtilsTweetLength['default'])(tweet + ' ' + link, false);
+    assert.equal(result, tweet.length + 24);
+  });
+
+  // plain tweet with https wrapped link(s)
+  (0, _qunit.test)('get length for a tweet with link wrapped in anchor tag', function (assert) {
+    var tweet = 'Hello, I am trying to say something';
+    var link = '<a href="https://google.com">https://google.com</a>';
+    var result = (0, _frontendCpUtilsTweetLength['default'])(tweet + ' ' + link, false);
+    assert.equal(result, tweet.length + 24);
+  });
+
+  // plain tweet with both files and links
+  (0, _qunit.test)('get length for a tweet with link wrapped in anchor tag', function (assert) {
+    var tweet = 'Hello, I am trying to say something';
+    var link = '<a href="https://google.com">https://google.com</a>';
+    var result = (0, _frontendCpUtilsTweetLength['default'])(tweet + ' ' + link, true);
+    assert.equal(result, tweet.length + 24 + 24);
   });
 });
 define('frontend-cp/tests/unit/validation/service-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
