@@ -13873,7 +13873,7 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
     visit('/agent/cases/' + targetCase.id);
 
     andThen(function () {
-      assert.equal($('.ko-feed_item__content:first').html().trim(), '<a href="http://google.com" target="_blank">http://google.com</a>');
+      assert.equal($('.ko-feed_item__content:first').html().trim(), '<a href="http://google.com" target="_blank" rel="noreferrer noopener">http://google.com</a>');
     });
   });
 
