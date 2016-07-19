@@ -1,8 +1,8 @@
 {
   "assets": {
     "assets/frontend-cp.css": "assets/frontend-cp-49cee40203e8acb8164a3955a46573c8.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-f20a7a30c8a7f03ab665a094e34c24a3.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-dedb1d57d706ec0260dc279893d720c3.map",
+    "assets/frontend-cp.js": "assets/frontend-cp-1bf19a17ef08caed34bfb17c414d05e6.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-4d15491f86f0e2852d1c746ab4b28bb7.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-9f2ae624e9f622257363543be0860026.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-52b1312285e0d9102a5f76d4ce486290.map",
     "assets/intl/intl.js": "assets/intl/intl-d42891b6f893df4f9287bb343aff56d6.js",
@@ -14,8 +14,8 @@
     "assets/intl/locales/en-us.js": "assets/intl/locales/en-us-79bccefc1c046278fa9ad839c3b9854f.js",
     "assets/intl/locales/en-us.map": "assets/intl/locales/en-us-6fd2fe673977f6ad3bba8f197ce15245.map",
     "assets/vendor.css": "assets/vendor-93c8644209afeaef8cae617b050c6197.css",
-    "assets/vendor.js": "assets/vendor-e0ba1964f9a38cde6a42a7c895f45e7b.js",
-    "assets/vendor.map": "assets/vendor-6435b67c0bc68390d50204b5810aeafb.map",
+    "assets/vendor.js": "assets/vendor-12dafbee509b01072d32a6c7f9ae36e6.js",
+    "assets/vendor.map": "assets/vendor-f67ede9182c4a0cf380c26536bc17b74.map",
     "images/K-loader-grey-light.gif": "images/K-loader-grey-light-f540a6b516ce46e29f5be80642e65f19.gif",
     "images/apps/api/platform-to-grow.png": "images/apps/api/platform-to-grow-3b8036ab8a29aeab37f6df85f25c5836.png",
     "images/apps/header.png": "images/apps/header-c8e2bb64a8cbe599db8a2f6c98ca0e03.png",

@@ -722,9 +722,6 @@
   "settings.security.customers.password_policy.require_mixed_case.options.0": "No",
   "settings.security.customers.password_policy.maximum_consecutive_characters.title": "Maximum consecutive characters",
   "settings.security.customers.password_policy.maximum_consecutive_characters.description": "(0 for unlimited)",
-  "settings.security.customers.ip_restrictions.heading": "IP restrictions",
-  "settings.security.customers.ip_restrictions.description": "You can restrict access to the agent area to specific IP addresses. Users who are not connected via these IP addresses will not be able to log in to the agent area.",
-  "settings.security.customers.ip_restrictions.description2": "You can list multiple IP addresses separated by a new line. Each entry can be a full IP address (192.123.123.123), an IP address range (192.123.123.0-192.123.123.123) or a subnet mask 192.168.123.0/25).",
 
   "settings.users.title": "Users and registration",
   "settings.users.title_breadcrumbs": "Settings / Users",
