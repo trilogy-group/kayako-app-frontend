@@ -12483,6 +12483,7 @@ define('frontend-cp/tests/acceptance/admin/settings/security-test', ['exports', 
       },
       headers: {
         'X-Options': 'flat',
+        'X-CSRF-Token': 'a-csrf-token',
         'X-Session-ID': 'pPW6tnOyJG6TmWCVea175d1bfc5dbf073a89ffeb6a2a198c61aae941Aqc7ahmzw8a'
       },
       payload: {
@@ -15758,7 +15759,11 @@ define('frontend-cp/tests/acceptance/agent/users/edit-test', ['exports', 'fronte
 });
 define('frontend-cp/tests/acceptance/login/login-test', ['exports', 'qunit', 'frontend-cp/tests/helpers/qunit'], function (exports, _qunit, _frontendCpTestsHelpersQunit) {
 
-  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | login/login');
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | login/login', {
+    afterEach: function afterEach() {
+      logout();
+    }
+  });
 
   (0, _qunit.test)('visiting /agent/login', function (assert) {
     visit('/agent/login');
@@ -16913,6 +16918,7 @@ define('frontend-cp/tests/helpers/login', ['exports', 'ember'], function (export
     locale.setup();
     sessionService.set('sessionId', null);
     sessionService.set('sessionId', sessionId);
+    sessionService.set('csrfToken', 'a-csrf-token');
   });
 });
 define('frontend-cp/tests/helpers/logout', ['exports', 'ember', 'frontend-cp/config/environment'], function (exports, _ember, _frontendCpConfigEnvironment) {
