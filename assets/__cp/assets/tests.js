@@ -12654,7 +12654,7 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
   }
 });
 /* eslint-disable new-cap */
-define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'ember', 'frontend-cp/session/styles', 'frontend-cp/components/ko-checkbox/styles', 'frontend-cp/components/ko-info-bar/field/select/trigger/styles', 'frontend-cp/components/ko-pagination/styles'], function (exports, _frontendCpTestsHelpersQunit, _ember, _frontendCpSessionStyles, _frontendCpComponentsKoCheckboxStyles, _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles, _frontendCpComponentsKoPaginationStyles) {
+define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'ember', 'frontend-cp/session/styles', 'frontend-cp/components/ko-checkbox/styles', 'frontend-cp/components/ko-info-bar/field/select/trigger/styles', 'frontend-cp/components/ko-pagination/styles', 'frontend-cp/components/ko-cases-list/sidebar/styles', 'frontend-cp/components/ko-cases-list/sidebar/item/styles'], function (exports, _frontendCpTestsHelpersQunit, _ember, _frontendCpSessionStyles, _frontendCpComponentsKoCheckboxStyles, _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles, _frontendCpComponentsKoPaginationStyles, _frontendCpComponentsKoCasesListSidebarStyles, _frontendCpComponentsKoCasesListSidebarItemStyles) {
 
   var originalConfirm = window.confirm;
 
@@ -12709,7 +12709,7 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
         propositions: [{ id: stringProposition.id, resource_type: 'proposition' }]
       });
 
-      server.create('view', {
+      var inboxView = server.create('view', {
         title: 'Inbox',
         is_default: true,
         is_enabled: true,
@@ -12721,7 +12721,8 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
         sort_order: 1,
         type: 'INBOX'
       });
-      server.create('view', {
+
+      var sampleView = server.create('view', {
         title: 'Test basic custom view',
         is_default: false,
         is_enabled: true,
@@ -12734,7 +12735,8 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
         type: 'CUSTOM',
         visibility_type: 'ALL'
       });
-      server.create('view', {
+
+      var trashView = server.create('view', {
         title: 'Trash',
         is_default: false,
         is_enabled: true,
@@ -12769,7 +12771,7 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
 
       var caseFields = server.createList('case-field', 14);
 
-      server.createList('case', 50, {
+      var casesProto = {
         source_channel: null,
         requester: defaultUser,
         creator: defaultUser,
@@ -12787,6 +12789,22 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
         metadata: metadata,
         last_replier: defaultUser,
         last_replier_identity: identityEmail
+      };
+
+      var inboxCases = server.createList('case', 22, Object.assign(casesProto, { _view_ids: [inboxView.id] }));
+      server.create('view-count', {
+        count: inboxCases.length,
+        view: { id: inboxView.id, resource_type: 'view' }
+      });
+      var sampleViewCases = server.createList('case', 22, Object.assign(casesProto, { _view_ids: [sampleView.id] }));
+      server.create('view-count', {
+        count: sampleViewCases.length,
+        view: { id: sampleView.id, resource_type: 'view' }
+      });
+      var trashCases = server.createList('case', 10, Object.assign(casesProto, { _view_ids: [trashView.id] }));
+      server.create('view-count', {
+        count: trashCases.length,
+        view: { id: trashView.id, resource_type: 'view' }
       });
 
       server.createList('case-priority', 3);
@@ -12849,7 +12867,25 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
 
     andThen(function () {
       assert.ok(find('thead th:nth-child(3) span:last').hasClass('i-chevron-small-down'));
-      assert.equal(find('tbody tr:first td:nth-child(3)').text().trim(), '50');
+      assert.equal(find('tbody tr:first td:nth-child(3)').text().trim(), '22');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('refresh cases list', function (assert) {
+    assert.expect(5);
+    visit('/agent/cases');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/agent/cases/view/1');
+      assert.equal(find('tbody tr').length, 20);
+      assert.equal(find('tbody tr:first td:nth-child(3)').text().trim(), '1');
+      server.schema.db.cases.remove('1');
+      click('.active .reload-cases-btn');
+    });
+
+    andThen(function () {
+      assert.equal(find('tbody tr').length, 20);
+      assert.equal(find('tbody tr:first td:nth-child(3)').text().trim(), '2');
     });
   });
 
@@ -12899,13 +12935,13 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
       sort_order: 4
     });
 
-    visit('/agent');
+    // visit('/agent');
     visit('/agent/cases');
 
     andThen(function () {
-      assert.equal(find('.sidebar__link').length, 5);
-      assert.equal(find('.sidebar__link').text().indexOf('DisabledView'), -1);
-      assert.ok(find('.sidebar__link').text().indexOf('EnabledView') > -1);
+      assert.equal(find('.' + _frontendCpComponentsKoCasesListSidebarStyles['default'].item).length, 5);
+      assert.equal(find('.' + _frontendCpComponentsKoCasesListSidebarStyles['default'].item).text().indexOf('DisabledView'), -1);
+      assert.ok(find('.' + _frontendCpComponentsKoCasesListSidebarStyles['default'].item).text().indexOf('EnabledView') > -1);
     });
   });
 
@@ -13021,7 +13057,7 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
     });
 
     andThen(function () {
-      assert.equal(find('.sidebar__first-item').text().trim(), 'Inbox');
+      assert.equal(find('.ko-cases-list__sidebar__item--first:first-child .' + _frontendCpComponentsKoCasesListSidebarItemStyles['default'].text).text().trim(), 'Inbox');
       assert.equal(find('button:contains("Trash cases")').length, 0);
       assert.equal(find('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox).attr('aria-checked'), 'false');
     });
@@ -13047,7 +13083,7 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
     });
 
     andThen(function () {
-      assert.equal(find('.sidebar__first-item').text().trim(), 'Inbox');
+      assert.equal(find('.ko-cases-list__sidebar__item--first:first-child .' + _frontendCpComponentsKoCasesListSidebarItemStyles['default'].text).text().trim(), 'Inbox');
       assert.equal(find('.' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox).attr('aria-checked'), 'false');
     });
   });
