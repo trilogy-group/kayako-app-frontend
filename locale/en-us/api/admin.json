@@ -731,9 +731,9 @@
   "settings.users.registration.require_captcha.title": "Require CAPTCHA for new registrations",
   "settings.users.registration.require_captcha.description": "Kayako will ask the user registering in the Help Center to complete a simple CAPTCHA, provided by reCAPTCHA. This helps prevent automated spam registrations.",
   "settings.users.registration.email_whitelist.title": "Email whitelist",
-  "settings.users.registration.email_whitelist.description": "Users with email addresses that match emails or email domains in the whitelist will be allowed to register and Kayako will accept incoming email from them. The whitelist is normally used in conjunction with the blacklist. Specify full email addresses (e.g. hello@brewfictus.com) or email domains (e.g. brewfictus.com), each separated by a new line.",
+  "settings.users.registration.email_whitelist.description": "Users with email addresses that match emails or email domains in the whitelist will be allowed to register and Kayako will accept incoming email from them, even if they are blocked in the blacklist.  Specify full email addresses (e.g. hello@brewfictus.com) or email domains (e.g. brewfictus.com), each separated by a new line.",
   "settings.users.registration.email_blacklist.title": "Email blacklist",
-  "settings.users.registration.email_blacklist.description": "Users with email addresses that match emails or email domains in the blacklist will be prevented from registering and any incoming email messages from matching email addresses will be suspended. Specifying an * here will act as a wildcard and blacklist everything, and only what is specified in the whitelist will be allowed through.",
+  "settings.users.registration.email_blacklist.description": "Users with email addresses that match emails or email domains in the blacklist will be prevented from registering and any incoming email messages from matching email addresses will be suspended. You can enter email addresses and domains separated by a new line, or use * as a wildcard to blacklist everything and enable the whitelist.",
 
   "sla.title": "SLAs",
   "sla.description": "SLAs (service level agreements) allow you to set and measure target times for replying to and resolving cases. For example, an SLA may specify a target time of 1 hour for replying to a case and 72 hours for resolving it. {link}.",
