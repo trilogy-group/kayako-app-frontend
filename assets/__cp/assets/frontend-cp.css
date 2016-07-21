@@ -8667,21 +8667,6 @@ span#HW_badge.HW_softHidden {
 .ko-timeline_activity__time_1tukzf {
   cursor: default; }
 
-/* styles for frontend-cp/components/ko-timeline/event/styles.css */
-.ko-timeline_event__event_qor83i {
-  min-height: 24px;
-  position: relative;
-  padding: 4.5px 0 4.5px 36px; }
-
-.ko-timeline_event__contents_qor83i {
-  color: #40364D; }
-
-.ko-timeline_event__body_qor83i {
-  font-weight: 600; }
-
-.ko-timeline_event__time_qor83i {
-  cursor: default; }
-
 /* styles for frontend-cp/components/ko-timeline/item/attachment/styles.css */
 .ko-timeline_item_attachment__attachment_194j6m {
   margin-top: 9px;
