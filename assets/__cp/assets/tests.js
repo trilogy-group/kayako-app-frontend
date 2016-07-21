@@ -12524,8 +12524,8 @@ define('frontend-cp/tests/acceptance/admin/settings/users-test', ['exports', 'fr
     andThen(function () {
       assert.ok(find('.ko-admin-settings-users-allow-from-unregistered[aria-checked=true]').length === 1);
       assert.ok(find('.ko-admin-settings-users-require-captcha[aria-checked=true]').length === 1);
-      assert.equal(find('.ko-admin-settings-users-email-whitelist').val(), 'email whitelist');
-      assert.equal(find('.ko-admin-settings-users-email-blacklist').val(), 'email blacklist');
+      assert.equal(find('.ko-admin-settings-users-email-whitelist').val().trim(), 'email whitelist');
+      assert.equal(find('.ko-admin-settings-users-email-blacklist').val().trim(), 'email blacklist');
     });
   });
 });
