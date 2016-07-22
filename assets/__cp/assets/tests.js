@@ -12459,6 +12459,34 @@ define('frontend-cp/tests/acceptance/admin/settings/security-test', ['exports', 
     });
   });
 
+  (0, _frontendCpTestsHelpersQunit.test)('customer field validation errors', function (assert) {
+    assert.expect(2);
+
+    var errors = ['security.customer.authentication_type', 'security.customer.social_authentication.twitter', 'security.customer.social_authentication.facebook', 'security.customer.sso.jwt.login_url', 'security.customer.sso.jwt.logout_url', 'security.customer.sso.jwt.shared_secret', 'security.customer.session_expiry', 'security.customer.login_attempt_limit', 'security.customer.password.expires_in', 'security.customer.password.min_characters', 'security.customer.password.min_numbers', 'security.customer.password.min_symbols', 'security.customer.password.require_mixed_case', 'security.customer.password.max_consecutive'].map(function (key) {
+      return {
+        code: 'FIELD_INVALID',
+        parameter: 'values',
+        pointer: '/values/' + key,
+        message: 'The value of the field is invalid',
+        more_info: 'http://wiki.kayako.com/display/DEV/REST+v1+-+FIELD_INVALID'
+      };
+    });
+
+    server.put('/api/v1/settings', {
+      status: 400,
+      errors: errors
+    }, 400);
+
+    visit('/admin/settings/security/customers');
+    selectChoose('.ko-admin-settings-security-authentication', 'Single sign-on (JWT)');
+    click('button[name=submit].button');
+
+    andThen(function () {
+      assert.equal(find('.qa-field-error').length, 14, 'Field validation errors displayed on each field');
+      assert.equal(find('.qa-field-error:eq(0)').text().trim(), 'The value of the field is invalid', 'Field validation text');
+    });
+  });
+
   (0, _frontendCpTestsHelpersQunit.test)('edit agent settings', function (assert) {
     visit('/admin/settings/security');
     selectChoose('.ko-admin-settings-security-authentication', 'Single sign-on (JWT)');
@@ -12505,6 +12533,34 @@ define('frontend-cp/tests/acceptance/admin/settings/security-test', ['exports', 
       }
     });
   });
+
+  (0, _frontendCpTestsHelpersQunit.test)('agent field validation errors', function (assert) {
+    assert.expect(2);
+
+    var errors = ['security.agent.authentication_type', 'security.agent.sso.jwt.login_url', 'security.agent.sso.jwt.logout_url', 'security.agent.sso.jwt.shared_secret', 'security.agent.session_expiry', 'security.agent.login_attempt_limit', 'security.agent.password.expires_in', 'security.agent.password.min_characters', 'security.agent.password.min_numbers', 'security.agent.password.min_symbols', 'security.agent.password.require_mixed_case', 'security.agent.password.max_consecutive', 'security.agent.ip_restriction'].map(function (key) {
+      return {
+        code: 'FIELD_INVALID',
+        parameter: 'values',
+        pointer: '/values/' + key,
+        message: 'The value of the field is invalid',
+        more_info: 'http://wiki.kayako.com/display/DEV/REST+v1+-+FIELD_INVALID'
+      };
+    });
+
+    server.put('/api/v1/settings', {
+      status: 400,
+      errors: errors
+    }, 400);
+
+    visit('/admin/settings/security');
+    selectChoose('.ko-admin-settings-security-authentication', 'Single sign-on (JWT)');
+    click('button[name=submit].button');
+
+    andThen(function () {
+      assert.equal(find('.qa-field-error').length, 13, 'Field validation errors displayed on each field');
+      assert.equal(find('.qa-field-error:eq(0)').text().trim(), 'The value of the field is invalid', 'Field validation text');
+    });
+  });
 });
 define('frontend-cp/tests/acceptance/admin/settings/users-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
 
@@ -12526,6 +12582,34 @@ define('frontend-cp/tests/acceptance/admin/settings/users-test', ['exports', 'fr
       assert.ok(find('.ko-admin-settings-users-require-captcha[aria-checked=true]').length === 1);
       assert.equal(find('.ko-admin-settings-users-email-whitelist').val().trim(), 'email whitelist');
       assert.equal(find('.ko-admin-settings-users-email-blacklist').val().trim(), 'email blacklist');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('field validation errors', function (assert) {
+    assert.expect(2);
+
+    var errors = ['users.allow_requests_from_unregistered', 'users.require_captcha', 'users.email_whitelist', 'users.email_blacklist'].map(function (key) {
+      return {
+        code: 'FIELD_INVALID',
+        parameter: 'values',
+        pointer: '/values/' + key,
+        message: 'The value of the field is invalid',
+        more_info: 'http://wiki.kayako.com/display/DEV/REST+v1+-+FIELD_INVALID'
+      };
+    });
+
+    server.put('/api/v1/settings', {
+      status: 400,
+      errors: errors
+    }, 400);
+
+    visit('/admin/settings/users');
+    fillIn('.ko-admin-settings-users-email-whitelist', 'xxx');
+    click('button[name=submit].button');
+
+    andThen(function () {
+      assert.equal(find('.qa-field-error').length, 4, 'Field validation errors displayed on each field');
+      assert.equal(find('.qa-field-error:eq(0)').text().trim(), 'The value of the field is invalid', 'Field validation text');
     });
   });
 });
