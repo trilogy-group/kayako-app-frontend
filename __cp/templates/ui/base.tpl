@@ -23,6 +23,8 @@ Bugsnag.releaseStage = "develop";
 Bugsnag.notifyReleaseStages = ["staging","production"];
 
 }
+//inject CDN & prefix 
+window.ASSET_ROOT = "{{ assets('frontend') }}__cp";
 </script>
 
     <link rel="stylesheet" href="{{ assets('frontend') }}__cp/assets/vendor.css" crossorigin="anonymous" >
