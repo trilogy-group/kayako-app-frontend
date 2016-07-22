@@ -15157,7 +15157,7 @@ define('frontend-cp/tests/acceptance/agent/organizations/edit-test', ['exports',
   });
 });
 /* eslint-disable camelcase, new-cap */
-define('frontend-cp/tests/acceptance/agent/search/search-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/lib/keycodes', 'frontend-cp/session/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpLibKeycodes, _frontendCpSessionStyles) {
+define('frontend-cp/tests/acceptance/agent/search/search-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/lib/keycodes', 'frontend-cp/session/styles', 'frontend-cp/components/ko-search-sidebar/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpLibKeycodes, _frontendCpSessionStyles, _frontendCpComponentsKoSearchSidebarStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Case | Search', {
     beforeEach: function beforeEach() {
@@ -15215,7 +15215,7 @@ define('frontend-cp/tests/acceptance/agent/search/search-test', ['exports', 'fro
 
     andThen(function () {
       assert.equal(find('.ko-table_row').length, 0);
-      click(find('.sidebar__link')[1]);
+      click('.' + _frontendCpComponentsKoSearchSidebarStyles['default'].item + ':eq(1)');
     });
 
     andThen(function () {
