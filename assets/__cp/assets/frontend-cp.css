@@ -8154,9 +8154,9 @@ span#HW_badge.HW_softHidden {
 .ko-search-sidebar__sidebar_1lzwh6 {
   background-color: #ffffff;
   padding-top: 9px;
-  -webkit-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
+  -webkit-box-flex: 0;
+      -ms-flex: 0;
+          flex: 0;
   min-width: 300px;
   border-right: 1px solid #CFD4D8; }
 
