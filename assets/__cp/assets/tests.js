@@ -13340,7 +13340,7 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
     visit('/agent/cases/' + targetCase.id + '/organization');
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-timeline__filter .ember-power-select-placeholder'), 'Filter: Notes', 'Default filter is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-timeline__filter .ember-power-select-selected-item'), 'Filter: Notes', 'Default filter is correct');
     });
   });
 
@@ -14412,7 +14412,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
     visit('/agent/cases/' + targetCase.id + '/user');
 
     andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-timeline__filter .ember-power-select-placeholder'), 'Filter: Notes', 'Default filter is correct');
+      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-timeline__filter .ember-power-select-selected-item'), 'Filter: Notes', 'Default filter is correct');
     });
   });
 
