@@ -10459,6 +10459,198 @@ define('frontend-cp/tests/acceptance/admin/people/roles/index-test', ['exports',
     });
   });
 });
+define('frontend-cp/tests/acceptance/admin/people/staff/add/invite-users-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'qunit', 'frontend-cp/lib/role-types', 'frontend-cp/tests/helpers/ember-power-select'], function (exports, _frontendCpTestsHelpersQunit, _qunit, _frontendCpLibRoleTypes, _frontendCpTestsHelpersEmberPowerSelect) {
+
+  var owner, admin;
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/people/staff/add/invite users', {
+    beforeEach: function beforeEach() {
+      server.create('locale', {
+        locale: 'en-us',
+        isDefault: true
+      });
+
+      var businesshour = server.create('business-hour', { title: 'Default Business Hours' });
+      server.createList('team', 4, { businesshour: businesshour });
+
+      Object.keys(_frontendCpLibRoleTypes['default']).forEach(function (type) {
+        server.create('role', { title: type.toLowerCase().capitalize(), rank: _frontendCpLibRoleTypes['default'][type].rank, type: type });
+      });
+
+      var ownerRole = server.db.roles.where({ type: 'OWNER' })[0];
+      var adminRole = server.db.roles.where({ type: 'ADMIN' })[0];
+
+      server.create('permission', { name: 'users.update' });
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
+
+      var locale = server.create('locale', { locale: 'en-us' });
+      owner = server.create('user', { role: ownerRole, locale: locale, time_zone: 'Europe/London' });
+      admin = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
+    },
+
+    afterEach: function afterEach() {
+      logout();
+    }
+  });
+
+  (0, _qunit.test)('field validation errors', function (assert) {
+    assert.expect(4);
+    var session = server.create('session', { user: owner });
+    login(session.id);
+
+    visit('/admin/people/team-directory/add');
+
+    click('.qa-add-recipient');
+    click('.qa-modal-save');
+
+    andThen(function () {
+      ['.qa-fullname .ko-form_field_errors__error', '.qa-email .ko-form_field_errors__error', '.qa-role .ko-form_field_errors__error', '.qa-teams .ko-form_field_errors__error'].forEach(function (selector) {
+        assert.equal(find(selector).text(), 'The value of the field cannot be empty', 'Field error');
+      });
+    });
+  });
+
+  (0, _qunit.test)('OWNER can set the correct roles', function (assert) {
+    assert.expect(2);
+
+    var session = server.create('session', { user: owner });
+    login(session.id);
+
+    visit('/admin/people/team-directory/add');
+
+    click('.qa-add-recipient');
+
+    andThen(function () {
+      (0, _frontendCpTestsHelpersEmberPowerSelect.clickTrigger)('.qa-role');
+    });
+
+    andThen(function () {
+      assert.equal(find('.ember-power-select-option').length, 4, 'Correct number of available roles');
+      assert.deepEqual(find('.ember-power-select-option').toArray().map(function (el) {
+        return $(el).text().trim();
+      }), ['Admin', 'Agent', 'Collaborator', 'Owner'], 'Correct available roles');
+    });
+  });
+
+  (0, _qunit.test)('ADMIN can set the correct roles', function (assert) {
+    assert.expect(2);
+
+    var session = server.create('session', { user: admin });
+    login(session.id);
+
+    visit('/admin/people/team-directory/add');
+
+    click('.qa-add-recipient');
+
+    andThen(function () {
+      (0, _frontendCpTestsHelpersEmberPowerSelect.clickTrigger)('.qa-role');
+    });
+
+    andThen(function () {
+      assert.equal(find('.ember-power-select-option').length, 3, 'Correct number of available roles');
+      assert.deepEqual(find('.ember-power-select-option').toArray().map(function (el) {
+        return $(el).text().trim();
+      }), ['Admin', 'Agent', 'Collaborator'], 'Correct available roles');
+    });
+  });
+
+  (0, _qunit.test)('inviting users', function (assert) {
+    var session = server.create('session', { user: admin });
+    login(session.id);
+
+    visit('/admin/people/team-directory/add');
+
+    click('.qa-add-recipient');
+
+    fillIn('.qa-fullname:eq(0) input', 'Foo');
+    fillIn('.qa-email:eq(0) input', 'f@foo.com');
+    selectChoose('.qa-role:eq(0)', 'Agent');
+    selectChoose('.qa-teams:eq(0)', 'Support');
+    selectChoose('.qa-teams:eq(0)', 'Finance');
+
+    click('.qa-add-recipient');
+
+    fillIn('.qa-fullname:eq(1) input', 'Bar');
+    fillIn('.qa-email:eq(1) input', 'b@bar.com');
+    selectChoose('.qa-role:eq(1)', 'Admin');
+    selectChoose('.qa-teams:eq(1)', 'Sales');
+
+    click('.qa-modal-save');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/people/team-directory', 'Returned to the user directory');
+    });
+  });
+});
+define('frontend-cp/tests/acceptance/admin/people/staff/add/permission-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'qunit'], function (exports, _frontendCpTestsHelpersQunit, _qunit) {
+
+  (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/people/staff/add/permission', {
+    beforeEach: function beforeEach() {
+      server.create('locale', {
+        locale: 'en-us',
+        isDefault: true
+      });
+
+      server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
+
+      var adminRole = server.create('role', { type: 'ADMIN' });
+      var locale = server.create('locale', { locale: 'en-us' });
+      var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
+      var session = server.create('session', { user: agent });
+      login(session.id);
+    },
+
+    afterEach: function afterEach() {
+      logout();
+    }
+  });
+
+  (0, _qunit.test)('accessing modal via button with "users.update" permission', function (assert) {
+    assert.expect(1);
+
+    server.create('permission', { name: 'users.update' });
+
+    visit('/admin/people/team-directory');
+
+    click('.qa-add-member-button');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/people/team-directory/add', 'We\'re on the correct page');
+    });
+  });
+
+  (0, _qunit.test)('accessing modal via button without "users.update" permission', function (assert) {
+    assert.expect(1);
+
+    visit('/admin/people/team-directory');
+
+    andThen(function () {
+      assert.equal(find('.qa-add-member-button').length, 0, 'Add member button hidden', 'We don\'t have access to add users');
+    });
+  });
+
+  (0, _qunit.test)('navigating directly to modal with "users.update" permission', function (assert) {
+    assert.expect(1);
+
+    server.create('permission', { name: 'users.update' });
+
+    visit('/admin/people/team-directory/add');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/people/team-directory/add', 'We\'re on the correct page');
+    });
+  });
+
+  (0, _qunit.test)('navigating directly to modal without "users.update" permission', function (assert) {
+    assert.expect(1);
+
+    visit('/admin/people/team-directory/add');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/people/team-directory', 'We don\'t have access to the add users page');
+    });
+  });
+});
 define('frontend-cp/tests/acceptance/admin/people/teams-forms-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
 
   var originalConfirm = undefined;
@@ -17917,6 +18109,180 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
   }
 });
 /* eslint-disable camelcase */
+define('frontend-cp/tests/integration/components/ko-bulk-invitation/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit'], function (exports, _ember, _frontendCpTestsHelpersQunit) {
+  var getOwner = _ember['default'].getOwner;
+
+  (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-bulk-invitation', 'Integration | Component | ko bulk invitation', {
+    integration: true,
+
+    beforeEach: function beforeEach() {
+      var intlService = getOwner(this).lookup('service:intl');
+      intlService.setLocale('en-us');
+      intlService.addTranslations('en-us', {
+        frontend: {
+          api: {
+            generic: {
+              select_placeholder: 'Select'
+            },
+            admin: {
+              staff: {
+                bulk_invitation: {
+                  fields: {
+                    name: { label: 'Name' },
+                    email: { label: 'Email' },
+                    role: { label: 'Role', placeholder: 'Choose a role' },
+                    teams: { label: 'Teams' }
+                  },
+                  buttons: {
+                    add_team_member: { label: 'Add team member' }
+                  }
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Adding recipients', function (assert) {
+    assert.expect(5);
+
+    var invitation = _ember['default'].Object.create({
+      users: _ember['default'].A([])
+    });
+    this.set('invitation', invitation);
+
+    this.render(_ember['default'].HTMLBars.template((function () {
+      return {
+        meta: {
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.6.2',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 44
+            }
+          }
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['inline', 'ko-bulk-invitation', [], ['invitation', ['subexpr', '@mut', [['get', 'invitation', ['loc', [null, [1, 32], [1, 42]]]]], [], []]], ['loc', [null, [1, 0], [1, 44]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.equal(this.$('.qa-recipient-row').length, 0, 'Start with no recipient rows');
+
+    this.$('.qa-add-recipient').click();
+    fillIn('.qa-recipient-row:eq(0) .qa-fullname input', 'Bob');
+    fillIn('.qa-recipient-row:eq(0) .qa-email input', 'a@a.com');
+
+    this.$('.qa-add-recipient').click();
+    this.$('.qa-add-recipient').click();
+
+    assert.equal(this.$('.qa-recipient-row').length, 3, 'Add three recipient rows');
+    assert.equal(invitation.get('users.length'), 3, 'Recipients added to invitation model');
+    assert.equal(invitation.get('users.firstObject.fullname'), 'Bob', 'Fullname set');
+    assert.equal(invitation.get('users.firstObject.email'), 'a@a.com', 'Email set');
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('Removing recipients', function (assert) {
+    assert.expect(5);
+
+    var invitation = _ember['default'].Object.create({
+      users: _ember['default'].A([])
+    });
+    this.set('invitation', invitation);
+
+    this.render(_ember['default'].HTMLBars.template((function () {
+      return {
+        meta: {
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.6.2',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 44
+            }
+          }
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['inline', 'ko-bulk-invitation', [], ['invitation', ['subexpr', '@mut', [['get', 'invitation', ['loc', [null, [1, 32], [1, 42]]]]], [], []]], ['loc', [null, [1, 0], [1, 44]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.equal(this.$('.qa-recipient-row').length, 0, 'Start with no recipient rows');
+
+    this.$('.qa-add-recipient').click();
+    this.$('.qa-add-recipient').click();
+    this.$('.qa-add-recipient').click();
+
+    assert.equal(this.$('.qa-recipient-row').length, 3, 'Add three recipient rows');
+    assert.equal(invitation.get('users.length'), 3, 'Recipients added to invitation model');
+
+    this.$('.qa-recipient-row:eq(2) .qa-remove-recipient').click();
+    this.$('.qa-recipient-row:eq(1) .qa-remove-recipient').click();
+
+    assert.equal(this.$('.qa-recipient-row').length, 1, 'Two rows removed');
+    assert.equal(invitation.get('users.length'), 1, 'Two recipients removed from model');
+  });
+
+  function fillIn(inputElement, value) {
+    $(inputElement).val(value);
+    $(inputElement).trigger('input');
+  }
+});
 define('frontend-cp/tests/integration/components/ko-info-bar/component-test', ['exports', 'ember', 'ember-qunit'], function (exports, _ember, _emberQunit) {
   var getOwner = _ember['default'].getOwner;
 
