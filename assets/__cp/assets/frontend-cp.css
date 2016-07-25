@@ -4984,10 +4984,12 @@ label {
   border: 1px solid #D1D5D7;
   border-radius: 2px !important;
   cursor: pointer;
-  padding-left: 9px;
   padding-right: 20px;
   -webkit-transition: border-color 0.1s, box-shadow 0.1s;
-  transition: border-color 0.1s, box-shadow 0.1s; }
+  transition: border-color 0.1s, box-shadow 0.1s;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
 
 ._trigger_1ovczd:focus, ._trigger--focused_1ovczd, ._trigger_1ovczd[aria-expanded="true"] {
   outline: none !important;
@@ -5533,11 +5535,15 @@ label {
 
 /* styles for frontend-cp/components/ko-select/trigger/styles.css */
 .ko-select_trigger__trigger_plyl15 {
-  overflow: hidden;
-  text-overflow: ellipsis;
   display: -webkit-box;
   display: -ms-flexbox;
-  display: flex; }
+  display: flex;
+  overflow: hidden; }
+
+.ko-select_trigger__trigger_plyl15 .ember-power-select-selected-item {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; }
 
 .ko-select_trigger__input_plyl15 {
   outline: none;
