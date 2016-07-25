@@ -4983,6 +4983,7 @@ label {
   border: 1px solid #D1D5D7;
   border-radius: 2px !important;
   cursor: pointer;
+  padding-left: 4px;
   padding-right: 20px;
   -webkit-transition: border-color 0.1s, box-shadow 0.1s;
   transition: border-color 0.1s, box-shadow 0.1s;
@@ -4994,9 +4995,6 @@ label {
   outline: none !important;
   border-color: #4EAFCB !important;
   box-shadow: 0 0 4px 0 rgba(78, 174, 203, 0.65), inset 0 1px 1px 0 rgba(0, 0, 0, 0.08) !important; }
-
-._trigger_1ovczd .ember-power-select-placeholder {
-  color: #2D3138; }
 
 ._dropdown_1ovczd {
   border: 1px solid #d1d5d7 !important;
@@ -6690,6 +6688,67 @@ a.ko-admin_plans_index__cancel_1pprhr {
 .ko-avatar__sizeLarge_6hgxvb {
   width: 48px;
   height: 48px; }
+
+/* styles for frontend-cp/components/ko-bulk-invitation/recipient/styles.css */
+.ko-bulk-invitation_recipient__layout_1toato {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-left: -10px; }
+
+.ko-bulk-invitation_recipient__item_1toato {
+  width: calc((100% - 10px) / 4);
+  padding-left: 9px; }
+
+/* styles for frontend-cp/components/ko-bulk-invitation/styles.css */
+.ko-bulk-invitation__fieldLabel_1iaq60 {
+  font-weight: 600; }
+
+.ko-bulk-invitation__row_1iaq60 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: 9px; }
+
+.ko-bulk-invitation__row_1iaq60:hover .ko-bulk-invitation__actions_1iaq60 {
+  visibility: visible; }
+
+.ko-bulk-invitation__layout_1iaq60 {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-left: -10px;
+  margin-right: 16px; }
+
+.ko-bulk-invitation__item_1iaq60 {
+  width: calc((100% - 10px) / 4);
+  padding-left: 9px; }
+
+.ko-bulk-invitation__actions_1iaq60 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  visibility: hidden;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
+
+.ko-bulk-invitation__remove_1iaq60 {
+  font-size: 16px;
+  line-height: 16px; }
+
+.ko-bulk-invitation__remove_1iaq60::before {
+  display: block; }
+
+.ko-bulk-invitation__addNew_1iaq60 {
+  margin-top: 13.5px;
+  color: #38a0be; }
 
 /* styles for frontend-cp/components/ko-case/macro-selector/trigger/styles.css */
 .ko-case_macro-selector_trigger__trigger_6p3bsw {
@@ -9385,8 +9444,20 @@ span#HW_badge.HW_softHidden {
 .session_admin_apps_zapier__findOutCTA_zxnhet {
   padding: 0 10px; }
 
-/* styles for frontend-cp/session/admin/people/staff/index/styles.css */
-.session_admin_people_staff_index__search_1355zo {
+/* styles for frontend-cp/session/admin/people/staff/add/styles.css */
+.session_admin_people_staff_add__footer_13i50s {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end; }
+
+/* styles for frontend-cp/session/admin/people/staff/styles.css */
+.session_admin_people_staff__search_13g9q3 {
   margin-bottom: 18px;
   display: -webkit-box;
   display: -ms-flexbox;
