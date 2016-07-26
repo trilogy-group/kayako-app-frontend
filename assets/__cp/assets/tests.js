@@ -21261,6 +21261,75 @@ define('frontend-cp/tests/unit/services/plan-test', ['exports', 'ember', 'ember-
     });
   });
 });
+define('frontend-cp/tests/unit/services/rateplans-test', ['exports', 'ember', 'ember-qunit'], function (exports, _ember, _emberQunit) {
+
+  (0, _emberQunit.moduleFor)('service:rateplans', 'Unit | Service | rateplans', {
+    // Specify the other units that are required for this test.
+    // needs: ['service:foo']
+  });
+
+  (0, _emberQunit.test)('should return the primary rateplan when a single rateplan is given', function (assert) {
+    var service = this.subject();
+    var productRateplan = _ember['default'].Object.create({
+      productRateplanType: 'PRIMARY',
+      name: 'Enterpise Monthly'
+    });
+    var rateplan = _ember['default'].Object.create({
+      id: 1,
+      productRateplan: productRateplan,
+      charges: [{}]
+    });
+    var ratePlans = _ember['default'].A([rateplan]);
+    var subscriptonRatePlan = service.getSubscriptionRatePlan(ratePlans);
+    assert.equal(subscriptonRatePlan.get('id'), 1);
+  });
+
+  (0, _emberQunit.test)('should return the primary rateplan when a multiple single rateplans are given', function (assert) {
+    var service = this.subject();
+
+    var productRateplanDiscount = _ember['default'].Object.create({
+      productRateplanType: 'DISCOUNT',
+      name: 'Discount Monthly'
+    });
+
+    var productRateplanGrowth = _ember['default'].Object.create({
+      productRateplanType: 'PRIMARY',
+      name: 'Growth Monthly'
+    });
+
+    var discount = _ember['default'].Object.create({
+      id: 1,
+      productRateplan: productRateplanDiscount,
+      charges: [{}]
+    });
+
+    var growth = _ember['default'].Object.create({
+      id: 18,
+      productRateplan: productRateplanGrowth,
+      charges: [{}]
+    });
+
+    var ratePlans = _ember['default'].A([discount, growth]);
+    var subscriptonRatePlan = service.getSubscriptionRatePlan(ratePlans);
+    assert.equal(subscriptonRatePlan.get('id'), 18);
+  });
+
+  (0, _emberQunit.test)('should null when nothing is found', function (assert) {
+    var service = this.subject();
+    var productRateplan = _ember['default'].Object.create({
+      productRateplanType: 'DISCOUNT',
+      name: 'Enterpise Monthly'
+    });
+    var rateplan = _ember['default'].Object.create({
+      id: 1,
+      productRateplan: productRateplan,
+      charges: [{}]
+    });
+    var ratePlans = _ember['default'].A([rateplan]);
+    var subscriptonRatePlan = service.getSubscriptionRatePlan(ratePlans);
+    assert.equal(subscriptonRatePlan, null);
+  });
+});
 define('frontend-cp/tests/unit/utils/promise-queue-test', ['exports', 'ember', 'qunit', 'ember-qunit', 'frontend-cp/utils/promise-queue'], function (exports, _ember, _qunit, _emberQunit, _frontendCpUtilsPromiseQueue) {
 
   (0, _qunit.module)('Unit | Utils | promise-queue');
