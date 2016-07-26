@@ -11578,7 +11578,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('editing a text field', function (assert) {
+  (0, _frontendCpTestsHelpersQunit.test)('cancel editing a text field', function (assert) {
     window.confirm = function (message) {
       assert.equal(message, 'You have unsaved changes on this page. Are you sure you want to discard these changes?', 'The proper confirm message is shown');
       return true;
@@ -11613,7 +11613,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), 'locale specific text here');
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), 'locale specific text here');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
-      findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
+      findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=false]');
       findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=true]');
     });
   });
