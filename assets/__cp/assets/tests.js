@@ -12769,7 +12769,9 @@ define('frontend-cp/tests/acceptance/admin/settings/users-test', ['exports', 'fr
 
   (0, _frontendCpTestsHelpersQunit.test)('display settings', function (assert) {
     visit('/admin/settings/users');
+
     andThen(function () {
+      percySnapshot('admin/settings/users');
       assert.ok(find('.ko-admin-settings-users-allow-from-unregistered[aria-checked=true]').length === 1);
       assert.ok(find('.ko-admin-settings-users-require-captcha[aria-checked=true]').length === 1);
       assert.equal(find('.ko-admin-settings-users-email-whitelist').val().trim(), 'email whitelist');
@@ -13123,6 +13125,15 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
       window.confirm = originalConfirm;
       logout();
     }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('view case list', function (assert) {
+    visit('/agent/cases');
+
+    andThen(function () {
+      percySnapshot('agent/cases');
+      assert.equal(currentURL(), '/agent/cases/view/1');
+    });
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('sort case list', function (assert) {
@@ -16081,6 +16092,7 @@ define('frontend-cp/tests/acceptance/login/login-test', ['exports', 'qunit', 'fr
     visit('/agent/login');
 
     andThen(function () {
+      percySnapshot('/agent/login');
       assert.equal(currentURL(), '/agent/login');
     });
   });
@@ -17271,6 +17283,8 @@ define('frontend-cp/tests/helpers/module-for-acceptance', ['exports', 'qunit', '
     });
   };
 });
+// NOTE - this is currently not used for acceptance tests
+//        see `app` in tests/helpers/qunit.js instead
 define('frontend-cp/tests/helpers/native-focus', ['exports', 'ember'], function (exports, _ember) {
 
   function fireEvent(node, eventType) {
@@ -17301,7 +17315,13 @@ define('frontend-cp/tests/helpers/native-focus', ['exports', 'ember'], function 
     }
   };
 });
-define('frontend-cp/tests/helpers/qunit', ['exports', 'ember', 'qunit', 'ember-qunit/qunit-module', 'ember-test-helpers', 'ember-qunit/test', 'frontend-cp/tests/helpers/start-app', 'ember-truth-helpers/helpers/and', 'ember-truth-helpers/helpers/equal', 'ember-truth-helpers/helpers/not', 'ember-truth-helpers/helpers/or', 'ember-truth-helpers/utils/register-helper', 'frontend-cp/tests/assertions/properties-equal'], function (exports, _ember, _qunit, _emberQunitQunitModule, _emberTestHelpers, _emberQunitTest, _frontendCpTestsHelpersStartApp, _emberTruthHelpersHelpersAnd, _emberTruthHelpersHelpersEqual, _emberTruthHelpersHelpersNot, _emberTruthHelpersHelpersOr, _emberTruthHelpersUtilsRegisterHelper, _frontendCpTestsAssertionsPropertiesEqual) {
+define('frontend-cp/tests/helpers/percy/register-helpers', ['exports', 'ember', 'ember-percy'], function (exports, _ember, _emberPercy) {
+
+  _ember['default'].Test.registerAsyncHelper('percySnapshot', function (app, name, options) {
+    (0, _emberPercy.percySnapshot)(name, options);
+  });
+});
+define('frontend-cp/tests/helpers/qunit', ['exports', 'ember', 'qunit', 'ember-qunit/qunit-module', 'ember-test-helpers', 'ember-qunit/test', 'frontend-cp/tests/helpers/start-app', 'ember-truth-helpers/helpers/and', 'ember-truth-helpers/helpers/equal', 'ember-truth-helpers/helpers/not', 'ember-truth-helpers/helpers/or', 'ember-truth-helpers/utils/register-helper', 'frontend-cp/tests/helpers/percy/register-helpers', 'frontend-cp/tests/assertions/properties-equal'], function (exports, _ember, _qunit, _emberQunitQunitModule, _emberTestHelpers, _emberQunitTest, _frontendCpTestsHelpersStartApp, _emberTruthHelpersHelpersAnd, _emberTruthHelpersHelpersEqual, _emberTruthHelpersHelpersNot, _emberTruthHelpersHelpersOr, _emberTruthHelpersUtilsRegisterHelper, _frontendCpTestsHelpersPercyRegisterHelpers, _frontendCpTestsAssertionsPropertiesEqual) {
   exports.createModule = createModule;
   exports.moduleForComponent = moduleForComponent;
   exports.moduleForModel = moduleForModel;
