@@ -94,6 +94,11 @@
   "metric.tooltip.team.average_time_to_target": "The average amount of time it took to meet the target for cases where this team was the assignee.",
   "metric.tooltip.team.average_time_overdue_to_breach": "The average amount of time over a target, for cases which missed their target while this team was the assignee.",
 
+  "metric.tooltip.sla.percentage_achieved": "The total target achievement.",
+  "metric.tooltip.sla.total_breached": "The total number of target misses.",
+  "metric.tooltip.sla.average_time_to_target": "The average amount of time it took to meet the target.",
+  "metric.tooltip.sla.average_time_overdue_to_breach": "The average amount of time over a target, for cases which missed their target.",
+
   "agents.subtitle": "using data from cases assigned to {name}",
   "teams.subtitle": "using data from cases assigned to team {team}",
   "agents.cases_completed": "Cases completed",
