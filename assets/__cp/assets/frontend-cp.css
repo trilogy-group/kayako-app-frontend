@@ -3730,17 +3730,17 @@ label {
   padding: 9px 18px;
   border-bottom: 1px solid #D1D5D7; }
 
-.ko-update-log__box {
+.box {
   width: 8px;
   background-color: #C2A8D0;
   height: 8px;
   margin-top: 5px; }
 
-.ko-update-log__close {
+.close {
   cursor: pointer;
   width: 16px; }
 
-.ko-update-log__title {
+.log-title {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -3748,24 +3748,27 @@ label {
       -ms-flex-pack: justify;
           justify-content: space-between; }
 
-.ko-update-log__log-item {
+.log-item {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
   padding-top: 9px; }
 
-.ko-update-log__name {
-  max-width: 50%;
-  padding-left: 4.5px; }
-  .ko-update-log__name .tooltipstered {
+.name {
+  max-width: 95%;
+  padding-left: 4px; }
+  .name .tooltipstered {
     max-width: 100%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     color: #2D3138; }
 
-.ko-update-log__time {
-  padding-left: 4.5px; }
+.detail {
+  padding-left: 4.5px;
+  color: #838D94; }
 
 .ko-viewing-users__avatars {
   display: -webkit-box;
@@ -7362,6 +7365,52 @@ a.ko-admin_plans_index__cancel_1pprhr {
 
 .ko-info-bar_metadata__value_usevhy {
   width: 67%; }
+
+/* styles for frontend-cp/components/ko-info-bar/update-log/styles.css */
+.ko-info-bar_update-log__ko-update-log_19zjx2 {
+  padding: 9px 18px;
+  border-bottom: 1px solid #D1D5D7; }
+
+.ko-info-bar_update-log__box_19zjx2 {
+  width: 8px;
+  background-color: #C2A8D0;
+  height: 8px;
+  margin-top: 5px; }
+
+.ko-info-bar_update-log__close_19zjx2 {
+  cursor: pointer;
+  width: 16px; }
+
+.ko-info-bar_update-log__log-title_19zjx2 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
+
+.ko-info-bar_update-log__log-item_19zjx2 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  padding-top: 9px; }
+
+.ko-info-bar_update-log__name_19zjx2 {
+  max-width: 95%;
+  padding-left: 4px; }
+
+.ko-info-bar_update-log__name_19zjx2 .ko-info-bar_update-log__tooltipstered_19zjx2 {
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #2D3138; }
+
+.ko-info-bar_update-log__detail_19zjx2 {
+  padding-left: 4.5px;
+  color: #838D94; }
 
 /* styles for frontend-cp/components/ko-input-date-range/styles.css */
 .ko-input-date-range__chartDateRange_12zrkr {
