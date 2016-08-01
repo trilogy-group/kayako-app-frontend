@@ -19171,6 +19171,217 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/text/componen
     this.$('input').trigger(new $.Event('input'));
   });
 });
+define('frontend-cp/tests/integration/components/ko-info-bar/update-log/component-test', ['exports', 'ember-service', 'ember-computed', 'ember-object', 'moment', 'ember-qunit'], function (exports, _emberService, _emberComputed, _emberObject, _moment, _emberQunit) {
+
+  var testDateTime = (0, _moment['default'])('2016-07-01 09:33:55');
+  var serverClockStub = _emberService['default'].extend({
+    applySkew: function applySkew(dateTime) {
+      //No Skew
+      return (0, _moment['default'])(dateTime);
+    }
+  });
+  var dateStub = _emberService['default'].extend({
+    getCurrentDate: function getCurrentDate(dateTime) {
+      return testDateTime;
+    }
+  });
+
+  var intlStub = _emberService['default'].extend({
+    on: function on() {},
+    off: function off() {},
+    findTranslationByKey: function findTranslationByKey(key) {
+      switch (key) {
+        case 'cases.log.title':
+          return 'This case has been updated';
+        case 'generic.times':
+          return 'times';
+      }
+    }
+  });
+
+  (0, _emberQunit.moduleForComponent)('ko-info-bar/update-log', 'Integration | Component | ko-info-bar/update-log', {
+    integration: true,
+
+    beforeEach: function beforeEach() {
+      this.register('service:intl', intlStub);
+      this.register('service:server-clock', serverClockStub);
+      this.register('service:date', dateStub);
+      this.inject.service('intl', { as: 'intl' });
+      this.inject.service('server-clock', { as: 'serverClock' });
+      this.inject.service('date', { as: 'date' });
+    }
+  });
+
+  (0, _emberQunit.test)('should display a single log entry', function (assert) {
+    assert.expect(4);
+
+    var userName = 'Mickey Bubbles';
+    var user = _emberObject['default'].extend({
+      fullName: (0, _emberComputed['default'])('name', function () {
+        return this.get('name');
+      })
+    }).create({
+      id: 1,
+      name: userName
+    });
+
+    this.set('testUpdateLog', [{
+      updatedAt: testDateTime.subtract(1, 'second'),
+      user: user
+    }]);
+
+    this.set('emptyCloseFunction', function () {});
+
+    this.render(Ember.HTMLBars.template((function () {
+      return {
+        meta: {
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.6.2',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 77
+            }
+          }
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['inline', 'ko-info-bar/update-log', [], ['updateLog', ['subexpr', '@mut', [['get', 'testUpdateLog', ['loc', [null, [1, 35], [1, 48]]]]], [], []], 'onClose', ['subexpr', '@mut', [['get', 'emptyCloseFunction', ['loc', [null, [1, 57], [1, 75]]]]], [], []]], ['loc', [null, [1, 0], [1, 77]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.equal(this.$('ul').length, 1, 'one entry in the log');
+    assert.equal(this.$('.qa-username').text().trim(), userName, 'username is correct');
+    assert.notOk(this.$('.qa-number-of-times').text(), 'number of times should not be shown for a single entry');
+    assert.equal(this.$('.qa-time-from-now').text().trim(), 'a few seconds ago', 'time from now is correct');
+  });
+
+  (0, _emberQunit.test)('should display log entries grouped by user', function (assert) {
+    assert.expect(7);
+
+    var user1 = 'Mickey Bubbles';
+    var user2 = 'Damon Allbran';
+    var aSecondAgo = (0, _moment['default'])(testDateTime).subtract(1, 'second').toString();
+    var aMinuteAgo = (0, _moment['default'])(testDateTime).subtract(1, 'minute').toString();
+    var aHourAgo = (0, _moment['default'])(testDateTime).subtract(1, 'hour').toString();
+
+    this.set('testUpdateLog', [{
+      updatedAt: aSecondAgo,
+      user: {
+        id: 1,
+        fullName: user1
+      }
+    }, {
+      updatedAt: aSecondAgo,
+      user: {
+        id: 2,
+        fullName: user2
+      }
+    }, {
+      updatedAt: aMinuteAgo,
+      user: {
+        id: 1,
+        fullName: user1
+      }
+    }, {
+      updatedAt: aMinuteAgo,
+      user: {
+        id: 2,
+        fullName: user2
+      }
+    }, {
+      updatedAt: aHourAgo,
+      user: {
+        id: 1,
+        fullName: user1
+      }
+    }, {
+      updatedAt: aHourAgo,
+      user: {
+        id: 2,
+        fullName: user2
+      }
+    }]);
+
+    this.set('emptyCloseFunction', function () {});
+
+    this.render(Ember.HTMLBars.template((function () {
+      return {
+        meta: {
+          'fragmentReason': {
+            'name': 'missing-wrapper',
+            'problems': ['wrong-type']
+          },
+          'revision': 'Ember@2.6.2',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 77
+            }
+          }
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['inline', 'ko-info-bar/update-log', [], ['updateLog', ['subexpr', '@mut', [['get', 'testUpdateLog', ['loc', [null, [1, 35], [1, 48]]]]], [], []], 'onClose', ['subexpr', '@mut', [['get', 'emptyCloseFunction', ['loc', [null, [1, 57], [1, 75]]]]], [], []]], ['loc', [null, [1, 0], [1, 77]]]]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.equal(this.$('ul').length, 1, 'two entries in the log');
+    assert.equal(this.$('li:nth-of-type(1) .qa-username').text().trim(), user1, 'username is correct');
+    assert.equal(this.$('li:nth-of-type(1) .qa-number-of-times').text().trim(), '3 times,', 'number of times is correct');
+    assert.equal(this.$('li:nth-of-type(1) .qa-time-from-now').text().trim(), 'a few seconds ago', 'time from now is correct');
+    assert.equal(this.$('li:nth-of-type(2) .qa-username').text().trim(), user2, 'username is correct');
+    assert.equal(this.$('li:nth-of-type(2) .qa-number-of-times').text().trim(), '3 times,', 'number of times is correct');
+    assert.equal(this.$('li:nth-of-type(2) .qa-time-from-now').text().trim(), 'a few seconds ago', 'time from now is correct');
+  });
+});
 define('frontend-cp/tests/test-helper', ['exports', 'frontend-cp/tests/helpers/resolver', 'ember-qunit'], function (exports, _frontendCpTestsHelpersResolver, _emberQunit) {
 
   (0, _emberQunit.setResolver)(_frontendCpTestsHelpersResolver['default']);
