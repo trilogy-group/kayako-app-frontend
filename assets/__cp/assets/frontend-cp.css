@@ -649,7 +649,7 @@ textarea {
 /*
 	Brand configuration
    ========================================================================== */
-.ko-agent-dropdown__nav-item:focus, .ko-case_macro-selector .ember-power-select-search input:focus, .checkbox:focus, .ko-radio__container:focus, .ko-input__input_33c6q8:focus, .ko-admin_brands_form_domain-input__container_1hdt0q.ko-admin_brands_form_domain-input__focused_1hdt0q, .ko-admin_trial_form-input__prefixed-input_8a9rk6.ko-admin_trial_form-input__focused_8a9rk6, .ko-case_macro-selector_trigger__trigger_6p3bsw:focus, .ko-checkbox__checkbox_va0kgl:focus, .ko-toggle__container_l41cb8:focus {
+.ko-agent-dropdown__nav-item:focus, .ko-case_macro-selector .ember-power-select-search input:focus, .checkbox:focus, .ko-radio__container:focus, .ko-input__input_33c6q8:focus, .ko-admin_billing-form_form-input__prefixed-input_14233l.ko-admin_billing-form_form-input__focused_14233l, .ko-admin_brands_form_domain-input__container_1hdt0q.ko-admin_brands_form_domain-input__focused_1hdt0q, .ko-case_macro-selector_trigger__trigger_6p3bsw:focus, .ko-checkbox__checkbox_va0kgl:focus, .ko-toggle__container_l41cb8:focus {
   outline: none;
   border-color: #4EAFCB;
   box-shadow: 0 0 4px 0 rgba(78, 174, 203, 0.65), inset 0 1px 1px 0 rgba(0, 0, 0, 0.08); }
@@ -5820,18 +5820,19 @@ label {
   margin-left: 5px; }
 
 /* styles for frontend-cp/components/ko-admin/billing/index/styles.css */
-.ko-admin_billing_index__cards-group_2k63to {
-  padding-top: 18px;
+.ko-admin_billing_index__section_2k63to {
+  border-bottom: 1px solid #EBEEF0;
   display: -webkit-box;
   display: -ms-flexbox;
-  display: flex; }
+  display: flex;
+  padding: 30px 0; }
 
-.ko-admin_billing_index__group-title_2k63to {
+.ko-admin_billing_index__section-title_2k63to {
   width: 25%;
   font-size: 16px;
   color: #2D3138; }
 
-.ko-admin_billing_index__group-body_2k63to {
+.ko-admin_billing_index__section-body_2k63to {
   width: 75%; }
 
 .ko-admin_billing_index__tile_2k63to {
@@ -5841,8 +5842,38 @@ label {
   margin-top: 9px;
   text-align: center; }
 
-.ko-admin_billing_index__cards-group_2k63to {
-  padding-top: 5px; }
+/* styles for frontend-cp/components/ko-admin/billing-form/form-input/styles.css */
+.ko-admin_billing-form_form-input__prefixed-input_14233l {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border: 1px solid #D1D5D7;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05);
+  border-radius: 2px;
+  width: 285px;
+  -webkit-transition: border-color 0.1s, box-shadow 0.1s;
+  transition: border-color 0.1s, box-shadow 0.1s; }
+
+.ko-admin_billing-form_form-input__prefixed-input-prefix_14233l {
+  background-color: #eeeeee;
+  padding: 8px 10px;
+  padding: 5px 9px; }
+
+.ko-admin_billing-form_form-input__prefixed-input-input_14233l {
+  line-height: 18px;
+  padding: 5px 9px;
+  border: none;
+  width: 100%; }
+
+.ko-admin_billing-form_form-input__prefixed-input-input_14233l:focus {
+  outline: none; }
+
+.ko-admin_billing-form_form-input__prefixed-input-input_14233l:disabled {
+  background-color: #eeeeee;
+  color: #A1AAAF; }
 
 /* styles for frontend-cp/components/ko-admin/brands/form/domain-input/styles.css */
 .ko-admin_brands_form_domain-input__container_1hdt0q {
@@ -6570,39 +6601,6 @@ a.ko-admin_plans_index__cancel_1pprhr {
 .ko-admin_team__member_u5wpiz {
   width: calc(100% / 3);
   padding-left: 18px; }
-
-/* styles for frontend-cp/components/ko-admin/trial/form-input/styles.css */
-.ko-admin_trial_form-input__prefixed-input_8a9rk6 {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  border: 1px solid #D1D5D7;
-  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05);
-  border-radius: 2px;
-  width: 285px;
-  -webkit-transition: border-color 0.1s, box-shadow 0.1s;
-  transition: border-color 0.1s, box-shadow 0.1s; }
-
-.ko-admin_trial_form-input__prefixed-input-prefix_8a9rk6 {
-  background-color: #eeeeee;
-  padding: 8px 10px;
-  padding: 5px 9px; }
-
-.ko-admin_trial_form-input__prefixed-input-input_8a9rk6 {
-  line-height: 18px;
-  padding: 5px 9px;
-  border: none;
-  width: 100%; }
-
-.ko-admin_trial_form-input__prefixed-input-input_8a9rk6:focus {
-  outline: none; }
-
-.ko-admin_trial_form-input__prefixed-input-input_8a9rk6:disabled {
-  background-color: #eeeeee;
-  color: #A1AAAF; }
 
 /* styles for frontend-cp/components/ko-admin/trial/index/styles.css */
 .ko-admin_trial_index__step_gzo7px {
