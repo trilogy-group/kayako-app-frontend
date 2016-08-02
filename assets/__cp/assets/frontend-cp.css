@@ -3554,35 +3554,6 @@ label {
 .ko-info-bar_field_drill-down .ember-power-select-dropdown {
   margin-top: -1px; }
 
-.ko-info-bar_field_drill-down_trigger {
-  cursor: pointer;
-  line-height: 18px;
-  color: #3B4048; }
-
-.ko-info-bar_field_drill-down_trigger__input {
-  width: calc(100% - 16px);
-  border: none;
-  outline: none;
-  background-color: transparent;
-  padding: 0;
-  line-height: 18px;
-  -webkit-appearance: none; }
-  .ko-info-bar_field_drill-down_trigger__input--hidden {
-    color: transparent; }
-
-.ko-info-bar_field_drill-down__placeholder {
-  width: calc(100% - 16px);
-  position: absolute;
-  left: 18px;
-  cursor: text; }
-
-.ko-info-bar_field_drill-down_trigger__icon[class*="i-"]:before {
-  position: absolute;
-  right: 18px;
-  top: 20px;
-  /* not a regular spacing variable - used for centering */
-  color: #A1AAAF; }
-
 .ko-field-file__input {
   width: 100%;
   border: none;
@@ -3690,10 +3661,10 @@ label {
 
 .ko-info-bar_item--disabled {
   background-color: #EEEEEE;
-  box-shadow: inset 4px 0px 6px 0px rgba(0, 0, 0, 0.06); }
+  box-shadow: inset 4px 0px 6px 0px rgba(0, 0, 0, 0.06);
+  cursor: default !important; }
   .ko-info-bar_item--disabled:hover {
-    background-color: #EEEEEE;
-    cursor: default; }
+    background-color: #EEEEEE; }
 
 .ko-info-bar_item__header, .ko-info-bar_field_select-multiple_trigger__title_1m2eux {
   font-size: 12px;
@@ -7329,6 +7300,7 @@ a.ko-admin_plans_index__cancel_1pprhr {
 
 /* styles for frontend-cp/components/ko-info-bar/field/select-multiple/styles.css */
 .ko-info-bar_field_select-multiple__trigger_1s44wa {
+  outline: none;
   border: none !important;
   background: transparent;
   padding: 0;
