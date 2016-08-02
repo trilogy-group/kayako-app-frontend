@@ -13311,7 +13311,6 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
     andThen(function () {
       var _this = this;
 
-      assert.equal(find('.ko-info-bar_field_drill-down__placeholder').text(), 'No Changes');
       find('.' + _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles['default'].placeholder).each(function (index, placeholder) {
         assert.equal(_this.$(placeholder).text(), 'No Changes');
       });
@@ -13406,7 +13405,6 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
     andThen(function () {
       var _this2 = this;
 
-      assert.equal(find('.ko-info-bar_field_drill-down__placeholder').text(), 'No Changes');
       find('.' + _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles['default'].placeholder).each(function (index, placeholder) {
         assert.equal(_this2.$(placeholder).text(), 'No Changes');
       });
