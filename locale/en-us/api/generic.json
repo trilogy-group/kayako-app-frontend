@@ -184,5 +184,7 @@
   "errors.not_found.heading": "Sorry{name}, we couldn't find that.",
 
   "settings.12hour": "12 hours",
-  "settings.24hour": "24 hours"
+  "settings.24hour": "24 hours",
+
+  "times": "times"
 }
