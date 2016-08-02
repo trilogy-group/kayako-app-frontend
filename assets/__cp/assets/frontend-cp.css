@@ -5549,7 +5549,7 @@ label {
   outline: none;
   border: none;
   width: 100%;
-  padding: 0;
+  padding: 0 0 0 8px;
   line-height: 28px;
   height: 28px; }
 
@@ -8135,8 +8135,7 @@ a.ko-admin_plans_index__cancel_1pprhr {
   right: 0;
   border: 1px solid #D1D5D7;
   background-color: #ffffff;
-  border-radius: 5px;
-  overflow: hidden; }
+  border-radius: 5px; }
 
 .ko-modal__main_q4hi99 {
   padding: 18px; }
@@ -9651,7 +9650,9 @@ span#HW_badge.HW_softHidden {
   overflow: auto; }
 
 .session_agent_cases_index_suspended-messages_show__message-text_84d628 {
-  white-space: pre-wrap; }
+  white-space: pre-wrap;
+  word-break: break-all;
+  word-wrap: break-word; }
 
 /* styles for frontend-cp/session/agent/cases/index/suspended-messages/styles.css */
 .session_agent_cases_index_suspended-messages__section_1qhp96 {

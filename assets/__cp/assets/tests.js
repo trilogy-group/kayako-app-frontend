@@ -10500,7 +10500,6 @@ define('frontend-cp/tests/acceptance/admin/people/staff/add/invite-users-test', 
 
     visit('/admin/people/team-directory/add');
 
-    click('.qa-add-recipient');
     click('.qa-modal-save');
 
     andThen(function () {
@@ -10517,8 +10516,6 @@ define('frontend-cp/tests/acceptance/admin/people/staff/add/invite-users-test', 
     login(session.id);
 
     visit('/admin/people/team-directory/add');
-
-    click('.qa-add-recipient');
 
     andThen(function () {
       (0, _frontendCpTestsHelpersEmberPowerSelect.clickTrigger)('.qa-role');
@@ -10559,8 +10556,6 @@ define('frontend-cp/tests/acceptance/admin/people/staff/add/invite-users-test', 
     login(session.id);
 
     visit('/admin/people/team-directory/add');
-
-    click('.qa-add-recipient');
 
     fillIn('.qa-fullname:eq(0) input', 'Foo');
     fillIn('.qa-email:eq(0) input', 'f@foo.com');
@@ -18216,17 +18211,17 @@ define('frontend-cp/tests/integration/components/ko-bulk-invitation/component-te
       };
     })()));
 
-    assert.equal(this.$('.qa-recipient-row').length, 0, 'Start with no recipient rows');
+    assert.equal(this.$('.qa-recipient-row').length, 1, 'Start with one recipient row');
 
-    this.$('.qa-add-recipient').click();
     fillIn('.qa-recipient-row:eq(0) .qa-fullname input', 'Bob');
     fillIn('.qa-recipient-row:eq(0) .qa-email input', 'a@a.com');
 
     this.$('.qa-add-recipient').click();
     this.$('.qa-add-recipient').click();
+    this.$('.qa-add-recipient').click();
 
-    assert.equal(this.$('.qa-recipient-row').length, 3, 'Add three recipient rows');
-    assert.equal(invitation.get('users.length'), 3, 'Recipients added to invitation model');
+    assert.equal(this.$('.qa-recipient-row').length, 4, 'Add three recipient rows');
+    assert.equal(invitation.get('users.length'), 4, 'Recipients added to invitation model');
     assert.equal(invitation.get('users.firstObject.fullname'), 'Bob', 'Fullname set');
     assert.equal(invitation.get('users.firstObject.email'), 'a@a.com', 'Email set');
   });
@@ -18282,20 +18277,20 @@ define('frontend-cp/tests/integration/components/ko-bulk-invitation/component-te
       };
     })()));
 
-    assert.equal(this.$('.qa-recipient-row').length, 0, 'Start with no recipient rows');
+    assert.equal(this.$('.qa-recipient-row').length, 1, 'Start with one recipient row');
 
     this.$('.qa-add-recipient').click();
     this.$('.qa-add-recipient').click();
     this.$('.qa-add-recipient').click();
 
-    assert.equal(this.$('.qa-recipient-row').length, 3, 'Add three recipient rows');
-    assert.equal(invitation.get('users.length'), 3, 'Recipients added to invitation model');
+    assert.equal(this.$('.qa-recipient-row').length, 4, 'Add three recipient rows');
+    assert.equal(invitation.get('users.length'), 4, 'Recipients added to invitation model');
 
     this.$('.qa-recipient-row:eq(2) .qa-remove-recipient').click();
     this.$('.qa-recipient-row:eq(1) .qa-remove-recipient').click();
 
-    assert.equal(this.$('.qa-recipient-row').length, 1, 'Two rows removed');
-    assert.equal(invitation.get('users.length'), 1, 'Two recipients removed from model');
+    assert.equal(this.$('.qa-recipient-row').length, 2, 'Two rows removed');
+    assert.equal(invitation.get('users.length'), 2, 'Two recipients removed from model');
   });
 
   function fillIn(inputElement, value) {
