@@ -15455,7 +15455,7 @@ define('frontend-cp/tests/acceptance/agent/tabs/tabs-test', ['exports', 'fronten
   (0, _frontendCpTestsHelpersQunit.test)('cases open in their own tabs', function (assert) {
     assert.expect(26);
 
-    useDefaultScenario();
+    setupBasicScenario();
     login();
 
     visit('/agent');
@@ -15569,7 +15569,7 @@ define('frontend-cp/tests/acceptance/agent/tabs/tabs-test', ['exports', 'fronten
   (0, _frontendCpTestsHelpersQunit.test)('tab label is set to case name', function (assert) {
     assert.expect(2);
 
-    useDefaultScenario();
+    setupBasicScenario();
     login();
 
     visit('/agent/cases/1');
@@ -15602,7 +15602,7 @@ define('frontend-cp/tests/acceptance/agent/tabs/tabs-test', ['exports', 'fronten
       label: 'Case 2'
     }]));
 
-    useDefaultScenario();
+    setupBasicScenario();
     login();
 
     visit('/');
@@ -15621,7 +15621,7 @@ define('frontend-cp/tests/acceptance/agent/tabs/tabs-test', ['exports', 'fronten
   (0, _frontendCpTestsHelpersQunit.test)('tabs can be closed', function (assert) {
     assert.expect(9);
 
-    useDefaultScenario();
+    setupBasicScenario();
     login();
 
     visit('/');
@@ -15684,6 +15684,50 @@ define('frontend-cp/tests/acceptance/agent/tabs/tabs-test', ['exports', 'fronten
   function closeTab(tabElement) {
     andThen(function () {
       $(tabElement).find('.' + _frontendCpSessionStyles['default']['tab-close']).click();
+    });
+  }
+
+  function setupBasicScenario() {
+    var locale = server.create('locale', { locale: 'en-us' });
+
+    var agentRole = server.create('role', { type: 'AGENT' });
+
+    var defaultUser = server.create('user', { role: agentRole, locale: locale, time_zone: 'Europe/London' });
+
+    server.create('session', { user: defaultUser });
+
+    server.create('plan', {
+      limits: {},
+      features: [],
+      account_id: '123',
+      subscription_id: '123'
+    });
+
+    server.create('view', {
+      title: 'Inbox',
+      is_default: true,
+      is_enabled: true,
+      is_system: true
+    });
+
+    var status = server.create('case-status');
+
+    server.create('case', {
+      tags: [],
+      status: { id: status.id, resource_type: 'case_status' },
+      requester: server.create('user', { role: agentRole })
+    });
+
+    server.create('case', {
+      tags: [],
+      status: { id: status.id, resource_type: 'case_status' },
+      requester: server.create('user', { role: agentRole })
+    });
+
+    server.create('case', {
+      tags: [],
+      status: { id: status.id, resource_type: 'case_status' },
+      requester: server.create('user', { role: agentRole })
     });
   }
 });
