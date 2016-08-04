@@ -13162,7 +13162,7 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
       assert.equal(find('tbody tr').length, 20);
       assert.equal(find('tbody tr:first td:nth-child(3)').text().trim(), '1');
       server.schema.db.cases.remove('1');
-      click('.active .reload-cases-btn');
+      click('.active .reload-cases-icon');
     });
 
     andThen(function () {
