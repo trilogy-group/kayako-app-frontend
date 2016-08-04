@@ -5382,30 +5382,21 @@ label {
   overflow-x: hidden;
   text-overflow: ellipsis; }
 
-/* Reload button */
-.ko-cases-list_sidebar_item__reload-btn_1pzfkl {
+/* Reload icon */
+.ko-cases-list_sidebar_item__reload-icon_1pzfkl {
   font-family: 'icomoon';
   font-style: normal;
   font-variant: normal;
   font-weight: normal;
   font-size: 18px;
-  outline: none;
   display: none;
-  background: none;
-  border: 0;
-  line-height: normal;
-  overflow: visible;
-  padding: 0 2px;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none; }
+  margin-right: 6px; }
 
-.ko-cases-list_sidebar_item__reload-btn_1pzfkl::before {
+.ko-cases-list_sidebar_item__reload-icon_1pzfkl::before {
   color: #838D94;
   content: "\E908"; }
 
-.active:not(.ember-transitioning-out) .ko-cases-list_sidebar_item__reload-btn_1pzfkl {
+.active:not(.ember-transitioning-out) .ko-cases-list_sidebar_item__reload-icon_1pzfkl {
   display: inline-block; }
 
 @-webkit-keyframes ko-cases-list_sidebar_item__spin_1pzfkl {
@@ -5424,7 +5415,7 @@ label {
     -webkit-transform: rotate(360deg);
             transform: rotate(360deg); } }
 
-.ko-cases-list_sidebar_item__reload-btn--active_1pzfkl {
+.ko-cases-list_sidebar_item__reload-icon--active_1pzfkl {
   -webkit-animation: ko-cases-list_sidebar_item__spin_1pzfkl 1s infinite linear;
           animation: ko-cases-list_sidebar_item__spin_1pzfkl 1s infinite linear; }
 
