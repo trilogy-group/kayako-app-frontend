@@ -12891,6 +12891,10 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
     });
 
     andThen(function () {
+      click('.qa-ko-confirm-modal__confirm');
+    });
+
+    andThen(function () {
       var status = find('.ko-info-bar_item__header:contains("Status")').next().val();
       assert.equal(status, 'Open', 'Status has updated to OPEN');
       assert.equal(find('.' + _frontendCpSessionStyles['default'].tab).length, 1, 'There is only one tab');
@@ -15795,11 +15799,14 @@ define('frontend-cp/tests/acceptance/agent/users/change-role-test', ['exports', 
     login(session.id);
 
     visit('/agent/users/' + other.id);
-    selectChoose('.ko-user-content__role-field', 'Customer');
-    click('button:contains(Submit)');
 
     andThen(function () {
-      assert.ok(find('.ko-user-content__role-field').is(':contains(Customer)'), 'expected role field to contain "Agent"');
+      selectChoose('.ko-user-content__role-field', 'Customer');
+      click('button:contains(Submit)');
+    });
+
+    andThen(function () {
+      assert.ok(find('.ko-user-content__role-field').is(':contains(Customer)'), 'expected role field to contain "Customer"');
       assert.deepEqual(_this3.confirmationMessages, [_frontendCpLocalesEnUsUsers['default']['change_role.to_customer']]);
     });
   });
