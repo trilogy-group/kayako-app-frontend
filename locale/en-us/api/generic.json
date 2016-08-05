@@ -49,6 +49,7 @@
   "cancel": "Cancel",
   "apply": "Apply",
   "confirm_button": "Confirm",
+  "continue_button": "Continue",
   "and": "And",
   "or": "Or",
   "also_viewing": "Also viewing",
@@ -186,5 +187,7 @@
   "settings.12hour": "12 hours",
   "settings.24hour": "24 hours",
 
-  "times": "times"
+  "times": "times",
+
+  "unsaved_tab_changes": "Wait! You have unsaved changes on this tab. Continuing will result in you losing these changes."
 }
