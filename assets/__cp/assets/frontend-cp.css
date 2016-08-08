@@ -679,13 +679,6 @@ textarea {
 * Adds an ellipsis once the content has reached the width passed in.
 * Note: 100% is valid.
 */
-.t-small {
-  font-size: 12px !important; }
-
-
-.t-base {
-  font-size: 14px !important; }
-
 .t-naked-link {
   text-decoration: none;
   color: inherit; }
@@ -693,10 +686,6 @@ textarea {
 
 .t-bold {
   font-weight: 600; }
-
-
-.t-italic {
-  font-style: italic; }
 
 [class^="i-"], [class*=" i-"] {
   font-family: 'icomoon', 'Source Sans Pro' !important; }
@@ -2806,15 +2795,6 @@ img {
   margin: 13.5px 0 18px;
   font-size: 12px; }
 
-.ko-agent-dropdown__footer,
-.ko-agent-dropdown__nav-item,
-.ko-form_field__error,
-.ko-form_field_errors__error,
-.ko-simple-list__header_1uqjo0,
-.session_admin_settings_security_customers__description_e3ldqh,
-.session_admin_settings_security_index__description_mwqrmo {
-  font-size: 13px; }
-
 .ko-agent-dropdown-create-case__dropdown-user {
   line-height: initial;
   padding: 4.5px 0; }
@@ -4416,27 +4396,6 @@ label {
   .ko-radio__label--disabled {
     opacity: 0.5; }
 
-.ko-recent-cases {
-  padding: 18px 0;
-  margin-bottom: 0; }
-
-.ko-recent-cases__heading {
-  padding-left: 18px;
-  padding-right: 18px; }
-
-.ko-recent-cases__item {
-  padding: 9px 18px;
-  display: block;
-  color: #2D3138;
-  word-break: break-all; }
-  .ko-recent-cases__item:hover {
-    background: #FFFFFF; }
-  .ko-recent-cases__item:last-of-type {
-    margin-bottom: 0; }
-
-.ko-recent-case__missing {
-  padding: 0 18px; }
-
 .ko-reorderable-crud-list__item {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -4638,7 +4597,7 @@ label {
   min-width: 500px;
   max-width: calc(100vw - 88px);
   position: relative;
-  top: 2px;
+  top: 1px;
   background: #FFFFFF;
   border-left: 1px solid #CFD4D8;
   border-bottom: 1px solid #CFD4D8;
@@ -5365,75 +5324,6 @@ label {
   border-left: none;
   position: relative; }
 
-/* styles for frontend-cp/components/ko-cases-list/sidebar/item/styles.css */
-/* Icon */
-.ko-cases-list_sidebar_item__icon_1pzfkl {
-  font-size: 18px;
-  line-height: 1;
-  margin-right: 4px;
-  -ms-flex-item-align: baseline;
-      align-self: baseline; }
-
-/* Text */
-.ko-cases-list_sidebar_item__text_1pzfkl {
-  -webkit-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
-  overflow-x: hidden;
-  text-overflow: ellipsis; }
-
-/* Reload icon */
-.ko-cases-list_sidebar_item__reload-icon_1pzfkl {
-  font-family: 'icomoon';
-  font-style: normal;
-  font-variant: normal;
-  font-weight: normal;
-  font-size: 18px;
-  display: none;
-  margin-right: 6px; }
-
-.ko-cases-list_sidebar_item__reload-icon_1pzfkl::before {
-  color: #838D94;
-  content: "\E908"; }
-
-.active:not(.ember-transitioning-out) .ko-cases-list_sidebar_item__reload-icon_1pzfkl {
-  display: inline-block; }
-
-@-webkit-keyframes ko-cases-list_sidebar_item__spin_1pzfkl {
-  0% {
-    -webkit-transform: rotate(0);
-            transform: rotate(0); }
-  100% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg); } }
-
-@keyframes ko-cases-list_sidebar_item__spin_1pzfkl {
-  0% {
-    -webkit-transform: rotate(0);
-            transform: rotate(0); }
-  100% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg); } }
-
-.ko-cases-list_sidebar_item__reload-icon--active_1pzfkl {
-  -webkit-animation: ko-cases-list_sidebar_item__spin_1pzfkl 1s infinite linear;
-          animation: ko-cases-list_sidebar_item__spin_1pzfkl 1s infinite linear; }
-
-/* Counter */
-.ko-cases-list_sidebar_item__counter_1pzfkl {
-  font-size: 12px;
-  line-height: 1.5;
-  background-color: #EBEEF0;
-  border-radius: 2px;
-  color: #838D94;
-  padding: 2px 6px; }
-
-.active:not(.ember-transitioning-out) .ko-cases-list_sidebar_item__counter_1pzfkl,
-.ember-transitioning-in .ko-cases-list_sidebar_item__counter_1pzfkl {
-  background-color: #4EAFCB;
-  color: #ffffff; }
-
-/* styles for frontend-cp/components/ko-search-sidebar/item/styles.css */
 /* styles for frontend-cp/components/ko-select/drill-down/styles.css */
 /* styles for frontend-cp/components/ko-select/multiple/styles.css */
 .ko-select_multiple__trigger_1ib7nu {
@@ -6884,6 +6774,74 @@ a.ko-admin_plans_index__cancel_1pprhr {
 .ko-cases-list_column_avatar__avatar_zybp6x {
   margin-right: 9px; }
 
+/* styles for frontend-cp/components/ko-cases-list/sidebar/item/styles.css */
+/* Icon */
+.ko-cases-list_sidebar_item__icon_1pzfkl {
+  font-size: 18px;
+  line-height: 1;
+  margin-right: 4px;
+  -ms-flex-item-align: baseline;
+      align-self: baseline; }
+
+/* Text */
+.ko-cases-list_sidebar_item__text_1pzfkl {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  overflow-x: hidden;
+  text-overflow: ellipsis; }
+
+/* Reload icon */
+.ko-cases-list_sidebar_item__reload-icon_1pzfkl {
+  font-family: 'icomoon';
+  font-style: normal;
+  font-variant: normal;
+  font-weight: normal;
+  font-size: 18px;
+  display: none;
+  margin-right: 6px; }
+
+.ko-cases-list_sidebar_item__reload-icon_1pzfkl::before {
+  color: #838D94;
+  content: "\E908"; }
+
+.active:not(.ember-transitioning-out) .ko-cases-list_sidebar_item__reload-icon_1pzfkl {
+  display: inline-block; }
+
+@-webkit-keyframes ko-cases-list_sidebar_item__spin_1pzfkl {
+  0% {
+    -webkit-transform: rotate(0);
+            transform: rotate(0); }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg); } }
+
+@keyframes ko-cases-list_sidebar_item__spin_1pzfkl {
+  0% {
+    -webkit-transform: rotate(0);
+            transform: rotate(0); }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg); } }
+
+.ko-cases-list_sidebar_item__reload-icon--active_1pzfkl {
+  -webkit-animation: ko-cases-list_sidebar_item__spin_1pzfkl 1s infinite linear;
+          animation: ko-cases-list_sidebar_item__spin_1pzfkl 1s infinite linear; }
+
+/* Counter */
+.ko-cases-list_sidebar_item__counter_1pzfkl {
+  font-size: 12px;
+  line-height: 1.5;
+  background-color: #EBEEF0;
+  border-radius: 2px;
+  color: #838D94;
+  padding: 2px 6px; }
+
+.active:not(.ember-transitioning-out) .ko-cases-list_sidebar_item__counter_1pzfkl,
+.ember-transitioning-in .ko-cases-list_sidebar_item__counter_1pzfkl {
+  background-color: #4EAFCB;
+  color: #ffffff; }
+
 /* styles for frontend-cp/components/ko-cases-list/sidebar/styles.css */
 .ko-cases-list_sidebar__sidebar_464fkb {
   background-color: #ffffff;
@@ -6907,16 +6865,16 @@ a.ko-admin_plans_index__cancel_1pprhr {
           align-items: center;
   padding: 9px 9px 9px 18px;
   text-decoration: none;
-  color: inherit; }
+  color: inherit;
+  border-left: 2px solid transparent; }
 
 .ko-cases-list_sidebar__item_464fkb.disabled {
   color: rgba(0, 0, 0, 0.3); }
 
 .ko-cases-list_sidebar__item_464fkb.active:not(.ember-transitioning-out),
 .ko-cases-list_sidebar__item_464fkb.ember-transitioning-in {
-  margin-left: -1px;
   background-color: #F7F8F9;
-  border-left: 3px solid #4EAFCB;
+  border-color: #4EAFCB;
   font-weight: 600; }
 
 /* styles for frontend-cp/components/ko-center/styles.css */
@@ -8260,6 +8218,35 @@ span#HW_badge.HW_softHidden {
 .ko-pagination__paginationLast_y9lne2 {
   border-bottom-width: 1px; }
 
+/* styles for frontend-cp/components/ko-recent-cases/styles.css */
+.ko-recent-cases__root_h2f1fr {
+  padding: 18px 0;
+  margin-bottom: 0; }
+
+.ko-recent-cases__heading_h2f1fr {
+  padding-left: 18px;
+  padding-right: 18px; }
+
+.ko-recent-cases__item_h2f1fr {
+  padding: 9px 18px;
+  display: block;
+  color: #2D3138;
+  word-break: break-all; }
+
+.ko-recent-cases__item_h2f1fr:hover {
+  background: #FFFFFF; }
+
+.ko-recent-cases__item_h2f1fr:last-of-type {
+  margin-bottom: 0; }
+
+.ko-recent-cases__case-info_h2f1fr {
+  font-style: italic;
+  color: #838D94;
+  font-size: 12px; }
+
+.ko-recent-cases__missing_h2f1fr {
+  padding: 0 18px; }
+
 /* styles for frontend-cp/components/ko-role-pill/styles.css */
 .ko-role-pill__role-pill_v7ickm {
   color: #5F6C73;
@@ -8282,6 +8269,44 @@ span#HW_badge.HW_softHidden {
   height: 16px;
   line-height: 1; }
 
+/* styles for frontend-cp/components/ko-search-sidebar/item/styles.css */
+.ko-search-sidebar_item__item_g2mcad {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 9px 9px 9px 18px;
+  text-decoration: none;
+  color: inherit;
+  border-left: 2px solid transparent;
+  margin-left: -1px;
+  /* offset its containers border. */ }
+
+.ko-search-sidebar_item__item--active_g2mcad {
+  background-color: #F7F8F9;
+  border-color: #4EAFCB;
+  font-weight: 600; }
+
+.ko-search-sidebar_item__text_g2mcad {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  overflow-x: hidden;
+  text-overflow: ellipsis; }
+
+.ko-search-sidebar_item__counter_g2mcad {
+  font-size: 12px;
+  background-color: #EBEEF0;
+  border-radius: 2px;
+  color: #838D94;
+  padding: 2px 6px; }
+
+.ko-search-sidebar_item__item--active_g2mcad .ko-search-sidebar_item__counter_g2mcad {
+  background-color: #4EAFCB;
+  color: #ffffff; }
+
 /* styles for frontend-cp/components/ko-search-sidebar/styles.css */
 .ko-search-sidebar__sidebar_1lzwh6 {
   background-color: #ffffff;
@@ -8291,17 +8316,6 @@ span#HW_badge.HW_softHidden {
           flex: 0;
   min-width: 300px;
   border-right: 1px solid #CFD4D8; }
-
-.ko-search-sidebar__item_1lzwh6 {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  padding: 9px 9px 9px 18px;
-  text-decoration: none;
-  color: inherit; }
 
 /* styles for frontend-cp/components/ko-select/multiple/pill/styles.css */
 .ko-select_multiple_pill__pill_nw6jmv {
@@ -8468,14 +8482,14 @@ span#HW_badge.HW_softHidden {
   padding: 3px 6px;
   text-indent: 18px;
   cursor: pointer;
-  border-left: 3px solid transparent; }
+  border-left: 2px solid transparent;
+  margin-left: -1px; }
 
+/* offset its containers border. */
 .ko-sidebar__item_6aclzg.active:not(.ember-transitioning-out), .ko-sidebar__item_6aclzg.ember-transitioning-in {
   /* set by ember :( */
-  margin-left: -1px;
-  /* offset its containers border. */
   background-color: #F7F8F9;
-  border-left: 3px solid #4EAFCB;
+  border-color: #4EAFCB;
   color: #4EAFCB; }
 
 .ko-sidebar__item--is-disabled_6aclzg {
@@ -9643,7 +9657,6 @@ span#HW_badge.HW_softHidden {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  overflow: hidden;
   background-color: #ffffff;
   border: 1px solid #d1d5d7;
   border-radius: 2px;
