@@ -15346,8 +15346,8 @@ define('frontend-cp/tests/acceptance/agent/organizations/edit-test', ['exports',
 
     andThen(function () {
       click('.organization-domains-field .ember-power-select-multiple-remove-btn');
-      fillIn('.organization-domains-field .ember-power-select-trigger-multiple-input', 'brew2.com');
-      keyEvent('.organization-domains-field .ember-power-select-trigger-multiple-input', 'keydown', 13);
+      fillIn('.organization-domains-field input', 'brew2.com');
+      keyEvent('.organization-domains-field input', 'keydown', 13);
       click('.button--primary');
     });
 
