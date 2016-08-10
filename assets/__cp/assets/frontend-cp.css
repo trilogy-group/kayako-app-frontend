@@ -9078,7 +9078,8 @@ span#HW_badge.HW_softHidden {
   color: #40364D; }
 
 .ko-timeline_item__content_vt1m5j pre {
-  font-size: 14px; }
+  font-size: 14px;
+  white-space: pre-wrap; }
 
 .ko-timeline_item__content_vt1m5j .br-wrapper br {
   display: none; }
