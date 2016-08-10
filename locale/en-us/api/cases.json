@@ -36,6 +36,7 @@
   "columns.channel.channels.MESSENGER": "Messenger",
   "columns.channel.channels.HELPCENTER": "Help Center",
   "columns.channel.channels.SYSTEM": "System",
+  "columns.channel.channels.NOTE": "Note",
   "columns.sla": "SLA",
   "columns.slafirstreply": "First reply",
   "columns.slanextbreach": "Next breach",
