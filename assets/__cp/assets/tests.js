@@ -21202,7 +21202,7 @@ define('frontend-cp/tests/unit/services/error-handler-test', ['exports', 'ember'
   var getOwner = _ember['default'].getOwner;
 
   (0, _emberQunit.moduleFor)('service:error-handler', 'Unit | Service | error-handler', {
-    needs: ['service:error-handler/session-loading-failed-strategy', 'service:error-handler/notification-strategy', 'service:error-handler/permissions-denied-strategy', 'service:error-handler/resource-not-found-strategy', 'service:error-handler/credential-expired-strategy', 'service:error-handler/generic-strategy', 'service:intl', 'service:notification', 'service:plan', 'service:localStore', 'service:session', 'service:tabStore', 'service:locale', 'service:moment', 'ember-intl@adapter:default'],
+    needs: ['service:error-handler/session-loading-failed-strategy', 'service:error-handler/notification-strategy', 'service:error-handler/permissions-denied-strategy', 'service:error-handler/resource-not-found-strategy', 'service:error-handler/credential-expired-strategy', 'service:error-handler/generic-strategy', 'service:intl', 'service:notification', 'service:plan', 'service:localStore', 'service:session', 'service:tabStore', 'service:locale', 'service:cookies', 'service:moment', 'ember-intl@adapter:default'],
     beforeEach: function beforeEach() {
       var intl = getOwner(this).lookup('service:intl');
       intl.setLocale('en-us');
