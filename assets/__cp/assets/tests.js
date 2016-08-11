@@ -20090,17 +20090,18 @@ define('frontend-cp/tests/unit/components/ko-info-bar/field/checkbox/component-t
     });
   });
 });
-define('frontend-cp/tests/unit/components/ko-people-popover/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit'], function (exports, _ember, _frontendCpTestsHelpersQunit) {
+define('frontend-cp/tests/unit/components/ko-people-popover/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-people-popover/styles'], function (exports, _ember, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoPeoplePopoverStyles) {
   var getOwner = _ember['default'].getOwner;
 
   var component = undefined;
-  var firstListItem = '.ko-people-popover__filtered-list-item:first';
-  var x = '.ko-people-popover__cross';
+
+  var firstListItem = '.' + _frontendCpComponentsKoPeoplePopoverStyles['default'].filteredListItem + ':first';
+  var x = '.' + _frontendCpComponentsKoPeoplePopoverStyles['default'].cross;
 
   var debounce = _ember['default'].run.debounce;
 
   (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-people-popover', {
-    needs: ['component:ko-checkbox', 'component:ko-avatar', 'component:ko-loader', 'component:ko-flag', 'helper:t', 'service:intl', 'ember-intl@adapter:default', 'ember-intl@formatter:format-message'],
+    needs: ['component:ko-checkbox', 'component:ko-avatar', 'component:ko-loader', 'component:ko-flag', 'helper:t', 'service:intl', 'ember-intl@adapter:default', 'ember-intl@formatter:format-message', 'util:intl/missing-message'],
     beforeEach: function beforeEach() {
       var intl = getOwner(this).lookup('service:intl');
       intl.setLocale('en-us');
@@ -20108,13 +20109,21 @@ define('frontend-cp/tests/unit/components/ko-people-popover/component-test', ['e
         frontend: {
           api: {
             generic: {
-              add: 'Add'
+              add: 'Add',
+              close: 'Close'
+            },
+            cases: {
+              'cases.copy-someone-in': {
+                title: 'Copy someone in'
+              }
             }
           }
         }
       });
 
       component = this.subject();
+      component.set('styles', _frontendCpComponentsKoPeoplePopoverStyles['default']);
+
       _ember['default'].run.debounce = function () {
         _ember['default'].run.apply(_ember['default'], arguments);
       };
@@ -20195,6 +20204,13 @@ define('frontend-cp/tests/unit/components/ko-people-popover/component-test', ['e
       component.set('isLoading', false);
       component.set('selectedPeople', [_ember['default'].Object.create({
         parent: {
+          avatar: '',
+          fullName: 'Demo User',
+          organization: {
+            name: 'Kayako'
+          }
+        },
+        user: {
           avatar: '',
           fullName: 'Demo User',
           organization: {
