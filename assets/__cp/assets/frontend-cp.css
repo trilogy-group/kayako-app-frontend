@@ -9352,6 +9352,34 @@ span#HW_badge.HW_softHidden {
   font-weight: 600;
   margin-right: 5px; }
 
+.ko-trial-notification__sandbox-dropdown_jhhnes {
+  cursor: pointer;
+  width: 350px; }
+
+.ko-trial-notification__sandbox_jhhnes {
+  margin-left: 7px;
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1; }
+
+.ko-trial-notification__menu_jhhnes {
+  list-style-type: none; }
+
+.ko-trial-notification__sandbox-root_jhhnes {
+  width: 349px; }
+
+.ko-trial-notification__seperator_jhhnes {
+  background: #CFD4D8;
+  height: 1px;
+  margin-bottom: 4px; }
+
+.ko-trial-notification__list-action-item_jhhnes {
+  padding: 10px; }
+
+.ko-trial-notification__list-item_jhhnes {
+  padding: 4.5px 9px;
+  cursor: default; }
+
 /* styles for frontend-cp/components/ko-user-content/action-menu/styles.css */
 .ko-user-content_action-menu__dropdown_v3cdfg .button--dropdown {
   width: 32px;
