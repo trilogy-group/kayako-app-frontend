@@ -262,7 +262,7 @@ define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports'
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/account/trial/index-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-admin/rateplans/item/styles', 'frontend-cp/components/ko-admin/rateplans/price/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoAdminRateplansItemStyles, _frontendCpComponentsKoAdminRateplansPriceStyles) {
+define('frontend-cp/tests/acceptance/admin/account/trial/index-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-admin/rateplans/item/styles', 'frontend-cp/components/ko-admin/rateplans/price/styles', 'frontend-cp/components/ko-admin/plans/notification/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoAdminRateplansItemStyles, _frontendCpComponentsKoAdminRateplansPriceStyles, _frontendCpComponentsKoAdminPlansNotificationStyles) {
 
   var currencyToNumber = function currencyToNumber(value) {
     return Number(value.replace(/[^0-9\.]+/g, ''));
@@ -276,7 +276,7 @@ define('frontend-cp/tests/acceptance/admin/account/trial/index-test', ['exports'
     beforeEach: function beforeEach() {
       /*eslint-disable camelcase*/
       var locale = server.create('locale', { locale: 'en-us' });
-      server.create('plan', { limits: {}, features: [] });
+      server.create('plan', { lead_id: 20, limits: {}, features: [] });
       var adminRole = server.create('role', { type: 'ADMIN' });
       var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
@@ -426,6 +426,26 @@ define('frontend-cp/tests/acceptance/admin/account/trial/index-test', ['exports'
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/account/overview');
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('display upgrade notification when account is ondemand sandbox', function (assert) {
+    server.create('plan', { opportunity_id: 20, is_grandfathered: false, account_id: null, limits: {}, features: [] });
+    visit('/admin/account/trial');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/account/trial');
+      assert.equal(find('.' + _frontendCpComponentsKoAdminPlansNotificationStyles['default'].notification).length, 1);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('follow trial flow when account is sandboxed but not ondemand', function (assert) {
+    server.create('plan', { opportunity_id: 20, is_grandfathered: true, account_id: null, limits: {}, features: [] });
+    visit('/admin/account/trial');
+
+    andThen(function () {
+      assert.equal(currentURL(), '/admin/account/trial');
+      assert.equal(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].cell).length, 5);
     });
   });
 });
@@ -21549,6 +21569,58 @@ define('frontend-cp/tests/unit/services/plan-test', ['exports', 'ember', 'ember-
     return service.fetchPlan().then(function () {
       assert.equal(service.limitFor('agents'), 2);
       assert.equal(service.has('agents'), true);
+    });
+  });
+
+  (0, _emberQunit.test)('it should return true for isTrial when lead id is present', function (assert) {
+    assert.expect(1);
+    server.create('plan', { lead_id: '100202020' });
+
+    var service = getOwner(this).lookup('service:plan');
+    return service.fetchPlan().then(function () {
+      assert.equal(service.get('isTrial'), true);
+    });
+  });
+
+  (0, _emberQunit.test)('it should return true for isSandbox when opportunity id is present', function (assert) {
+    assert.expect(1);
+    server.create('plan', { opportunity_id: '100202020' });
+
+    var service = getOwner(this).lookup('service:plan');
+    return service.fetchPlan().then(function () {
+      assert.equal(service.get('isSandbox'), true);
+    });
+  });
+
+  (0, _emberQunit.test)('it should return true for isOnDemandSandbox when plan is not grandfather and account id is missing', function (assert) {
+    assert.expect(1);
+    server.create('plan', { opportunity_id: '100202020', is_grandfathered: false, account_id: null });
+
+    var service = getOwner(this).lookup('service:plan');
+    return service.fetchPlan().then(function () {
+      assert.equal(service.get('isOnDemandSandbox'), true);
+    });
+  });
+
+  (0, _emberQunit.test)('it should return true for isSandbox when is grandfathered is true', function (assert) {
+    assert.expect(2);
+    server.create('plan', { opportunity_id: '100202020', is_grandfathered: true, account_id: null });
+
+    var service = getOwner(this).lookup('service:plan');
+    return service.fetchPlan().then(function () {
+      assert.equal(service.get('isSandbox'), true);
+      assert.equal(service.get('isOnDemandSandbox'), false);
+    });
+  });
+
+  (0, _emberQunit.test)('it should return true for isSandbox when is account_id is set', function (assert) {
+    assert.expect(2);
+    server.create('plan', { opportunity_id: '100202020', is_grandfathered: false, account_id: '1020202' });
+
+    var service = getOwner(this).lookup('service:plan');
+    return service.fetchPlan().then(function () {
+      assert.equal(service.get('isSandbox'), true);
+      assert.equal(service.get('isOnDemandSandbox'), false);
     });
   });
 });
