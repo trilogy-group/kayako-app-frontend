@@ -4840,7 +4840,7 @@ label {
   overflow: hidden; }
 
 .ko-info-bar_field_select_trigger__input--hidden_177c5h {
-  color: transparent; }
+  opacity: 0; }
 
 .ko-info-bar_field_select_trigger__placeholder_177c5h {
   text-overflow: ellipsis;
