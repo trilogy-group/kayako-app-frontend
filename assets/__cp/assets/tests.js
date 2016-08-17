@@ -4627,9 +4627,9 @@ define('frontend-cp/tests/acceptance/admin/manage/brands/new-test', ['exports', 
         value: 'en-us'
       });
 
-      server.create('locale', { id: 2, locale: 'fr-fr', name: 'French', is_public: true, is_localised: true });
-      server.create('locale', { id: 3, locale: 'de-de', name: 'German', is_public: true, is_localised: true });
-      server.create('locale', { id: 4, locale: 'ru-ru', name: 'Russian', is_public: true, is_localised: true });
+      server.create('locale', { id: 2, locale: 'fr-fr', name: 'French', native_name: 'Français', is_public: true, is_localised: true });
+      server.create('locale', { id: 3, locale: 'de-de', name: 'German', native_name: 'Deutsch', is_public: true, is_localised: true });
+      server.create('locale', { id: 4, locale: 'ru-ru', name: 'Russian', native_name: 'русский', is_public: true, is_localised: true });
 
       server.create('plan', { limits: { brands: 10 }, features: [], account_id: '123', subscription_id: '123' });
 
@@ -4653,7 +4653,7 @@ define('frontend-cp/tests/acceptance/admin/manage/brands/new-test', ['exports', 
       return fillIn('.qa-brand-edit-name', 'My New Brand');
     });
     andThen(function () {
-      return selectChoose('.qa-brand-edit-locale', 'Russian');
+      return selectChoose('.qa-brand-edit-locale', 'русский');
     });
     andThen(function () {
       return fillIn('.qa-brand-edit-subdomain input', 'support');
@@ -21395,6 +21395,28 @@ define('frontend-cp/tests/unit/services/error-handler-test', ['exports', 'ember'
   });
 });
 /* eslint-disable no-empty */
+define('frontend-cp/tests/unit/services/locale-test', ['exports', 'ember-qunit', 'ember-metal/set'], function (exports, _emberQunit, _emberMetalSet) {
+
+  (0, _emberQunit.moduleFor)('service:locale', 'Unit | Service | locale');
+
+  (0, _emberQunit.test)('accountDefaultLocaleCode', function (assert) {
+    var settings = [];
+    var service = this.subject({ settings: settings });
+
+    assert.equal(service.get('accountDefaultLocaleCode'), 'en-us', 'expected to fall back to en-us');
+
+    settings.pushObject({
+      key: 'account.default_language',
+      value: 'es-es'
+    });
+
+    assert.equal(service.get('accountDefaultLocaleCode'), 'es-es', 'expected to recompute when the setting is present');
+
+    (0, _emberMetalSet['default'])(settings, 'firstObject.value', 'ca');
+
+    assert.equal(service.get('accountDefaultLocaleCode'), 'ca', 'expected to recompute when the setting’s value changes');
+  });
+});
 define('frontend-cp/tests/unit/services/plan-test', ['exports', 'ember', 'ember-qunit', 'frontend-cp/tests/helpers/setup-mirage-for-integration'], function (exports, _ember, _emberQunit, _frontendCpTestsHelpersSetupMirageForIntegration) {
   var getOwner = _ember['default'].getOwner;
 
