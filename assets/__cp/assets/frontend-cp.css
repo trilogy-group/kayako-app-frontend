@@ -8407,6 +8407,11 @@ span#HW_badge.HW_softHidden {
   line-height: 20px;
   font-size: 14px; }
 
+.ko-select_multiple_pill__remove_nw6jmv {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 auto;
+          flex: 0 0 auto; }
+
 /* styles for frontend-cp/components/ko-session-widgets/styles.css */
 .ko-session-widgets__root_qwy4bu {
   display: -webkit-box;
