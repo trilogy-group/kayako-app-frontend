@@ -12820,7 +12820,7 @@ define('frontend-cp/tests/acceptance/admin/settings/users-test', ['exports', 'fr
     });
   });
 });
-define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-tabs/styles', 'frontend-cp/session/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoTabsStyles, _frontendCpSessionStyles) {
+define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-tabs/styles', 'frontend-cp/session/styles', 'frontend-cp/components/ko-agent-dropdown/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoTabsStyles, _frontendCpSessionStyles, _frontendCpComponentsKoAgentDropdownStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Case | Create case', {
     beforeEach: function beforeEach() {
@@ -12855,15 +12855,15 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
   (0, _frontendCpTestsHelpersQunit.test)('Creating a case using the "+" button in the main header', function (assert) {
     visit('/agent');
 
-    click('.ko-agent-dropdown__add-icon');
+    click('.' + _frontendCpComponentsKoAgentDropdownStyles['default'].addIcon);
 
     andThen(function () {
-      assert.equal(find('.ko-agent-dropdown__drop').is(':visible'), true, '"+" Dropdown content should be visible');
-      click('.ko-agent-dropdown__nav-item:eq(0)');
+      assert.equal(find('.' + _frontendCpComponentsKoAgentDropdownStyles['default'].drop).is(':visible'), true, '"+" Dropdown content should be visible');
+      click('.' + _frontendCpComponentsKoAgentDropdownStyles['default'].navItem + ':eq(0)');
     });
 
     andThen(function () {
-      click('.ko-agent-dropdown-create-case__input .ember-power-select-trigger');
+      click('.qa-agent-dropdown-create-case__input .ember-power-select-trigger');
     });
 
     andThen(function () {
@@ -12877,13 +12877,13 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
     });
 
     andThen(function () {
-      click('.ko-agent-dropdown__drop .button--primary');
+      click('.' + _frontendCpComponentsKoAgentDropdownStyles['default'].drop + ' .button--primary');
     });
 
     andThen(function () {
       assert.ok(new RegExp('\/agent\/cases\/new\/\\d{4}-\\d{2}-\\d{2}-\\d{2}-\\d{2}-\\d{2}\\?requester_id=2').test(currentURL()), 'Current URL matches the expected format');
 
-      assert.equal(find('.ko-agent-dropdown__drop').is(':visible'), false, '"+" Dropdown content should be hidden');
+      assert.equal(find('.' + _frontendCpComponentsKoAgentDropdownStyles['default'].drop).is(':visible'), false, '"+" Dropdown content should be hidden');
 
       assert.equal(find('.ko-layout_advanced__sidebar .ko-info-bar_item:eq(1) input').val(), 'Barney Stinson', 'The recipient of the new case is Barney');
       assert.ok(find('.' + _frontendCpComponentsKoTabsStyles['default'].item + ':eq(0)').text().trim() === 'Barney Stinson' && find('.' + _frontendCpComponentsKoTabsStyles['default'].item + ':eq(1)').text().trim() === 'New case', 'Breadcrums are correct');
@@ -15864,7 +15864,7 @@ define('frontend-cp/tests/acceptance/agent/users/change-role-test', ['exports', 
     });
   });
 });
-define('frontend-cp/tests/acceptance/agent/users/create-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/session/styles', 'frontend-cp/components/ko-tabs/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpSessionStyles, _frontendCpComponentsKoTabsStyles) {
+define('frontend-cp/tests/acceptance/agent/users/create-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/session/styles', 'frontend-cp/components/ko-tabs/styles', 'frontend-cp/components/ko-agent-dropdown/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpSessionStyles, _frontendCpComponentsKoTabsStyles, _frontendCpComponentsKoAgentDropdownStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | User | Create user', {
     beforeEach: function beforeEach() {
@@ -15897,23 +15897,23 @@ define('frontend-cp/tests/acceptance/agent/users/create-test', ['exports', 'fron
   (0, _frontendCpTestsHelpersQunit.test)('Creating a user using the "+" button in the main header', function (assert) {
     visit('/agent');
 
-    click('.ko-agent-dropdown__add-icon');
+    click('.' + _frontendCpComponentsKoAgentDropdownStyles['default'].addIcon);
 
     andThen(function () {
-      assert.equal(find('.ko-agent-dropdown__drop').length, 1, '"+" Dropdown content should be visible');
-      click('.ko-agent-dropdown__nav-item:eq(1)');
+      assert.equal(find('.' + _frontendCpComponentsKoAgentDropdownStyles['default'].drop).length, 1, '"+" Dropdown content should be visible');
+      click('.' + _frontendCpComponentsKoAgentDropdownStyles['default'].navItem + ':eq(1)');
     });
 
     andThen(function () {
-      fillIn('.ko-agent-dropdown__drop input.ko-agent-dropdown_create-user__full_name', 'Barney Stinson');
-      fillIn('.ko-agent-dropdown__drop input.ko-agent-dropdown_create-user__email', 'barney@stin.son');
-      click('.ko-agent-dropdown__drop .button--primary');
+      fillIn('.qa-agent-dropdown_create-user__full_name', 'Barney Stinson');
+      fillIn('.qa-agent-dropdown_create-user__email', 'barney@stin.son');
+      click('.' + _frontendCpComponentsKoAgentDropdownStyles['default'].drop + ' .button--primary');
     });
 
     andThen(function () {
       assert.equal(currentURL(), '/agent/users/2', 'We are in the show page of the created user');
 
-      assert.equal(find('.ko-agent-dropdown .ember-basic-dropdown-trigger').attr('aria-expanded'), undefined, '"+" Dropdown content should be hidden');
+      assert.equal(find('.' + _frontendCpComponentsKoAgentDropdownStyles['default'].container + ' .ember-basic-dropdown-trigger').attr('aria-expanded'), undefined, '"+" Dropdown content should be hidden');
 
       assert.equal(find('.ko-layout_advanced_section__subject').text().trim(), 'Barney Stinson', 'The name of the user is vissible in the header');
       assert.equal(find('.' + _frontendCpComponentsKoTabsStyles['default'].item + ':eq(0)').text().trim(), 'Barney Stinson', 'Tabs are correct');
@@ -17682,7 +17682,7 @@ define('frontend-cp/tests/integration/components/ko-admin/sidebar-test', ['expor
     assert.ok(!this.$(':contains("admin.navigation.account")').length, 'expected *not* to see the account section');
   });
 });
-define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/component-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'ember', 'sinon', 'frontend-cp/components/ko-form/buttons/styles'], function (exports, _frontendCpTestsHelpersQunit, _ember, _sinon, _frontendCpComponentsKoFormButtonsStyles) {
+define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/component-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'ember', 'sinon', 'frontend-cp/components/ko-form/buttons/styles', 'frontend-cp/components/ko-agent-dropdown/layout/styles'], function (exports, _frontendCpTestsHelpersQunit, _ember, _sinon, _frontendCpComponentsKoFormButtonsStyles, _frontendCpComponentsKoAgentDropdownLayoutStyles) {
   var getOwner = _ember['default'].getOwner;
 
   (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-agent-dropdown/create-user', 'Integration | Component | ko agent dropdown/create user', {
@@ -17765,7 +17765,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
     var $cancelButtonElement = getFormControl($formElement, 'cancel');
     var $submitButtonElement = getFormControl($formElement, 'submit');
 
-    var $infoElement = this.$('.ko-agent-dropdown__footer');
+    var $infoElement = this.$('.' + _frontendCpComponentsKoAgentDropdownLayoutStyles['default'].footer);
 
     var $nameLabelElement = $nameInputElement.closest('div');
     var $emailLabelElement = $emailInputElement.closest('div');
@@ -18099,7 +18099,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
   });
 
   function getFormInput(formElement, controlName) {
-    return _ember['default'].$(formElement).find('.ko-agent-dropdown_create-user__' + controlName);
+    return _ember['default'].$(formElement).find('.qa-agent-dropdown_create-user__' + controlName);
   }
 
   function getFormControl(formElement, controlName) {
@@ -18112,7 +18112,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
   }
 
   function getFieldErrors(formElement, inputName) {
-    var $errorElements = _ember['default'].$(formElement).find('.ko-agent-dropdown_create-user__' + inputName + ' + .ko-form_field__error');
+    var $errorElements = _ember['default'].$(formElement).find('.qa-agent-dropdown_create-user__' + inputName + ' + .ko-form_field__error');
     return $errorElements.map(function (index, element) {
       return _ember['default'].$(element).text().trim();
     }).get();
