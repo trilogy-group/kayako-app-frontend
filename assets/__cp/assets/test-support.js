@@ -12,7 +12,7 @@
  *            Portions Copyright 2008-2011 Apple Inc. All rights reserved.
  * @license   Licensed under MIT license
  *            See https://raw.github.com/emberjs/ember.js/master/LICENSE
- * @version   2.6.2
+ * @version   2.7.0
  */
 
 var enifed, requireModule, require, Ember;
@@ -88,10 +88,9 @@ var mainContext = this;
 
       var deps = mod.deps;
       var callback = mod.callback;
-      var length = deps.length;
-      var reified = new Array(length);
+      var reified = new Array(deps.length);
 
-      for (var i = 0; i < length; i++) {
+      for (var i = 0; i < deps.length; i++) {
         if (deps[i] === 'exports') {
           reified[i] = exports;
         } else if (deps[i] === 'require') {
@@ -119,7 +118,7 @@ var mainContext = this;
   }
 })();
 
-enifed('ember-debug/deprecate', ['exports', 'ember-metal/core', 'ember-metal/error', 'ember-metal/logger', 'ember-debug/handlers'], function (exports, _emberMetalCore, _emberMetalError, _emberMetalLogger, _emberDebugHandlers) {
+enifed('ember-debug/deprecate', ['exports', 'ember-metal/error', 'ember-console', 'ember-environment', 'ember-debug/handlers'], function (exports, _emberMetalError, _emberConsole, _emberEnvironment, _emberDebugHandlers) {
   /*global __fail__*/
 
   'use strict';
@@ -149,7 +148,7 @@ enifed('ember-debug/deprecate', ['exports', 'ember-metal/core', 'ember-metal/err
   registerHandler(function logDeprecationToConsole(message, options) {
     var updatedMessage = formatMessage(message, options);
 
-    _emberMetalLogger.default.warn('DEPRECATION: ' + updatedMessage);
+    _emberConsole.default.warn('DEPRECATION: ' + updatedMessage);
   });
 
   var captureErrorForStack = undefined;
@@ -169,7 +168,7 @@ enifed('ember-debug/deprecate', ['exports', 'ember-metal/core', 'ember-metal/err
   }
 
   registerHandler(function logDeprecationStackTrace(message, options, next) {
-    if (_emberMetalCore.default.LOG_STACKTRACE_ON_DEPRECATION) {
+    if (_emberEnvironment.ENV.LOG_STACKTRACE_ON_DEPRECATION) {
       var stackStr = '';
       var error = captureErrorForStack();
       var stack = undefined;
@@ -189,14 +188,14 @@ enifed('ember-debug/deprecate', ['exports', 'ember-metal/core', 'ember-metal/err
 
       var updatedMessage = formatMessage(message, options);
 
-      _emberMetalLogger.default.warn('DEPRECATION: ' + updatedMessage + stackStr);
+      _emberConsole.default.warn('DEPRECATION: ' + updatedMessage + stackStr);
     } else {
       next.apply(undefined, arguments);
     }
   });
 
   registerHandler(function raiseOnDeprecation(message, options, next) {
-    if (_emberMetalCore.default.ENV.RAISE_ON_DEPRECATION) {
+    if (_emberEnvironment.ENV.RAISE_ON_DEPRECATION) {
       var updatedMessage = formatMessage(message);
 
       throw new _emberMetalError.default(updatedMessage);
@@ -298,7 +297,7 @@ enifed("ember-debug/handlers", ["exports"], function (exports) {
     }
   }
 });
-enifed('ember-debug/index', ['exports', 'ember-metal/core', 'ember-metal/debug', 'ember-metal/features', 'ember-metal/error', 'ember-metal/logger', 'ember-metal/environment', 'ember-debug/deprecate', 'ember-debug/warn'], function (exports, _emberMetalCore, _emberMetalDebug, _emberMetalFeatures, _emberMetalError, _emberMetalLogger, _emberMetalEnvironment, _emberDebugDeprecate, _emberDebugWarn) {
+enifed('ember-debug/index', ['exports', 'ember-metal/core', 'ember-environment', 'ember-metal/testing', 'ember-metal/debug', 'ember-metal/features', 'ember-metal/error', 'ember-console', 'ember-debug/deprecate', 'ember-debug/warn'], function (exports, _emberMetalCore, _emberEnvironment, _emberMetalTesting, _emberMetalDebug, _emberMetalFeatures, _emberMetalError, _emberConsole, _emberDebugDeprecate, _emberDebugWarn) {
   'use strict';
 
   exports._warnIfUsingStrippedFeatureFlags = _warnIfUsingStrippedFeatureFlags;
@@ -355,7 +354,7 @@ enifed('ember-debug/index', ['exports', 'ember-metal/core', 'ember-metal/debug',
     @public
   */
   _emberMetalDebug.setDebugFunction('debug', function debug(message) {
-    _emberMetalLogger.default.debug('DEBUG: ' + message);
+    _emberConsole.default.debug('DEBUG: ' + message);
   });
 
   /**
@@ -368,7 +367,7 @@ enifed('ember-debug/index', ['exports', 'ember-metal/core', 'ember-metal/debug',
     @private
   */
   _emberMetalDebug.setDebugFunction('info', function info() {
-    _emberMetalLogger.default.info.apply(undefined, arguments);
+    _emberConsole.default.info.apply(undefined, arguments);
   });
 
   /**
@@ -473,7 +472,7 @@ enifed('ember-debug/index', ['exports', 'ember-metal/core', 'ember-metal/debug',
 
   function _warnIfUsingStrippedFeatureFlags(FEATURES, knownFeatures, featuresWereStripped) {
     if (featuresWereStripped) {
-      _emberMetalDebug.warn('Ember.ENV.ENABLE_OPTIONAL_FEATURES is only available in canary builds.', !_emberMetalCore.default.ENV.ENABLE_OPTIONAL_FEATURES, { id: 'ember-debug.feature-flag-with-features-stripped' });
+      _emberMetalDebug.warn('Ember.ENV.ENABLE_OPTIONAL_FEATURES is only available in canary builds.', !_emberEnvironment.ENV.ENABLE_OPTIONAL_FEATURES, { id: 'ember-debug.feature-flag-with-features-stripped' });
 
       var keys = Object.keys(FEATURES || {});
       for (var i = 0; i < keys.length; i++) {
@@ -487,17 +486,21 @@ enifed('ember-debug/index', ['exports', 'ember-metal/core', 'ember-metal/debug',
     }
   }
 
-  if (!_emberMetalCore.default.testing) {
+  if (!_emberMetalTesting.isTesting()) {
     // Complain if they're using FEATURE flags in builds other than canary
     _emberMetalFeatures.FEATURES['features-stripped-test'] = true;
     var featuresWereStripped = true;
 
+    if (false) {
+      exports.featuresWereStripped = featuresWereStripped = false;
+    }
+
     delete _emberMetalFeatures.FEATURES['features-stripped-test'];
-    _warnIfUsingStrippedFeatureFlags(_emberMetalCore.default.ENV.FEATURES, _emberMetalFeatures.KNOWN_FEATURES, featuresWereStripped);
+    _warnIfUsingStrippedFeatureFlags(_emberEnvironment.ENV.FEATURES, _emberMetalFeatures.DEFAULT_FEATURES, featuresWereStripped);
 
     // Inform the developer about the Ember Inspector if not installed.
-    var isFirefox = _emberMetalEnvironment.default.isFirefox;
-    var isChrome = _emberMetalEnvironment.default.isChrome;
+    var isFirefox = _emberEnvironment.environment.isFirefox;
+    var isChrome = _emberEnvironment.environment.isChrome;
 
     if (typeof window !== 'undefined' && (isFirefox || isChrome) && window.addEventListener) {
       window.addEventListener('load', function () {
@@ -601,7 +604,8 @@ enifed('ember-debug/index', ['exports', 'ember-metal/core', 'ember-metal/debug',
     _emberMetalDebug.warn('Please use `ember.debug.js` instead of `ember.js` for development and debugging.');
   }
 });
-enifed('ember-debug/warn', ['exports', 'ember-metal/logger', 'ember-metal/debug', 'ember-debug/handlers'], function (exports, _emberMetalLogger, _emberMetalDebug, _emberDebugHandlers) {
+// reexports
+enifed('ember-debug/warn', ['exports', 'ember-console', 'ember-metal/debug', 'ember-debug/handlers'], function (exports, _emberConsole, _emberMetalDebug, _emberDebugHandlers) {
   'use strict';
 
   var _slice = Array.prototype.slice;
@@ -613,9 +617,9 @@ enifed('ember-debug/warn', ['exports', 'ember-metal/logger', 'ember-metal/debug'
   }
 
   registerHandler(function logWarning(message, options) {
-    _emberMetalLogger.default.warn('WARNING: ' + message);
-    if ('trace' in _emberMetalLogger.default) {
-      _emberMetalLogger.default.trace();
+    _emberConsole.default.warn('WARNING: ' + message);
+    if ('trace' in _emberConsole.default) {
+      _emberConsole.default.trace();
     }
   });
 
@@ -749,87 +753,17 @@ enifed('ember-testing/adapters/qunit', ['exports', 'ember-testing/adapters/adapt
     }
   });
 });
-enifed('ember-testing/helpers', ['exports', 'ember-metal/property_get', 'ember-metal/error', 'ember-metal/run_loop', 'ember-views/system/jquery', 'ember-testing/test', 'ember-runtime/ext/rsvp', 'ember-metal/features'], function (exports, _emberMetalProperty_get, _emberMetalError, _emberMetalRun_loop, _emberViewsSystemJquery, _emberTestingTest, _emberRuntimeExtRsvp, _emberMetalFeatures) {
+enifed('ember-testing/events', ['exports', 'ember-views/system/jquery', 'ember-metal/run_loop'], function (exports, _emberViewsSystemJquery, _emberMetalRun_loop) {
   'use strict';
 
-  /**
-  @module ember
-  @submodule ember-testing
-  */
+  exports.focus = focus;
+  exports.fireEvent = fireEvent;
 
-  var helper = _emberTestingTest.default.registerHelper;
-  var asyncHelper = _emberTestingTest.default.registerAsyncHelper;
+  var DEFAULT_EVENT_OPTIONS = { canBubble: true, cancelable: true };
+  var KEYBOARD_EVENT_TYPES = ['keydown', 'keypress', 'keyup'];
+  var MOUSE_EVENT_TYPES = ['click', 'mousedown', 'mouseup', 'dblclick', 'mouseenter', 'mouseleave', 'mousemove', 'mouseout', 'mouseover'];
 
-  var keyboardEventTypes, mouseEventTypes, buildKeyboardEvent, buildMouseEvent, buildBasicEvent, fireEvent, focus;
-
-  var defaultEventOptions = { canBubble: true, cancelable: true };
-  keyboardEventTypes = ['keydown', 'keypress', 'keyup'];
-  mouseEventTypes = ['click', 'mousedown', 'mouseup', 'dblclick', 'mouseenter', 'mouseleave', 'mousemove', 'mouseout', 'mouseover'];
-
-  buildKeyboardEvent = function buildKeyboardEvent(type) {
-    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-
-    var event = undefined;
-    try {
-      event = document.createEvent('KeyEvents');
-      var eventOpts = _emberViewsSystemJquery.default.extend({}, defaultEventOptions, options);
-      event.initKeyEvent(type, eventOpts.canBubble, eventOpts.cancelable, window, eventOpts.ctrlKey, eventOpts.altKey, eventOpts.shiftKey, eventOpts.metaKey, eventOpts.keyCode, eventOpts.charCode);
-    } catch (e) {
-      event = buildBasicEvent(type, options);
-    }
-    return event;
-  };
-
-  buildMouseEvent = function buildMouseEvent(type) {
-    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-
-    var event = undefined;
-    try {
-      event = document.createEvent('MouseEvents');
-      var eventOpts = _emberViewsSystemJquery.default.extend({}, defaultEventOptions, options);
-      event.initMouseEvent(type, eventOpts.canBubble, eventOpts.cancelable, window, eventOpts.detail, eventOpts.screenX, eventOpts.screenY, eventOpts.clientX, eventOpts.clientY, eventOpts.ctrlKey, eventOpts.altKey, eventOpts.shiftKey, eventOpts.metaKey, eventOpts.button, eventOpts.relatedTarget);
-    } catch (e) {
-      event = buildBasicEvent(type, options);
-    }
-    return event;
-  };
-
-  buildBasicEvent = function buildBasicEvent(type) {
-    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
-
-    var event = document.createEvent('Events');
-    event.initEvent(type, true, true);
-    _emberViewsSystemJquery.default.extend(event, options);
-    return event;
-  };
-
-  fireEvent = function fireEvent(element, type) {
-    var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-
-    if (!element) {
-      return;
-    }
-    var event = undefined;
-    if (keyboardEventTypes.indexOf(type) > -1) {
-      event = buildKeyboardEvent(type, options);
-    } else if (mouseEventTypes.indexOf(type) > -1) {
-      var rect = element.getBoundingClientRect();
-      var x = rect.left + 1;
-      var y = rect.top + 1;
-      var simulatedCoordinates = {
-        screenX: x + 5,
-        screenY: y + 95,
-        clientX: x,
-        clientY: y
-      };
-      event = buildMouseEvent(type, _emberViewsSystemJquery.default.extend(simulatedCoordinates, options));
-    } else {
-      event = buildBasicEvent(type, options);
-    }
-    element.dispatchEvent(event);
-  };
-
-  focus = function focus(el) {
+  function focus(el) {
     if (!el) {
       return;
     }
@@ -850,878 +784,73 @@ enifed('ember-testing/helpers', ['exports', 'ember-metal/property_get', 'ember-m
         });
       }
     }
-  };
-
-  function currentRouteName(app) {
-    var routingService = app.__container__.lookup('service:-routing');
-
-    return _emberMetalProperty_get.get(routingService, 'currentRouteName');
   }
 
-  function currentPath(app) {
-    var routingService = app.__container__.lookup('service:-routing');
+  function fireEvent(element, type) {
+    var options = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 
-    return _emberMetalProperty_get.get(routingService, 'currentPath');
-  }
-
-  function currentURL(app) {
-    var router = app.__container__.lookup('router:main');
-
-    return _emberMetalProperty_get.get(router, 'location').getURL();
-  }
-
-  function pauseTest() {
-    _emberTestingTest.default.adapter.asyncStart();
-    return new _emberRuntimeExtRsvp.default.Promise(function () {}, 'TestAdapter paused promise');
-  }
-
-  function visit(app, url) {
-    var router = app.__container__.lookup('router:main');
-    var shouldHandleURL = false;
-
-    app.boot().then(function () {
-      router.location.setURL(url);
-
-      if (shouldHandleURL) {
-        _emberMetalRun_loop.default(app.__deprecatedInstance__, 'handleURL', url);
-      }
-    });
-
-    if (app._readinessDeferrals > 0) {
-      router['initialURL'] = url;
-      _emberMetalRun_loop.default(app, 'advanceReadiness');
-      delete router['initialURL'];
-    } else {
-      shouldHandleURL = true;
+    if (!element) {
+      return;
     }
-
-    return app.testHelpers.wait();
-  }
-
-  function click(app, selector, context) {
-    var $el = app.testHelpers.findWithAssert(selector, context);
-    var el = $el[0];
-
-    _emberMetalRun_loop.default(null, fireEvent, el, 'mousedown');
-
-    focus(el);
-
-    _emberMetalRun_loop.default(null, fireEvent, el, 'mouseup');
-    _emberMetalRun_loop.default(null, fireEvent, el, 'click');
-
-    return app.testHelpers.wait();
-  }
-
-  function triggerEvent(app, selector, contextOrType, typeOrOptions, possibleOptions) {
-    var arity = arguments.length;
-    var context, type, options;
-
-    if (arity === 3) {
-      // context and options are optional, so this is
-      // app, selector, type
-      context = null;
-      type = contextOrType;
-      options = {};
-    } else if (arity === 4) {
-      // context and options are optional, so this is
-      if (typeof typeOrOptions === 'object') {
-        // either
-        // app, selector, type, options
-        context = null;
-        type = contextOrType;
-        options = typeOrOptions;
-      } else {
-        // or
-        // app, selector, context, type
-        context = contextOrType;
-        type = typeOrOptions;
-        options = {};
-      }
-    } else {
-      context = contextOrType;
-      type = typeOrOptions;
-      options = possibleOptions;
-    }
-
-    var $el = app.testHelpers.findWithAssert(selector, context);
-    var el = $el[0];
-
-    _emberMetalRun_loop.default(null, fireEvent, el, type, options);
-
-    return app.testHelpers.wait();
-  }
-
-  function keyEvent(app, selector, contextOrType, typeOrKeyCode, keyCode) {
-    var context, type;
-
-    if (typeof keyCode === 'undefined') {
-      context = null;
-      keyCode = typeOrKeyCode;
-      type = contextOrType;
-    } else {
-      context = contextOrType;
-      type = typeOrKeyCode;
-    }
-
-    return app.testHelpers.triggerEvent(selector, context, type, { keyCode: keyCode, which: keyCode });
-  }
-
-  function fillIn(app, selector, contextOrText, text) {
-    var $el, el, context;
-    if (typeof text === 'undefined') {
-      text = contextOrText;
-    } else {
-      context = contextOrText;
-    }
-    $el = app.testHelpers.findWithAssert(selector, context);
-    el = $el[0];
-    focus(el);
-    _emberMetalRun_loop.default(function () {
-      $el.val(text);
-      fireEvent(el, 'input');
-      fireEvent(el, 'change');
-    });
-    return app.testHelpers.wait();
-  }
-
-  function findWithAssert(app, selector, context) {
-    var $el = app.testHelpers.find(selector, context);
-    if ($el.length === 0) {
-      throw new _emberMetalError.default('Element ' + selector + ' not found.');
-    }
-    return $el;
-  }
-
-  function find(app, selector, context) {
-    var $el;
-    context = context || _emberMetalProperty_get.get(app, 'rootElement');
-    $el = app.$(selector, context);
-
-    return $el;
-  }
-
-  function andThen(app, callback) {
-    return app.testHelpers.wait(callback(app));
-  }
-
-  function wait(app, value) {
-    return new _emberRuntimeExtRsvp.default.Promise(function (resolve) {
-      var router = app.__container__.lookup('router:main');
-
-      // Every 10ms, poll for the async thing to have finished
-      var watcher = setInterval(function () {
-        // 1. If the router is loading, keep polling
-        var routerIsLoading = router.router && !!router.router.activeTransition;
-        if (routerIsLoading) {
-          return;
-        }
-
-        // 2. If there are pending Ajax requests, keep polling
-        if (_emberTestingTest.default.pendingAjaxRequests) {
-          return;
-        }
-
-        // 3. If there are scheduled timers or we are inside of a run loop, keep polling
-        if (_emberMetalRun_loop.default.hasScheduledTimers() || _emberMetalRun_loop.default.currentRunLoop) {
-          return;
-        }
-        if (_emberTestingTest.default.waiters && _emberTestingTest.default.waiters.any(function (waiter) {
-          var context = waiter[0];
-          var callback = waiter[1];
-          return !callback.call(context);
-        })) {
-          return;
-        }
-        // Stop polling
-        clearInterval(watcher);
-
-        // Synchronously resolve the promise
-        _emberMetalRun_loop.default(null, resolve, value);
-      }, 10);
-    });
-  }
-
-  /**
-    Loads a route, sets up any controllers, and renders any templates associated
-    with the route as though a real user had triggered the route change while
-    using your app.
-  
-    Example:
-  
-    ```javascript
-    visit('posts/index').then(function() {
-      // assert something
-    });
-    ```
-  
-    @method visit
-    @param {String} url the name of the route
-    @return {RSVP.Promise}
-    @public
-  */
-  asyncHelper('visit', visit);
-
-  /**
-    Clicks an element and triggers any actions triggered by the element's `click`
-    event.
-  
-    Example:
-  
-    ```javascript
-    click('.some-jQuery-selector').then(function() {
-      // assert something
-    });
-    ```
-  
-    @method click
-    @param {String} selector jQuery selector for finding element on the DOM
-    @return {RSVP.Promise}
-    @public
-  */
-  asyncHelper('click', click);
-
-  /**
-    Simulates a key event, e.g. `keypress`, `keydown`, `keyup` with the desired keyCode
-  
-    Example:
-  
-    ```javascript
-    keyEvent('.some-jQuery-selector', 'keypress', 13).then(function() {
-     // assert something
-    });
-    ```
-  
-    @method keyEvent
-    @param {String} selector jQuery selector for finding element on the DOM
-    @param {String} type the type of key event, e.g. `keypress`, `keydown`, `keyup`
-    @param {Number} keyCode the keyCode of the simulated key event
-    @return {RSVP.Promise}
-    @since 1.5.0
-    @public
-  */
-  asyncHelper('keyEvent', keyEvent);
-
-  /**
-    Fills in an input element with some text.
-  
-    Example:
-  
-    ```javascript
-    fillIn('#email', 'you@example.com').then(function() {
-      // assert something
-    });
-    ```
-  
-    @method fillIn
-    @param {String} selector jQuery selector finding an input element on the DOM
-    to fill text with
-    @param {String} text text to place inside the input element
-    @return {RSVP.Promise}
-    @public
-  */
-  asyncHelper('fillIn', fillIn);
-
-  /**
-    Finds an element in the context of the app's container element. A simple alias
-    for `app.$(selector)`.
-  
-    Example:
-  
-    ```javascript
-    var $el = find('.my-selector');
-    ```
-  
-    @method find
-    @param {String} selector jQuery string selector for element lookup
-    @return {Object} jQuery object representing the results of the query
-    @public
-  */
-  helper('find', find);
-
-  /**
-    Like `find`, but throws an error if the element selector returns no results.
-  
-    Example:
-  
-    ```javascript
-    var $el = findWithAssert('.doesnt-exist'); // throws error
-    ```
-  
-    @method findWithAssert
-    @param {String} selector jQuery selector string for finding an element within
-    the DOM
-    @return {Object} jQuery object representing the results of the query
-    @throws {Error} throws error if jQuery object returned has a length of 0
-    @public
-  */
-  helper('findWithAssert', findWithAssert);
-
-  /**
-    Causes the run loop to process any pending events. This is used to ensure that
-    any async operations from other helpers (or your assertions) have been processed.
-  
-    This is most often used as the return value for the helper functions (see 'click',
-    'fillIn','visit',etc).
-  
-    Example:
-  
-    ```javascript
-    Ember.Test.registerAsyncHelper('loginUser', function(app, username, password) {
-      visit('secured/path/here')
-      .fillIn('#username', username)
-      .fillIn('#password', password)
-      .click('.submit')
-  
-      return app.testHelpers.wait();
-    });
-  
-    @method wait
-    @param {Object} value The value to be returned.
-    @return {RSVP.Promise}
-    @public
-  */
-  asyncHelper('wait', wait);
-  asyncHelper('andThen', andThen);
-
-  /**
-    Returns the currently active route name.
-  
-  Example:
-  
-  ```javascript
-  function validateRouteName() {
-    equal(currentRouteName(), 'some.path', "correct route was transitioned into.");
-  }
-  
-  visit('/some/path').then(validateRouteName)
-  ```
-  
-  @method currentRouteName
-  @return {Object} The name of the currently active route.
-  @since 1.5.0
-  @public
-  */
-  helper('currentRouteName', currentRouteName);
-
-  /**
-    Returns the current path.
-  
-  Example:
-  
-  ```javascript
-  function validateURL() {
-    equal(currentPath(), 'some.path.index', "correct path was transitioned into.");
-  }
-  
-  click('#some-link-id').then(validateURL);
-  ```
-  
-  @method currentPath
-  @return {Object} The currently active path.
-  @since 1.5.0
-  @public
-  */
-  helper('currentPath', currentPath);
-
-  /**
-    Returns the current URL.
-  
-  Example:
-  
-  ```javascript
-  function validateURL() {
-    equal(currentURL(), '/some/path', "correct URL was transitioned into.");
-  }
-  
-  click('#some-link-id').then(validateURL);
-  ```
-  
-  @method currentURL
-  @return {Object} The currently active URL.
-  @since 1.5.0
-  @public
-  */
-  helper('currentURL', currentURL);
-
-  /**
-   Pauses the current test - this is useful for debugging while testing or for test-driving.
-   It allows you to inspect the state of your application at any point.
-  
-   Example (The test will pause before clicking the button):
-  
-   ```javascript
-   visit('/')
-   return pauseTest();
-  
-   click('.btn');
-   ```
-  
-   @since 1.9.0
-   @method pauseTest
-   @return {Object} A promise that will never resolve
-   @public
-  */
-  helper('pauseTest', pauseTest);
-
-  /**
-    Triggers the given DOM event on the element identified by the provided selector.
-  
-    Example:
-  
-    ```javascript
-    triggerEvent('#some-elem-id', 'blur');
-    ```
-  
-    This is actually used internally by the `keyEvent` helper like so:
-  
-    ```javascript
-    triggerEvent('#some-elem-id', 'keypress', { keyCode: 13 });
-    ```
-  
-   @method triggerEvent
-   @param {String} selector jQuery selector for finding element on the DOM
-   @param {String} [context] jQuery selector that will limit the selector
-                             argument to find only within the context's children
-   @param {String} type The event type to be triggered.
-   @param {Object} [options] The options to be passed to jQuery.Event.
-   @return {RSVP.Promise}
-   @since 1.5.0
-   @public
-  */
-  asyncHelper('triggerEvent', triggerEvent);
-});
-
-// Firefox does not trigger the `focusin` event if the window
-// does not have focus. If the document doesn't have focus just
-// use trigger('focusin') instead.
-enifed('ember-testing/index', ['exports', 'ember-metal/core', 'ember-testing/initializers', 'ember-testing/support', 'ember-testing/setup_for_testing', 'ember-testing/test', 'ember-testing/adapters/adapter', 'ember-testing/adapters/qunit', 'ember-testing/helpers'], function (exports, _emberMetalCore, _emberTestingInitializers, _emberTestingSupport, _emberTestingSetup_for_testing, _emberTestingTest, _emberTestingAdaptersAdapter, _emberTestingAdaptersQunit, _emberTestingHelpers) {
-  'use strict';
-
-  // adds helpers to helpers object in Test
-
-  /**
-    @module ember
-    @submodule ember-testing
-  */
-
-  _emberMetalCore.default.Test = _emberTestingTest.default;
-  _emberMetalCore.default.Test.Adapter = _emberTestingAdaptersAdapter.default;
-  _emberMetalCore.default.Test.QUnitAdapter = _emberTestingAdaptersQunit.default;
-  _emberMetalCore.default.setupForTesting = _emberTestingSetup_for_testing.default;
-});
-// to setup initializer
-// to handle various edge cases
-enifed('ember-testing/initializers', ['exports', 'ember-runtime/system/lazy_load'], function (exports, _emberRuntimeSystemLazy_load) {
-  'use strict';
-
-  var name = 'deferReadiness in `testing` mode';
-
-  _emberRuntimeSystemLazy_load.onLoad('Ember.Application', function (Application) {
-    if (!Application.initializers[name]) {
-      Application.initializer({
-        name: name,
-
-        initialize: function (application) {
-          if (application.testing) {
-            application.deferReadiness();
-          }
-        }
-      });
-    }
-  });
-});
-enifed('ember-testing/setup_for_testing', ['exports', 'ember-metal/core', 'ember-testing/adapters/qunit', 'ember-views/system/jquery'], function (exports, _emberMetalCore, _emberTestingAdaptersQunit, _emberViewsSystemJquery) {
-  'use strict';
-
-  exports.default = setupForTesting;
-
-  var Test, requests;
-
-  function incrementAjaxPendingRequests(_, xhr) {
-    requests.push(xhr);
-    Test.pendingAjaxRequests = requests.length;
-  }
-
-  function decrementAjaxPendingRequests(_, xhr) {
-    for (var i = 0; i < requests.length; i++) {
-      if (xhr === requests[i]) {
-        requests.splice(i, 1);
-      }
-    }
-    Test.pendingAjaxRequests = requests.length;
-  }
-
-  /**
-    Sets Ember up for testing. This is useful to perform
-    basic setup steps in order to unit test.
-  
-    Use `App.setupForTesting` to perform integration tests (full
-    application testing).
-  
-    @method setupForTesting
-    @namespace Ember
-    @since 1.5.0
-    @private
-  */
-
-  function setupForTesting() {
-    if (!Test) {
-      Test = requireModule('ember-testing/test')['default'];
-    }
-
-    _emberMetalCore.default.testing = true;
-
-    // if adapter is not manually set default to QUnit
-    if (!Test.adapter) {
-      Test.adapter = _emberTestingAdaptersQunit.default.create();
-    }
-
-    requests = [];
-    Test.pendingAjaxRequests = requests.length;
-
-    _emberViewsSystemJquery.default(document).off('ajaxSend', incrementAjaxPendingRequests);
-    _emberViewsSystemJquery.default(document).off('ajaxComplete', decrementAjaxPendingRequests);
-    _emberViewsSystemJquery.default(document).on('ajaxSend', incrementAjaxPendingRequests);
-    _emberViewsSystemJquery.default(document).on('ajaxComplete', decrementAjaxPendingRequests);
-  }
-});
-
-// import Test from "ember-testing/test";  // ES6TODO: fix when cycles are supported
-enifed('ember-testing/support', ['exports', 'ember-metal/debug', 'ember-views/system/jquery', 'ember-metal/environment'], function (exports, _emberMetalDebug, _emberViewsSystemJquery, _emberMetalEnvironment) {
-  'use strict';
-
-  /**
-    @module ember
-    @submodule ember-testing
-  */
-
-  var $ = _emberViewsSystemJquery.default;
-
-  /**
-    This method creates a checkbox and triggers the click event to fire the
-    passed in handler. It is used to correct for a bug in older versions
-    of jQuery (e.g 1.8.3).
-  
-    @private
-    @method testCheckboxClick
-  */
-  function testCheckboxClick(handler) {
-    $('<input type="checkbox">').css({ position: 'absolute', left: '-1000px', top: '-1000px' }).appendTo('body').on('click', handler).trigger('click').remove();
-  }
-
-  if (_emberMetalEnvironment.default.hasDOM) {
-    $(function () {
-      /*
-        Determine whether a checkbox checked using jQuery's "click" method will have
-        the correct value for its checked property.
-         If we determine that the current jQuery version exhibits this behavior,
-        patch it to work correctly as in the commit for the actual fix:
-        https://github.com/jquery/jquery/commit/1fb2f92.
-      */
-      testCheckboxClick(function () {
-        if (!this.checked && !$.event.special.click) {
-          $.event.special.click = {
-            // For checkbox, fire native event so checked state will be right
-            trigger: function () {
-              if ($.nodeName(this, 'input') && this.type === 'checkbox' && this.click) {
-                this.click();
-                return false;
-              }
-            }
-          };
-        }
-      });
-
-      // Try again to verify that the patch took effect or blow up.
-      testCheckboxClick(function () {
-        _emberMetalDebug.warn('clicked checkboxes should be checked! the jQuery patch didn\'t work', this.checked, { id: 'ember-testing.test-checkbox-click' });
-      });
-    });
-  }
-});
-enifed('ember-testing/test', ['exports', 'ember-metal/run_loop', 'ember-runtime/ext/rsvp', 'ember-testing/setup_for_testing', 'ember-application/system/application', 'ember-runtime/system/native_array'], function (exports, _emberMetalRun_loop, _emberRuntimeExtRsvp, _emberTestingSetup_for_testing, _emberApplicationSystemApplication, _emberRuntimeSystemNative_array) {
-  'use strict';
-
-  /**
-    @module ember
-    @submodule ember-testing
-  */
-  var helpers = {};
-  var injectHelpersCallbacks = [];
-
-  /**
-    This is a container for an assortment of testing related functionality:
-  
-    * Choose your default test adapter (for your framework of choice).
-    * Register/Unregister additional test helpers.
-    * Setup callbacks to be fired when the test helpers are injected into
-      your application.
-  
-    @class Test
-    @namespace Ember
-    @public
-  */
-  var Test = {
-    /**
-      Hash containing all known test helpers.
-       @property _helpers
-      @private
-      @since 1.7.0
-    */
-    _helpers: helpers,
-
-    /**
-      `registerHelper` is used to register a test helper that will be injected
-      when `App.injectTestHelpers` is called.
-       The helper method will always be called with the current Application as
-      the first parameter.
-       For example:
-       ```javascript
-      Ember.Test.registerHelper('boot', function(app) {
-        Ember.run(app, app.advanceReadiness);
-      });
-      ```
-       This helper can later be called without arguments because it will be
-      called with `app` as the first parameter.
-       ```javascript
-      App = Ember.Application.create();
-      App.injectTestHelpers();
-      boot();
-      ```
-       @public
-      @method registerHelper
-      @param {String} name The name of the helper method to add.
-      @param {Function} helperMethod
-      @param options {Object}
-    */
-    registerHelper: function (name, helperMethod) {
-      helpers[name] = {
-        method: helperMethod,
-        meta: { wait: false }
+    var event = undefined;
+    if (KEYBOARD_EVENT_TYPES.indexOf(type) > -1) {
+      event = buildKeyboardEvent(type, options);
+    } else if (MOUSE_EVENT_TYPES.indexOf(type) > -1) {
+      var rect = element.getBoundingClientRect();
+      var x = rect.left + 1;
+      var y = rect.top + 1;
+      var simulatedCoordinates = {
+        screenX: x + 5,
+        screenY: y + 95,
+        clientX: x,
+        clientY: y
       };
-    },
-
-    /**
-      `registerAsyncHelper` is used to register an async test helper that will be injected
-      when `App.injectTestHelpers` is called.
-       The helper method will always be called with the current Application as
-      the first parameter.
-       For example:
-       ```javascript
-      Ember.Test.registerAsyncHelper('boot', function(app) {
-        Ember.run(app, app.advanceReadiness);
-      });
-      ```
-       The advantage of an async helper is that it will not run
-      until the last async helper has completed.  All async helpers
-      after it will wait for it complete before running.
-        For example:
-       ```javascript
-      Ember.Test.registerAsyncHelper('deletePost', function(app, postId) {
-        click('.delete-' + postId);
-      });
-       // ... in your test
-      visit('/post/2');
-      deletePost(2);
-      visit('/post/3');
-      deletePost(3);
-      ```
-       @public
-      @method registerAsyncHelper
-      @param {String} name The name of the helper method to add.
-      @param {Function} helperMethod
-      @since 1.2.0
-    */
-    registerAsyncHelper: function (name, helperMethod) {
-      helpers[name] = {
-        method: helperMethod,
-        meta: { wait: true }
-      };
-    },
-
-    /**
-      Remove a previously added helper method.
-       Example:
-       ```javascript
-      Ember.Test.unregisterHelper('wait');
-      ```
-       @public
-      @method unregisterHelper
-      @param {String} name The helper to remove.
-    */
-    unregisterHelper: function (name) {
-      delete helpers[name];
-      delete Test.Promise.prototype[name];
-    },
-
-    /**
-      Used to register callbacks to be fired whenever `App.injectTestHelpers`
-      is called.
-       The callback will receive the current application as an argument.
-       Example:
-       ```javascript
-      Ember.Test.onInjectHelpers(function() {
-        Ember.$(document).ajaxSend(function() {
-          Test.pendingAjaxRequests++;
-        });
-         Ember.$(document).ajaxComplete(function() {
-          Test.pendingAjaxRequests--;
-        });
-      });
-      ```
-       @public
-      @method onInjectHelpers
-      @param {Function} callback The function to be called.
-    */
-    onInjectHelpers: function (callback) {
-      injectHelpersCallbacks.push(callback);
-    },
-
-    /**
-      This returns a thenable tailored for testing.  It catches failed
-      `onSuccess` callbacks and invokes the `Ember.Test.adapter.exception`
-      callback in the last chained then.
-       This method should be returned by async helpers such as `wait`.
-       @public
-      @method promise
-      @param {Function} resolver The function used to resolve the promise.
-      @param {String} label An optional string for identifying the promise.
-    */
-    promise: function (resolver, label) {
-      var fullLabel = 'Ember.Test.promise: ' + (label || '<Unknown Promise>');
-      return new Test.Promise(resolver, fullLabel);
-    },
-
-    /**
-     Used to allow ember-testing to communicate with a specific testing
-     framework.
-      You can manually set it before calling `App.setupForTesting()`.
-      Example:
-      ```javascript
-     Ember.Test.adapter = MyCustomAdapter.create()
-     ```
-      If you do not set it, ember-testing will default to `Ember.Test.QUnitAdapter`.
-      @public
-     @property adapter
-     @type {Class} The adapter to be used.
-     @default Ember.Test.QUnitAdapter
-    */
-    adapter: null,
-
-    /**
-      Replacement for `Ember.RSVP.resolve`
-      The only difference is this uses
-      an instance of `Ember.Test.Promise`
-       @public
-      @method resolve
-      @param {Mixed} The value to resolve
-      @since 1.2.0
-    */
-    resolve: function (val) {
-      return Test.promise(function (resolve) {
-        return resolve(val);
-      });
-    },
-
-    /**
-       This allows ember-testing to play nicely with other asynchronous
-       events, such as an application that is waiting for a CSS3
-       transition or an IndexDB transaction.
-        For example:
-        ```javascript
-       Ember.Test.registerWaiter(function() {
-         return myPendingTransactions() == 0;
-       });
-       ```
-       The `context` argument allows you to optionally specify the `this`
-       with which your callback will be invoked.
-        For example:
-        ```javascript
-       Ember.Test.registerWaiter(MyDB, MyDB.hasPendingTransactions);
-       ```
-        @public
-       @method registerWaiter
-       @param {Object} context (optional)
-       @param {Function} callback
-       @since 1.2.0
-    */
-    registerWaiter: function (context, callback) {
-      if (arguments.length === 1) {
-        callback = context;
-        context = null;
-      }
-      if (!this.waiters) {
-        this.waiters = _emberRuntimeSystemNative_array.A();
-      }
-      this.waiters.push([context, callback]);
-    },
-    /**
-       `unregisterWaiter` is used to unregister a callback that was
-       registered with `registerWaiter`.
-        @public
-       @method unregisterWaiter
-       @param {Object} context (optional)
-       @param {Function} callback
-       @since 1.2.0
-    */
-    unregisterWaiter: function (context, callback) {
-      if (!this.waiters) {
-        return;
-      }
-      if (arguments.length === 1) {
-        callback = context;
-        context = null;
-      }
-      this.waiters = _emberRuntimeSystemNative_array.A(this.waiters.filter(function (elt) {
-        return !(elt[0] === context && elt[1] === callback);
-      }));
-    }
-  };
-
-  function helper(app, name) {
-    var fn = helpers[name].method;
-    var meta = helpers[name].meta;
-
-    return function () {
-      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
-
-      var lastPromise;
-
-      args.unshift(app);
-
-      // some helpers are not async and
-      // need to return a value immediately.
-      // example: `find`
-      if (!meta.wait) {
-        return fn.apply(app, args);
-      }
-
-      lastPromise = run(function () {
-        return Test.resolve(Test.lastPromise);
-      });
-
-      // wait for last helper's promise to resolve and then
-      // execute. To be safe, we need to tell the adapter we're going
-      // asynchronous here, because fn may not be invoked before we
-      // return.
-      Test.adapter.asyncStart();
-      return lastPromise.then(function () {
-        return fn.apply(app, args);
-      }).finally(function () {
-        Test.adapter.asyncEnd();
-      });
-    };
-  }
-
-  function run(fn) {
-    if (!_emberMetalRun_loop.default.currentRunLoop) {
-      return _emberMetalRun_loop.default(fn);
+      event = buildMouseEvent(type, _emberViewsSystemJquery.default.extend(simulatedCoordinates, options));
     } else {
-      return fn();
+      event = buildBasicEvent(type, options);
     }
+    element.dispatchEvent(event);
   }
+
+  function buildBasicEvent(type) {
+    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+    var event = document.createEvent('Events');
+    event.initEvent(type, true, true);
+    _emberViewsSystemJquery.default.extend(event, options);
+    return event;
+  }
+
+  function buildMouseEvent(type) {
+    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+    var event = undefined;
+    try {
+      event = document.createEvent('MouseEvents');
+      var eventOpts = _emberViewsSystemJquery.default.extend({}, DEFAULT_EVENT_OPTIONS, options);
+      event.initMouseEvent(type, eventOpts.canBubble, eventOpts.cancelable, window, eventOpts.detail, eventOpts.screenX, eventOpts.screenY, eventOpts.clientX, eventOpts.clientY, eventOpts.ctrlKey, eventOpts.altKey, eventOpts.shiftKey, eventOpts.metaKey, eventOpts.button, eventOpts.relatedTarget);
+    } catch (e) {
+      event = buildBasicEvent(type, options);
+    }
+    return event;
+  }
+
+  function buildKeyboardEvent(type) {
+    var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+
+    var event = undefined;
+    try {
+      event = document.createEvent('KeyEvents');
+      var eventOpts = _emberViewsSystemJquery.default.extend({}, DEFAULT_EVENT_OPTIONS, options);
+      event.initKeyEvent(type, eventOpts.canBubble, eventOpts.cancelable, window, eventOpts.ctrlKey, eventOpts.altKey, eventOpts.shiftKey, eventOpts.metaKey, eventOpts.keyCode, eventOpts.charCode);
+    } catch (e) {
+      event = buildBasicEvent(type, options);
+    }
+    return event;
+  }
+});
+enifed('ember-testing/ext/application', ['exports', 'ember-application/system/application', 'ember-testing/setup_for_testing', 'ember-testing/test/helpers', 'ember-testing/test/promise', 'ember-testing/test/run', 'ember-testing/test/on_inject_helpers', 'ember-testing/test/adapter'], function (exports, _emberApplicationSystemApplication, _emberTestingSetup_for_testing, _emberTestingTestHelpers, _emberTestingTestPromise, _emberTestingTestRun, _emberTestingTestOn_inject_helpers, _emberTestingTestAdapter) {
+  'use strict';
 
   _emberApplicationSystemApplication.default.reopen({
     /**
@@ -1825,15 +954,13 @@ enifed('ember-testing/test', ['exports', 'ember-metal/run_loop', 'ember-runtime/
       });
 
       this.testHelpers = {};
-      for (var name in helpers) {
+      for (var name in _emberTestingTestHelpers.helpers) {
         this.originalMethods[name] = this.helperContainer[name];
         this.testHelpers[name] = this.helperContainer[name] = helper(this, name);
-        protoWrap(Test.Promise.prototype, name, helper(this, name), helpers[name].meta.wait);
+        protoWrap(_emberTestingTestPromise.default.prototype, name, helper(this, name), _emberTestingTestHelpers.helpers[name].meta.wait);
       }
 
-      for (var i = 0, l = injectHelpersCallbacks.length; i < l; i++) {
-        injectHelpersCallbacks[i](this);
-      }
+      _emberTestingTestOn_inject_helpers.invokeInjectHelpersCallbacks(this);
     },
 
     /**
@@ -1851,9 +978,9 @@ enifed('ember-testing/test', ['exports', 'ember-metal/run_loop', 'ember-runtime/
         return;
       }
 
-      for (var name in helpers) {
+      for (var name in _emberTestingTestHelpers.helpers) {
         this.helperContainer[name] = this.originalMethods[name];
-        delete Test.Promise.prototype[name];
+        delete _emberTestingTestPromise.default.prototype[name];
         delete this.testHelpers[name];
         delete this.originalMethods[name];
       }
@@ -1865,8 +992,8 @@ enifed('ember-testing/test', ['exports', 'ember-metal/run_loop', 'ember-runtime/
   // of helper chaining
   function protoWrap(proto, name, callback, isAsync) {
     proto[name] = function () {
-      for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-        args[_key2] = arguments[_key2];
+      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
       }
 
       if (isAsync) {
@@ -1879,23 +1006,1085 @@ enifed('ember-testing/test', ['exports', 'ember-metal/run_loop', 'ember-runtime/
     };
   }
 
-  Test.Promise = function () {
-    _emberRuntimeExtRsvp.default.Promise.apply(this, arguments);
-    Test.lastPromise = this;
+  function helper(app, name) {
+    var fn = _emberTestingTestHelpers.helpers[name].method;
+    var meta = _emberTestingTestHelpers.helpers[name].meta;
+    if (!meta.wait) {
+      return function () {
+        for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+          args[_key2] = arguments[_key2];
+        }
+
+        return fn.apply(app, [app].concat(args));
+      };
+    }
+
+    return function () {
+      for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+        args[_key3] = arguments[_key3];
+      }
+
+      var lastPromise = _emberTestingTestRun.default(function () {
+        return _emberTestingTestPromise.resolve(_emberTestingTestPromise.getLastPromise());
+      });
+
+      // wait for last helper's promise to resolve and then
+      // execute. To be safe, we need to tell the adapter we're going
+      // asynchronous here, because fn may not be invoked before we
+      // return.
+      _emberTestingTestAdapter.asyncStart();
+      return lastPromise.then(function () {
+        return fn.apply(app, [app].concat(args));
+      }).finally(_emberTestingTestAdapter.asyncEnd);
+    };
+  }
+});
+enifed('ember-testing/ext/rsvp', ['exports', 'ember-runtime/ext/rsvp', 'ember-metal/run_loop', 'ember-metal/testing', 'ember-testing/test/adapter'], function (exports, _emberRuntimeExtRsvp, _emberMetalRun_loop, _emberMetalTesting, _emberTestingTestAdapter) {
+  'use strict';
+
+  _emberRuntimeExtRsvp.default.configure('async', function (callback, promise) {
+    // if schedule will cause autorun, we need to inform adapter
+    if (_emberMetalTesting.isTesting() && !_emberMetalRun_loop.default.backburner.currentInstance) {
+      _emberTestingTestAdapter.asyncStart();
+      _emberMetalRun_loop.default.backburner.schedule('actions', function () {
+        _emberTestingTestAdapter.asyncEnd();
+        callback(promise);
+      });
+    } else {
+      _emberMetalRun_loop.default.backburner.schedule('actions', function () {
+        return callback(promise);
+      });
+    }
+  });
+
+  exports.default = _emberRuntimeExtRsvp.default;
+});
+enifed('ember-testing/helpers', ['exports', 'ember-testing/test/helpers', 'ember-testing/helpers/and_then', 'ember-testing/helpers/click', 'ember-testing/helpers/current_path', 'ember-testing/helpers/current_route_name', 'ember-testing/helpers/current_url', 'ember-testing/helpers/fill_in', 'ember-testing/helpers/find', 'ember-testing/helpers/find_with_assert', 'ember-testing/helpers/key_event', 'ember-testing/helpers/pause_test', 'ember-testing/helpers/trigger_event', 'ember-testing/helpers/visit', 'ember-testing/helpers/wait'], function (exports, _emberTestingTestHelpers, _emberTestingHelpersAnd_then, _emberTestingHelpersClick, _emberTestingHelpersCurrent_path, _emberTestingHelpersCurrent_route_name, _emberTestingHelpersCurrent_url, _emberTestingHelpersFill_in, _emberTestingHelpersFind, _emberTestingHelpersFind_with_assert, _emberTestingHelpersKey_event, _emberTestingHelpersPause_test, _emberTestingHelpersTrigger_event, _emberTestingHelpersVisit, _emberTestingHelpersWait) {
+  'use strict';
+
+  /**
+  @module ember
+  @submodule ember-testing
+  */
+
+  /**
+    Loads a route, sets up any controllers, and renders any templates associated
+    with the route as though a real user had triggered the route change while
+    using your app.
+  
+    Example:
+  
+    ```javascript
+    visit('posts/index').then(function() {
+      // assert something
+    });
+    ```
+  
+    @method visit
+    @param {String} url the name of the route
+    @return {RSVP.Promise}
+    @public
+  */
+  _emberTestingTestHelpers.registerAsyncHelper('visit', _emberTestingHelpersVisit.default);
+
+  /**
+    Clicks an element and triggers any actions triggered by the element's `click`
+    event.
+  
+    Example:
+  
+    ```javascript
+    click('.some-jQuery-selector').then(function() {
+      // assert something
+    });
+    ```
+  
+    @method click
+    @param {String} selector jQuery selector for finding element on the DOM
+    @return {RSVP.Promise}
+    @public
+  */
+  _emberTestingTestHelpers.registerAsyncHelper('click', _emberTestingHelpersClick.default);
+
+  /**
+    Simulates a key event, e.g. `keypress`, `keydown`, `keyup` with the desired keyCode
+  
+    Example:
+  
+    ```javascript
+    keyEvent('.some-jQuery-selector', 'keypress', 13).then(function() {
+     // assert something
+    });
+    ```
+  
+    @method keyEvent
+    @param {String} selector jQuery selector for finding element on the DOM
+    @param {String} type the type of key event, e.g. `keypress`, `keydown`, `keyup`
+    @param {Number} keyCode the keyCode of the simulated key event
+    @return {RSVP.Promise}
+    @since 1.5.0
+    @public
+  */
+  _emberTestingTestHelpers.registerAsyncHelper('keyEvent', _emberTestingHelpersKey_event.default);
+
+  /**
+    Fills in an input element with some text.
+  
+    Example:
+  
+    ```javascript
+    fillIn('#email', 'you@example.com').then(function() {
+      // assert something
+    });
+    ```
+  
+    @method fillIn
+    @param {String} selector jQuery selector finding an input element on the DOM
+    to fill text with
+    @param {String} text text to place inside the input element
+    @return {RSVP.Promise}
+    @public
+  */
+  _emberTestingTestHelpers.registerAsyncHelper('fillIn', _emberTestingHelpersFill_in.default);
+
+  /**
+    Finds an element in the context of the app's container element. A simple alias
+    for `app.$(selector)`.
+  
+    Example:
+  
+    ```javascript
+    var $el = find('.my-selector');
+    ```
+  
+    @method find
+    @param {String} selector jQuery string selector for element lookup
+    @return {Object} jQuery object representing the results of the query
+    @public
+  */
+  _emberTestingTestHelpers.registerHelper('find', _emberTestingHelpersFind.default);
+
+  /**
+    Like `find`, but throws an error if the element selector returns no results.
+  
+    Example:
+  
+    ```javascript
+    var $el = findWithAssert('.doesnt-exist'); // throws error
+    ```
+  
+    @method findWithAssert
+    @param {String} selector jQuery selector string for finding an element within
+    the DOM
+    @return {Object} jQuery object representing the results of the query
+    @throws {Error} throws error if jQuery object returned has a length of 0
+    @public
+  */
+  _emberTestingTestHelpers.registerHelper('findWithAssert', _emberTestingHelpersFind_with_assert.default);
+
+  /**
+    Causes the run loop to process any pending events. This is used to ensure that
+    any async operations from other helpers (or your assertions) have been processed.
+  
+    This is most often used as the return value for the helper functions (see 'click',
+    'fillIn','visit',etc).
+  
+    Example:
+  
+    ```javascript
+    Ember.Test.registerAsyncHelper('loginUser', function(app, username, password) {
+      visit('secured/path/here')
+      .fillIn('#username', username)
+      .fillIn('#password', password)
+      .click('.submit')
+  
+      return app.testHelpers.wait();
+    });
+  
+    @method wait
+    @param {Object} value The value to be returned.
+    @return {RSVP.Promise}
+    @public
+  */
+  _emberTestingTestHelpers.registerAsyncHelper('wait', _emberTestingHelpersWait.default);
+  _emberTestingTestHelpers.registerAsyncHelper('andThen', _emberTestingHelpersAnd_then.default);
+
+  /**
+    Returns the currently active route name.
+  
+  Example:
+  
+  ```javascript
+  function validateRouteName() {
+    equal(currentRouteName(), 'some.path', "correct route was transitioned into.");
+  }
+  
+  visit('/some/path').then(validateRouteName)
+  ```
+  
+  @method currentRouteName
+  @return {Object} The name of the currently active route.
+  @since 1.5.0
+  @public
+  */
+  _emberTestingTestHelpers.registerHelper('currentRouteName', _emberTestingHelpersCurrent_route_name.default);
+
+  /**
+    Returns the current path.
+  
+  Example:
+  
+  ```javascript
+  function validateURL() {
+    equal(currentPath(), 'some.path.index', "correct path was transitioned into.");
+  }
+  
+  click('#some-link-id').then(validateURL);
+  ```
+  
+  @method currentPath
+  @return {Object} The currently active path.
+  @since 1.5.0
+  @public
+  */
+  _emberTestingTestHelpers.registerHelper('currentPath', _emberTestingHelpersCurrent_path.default);
+
+  /**
+    Returns the current URL.
+  
+  Example:
+  
+  ```javascript
+  function validateURL() {
+    equal(currentURL(), '/some/path', "correct URL was transitioned into.");
+  }
+  
+  click('#some-link-id').then(validateURL);
+  ```
+  
+  @method currentURL
+  @return {Object} The currently active URL.
+  @since 1.5.0
+  @public
+  */
+  _emberTestingTestHelpers.registerHelper('currentURL', _emberTestingHelpersCurrent_url.default);
+
+  /**
+   Pauses the current test - this is useful for debugging while testing or for test-driving.
+   It allows you to inspect the state of your application at any point.
+  
+   Example (The test will pause before clicking the button):
+  
+   ```javascript
+   visit('/')
+   return pauseTest();
+  
+   click('.btn');
+   ```
+  
+   @since 1.9.0
+   @method pauseTest
+   @return {Object} A promise that will never resolve
+   @public
+  */
+  _emberTestingTestHelpers.registerAsyncHelper('pauseTest', _emberTestingHelpersPause_test.default);
+
+  /**
+    Triggers the given DOM event on the element identified by the provided selector.
+  
+    Example:
+  
+    ```javascript
+    triggerEvent('#some-elem-id', 'blur');
+    ```
+  
+    This is actually used internally by the `keyEvent` helper like so:
+  
+    ```javascript
+    triggerEvent('#some-elem-id', 'keypress', { keyCode: 13 });
+    ```
+  
+   @method triggerEvent
+   @param {String} selector jQuery selector for finding element on the DOM
+   @param {String} [context] jQuery selector that will limit the selector
+                             argument to find only within the context's children
+   @param {String} type The event type to be triggered.
+   @param {Object} [options] The options to be passed to jQuery.Event.
+   @return {RSVP.Promise}
+   @since 1.5.0
+   @public
+  */
+  _emberTestingTestHelpers.registerAsyncHelper('triggerEvent', _emberTestingHelpersTrigger_event.default);
+});
+enifed("ember-testing/helpers/and_then", ["exports"], function (exports) {
+  "use strict";
+
+  exports.default = andThen;
+
+  function andThen(app, callback) {
+    return app.testHelpers.wait(callback(app));
+  }
+});
+enifed('ember-testing/helpers/click', ['exports', 'ember-metal/run_loop', 'ember-testing/events'], function (exports, _emberMetalRun_loop, _emberTestingEvents) {
+  'use strict';
+
+  exports.default = click;
+
+  function click(app, selector, context) {
+    var $el = app.testHelpers.findWithAssert(selector, context);
+    var el = $el[0];
+
+    _emberMetalRun_loop.default(null, _emberTestingEvents.fireEvent, el, 'mousedown');
+
+    _emberTestingEvents.focus(el);
+
+    _emberMetalRun_loop.default(null, _emberTestingEvents.fireEvent, el, 'mouseup');
+    _emberMetalRun_loop.default(null, _emberTestingEvents.fireEvent, el, 'click');
+
+    return app.testHelpers.wait();
+  }
+});
+enifed('ember-testing/helpers/current_path', ['exports', 'ember-metal/property_get'], function (exports, _emberMetalProperty_get) {
+  'use strict';
+
+  exports.default = currentPath;
+
+  function currentPath(app) {
+    var routingService = app.__container__.lookup('service:-routing');
+    return _emberMetalProperty_get.get(routingService, 'currentPath');
+  }
+});
+enifed('ember-testing/helpers/current_route_name', ['exports', 'ember-metal/property_get'], function (exports, _emberMetalProperty_get) {
+  'use strict';
+
+  exports.default = currentRouteName;
+
+  function currentRouteName(app) {
+    var routingService = app.__container__.lookup('service:-routing');
+    return _emberMetalProperty_get.get(routingService, 'currentRouteName');
+  }
+});
+enifed('ember-testing/helpers/current_url', ['exports', 'ember-metal/property_get'], function (exports, _emberMetalProperty_get) {
+  'use strict';
+
+  exports.default = currentURL;
+
+  function currentURL(app) {
+    var router = app.__container__.lookup('router:main');
+    return _emberMetalProperty_get.get(router, 'location').getURL();
+  }
+});
+enifed('ember-testing/helpers/fill_in', ['exports', 'ember-metal/run_loop', 'ember-testing/events'], function (exports, _emberMetalRun_loop, _emberTestingEvents) {
+  'use strict';
+
+  exports.default = fillIn;
+
+  function fillIn(app, selector, contextOrText, text) {
+    var $el, el, context;
+    if (typeof text === 'undefined') {
+      text = contextOrText;
+    } else {
+      context = contextOrText;
+    }
+    $el = app.testHelpers.findWithAssert(selector, context);
+    el = $el[0];
+    _emberTestingEvents.focus(el);
+    _emberMetalRun_loop.default(function () {
+      $el.val(text);
+      _emberTestingEvents.fireEvent(el, 'input');
+      _emberTestingEvents.fireEvent(el, 'change');
+    });
+    return app.testHelpers.wait();
+  }
+});
+enifed('ember-testing/helpers/find', ['exports', 'ember-metal/property_get'], function (exports, _emberMetalProperty_get) {
+  'use strict';
+
+  exports.default = find;
+
+  function find(app, selector, context) {
+    var $el = undefined;
+    context = context || _emberMetalProperty_get.get(app, 'rootElement');
+    $el = app.$(selector, context);
+    return $el;
+  }
+});
+enifed('ember-testing/helpers/find_with_assert', ['exports'], function (exports) {
+  'use strict';
+
+  exports.default = findWithAssert;
+
+  function findWithAssert(app, selector, context) {
+    var $el = app.testHelpers.find(selector, context);
+    if ($el.length === 0) {
+      throw new Error('Element ' + selector + ' not found.');
+    }
+    return $el;
+  }
+});
+enifed('ember-testing/helpers/key_event', ['exports'], function (exports) {
+  'use strict';
+
+  exports.default = keyEvent;
+
+  function keyEvent(app, selector, contextOrType, typeOrKeyCode, keyCode) {
+    var context, type;
+
+    if (typeof keyCode === 'undefined') {
+      context = null;
+      keyCode = typeOrKeyCode;
+      type = contextOrType;
+    } else {
+      context = contextOrType;
+      type = typeOrKeyCode;
+    }
+
+    return app.testHelpers.triggerEvent(selector, context, type, { keyCode: keyCode, which: keyCode });
+  }
+});
+enifed('ember-testing/helpers/pause_test', ['exports', 'ember-runtime/ext/rsvp'], function (exports, _emberRuntimeExtRsvp) {
+  'use strict';
+
+  exports.default = pauseTest;
+
+  function pauseTest() {
+    return new _emberRuntimeExtRsvp.default.Promise(function () {}, 'TestAdapter paused promise');
+  }
+});
+enifed('ember-testing/helpers/trigger_event', ['exports', 'ember-metal/run_loop', 'ember-testing/events'], function (exports, _emberMetalRun_loop, _emberTestingEvents) {
+  'use strict';
+
+  exports.default = triggerEvent;
+
+  function triggerEvent(app, selector, contextOrType, typeOrOptions, possibleOptions) {
+    var arity = arguments.length;
+    var context, type, options;
+
+    if (arity === 3) {
+      // context and options are optional, so this is
+      // app, selector, type
+      context = null;
+      type = contextOrType;
+      options = {};
+    } else if (arity === 4) {
+      // context and options are optional, so this is
+      if (typeof typeOrOptions === 'object') {
+        // either
+        // app, selector, type, options
+        context = null;
+        type = contextOrType;
+        options = typeOrOptions;
+      } else {
+        // or
+        // app, selector, context, type
+        context = contextOrType;
+        type = typeOrOptions;
+        options = {};
+      }
+    } else {
+      context = contextOrType;
+      type = typeOrOptions;
+      options = possibleOptions;
+    }
+
+    var $el = app.testHelpers.findWithAssert(selector, context);
+    var el = $el[0];
+
+    _emberMetalRun_loop.default(null, _emberTestingEvents.fireEvent, el, type, options);
+
+    return app.testHelpers.wait();
+  }
+});
+enifed('ember-testing/helpers/visit', ['exports', 'ember-metal/run_loop'], function (exports, _emberMetalRun_loop) {
+  'use strict';
+
+  exports.default = visit;
+
+  function visit(app, url) {
+    var router = app.__container__.lookup('router:main');
+    var shouldHandleURL = false;
+
+    app.boot().then(function () {
+      router.location.setURL(url);
+
+      if (shouldHandleURL) {
+        _emberMetalRun_loop.default(app.__deprecatedInstance__, 'handleURL', url);
+      }
+    });
+
+    if (app._readinessDeferrals > 0) {
+      router['initialURL'] = url;
+      _emberMetalRun_loop.default(app, 'advanceReadiness');
+      delete router['initialURL'];
+    } else {
+      shouldHandleURL = true;
+    }
+
+    return app.testHelpers.wait();
+  }
+});
+enifed('ember-testing/helpers/wait', ['exports', 'ember-testing/test/waiters', 'ember-runtime/ext/rsvp', 'ember-metal/run_loop', 'ember-testing/test/pending_requests'], function (exports, _emberTestingTestWaiters, _emberRuntimeExtRsvp, _emberMetalRun_loop, _emberTestingTestPending_requests) {
+  'use strict';
+
+  exports.default = wait;
+
+  function wait(app, value) {
+    return new _emberRuntimeExtRsvp.default.Promise(function (resolve) {
+      var router = app.__container__.lookup('router:main');
+
+      // Every 10ms, poll for the async thing to have finished
+      var watcher = setInterval(function () {
+        // 1. If the router is loading, keep polling
+        var routerIsLoading = router.router && !!router.router.activeTransition;
+        if (routerIsLoading) {
+          return;
+        }
+
+        // 2. If there are pending Ajax requests, keep polling
+        if (_emberTestingTestPending_requests.pendingRequests()) {
+          return;
+        }
+
+        // 3. If there are scheduled timers or we are inside of a run loop, keep polling
+        if (_emberMetalRun_loop.default.hasScheduledTimers() || _emberMetalRun_loop.default.currentRunLoop) {
+          return;
+        }
+
+        if (_emberTestingTestWaiters.checkWaiters()) {
+          return;
+        }
+
+        // Stop polling
+        clearInterval(watcher);
+
+        // Synchronously resolve the promise
+        _emberMetalRun_loop.default(null, resolve, value);
+      }, 10);
+    });
+  }
+});
+enifed('ember-testing/index', ['exports', 'ember-metal/core', 'ember-testing/test', 'ember-testing/adapters/adapter', 'ember-testing/setup_for_testing', 'require', 'ember-testing/support', 'ember-testing/ext/application', 'ember-testing/ext/rsvp', 'ember-testing/helpers', 'ember-testing/initializers'], function (exports, _emberMetalCore, _emberTestingTest, _emberTestingAdaptersAdapter, _emberTestingSetup_for_testing, _require, _emberTestingSupport, _emberTestingExtApplication, _emberTestingExtRsvp, _emberTestingHelpers, _emberTestingInitializers) {
+  'use strict';
+
+  // to setup initializer
+
+  /**
+    @module ember
+    @submodule ember-testing
+  */
+
+  _emberMetalCore.default.Test = _emberTestingTest.default;
+  _emberMetalCore.default.Test.Adapter = _emberTestingAdaptersAdapter.default;
+  _emberMetalCore.default.setupForTesting = _emberTestingSetup_for_testing.default;
+  Object.defineProperty(_emberTestingTest.default, 'QUnitAdapter', {
+    get: function () {
+      return _require.default('ember-testing/adapters/qunit').default;
+    }
+  });
+});
+// reexports
+// to handle various edge cases
+// adds helpers to helpers object in Test
+enifed('ember-testing/initializers', ['exports', 'ember-runtime/system/lazy_load'], function (exports, _emberRuntimeSystemLazy_load) {
+  'use strict';
+
+  var name = 'deferReadiness in `testing` mode';
+
+  _emberRuntimeSystemLazy_load.onLoad('Ember.Application', function (Application) {
+    if (!Application.initializers[name]) {
+      Application.initializer({
+        name: name,
+
+        initialize: function (application) {
+          if (application.testing) {
+            application.deferReadiness();
+          }
+        }
+      });
+    }
+  });
+});
+enifed('ember-testing/setup_for_testing', ['exports', 'ember-metal/testing', 'ember-views/system/jquery', 'ember-testing/test/adapter', 'ember-testing/test/pending_requests', 'require'], function (exports, _emberMetalTesting, _emberViewsSystemJquery, _emberTestingTestAdapter, _emberTestingTestPending_requests, _require) {
+  'use strict';
+
+  exports.default = setupForTesting;
+
+  /**
+    Sets Ember up for testing. This is useful to perform
+    basic setup steps in order to unit test.
+  
+    Use `App.setupForTesting` to perform integration tests (full
+    application testing).
+  
+    @method setupForTesting
+    @namespace Ember
+    @since 1.5.0
+    @private
+  */
+
+  function setupForTesting() {
+    _emberMetalTesting.setTesting(true);
+
+    var adapter = _emberTestingTestAdapter.getAdapter();
+    // if adapter is not manually set default to QUnit
+    if (!adapter) {
+      var QUnitAdapter = _require.default('ember-testing/adapters/qunit').default;
+      _emberTestingTestAdapter.setAdapter(new QUnitAdapter());
+    }
+
+    _emberViewsSystemJquery.default(document).off('ajaxSend', _emberTestingTestPending_requests.incrementPendingRequests);
+    _emberViewsSystemJquery.default(document).off('ajaxComplete', _emberTestingTestPending_requests.decrementPendingRequests);
+
+    _emberTestingTestPending_requests.clearPendingRequests();
+
+    _emberViewsSystemJquery.default(document).on('ajaxSend', _emberTestingTestPending_requests.incrementPendingRequests);
+    _emberViewsSystemJquery.default(document).on('ajaxComplete', _emberTestingTestPending_requests.decrementPendingRequests);
+  }
+});
+enifed('ember-testing/support', ['exports', 'ember-metal/debug', 'ember-views/system/jquery', 'ember-environment'], function (exports, _emberMetalDebug, _emberViewsSystemJquery, _emberEnvironment) {
+  'use strict';
+
+  /**
+    @module ember
+    @submodule ember-testing
+  */
+
+  var $ = _emberViewsSystemJquery.default;
+
+  /**
+    This method creates a checkbox and triggers the click event to fire the
+    passed in handler. It is used to correct for a bug in older versions
+    of jQuery (e.g 1.8.3).
+  
+    @private
+    @method testCheckboxClick
+  */
+  function testCheckboxClick(handler) {
+    $('<input type="checkbox">').css({ position: 'absolute', left: '-1000px', top: '-1000px' }).appendTo('body').on('click', handler).trigger('click').remove();
+  }
+
+  if (_emberEnvironment.environment.hasDOM) {
+    $(function () {
+      /*
+        Determine whether a checkbox checked using jQuery's "click" method will have
+        the correct value for its checked property.
+         If we determine that the current jQuery version exhibits this behavior,
+        patch it to work correctly as in the commit for the actual fix:
+        https://github.com/jquery/jquery/commit/1fb2f92.
+      */
+      testCheckboxClick(function () {
+        if (!this.checked && !$.event.special.click) {
+          $.event.special.click = {
+            // For checkbox, fire native event so checked state will be right
+            trigger: function () {
+              if ($.nodeName(this, 'input') && this.type === 'checkbox' && this.click) {
+                this.click();
+                return false;
+              }
+            }
+          };
+        }
+      });
+
+      // Try again to verify that the patch took effect or blow up.
+      testCheckboxClick(function () {
+        _emberMetalDebug.warn('clicked checkboxes should be checked! the jQuery patch didn\'t work', this.checked, { id: 'ember-testing.test-checkbox-click' });
+      });
+    });
+  }
+});
+enifed('ember-testing/test', ['exports', 'ember-testing/test/helpers', 'ember-testing/test/on_inject_helpers', 'ember-testing/test/promise', 'ember-testing/test/waiters', 'ember-testing/test/adapter', 'ember-metal/features'], function (exports, _emberTestingTestHelpers, _emberTestingTestOn_inject_helpers, _emberTestingTestPromise, _emberTestingTestWaiters, _emberTestingTestAdapter, _emberMetalFeatures) {
+  /**
+    @module ember
+    @submodule ember-testing
+  */
+  'use strict';
+
+  /**
+    This is a container for an assortment of testing related functionality:
+  
+    * Choose your default test adapter (for your framework of choice).
+    * Register/Unregister additional test helpers.
+    * Setup callbacks to be fired when the test helpers are injected into
+      your application.
+  
+    @class Test
+    @namespace Ember
+    @public
+  */
+  var Test = {
+    /**
+      Hash containing all known test helpers.
+       @property _helpers
+      @private
+      @since 1.7.0
+    */
+    _helpers: _emberTestingTestHelpers.helpers,
+
+    registerHelper: _emberTestingTestHelpers.registerHelper,
+    registerAsyncHelper: _emberTestingTestHelpers.registerAsyncHelper,
+    unregisterHelper: _emberTestingTestHelpers.unregisterHelper,
+    onInjectHelpers: _emberTestingTestOn_inject_helpers.onInjectHelpers,
+    Promise: _emberTestingTestPromise.default,
+    promise: _emberTestingTestPromise.promise,
+    resolve: _emberTestingTestPromise.resolve,
+    registerWaiter: _emberTestingTestWaiters.registerWaiter,
+    unregisterWaiter: _emberTestingTestWaiters.unregisterWaiter
   };
 
-  Test.Promise.prototype = Object.create(_emberRuntimeExtRsvp.default.Promise.prototype);
-  Test.Promise.prototype.constructor = Test.Promise;
-  Test.Promise.resolve = Test.resolve;
+  if (false) {
+    Test.checkWaiters = _emberTestingTestWaiters.checkWaiters;
+  }
 
-  // Patch `then` to isolate async methods
-  // specifically `Ember.Test.lastPromise`
-  var originalThen = _emberRuntimeExtRsvp.default.Promise.prototype.then;
-  Test.Promise.prototype.then = function (onSuccess, onFailure) {
-    return originalThen.call(this, function (val) {
-      return isolate(onSuccess, val);
-    }, onFailure);
-  };
+  /**
+   Used to allow ember-testing to communicate with a specific testing
+   framework.
+  
+   You can manually set it before calling `App.setupForTesting()`.
+  
+   Example:
+  
+   ```javascript
+   Ember.Test.adapter = MyCustomAdapter.create()
+   ```
+  
+   If you do not set it, ember-testing will default to `Ember.Test.QUnitAdapter`.
+  
+   @public
+   @for Ember.Test
+   @property adapter
+   @type {Class} The adapter to be used.
+   @default Ember.Test.QUnitAdapter
+  */
+  Object.defineProperty(Test, 'adapter', {
+    get: _emberTestingTestAdapter.getAdapter,
+    set: _emberTestingTestAdapter.setAdapter
+  });
+
+  Object.defineProperty(Test, 'waiters', {
+    get: _emberTestingTestWaiters.generateDeprecatedWaitersArray
+  });
+
+  exports.default = Test;
+});
+enifed('ember-testing/test/adapter', ['exports', 'ember-console', 'ember-metal/error_handler'], function (exports, _emberConsole, _emberMetalError_handler) {
+  'use strict';
+
+  exports.getAdapter = getAdapter;
+  exports.setAdapter = setAdapter;
+  exports.asyncStart = asyncStart;
+  exports.asyncEnd = asyncEnd;
+
+  var adapter = undefined;
+
+  function getAdapter() {
+    return adapter;
+  }
+
+  function setAdapter(value) {
+    adapter = value;
+    if (value) {
+      _emberMetalError_handler.setDispatchOverride(adapterDispatch);
+    } else {
+      _emberMetalError_handler.setDispatchOverride(null);
+    }
+  }
+
+  function asyncStart() {
+    if (adapter) {
+      adapter.asyncStart();
+    }
+  }
+
+  function asyncEnd() {
+    if (adapter) {
+      adapter.asyncEnd();
+    }
+  }
+
+  function adapterDispatch(error) {
+    adapter.exception(error);
+    _emberConsole.default.error(error.stack);
+  }
+});
+enifed('ember-testing/test/helpers', ['exports', 'ember-testing/test/promise'], function (exports, _emberTestingTestPromise) {
+  'use strict';
+
+  exports.registerHelper = registerHelper;
+  exports.registerAsyncHelper = registerAsyncHelper;
+  exports.unregisterHelper = unregisterHelper;
+  var helpers = {};
+
+  exports.helpers = helpers;
+  /**
+    `registerHelper` is used to register a test helper that will be injected
+    when `App.injectTestHelpers` is called.
+  
+    The helper method will always be called with the current Application as
+    the first parameter.
+  
+    For example:
+  
+    ```javascript
+    Ember.Test.registerHelper('boot', function(app) {
+      Ember.run(app, app.advanceReadiness);
+    });
+    ```
+  
+    This helper can later be called without arguments because it will be
+    called with `app` as the first parameter.
+  
+    ```javascript
+    App = Ember.Application.create();
+    App.injectTestHelpers();
+    boot();
+    ```
+  
+    @public
+    @for Ember.Test
+    @method registerHelper
+    @param {String} name The name of the helper method to add.
+    @param {Function} helperMethod
+    @param options {Object}
+  */
+
+  function registerHelper(name, helperMethod) {
+    helpers[name] = {
+      method: helperMethod,
+      meta: { wait: false }
+    };
+  }
+
+  /**
+    `registerAsyncHelper` is used to register an async test helper that will be injected
+    when `App.injectTestHelpers` is called.
+  
+    The helper method will always be called with the current Application as
+    the first parameter.
+  
+    For example:
+  
+    ```javascript
+    Ember.Test.registerAsyncHelper('boot', function(app) {
+      Ember.run(app, app.advanceReadiness);
+    });
+    ```
+  
+    The advantage of an async helper is that it will not run
+    until the last async helper has completed.  All async helpers
+    after it will wait for it complete before running.
+  
+  
+    For example:
+  
+    ```javascript
+    Ember.Test.registerAsyncHelper('deletePost', function(app, postId) {
+      click('.delete-' + postId);
+    });
+  
+    // ... in your test
+    visit('/post/2');
+    deletePost(2);
+    visit('/post/3');
+    deletePost(3);
+    ```
+  
+    @public
+    @for Ember.Test
+    @method registerAsyncHelper
+    @param {String} name The name of the helper method to add.
+    @param {Function} helperMethod
+    @since 1.2.0
+  */
+
+  function registerAsyncHelper(name, helperMethod) {
+    helpers[name] = {
+      method: helperMethod,
+      meta: { wait: true }
+    };
+  }
+
+  /**
+    Remove a previously added helper method.
+  
+    Example:
+  
+    ```javascript
+    Ember.Test.unregisterHelper('wait');
+    ```
+  
+    @public
+    @method unregisterHelper
+    @param {String} name The helper to remove.
+  */
+
+  function unregisterHelper(name) {
+    delete helpers[name];
+    delete _emberTestingTestPromise.default.prototype[name];
+  }
+});
+enifed("ember-testing/test/on_inject_helpers", ["exports"], function (exports) {
+  "use strict";
+
+  exports.onInjectHelpers = onInjectHelpers;
+  exports.invokeInjectHelpersCallbacks = invokeInjectHelpersCallbacks;
+  var callbacks = [];
+
+  exports.callbacks = callbacks;
+  /**
+    Used to register callbacks to be fired whenever `App.injectTestHelpers`
+    is called.
+  
+    The callback will receive the current application as an argument.
+  
+    Example:
+  
+    ```javascript
+    Ember.Test.onInjectHelpers(function() {
+      Ember.$(document).ajaxSend(function() {
+        Test.pendingRequests++;
+      });
+  
+      Ember.$(document).ajaxComplete(function() {
+        Test.pendingRequests--;
+      });
+    });
+    ```
+  
+    @public
+    @for Ember.Test
+    @method onInjectHelpers
+    @param {Function} callback The function to be called.
+  */
+
+  function onInjectHelpers(callback) {
+    callbacks.push(callback);
+  }
+
+  function invokeInjectHelpersCallbacks(app) {
+    for (var i = 0; i < callbacks.length; i++) {
+      callbacks[i](app);
+    }
+  }
+});
+enifed("ember-testing/test/pending_requests", ["exports"], function (exports) {
+  "use strict";
+
+  exports.pendingRequests = pendingRequests;
+  exports.clearPendingRequests = clearPendingRequests;
+  exports.incrementPendingRequests = incrementPendingRequests;
+  exports.decrementPendingRequests = decrementPendingRequests;
+  var requests = [];
+
+  function pendingRequests() {
+    return requests.length;
+  }
+
+  function clearPendingRequests() {
+    requests.length = 0;
+  }
+
+  function incrementPendingRequests(_, xhr) {
+    requests.push(xhr);
+  }
+
+  function decrementPendingRequests(_, xhr) {
+    for (var i = 0; i < requests.length; i++) {
+      if (xhr === requests[i]) {
+        requests.splice(i, 1);
+        break;
+      }
+    }
+  }
+});
+enifed('ember-testing/test/promise', ['exports', 'ember-runtime/ext/rsvp', 'ember-testing/test/run'], function (exports, _emberRuntimeExtRsvp, _emberTestingTestRun) {
+  'use strict';
+
+  exports.promise = promise;
+  exports.resolve = resolve;
+  exports.getLastPromise = getLastPromise;
+
+  function _defaults(obj, defaults) { var keys = Object.getOwnPropertyNames(defaults); for (var i = 0; i < keys.length; i++) { var key = keys[i]; var value = Object.getOwnPropertyDescriptor(defaults, key); if (value && value.configurable && obj[key] === undefined) { Object.defineProperty(obj, key, value); } } return obj; }
+
+  function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+  function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : _defaults(subClass, superClass); }
+
+  var lastPromise = undefined;
+
+  var TestPromise = (function (_RSVP$Promise) {
+    _inherits(TestPromise, _RSVP$Promise);
+
+    function TestPromise() {
+      _classCallCheck(this, TestPromise);
+
+      _RSVP$Promise.apply(this, arguments);
+      lastPromise = this;
+    }
+
+    /**
+      This returns a thenable tailored for testing.  It catches failed
+      `onSuccess` callbacks and invokes the `Ember.Test.adapter.exception`
+      callback in the last chained then.
+    
+      This method should be returned by async helpers such as `wait`.
+    
+      @public
+      @for Ember.Test
+      @method promise
+      @param {Function} resolver The function used to resolve the promise.
+      @param {String} label An optional string for identifying the promise.
+    */
+
+    TestPromise.resolve = function resolve(val) {
+      return new TestPromise(function (resolve) {
+        return resolve(val);
+      });
+    };
+
+    TestPromise.prototype.then = function then(onFulfillment) {
+      var _RSVP$Promise$prototype$then;
+
+      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        args[_key - 1] = arguments[_key];
+      }
+
+      return (_RSVP$Promise$prototype$then = _RSVP$Promise.prototype.then).call.apply(_RSVP$Promise$prototype$then, [this, function (result) {
+        return isolate(onFulfillment, result);
+      }].concat(args));
+    };
+
+    return TestPromise;
+  })(_emberRuntimeExtRsvp.default.Promise);
+
+  exports.default = TestPromise;
+
+  function promise(resolver, label) {
+    var fullLabel = 'Ember.Test.promise: ' + (label || '<Unknown Promise>');
+    return new TestPromise(resolver, fullLabel);
+  }
+
+  /**
+    Replacement for `Ember.RSVP.resolve`
+    The only difference is this uses
+    an instance of `Ember.Test.Promise`
+  
+    @public
+    @for Ember.Test
+    @method resolve
+    @param {Mixed} The value to resolve
+    @since 1.2.0
+  */
+
+  function resolve(result) {
+    return new TestPromise(function (resolve) {
+      return resolve(result);
+    });
+  }
+
+  function getLastPromise() {
+    return lastPromise;
+  }
 
   // This method isolates nested async methods
   // so that they don't conflict with other last promises.
@@ -1903,32 +2092,172 @@ enifed('ember-testing/test', ['exports', 'ember-metal/run_loop', 'ember-runtime/
   // 1. Set `Ember.Test.lastPromise` to null
   // 2. Invoke method
   // 3. Return the last promise created during method
-  function isolate(fn, val) {
-    var value, lastPromise;
-
+  function isolate(onFulfillment, result) {
     // Reset lastPromise for nested helpers
-    Test.lastPromise = null;
+    lastPromise = null;
 
-    value = fn(val);
+    var value = onFulfillment(result);
 
-    lastPromise = Test.lastPromise;
-    Test.lastPromise = null;
+    var promise = lastPromise;
+    lastPromise = null;
 
     // If the method returned a promise
     // return that promise. If not,
     // return the last async helper's promise
-    if (value && value instanceof Test.Promise || !lastPromise) {
+    if (value && value instanceof TestPromise || !promise) {
       return value;
     } else {
-      return run(function () {
-        return Test.resolve(lastPromise).then(function () {
+      return _emberTestingTestRun.default(function () {
+        return resolve(promise).then(function () {
           return value;
         });
       });
     }
   }
+});
+enifed('ember-testing/test/run', ['exports', 'ember-metal/run_loop'], function (exports, _emberMetalRun_loop) {
+  'use strict';
 
-  exports.default = Test;
+  exports.default = run;
+
+  function run(fn) {
+    if (!_emberMetalRun_loop.default.currentRunLoop) {
+      return _emberMetalRun_loop.default(fn);
+    } else {
+      return fn();
+    }
+  }
+});
+enifed('ember-testing/test/waiters', ['exports', 'ember-metal/features', 'ember-metal/debug'], function (exports, _emberMetalFeatures, _emberMetalDebug) {
+  'use strict';
+
+  exports.registerWaiter = registerWaiter;
+  exports.unregisterWaiter = unregisterWaiter;
+  exports.checkWaiters = checkWaiters;
+  exports.generateDeprecatedWaitersArray = generateDeprecatedWaitersArray;
+
+  var contexts = [];
+  var callbacks = [];
+
+  /**
+     This allows ember-testing to play nicely with other asynchronous
+     events, such as an application that is waiting for a CSS3
+     transition or an IndexDB transaction.
+  
+     For example:
+  
+     ```javascript
+     Ember.Test.registerWaiter(function() {
+       return myPendingTransactions() == 0;
+     });
+     ```
+     The `context` argument allows you to optionally specify the `this`
+     with which your callback will be invoked.
+  
+     For example:
+  
+     ```javascript
+     Ember.Test.registerWaiter(MyDB, MyDB.hasPendingTransactions);
+     ```
+  
+     @public
+     @for Ember.Test
+     @method registerWaiter
+     @param {Object} context (optional)
+     @param {Function} callback
+     @since 1.2.0
+  */
+
+  function registerWaiter(context, callback) {
+    if (arguments.length === 1) {
+      callback = context;
+      context = null;
+    }
+    if (indexOf(context, callback) > -1) {
+      return;
+    }
+    contexts.push(context);
+    callbacks.push(callback);
+  }
+
+  /**
+     `unregisterWaiter` is used to unregister a callback that was
+     registered with `registerWaiter`.
+  
+     @public
+     @for Ember.Test
+     @method unregisterWaiter
+     @param {Object} context (optional)
+     @param {Function} callback
+     @since 1.2.0
+  */
+
+  function unregisterWaiter(context, callback) {
+    if (!callbacks.length) {
+      return;
+    }
+    if (arguments.length === 1) {
+      callback = context;
+      context = null;
+    }
+    var i = indexOf(context, callback);
+    if (i === -1) {
+      return;
+    }
+    contexts.splice(i, 1);
+    callbacks.splice(i, 1);
+  }
+
+  /**
+    Iterates through each registered test waiter, and invokes
+    its callback. If any waiter returns false, this method will return
+    true indicating that the waiters have not settled yet.
+  
+    This is generally used internally from the acceptance/integration test
+    infrastructure.
+  
+    @public
+    @for Ember.Test
+    @static
+    @method checkWaiters
+  */
+
+  function checkWaiters() {
+    if (!callbacks.length) {
+      return false;
+    }
+    for (var i = 0; i < callbacks.length; i++) {
+      var context = contexts[i];
+      var callback = callbacks[i];
+      if (!callback.call(context)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function indexOf(context, callback) {
+    for (var i = 0; i < callbacks.length; i++) {
+      if (callbacks[i] === callback && contexts[i] === context) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  function generateDeprecatedWaitersArray() {
+    _emberMetalDebug.deprecate('Usage of `Ember.Test.waiters` is deprecated. Please refactor to `Ember.Test.checkWaiters`.', !false, { until: '2.8.0', id: 'ember-testing.test-waiters' });
+
+    var array = new Array(callbacks.length);
+    for (var i = 0; i < callbacks.length; i++) {
+      var context = contexts[i];
+      var callback = callbacks[i];
+
+      array[i] = [context, callback];
+    }
+
+    return array;
+  }
 });
 requireModule("ember-testing");
 
@@ -6394,92 +6723,132 @@ QUnit.notifications = function( options ) {
   }
 };
 
-/* globals jQuery,QUnit */
+/* globals jQuery, QUnit */
 
-QUnit.config.urlConfig.push({ id: 'nocontainer', label: 'Hide container'});
-QUnit.config.urlConfig.push({ id: 'nolint', label: 'Disable Linting'});
-QUnit.config.urlConfig.push({ id: 'dockcontainer', label: 'Dock container'});
-QUnit.config.testTimeout = 60000; //Default Test Timeout 60 Seconds
+(function() {
+  QUnit.config.urlConfig.push({ id: 'nocontainer', label: 'Hide container'});
+  QUnit.config.urlConfig.push({ id: 'nolint', label: 'Disable Linting'});
+  QUnit.config.urlConfig.push({ id: 'dockcontainer', label: 'Dock container'});
+  QUnit.config.urlConfig.push({ id: 'devmode', label: 'Development mode' });
 
-if (QUnit.notifications) {
-  QUnit.notifications({
-    icons: {
-      passed: '/assets/passed.png',
-      failed: '/assets/failed.png'
+  QUnit.config.testTimeout = QUnit.urlParams.devmode ? null : 60000; //Default Test Timeout 60 Seconds
+
+  if (QUnit.notifications) {
+    QUnit.notifications({
+      icons: {
+        passed: '/assets/passed.png',
+        failed: '/assets/failed.png'
+      }
+    });
+  }
+
+  function ready(fn) {
+    if (typeof jQuery === 'function') {
+      jQuery(document).ready(fn);
+      return;
     }
+
+    if (document.readyState != 'loading'){
+      fn();
+    } else {
+      document.addEventListener('DOMContentLoaded', fn);
+    }
+  }
+
+  ready(function() {
+    var testContainer = document.getElementById('ember-testing-container');
+    if (!testContainer) { return; }
+
+    var params = QUnit.urlParams;
+
+    var containerVisibility = params.nocontainer ? 'hidden' : 'visible';
+    var containerPosition = (params.dockcontainer || params.devmode) ? 'absolute' : 'relative';
+
+    if (params.devmode) {
+      testContainer.className = ' full-screen';
+    }
+
+    testContainer.style.visibility = containerVisibility;
+    testContainer.style.position = containerPosition;
   });
-}
-
-jQuery(document).ready(function() {
-  var testContainer = document.getElementById('ember-testing-container');
-  if (!testContainer) { return; }
-
-  var containerVisibility = QUnit.urlParams.nocontainer ? 'hidden' : 'visible';
-  var containerPosition = QUnit.urlParams.dockcontainer ? 'absolute' : 'relative';
-  testContainer.style.visibility = containerVisibility;
-  testContainer.style.position = containerPosition;
-});
+})();
 
 /* globals jQuery, QUnit, require, requirejs */
 
-jQuery(document).ready(function() {
-  var testLoaderModulePath = 'ember-cli-test-loader/test-support/index';
-
-  if (!requirejs.entries[testLoaderModulePath]) {
-    testLoaderModulePath = 'ember-cli/test-loader';
-  }
-
-  var TestLoaderModule = require(testLoaderModulePath);
-  var TestLoader = TestLoaderModule['default'];
-  var addModuleExcludeMatcher = TestLoaderModule['addModuleExcludeMatcher'];
-  var addModuleIncludeMatcher = TestLoaderModule['addModuleIncludeMatcher'];
-
-  function excludeModule(moduleName) {
-    return QUnit.urlParams.nolint &&
-           moduleName.match(/\.(jshint|lint-test)$/);
-  }
-
-  function includeModule(moduleName) {
-    return moduleName.match(/\.jshint$/);
-  }
-
-  if (addModuleExcludeMatcher && addModuleIncludeMatcher) {
-    addModuleExcludeMatcher(excludeModule);
-    addModuleIncludeMatcher(includeModule);
-  } else {
-    TestLoader.prototype.shouldLoadModule = function shouldLoadModule(moduleName) {
-      return (moduleName.match(/[-_]test$/) || includeModule(moduleName)) && !excludeModule(moduleName);
-    };
-  }
-
-  var moduleLoadFailures = [];
-
-  TestLoader.prototype.moduleLoadFailure = function(moduleName, error) {
-    moduleLoadFailures.push(error);
-
-    QUnit.module('TestLoader Failures');
-    QUnit.test(moduleName + ': could not be loaded', function() {
-      throw error;
-    });
-  };
-
-  QUnit.done(function() {
-    if (moduleLoadFailures.length) {
-      throw new Error('\n' + moduleLoadFailures.join('\n'));
+(function() {
+  function ready(fn) {
+    if (typeof jQuery === 'function') {
+      jQuery(document).ready(fn);
+      return;
     }
+
+    if (document.readyState != 'loading'){
+      fn();
+    } else {
+      document.addEventListener('DOMContentLoaded', fn);
+    }
+  }
+
+  ready(function() {
+    var testLoaderModulePath = 'ember-cli-test-loader/test-support/index';
+
+    if (!requirejs.entries[testLoaderModulePath]) {
+      testLoaderModulePath = 'ember-cli/test-loader';
+    }
+
+    var TestLoaderModule = require(testLoaderModulePath);
+    var TestLoader = TestLoaderModule['default'];
+    var addModuleExcludeMatcher = TestLoaderModule['addModuleExcludeMatcher'];
+    var addModuleIncludeMatcher = TestLoaderModule['addModuleIncludeMatcher'];
+
+    function excludeModule(moduleName) {
+      return QUnit.urlParams.nolint &&
+        moduleName.match(/\.(jshint|lint-test)$/);
+    }
+
+    function includeModule(moduleName) {
+      return moduleName.match(/\.jshint$/);
+    }
+
+    if (addModuleExcludeMatcher && addModuleIncludeMatcher) {
+      addModuleExcludeMatcher(excludeModule);
+      addModuleIncludeMatcher(includeModule);
+    } else {
+      TestLoader.prototype.shouldLoadModule = function shouldLoadModule(moduleName) {
+        return (moduleName.match(/[-_]test$/) || includeModule(moduleName)) && !excludeModule(moduleName);
+      };
+    }
+
+    var moduleLoadFailures = [];
+
+    TestLoader.prototype.moduleLoadFailure = function(moduleName, error) {
+      moduleLoadFailures.push(error);
+
+      QUnit.module('TestLoader Failures');
+      QUnit.test(moduleName + ': could not be loaded', function() {
+        throw error;
+      });
+    };
+
+    QUnit.done(function() {
+      if (moduleLoadFailures.length) {
+        throw new Error('\n' + moduleLoadFailures.join('\n'));
+      }
+    });
+
+    var autostart = QUnit.config.autostart !== false;
+    QUnit.config.autostart = false;
+
+    setTimeout(function() {
+      TestLoader.load();
+
+      if (autostart) {
+        QUnit.start();
+      }
+    }, 250);
   });
 
-  var autostart = QUnit.config.autostart !== false;
-  QUnit.config.autostart = false;
-
-  setTimeout(function() {
-    TestLoader.load();
-
-    if (autostart) {
-      QUnit.start();
-    }
-  }, 250);
-});
+})();
 
 /* globals jQuery, QUnit, Testem, require, requirejs */
 
@@ -6487,14 +6856,20 @@ jQuery(document).ready(function() {
   // Add the partition number for better debugging when reading the reporter
   if (window.Testem) {
     Testem.on('test-result', function prependPartition(test) {
-      var partition = QUnit.urlParams._partition;
-      if (partition) {
-        test.name = 'Exam Partition #' + QUnit.urlParams._partition + ' - ' + test.name;
+      var split = QUnit.urlParams._split;
+      if (split) {
+        test.name = 'Exam Partition #' + (QUnit.urlParams._partition || 1) + ' - ' + test.name;
       }
     });
   }
 
-  var TestLoaderModule = require('ember-cli/test-loader');
+  var testLoaderModulePath = 'ember-cli-test-loader/test-support/index';
+
+  if (!requirejs.entries[testLoaderModulePath]) {
+    testLoaderModulePath = 'ember-cli/test-loader';
+  }
+
+  var TestLoaderModule = require(testLoaderModulePath);
   var TestLoader = TestLoaderModule['default'];
 
   var _super = {
@@ -6578,7 +6953,7 @@ jQuery(document).ready(function() {
 });
 
 /**
- * Sinon.JS 1.17.4, 2016/05/02
+ * Sinon.JS 1.17.5, 2016/07/26
  *
  * @author Christian Johansen (christian@cjohansen.no)
  * @author Contributors: https://github.com/cjohansen/Sinon.JS/blob/master/AUTHORS
@@ -7305,7 +7680,7 @@ jQuery(document).ready(function() {
         var ms = 0, parsed;
 
         if (l > 3 || !/^(\d\d:){0,2}\d\d?$/.test(str)) {
-            throw new Error("tick only understands numbers, 'm:s' and 'h:m:s'. Each part must be two digits");
+            throw new Error("tick only understands numbers and 'h:m:s'");
         }
 
         while (i--) {
@@ -7475,22 +7850,6 @@ jQuery(document).ready(function() {
                 isInRange = inRange(from, to, timers[id]);
 
                 if (isInRange && (!timer || compareTimers(timer, timers[id]) === 1)) {
-                    timer = timers[id];
-                }
-            }
-        }
-
-        return timer;
-    }
-
-    function firstTimer(clock) {
-        var timers = clock.timers,
-            timer = null,
-            id;
-
-        for (id in timers) {
-            if (timers.hasOwnProperty(id)) {
-                if (!timer || compareTimers(timer, timers[id]) === 1) {
                     timer = timers[id];
                 }
             }
@@ -7722,22 +8081,6 @@ jQuery(document).ready(function() {
             }
 
             return clock.now;
-        };
-
-        clock.next = function next() {
-            var timer = firstTimer(clock);
-            if (!timer) {
-                return clock.now;
-            }
-
-            clock.duringTick = true;
-            try {
-                clock.now = timer.callAt;
-                callTimer(clock, timer);
-                return clock.now;
-            } finally {
-                clock.duringTick = false;
-            }
         };
 
         clock.reset = function reset() {
@@ -8076,7 +8419,7 @@ var sinon = (function () {
             }
 
             for (prop in a) {
-                if (a.hasOwnProperty(prop)) {
+                if (hasOwn.call(a, prop)) {
                     aLength += 1;
 
                     if (!(prop in b)) {
@@ -8090,7 +8433,7 @@ var sinon = (function () {
             }
 
             for (prop in b) {
-                if (b.hasOwnProperty(prop)) {
+                if (hasOwn.call(b, prop)) {
                     bLength += 1;
                 }
             }
@@ -11472,7 +11815,7 @@ if (typeof sinon === "undefined") {
         }
 
         var xhr = this;
-        var events = ["loadstart", "load", "abort", "loadend"];
+        var events = ["loadstart", "load", "abort", "error", "loadend"];
 
         function addEventListener(eventName) {
             xhr.addEventListener(eventName, function (event) {
@@ -11806,12 +12149,16 @@ if (typeof sinon === "undefined") {
                 }
 
                 if (this.readyState === FakeXMLHttpRequest.DONE) {
-                    if (this.status < 200 || this.status > 299) {
-                        progress = {loaded: 0, total: 0};
+                    // ensure loaded and total are numbers
+                    progress = {
+                      loaded: this.progress || 0,
+                      total: this.progress || 0
+                    };
+
+                    if (this.status === 0) {
                         event = this.aborted ? "abort" : "error";
                     }
                     else {
-                        progress = {loaded: 100, total: 100};
                         event = "load";
                     }
 
@@ -11904,6 +12251,15 @@ if (typeof sinon === "undefined") {
                 this.readyState = FakeXMLHttpRequest.UNSENT;
             },
 
+            error: function error() {
+                clearResponse(this);
+                this.errorFlag = true;
+                this.requestHeaders = {};
+                this.responseHeaders = {};
+
+                this.readyStateChange(FakeXMLHttpRequest.DONE);
+            },
+
             getResponseHeader: function getResponseHeader(header) {
                 if (this.readyState < FakeXMLHttpRequest.HEADERS_RECEIVED) {
                     return null;
@@ -11967,6 +12323,7 @@ if (typeof sinon === "undefined") {
                 } else if (this.responseType === "" && isXmlContentType(contentType)) {
                     this.responseXML = FakeXMLHttpRequest.parseXML(this.responseText);
                 }
+                this.progress = body.length;
                 this.readyStateChange(FakeXMLHttpRequest.DONE);
             },
 
@@ -12839,6 +13196,24 @@ if (typeof sinon === "undefined") {
             }
         }
 
+        function verifyIsValidAssertion(assertionMethod, assertionArgs) {
+            switch (assertionMethod) {
+                case "notCalled":
+                case "called":
+                case "calledOnce":
+                case "calledTwice":
+                case "calledThrice":
+                    if (assertionArgs.length !== 0) {
+                        assert.fail(assertionMethod +
+                                    " takes 1 argument but was called with " +
+                                    (assertionArgs.length + 1) + " arguments");
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
         function failAssertion(object, msg) {
             object = object || global;
             var failMethod = object.fail || assert.fail;
@@ -12855,6 +13230,8 @@ if (typeof sinon === "undefined") {
                 verifyIsStub(fake);
 
                 var args = slice.call(arguments, 1);
+                verifyIsValidAssertion(name, args);
+
                 var failed = false;
 
                 if (typeof method === "function") {
@@ -13032,6 +13409,126 @@ define('sinon', [], function() {
   };
 });
 
+define('ember-cli-test-loader/test-support/index', ['exports'], function (exports) {
+  /* globals requirejs, require */
+  "use strict";
+
+  exports.addModuleIncludeMatcher = addModuleIncludeMatcher;
+  exports.addModuleExcludeMatcher = addModuleExcludeMatcher;
+  exports['default'] = TestLoader;
+  var moduleIncludeMatchers = [];
+  var moduleExcludeMatchers = [];
+
+  function addModuleIncludeMatcher(fn) {
+    moduleIncludeMatchers.push(fn);
+  }
+
+  ;
+
+  function addModuleExcludeMatcher(fn) {
+    moduleExcludeMatchers.push(fn);
+  }
+
+  ;
+
+  function checkMatchers(matchers, moduleName) {
+    var matcher;
+
+    for (var i = 0, l = matchers.length; i < l; i++) {
+      matcher = matchers[i];
+
+      if (matcher(moduleName)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  function TestLoader() {
+    this._didLogMissingUnsee = false;
+  }
+
+  ;
+
+  TestLoader.prototype = {
+    shouldLoadModule: function shouldLoadModule(moduleName) {
+      return moduleName.match(/[-_]test$/);
+    },
+
+    listModules: function listModules() {
+      return Object.keys(requirejs.entries);
+    },
+
+    listTestModules: function listTestModules() {
+      var moduleNames = this.listModules();
+      var testModules = [];
+      var moduleName;
+
+      for (var i = 0; i < moduleNames.length; i++) {
+        moduleName = moduleNames[i];
+
+        if (checkMatchers(moduleExcludeMatchers, moduleName)) {
+          continue;
+        }
+
+        if (checkMatchers(moduleIncludeMatchers, moduleName) || this.shouldLoadModule(moduleName)) {
+          testModules.push(moduleName);
+        }
+      }
+
+      return testModules;
+    },
+
+    loadModules: function loadModules() {
+      var testModules = this.listTestModules();
+      var testModule;
+
+      for (var i = 0; i < testModules.length; i++) {
+        testModule = testModules[i];
+        this.require(testModule);
+        this.unsee(testModule);
+      }
+    }
+  };
+
+  TestLoader.prototype.require = function (moduleName) {
+    try {
+      require(moduleName);
+    } catch (e) {
+      this.moduleLoadFailure(moduleName, e);
+    }
+  };
+
+  TestLoader.prototype.unsee = function (moduleName) {
+    if (typeof require.unsee === 'function') {
+      require.unsee(moduleName);
+    } else if (!this._didLogMissingUnsee) {
+      this._didLogMissingUnsee = true;
+      if (typeof console !== 'undefined') {
+        console.warn('unable to require.unsee, please upgrade loader.js to >= v3.3.0');
+      }
+    }
+  };
+
+  TestLoader.prototype.moduleLoadFailure = function (moduleName, error) {
+    console.error('Error loading: ' + moduleName, error.stack);
+  };
+
+  TestLoader.load = function () {
+    new TestLoader().loadModules();
+  };
+});
+define('ember-qunit', ['exports', 'ember-qunit/module-for', 'ember-qunit/module-for-component', 'ember-qunit/module-for-model', 'ember-qunit/test', 'ember-qunit/only', 'ember-test-helpers'], function (exports, _emberQunitModuleFor, _emberQunitModuleForComponent, _emberQunitModuleForModel, _emberQunitTest, _emberQunitOnly, _emberTestHelpers) {
+  'use strict';
+
+  exports.moduleFor = _emberQunitModuleFor['default'];
+  exports.moduleForComponent = _emberQunitModuleForComponent['default'];
+  exports.moduleForModel = _emberQunitModuleForModel['default'];
+  exports.test = _emberQunitTest['default'];
+  exports.only = _emberQunitOnly['default'];
+  exports.setResolver = _emberTestHelpers.setResolver;
+});
 define('ember-qunit/module-for-component', ['exports', 'ember-qunit/qunit-module', 'ember-test-helpers'], function (exports, _emberQunitQunitModule, _emberTestHelpers) {
   'use strict';
 
@@ -13208,15 +13705,20 @@ define('ember-qunit/test', ['exports', 'ember-qunit/test-wrapper', 'qunit'], fun
     _emberQunitTestWrapper['default'].apply(null, args);
   }
 });
-define('ember-qunit', ['exports', 'ember-qunit/module-for', 'ember-qunit/module-for-component', 'ember-qunit/module-for-model', 'ember-qunit/test', 'ember-qunit/only', 'ember-test-helpers'], function (exports, _emberQunitModuleFor, _emberQunitModuleForComponent, _emberQunitModuleForModel, _emberQunitTest, _emberQunitOnly, _emberTestHelpers) {
+define('ember-test-helpers', ['exports', 'ember', 'ember-test-helpers/test-module', 'ember-test-helpers/test-module-for-acceptance', 'ember-test-helpers/test-module-for-integration', 'ember-test-helpers/test-module-for-component', 'ember-test-helpers/test-module-for-model', 'ember-test-helpers/test-context', 'ember-test-helpers/test-resolver'], function (exports, _ember, _emberTestHelpersTestModule, _emberTestHelpersTestModuleForAcceptance, _emberTestHelpersTestModuleForIntegration, _emberTestHelpersTestModuleForComponent, _emberTestHelpersTestModuleForModel, _emberTestHelpersTestContext, _emberTestHelpersTestResolver) {
   'use strict';
 
-  exports.moduleFor = _emberQunitModuleFor['default'];
-  exports.moduleForComponent = _emberQunitModuleForComponent['default'];
-  exports.moduleForModel = _emberQunitModuleForModel['default'];
-  exports.test = _emberQunitTest['default'];
-  exports.only = _emberQunitOnly['default'];
-  exports.setResolver = _emberTestHelpers.setResolver;
+  _ember['default'].testing = true;
+
+  exports.TestModule = _emberTestHelpersTestModule['default'];
+  exports.TestModuleForAcceptance = _emberTestHelpersTestModuleForAcceptance['default'];
+  exports.TestModuleForIntegration = _emberTestHelpersTestModuleForIntegration['default'];
+  exports.TestModuleForComponent = _emberTestHelpersTestModuleForComponent['default'];
+  exports.TestModuleForModel = _emberTestHelpersTestModuleForModel['default'];
+  exports.getContext = _emberTestHelpersTestContext.getContext;
+  exports.setContext = _emberTestHelpersTestContext.setContext;
+  exports.unsetContext = _emberTestHelpersTestContext.unsetContext;
+  exports.setResolver = _emberTestHelpersTestResolver.setResolver;
 });
 define('ember-test-helpers/-legacy-overrides', ['exports', 'ember', 'ember-test-helpers/has-ember-version'], function (exports, _ember, _emberTestHelpersHasEmberVersion) {
   'use strict';
@@ -13258,6 +13760,8 @@ define('ember-test-helpers/-legacy-overrides', ['exports', 'ember', 'ember-test-
       _ember['default'].run(function () {
         module.component.appendTo('#ember-testing');
       });
+
+      context._element = module.component.element;
     };
 
     context.$ = function () {
@@ -13402,8 +13906,11 @@ define('ember-test-helpers/abstract-test-module', ['exports', 'klassy', 'ember-t
     },
 
     setupTestElements: function setupTestElements() {
-      if (_ember['default'].$('#ember-testing').length === 0) {
-        _ember['default'].$('<div id="ember-testing"/>').appendTo(document.body);
+      if (!document.querySelector('#ember-testing')) {
+        var element = document.createElement('div');
+        element.setAttribute('id', 'ember-testing');
+
+        document.body.appendChild(element);
       }
     },
 
@@ -13425,7 +13932,7 @@ define('ember-test-helpers/abstract-test-module', ['exports', 'klassy', 'ember-t
     },
 
     teardownTestElements: function teardownTestElements() {
-      _ember['default'].$('#ember-testing').empty();
+      document.getElementById('ember-testing').innerHTML = '';
 
       // Ember 2.0.0 removed Ember.View as public API, so only do this when
       // Ember.View is present
@@ -13499,6 +14006,10 @@ define('ember-test-helpers/build-registry', ['exports', 'ember'], function (expo
       registry = new _ember['default'].Registry({
         fallback: fallbackRegistry
       });
+
+      if (_ember['default'].ApplicationInstance && _ember['default'].ApplicationInstance.setupRegistry) {
+        _ember['default'].ApplicationInstance.setupRegistry(registry);
+      }
 
       // these properties are set on the fallback registry by `buildRegistry`
       // and on the primary registry within the ApplicationInstance constructor
@@ -13635,6 +14146,8 @@ define('ember-test-helpers/test-module-for-acceptance', ['exports', 'ember-test-
 define('ember-test-helpers/test-module-for-component', ['exports', 'ember-test-helpers/test-module', 'ember', 'ember-test-helpers/test-resolver', 'ember-test-helpers/has-ember-version', 'ember-test-helpers/-legacy-overrides'], function (exports, _emberTestHelpersTestModule, _ember, _emberTestHelpersTestResolver, _emberTestHelpersHasEmberVersion, _emberTestHelpersLegacyOverrides) {
   'use strict';
 
+  exports.setupComponentIntegrationTest = setupComponentIntegrationTest;
+
   var ACTION_KEY = undefined;
   if ((0, _emberTestHelpersHasEmberVersion['default'])(2, 0)) {
     ACTION_KEY = 'actions';
@@ -13642,6 +14155,7 @@ define('ember-test-helpers/test-module-for-component', ['exports', 'ember-test-h
     ACTION_KEY = '_actions';
   }
 
+  var getOwner = _ember['default'].getOwner;
   exports['default'] = _emberTestHelpersTestModule['default'].extend({
     isComponentTestModule: true,
 
@@ -13722,6 +14236,8 @@ define('ember-test-helpers/test-module-for-component', ['exports', 'ember-test-h
       context.dispatcher = this.container.lookup('event_dispatcher:main') || _ember['default'].EventDispatcher.create();
       context.dispatcher.setup({}, '#ember-testing');
 
+      context._element = null;
+
       this.callbacks.render = function () {
         var subject;
 
@@ -13729,6 +14245,8 @@ define('ember-test-helpers/test-module-for-component', ['exports', 'ember-test-h
           subject = context.subject();
           subject.appendTo('#ember-testing');
         });
+
+        context._element = subject.element;
 
         _this.teardownSteps.unshift(function () {
           _ember['default'].run(function () {
@@ -13754,108 +14272,7 @@ define('ember-test-helpers/test-module-for-component', ['exports', 'ember-test-h
       if (!(0, _emberTestHelpersHasEmberVersion['default'])(1, 13)) {
         return _emberTestHelpersLegacyOverrides.preGlimmerSetupIntegrationForComponent;
       } else {
-        return function () {
-          var module = this;
-          var context = this.context;
-
-          this.actionHooks = context[ACTION_KEY] = {};
-          context.dispatcher = this.container.lookup('event_dispatcher:main') || _ember['default'].EventDispatcher.create();
-          context.dispatcher.setup({}, '#ember-testing');
-
-          var OutletView = module.container.lookupFactory('view:-outlet');
-          var toplevelView = module.component = OutletView.create();
-          toplevelView.setOutletState({ render: {}, outlets: {} });
-
-          var element = document.getElementById('ember-testing');
-          _ember['default'].run(module.component, 'appendTo', '#ember-testing');
-
-          context.render = function (template) {
-            if (!template) {
-              throw new Error("in a component integration test you must pass a template to `render()`");
-            }
-            if (_ember['default'].isArray(template)) {
-              template = template.join('');
-            }
-            if (typeof template === 'string') {
-              template = _ember['default'].Handlebars.compile(template);
-            }
-
-            _ember['default'].run(function () {
-              toplevelView.setOutletState({
-                render: {
-                  controller: module.context,
-                  template: template
-                },
-
-                outlets: {}
-              });
-            });
-
-            // ensure the element is based on the wrapping toplevel view
-            // Ember still wraps the main application template with a
-            // normal tagged view
-            element = _ember['default'].$('#ember-testing > .ember-view');
-          };
-
-          context.$ = function (selector) {
-            // emulates Ember internal behavor of `this.$` in a component
-            // https://github.com/emberjs/ember.js/blob/v2.5.1/packages/ember-views/lib/views/states/has_element.js#L18
-            return selector ? _ember['default'].$(selector, element) : _ember['default'].$(element);
-          };
-
-          context.set = function (key, value) {
-            var ret = _ember['default'].run(function () {
-              return _ember['default'].set(context, key, value);
-            });
-
-            if ((0, _emberTestHelpersHasEmberVersion['default'])(2, 0)) {
-              return ret;
-            }
-          };
-
-          context.setProperties = function (hash) {
-            var ret = _ember['default'].run(function () {
-              return _ember['default'].setProperties(context, hash);
-            });
-
-            if ((0, _emberTestHelpersHasEmberVersion['default'])(2, 0)) {
-              return ret;
-            }
-          };
-
-          context.get = function (key) {
-            return _ember['default'].get(context, key);
-          };
-
-          context.getProperties = function () {
-            var args = Array.prototype.slice.call(arguments);
-            return _ember['default'].getProperties(context, args);
-          };
-
-          context.on = function (actionName, handler) {
-            module.actionHooks[actionName] = handler;
-          };
-
-          context.send = function (actionName) {
-            var hook = module.actionHooks[actionName];
-            if (!hook) {
-              throw new Error("integration testing template received unexpected action " + actionName);
-            }
-            hook.apply(module.context, Array.prototype.slice.call(arguments, 1));
-          };
-
-          context.clearRender = function () {
-            _ember['default'].run(function () {
-              toplevelView.setOutletState({
-                render: {
-                  controller: module.context,
-                  randomKey: 'empty'
-                },
-                outlets: {}
-              });
-            });
-          };
-        };
+        return setupComponentIntegrationTest;
       }
     })(),
 
@@ -13881,8 +14298,156 @@ define('ember-test-helpers/test-module-for-component', ['exports', 'ember-test-h
       }
     }
   });
+
+  function setupComponentIntegrationTest() {
+    var module = this;
+    var context = this.context;
+
+    this.actionHooks = context[ACTION_KEY] = {};
+    context.dispatcher = this.container.lookup('event_dispatcher:main') || _ember['default'].EventDispatcher.create();
+    context.dispatcher.setup({}, '#ember-testing');
+
+    var hasRendered = false;
+    var OutletView = module.container.lookupFactory('view:-outlet');
+    var OutletTemplate = module.container.lookup('template:-outlet');
+    var toplevelView = module.component = OutletView.create();
+    var hasOutletTemplate = !!OutletTemplate;
+    var outletState = {
+      render: {
+        owner: getOwner ? getOwner(module.container) : undefined,
+        into: undefined,
+        outlet: 'main',
+        name: 'application',
+        controller: module.context,
+        ViewClass: undefined,
+        template: OutletTemplate
+      },
+
+      outlets: {}
+    };
+
+    var element = document.getElementById('ember-testing');
+    var templateId = 0;
+
+    if (hasOutletTemplate) {
+      _ember['default'].run(function () {
+        toplevelView.setOutletState(outletState);
+      });
+    }
+
+    context.render = function (template) {
+      if (!template) {
+        throw new Error("in a component integration test you must pass a template to `render()`");
+      }
+      if (_ember['default'].isArray(template)) {
+        template = template.join('');
+      }
+      if (typeof template === 'string') {
+        template = _ember['default'].Handlebars.compile(template);
+      }
+
+      var templateFullName = 'template:-undertest-' + ++templateId;
+      this.registry.register(templateFullName, template);
+      var stateToRender = {
+        owner: getOwner ? getOwner(module.container) : undefined,
+        into: undefined,
+        outlet: 'main',
+        name: 'index',
+        controller: module.context,
+        ViewClass: undefined,
+        template: module.container.lookup(templateFullName),
+        outlets: {}
+      };
+
+      if (hasOutletTemplate) {
+        stateToRender.name = 'index';
+        outletState.outlets.main = { render: stateToRender, outlets: {} };
+      } else {
+        stateToRender.name = 'application';
+        outletState = { render: stateToRender, outlets: {} };
+      }
+
+      _ember['default'].run(function () {
+        toplevelView.setOutletState(outletState);
+      });
+
+      if (!hasRendered) {
+        _ember['default'].run(module.component, 'appendTo', '#ember-testing');
+        hasRendered = true;
+      }
+
+      // ensure the element is based on the wrapping toplevel view
+      // Ember still wraps the main application template with a
+      // normal tagged view
+      context._element = element = document.querySelector('#ember-testing > .ember-view');
+    };
+
+    context.$ = function (selector) {
+      // emulates Ember internal behavor of `this.$` in a component
+      // https://github.com/emberjs/ember.js/blob/v2.5.1/packages/ember-views/lib/views/states/has_element.js#L18
+      return selector ? _ember['default'].$(selector, element) : _ember['default'].$(element);
+    };
+
+    context.set = function (key, value) {
+      var ret = _ember['default'].run(function () {
+        return _ember['default'].set(context, key, value);
+      });
+
+      if ((0, _emberTestHelpersHasEmberVersion['default'])(2, 0)) {
+        return ret;
+      }
+    };
+
+    context.setProperties = function (hash) {
+      var ret = _ember['default'].run(function () {
+        return _ember['default'].setProperties(context, hash);
+      });
+
+      if ((0, _emberTestHelpersHasEmberVersion['default'])(2, 0)) {
+        return ret;
+      }
+    };
+
+    context.get = function (key) {
+      return _ember['default'].get(context, key);
+    };
+
+    context.getProperties = function () {
+      var args = Array.prototype.slice.call(arguments);
+      return _ember['default'].getProperties(context, args);
+    };
+
+    context.on = function (actionName, handler) {
+      module.actionHooks[actionName] = handler;
+    };
+
+    context.send = function (actionName) {
+      var hook = module.actionHooks[actionName];
+      if (!hook) {
+        throw new Error("integration testing template received unexpected action " + actionName);
+      }
+      hook.apply(module.context, Array.prototype.slice.call(arguments, 1));
+    };
+
+    context.clearRender = function () {
+      _ember['default'].run(function () {
+        toplevelView.setOutletState({
+          render: {
+            owner: module.container,
+            into: undefined,
+            outlet: 'main',
+            name: 'application',
+            controller: module.context,
+            ViewClass: undefined,
+            template: undefined
+          },
+          outlets: {}
+        });
+      });
+    };
+  }
 });
-define('ember-test-helpers/test-module-for-integration', ['exports', 'ember', 'ember-test-helpers/test-context', 'ember-test-helpers/abstract-test-module', 'ember-test-helpers/test-resolver', 'ember-test-helpers/build-registry', 'ember-test-helpers/has-ember-version', 'ember-test-helpers/-legacy-overrides'], function (exports, _ember, _emberTestHelpersTestContext, _emberTestHelpersAbstractTestModule, _emberTestHelpersTestResolver, _emberTestHelpersBuildRegistry, _emberTestHelpersHasEmberVersion, _emberTestHelpersLegacyOverrides) {
+define('ember-test-helpers/test-module-for-integration', ['exports', 'ember', 'ember-test-helpers/test-context', 'ember-test-helpers/abstract-test-module', 'ember-test-helpers/test-resolver', 'ember-test-helpers/build-registry', 'ember-test-helpers/has-ember-version', 'ember-test-helpers/-legacy-overrides', 'ember-test-helpers/test-module-for-component'], function (exports, _ember, _emberTestHelpersTestContext, _emberTestHelpersAbstractTestModule, _emberTestHelpersTestResolver, _emberTestHelpersBuildRegistry, _emberTestHelpersHasEmberVersion, _emberTestHelpersLegacyOverrides, _emberTestHelpersTestModuleForComponent) {
   'use strict';
 
   var ACTION_KEY = undefined;
@@ -13988,7 +14553,9 @@ define('ember-test-helpers/test-module-for-integration', ['exports', 'ember', 'e
         keys.forEach(function (typeName) {
           context.inject[typeName] = function (name, opts) {
             var alias = opts && opts.as || name;
-            _ember['default'].set(context, alias, context.container.lookup(typeName + ':' + name));
+            _ember['default'].run(function () {
+              _ember['default'].set(context, alias, context.container.lookup(typeName + ':' + name));
+            });
           };
         });
       }
@@ -14004,108 +14571,7 @@ define('ember-test-helpers/test-module-for-integration', ['exports', 'ember', 'e
       if (!(0, _emberTestHelpersHasEmberVersion['default'])(1, 13)) {
         return _emberTestHelpersLegacyOverrides.preGlimmerSetupIntegrationForComponent;
       } else {
-        return function () {
-          var module = this;
-          var context = this.context;
-
-          this.actionHooks = context[ACTION_KEY] = {};
-          context.dispatcher = this.container.lookup('event_dispatcher:main') || _ember['default'].EventDispatcher.create();
-          context.dispatcher.setup({}, '#ember-testing');
-
-          var OutletView = module.container.lookupFactory('view:-outlet');
-          var toplevelView = module.component = OutletView.create();
-          toplevelView.setOutletState({ render: {}, outlets: {} });
-
-          var element = document.getElementById('ember-testing');
-          _ember['default'].run(module.component, 'appendTo', '#ember-testing');
-
-          context.render = function (template) {
-            if (!template) {
-              throw new Error("in a component integration test you must pass a template to `render()`");
-            }
-            if (_ember['default'].isArray(template)) {
-              template = template.join('');
-            }
-            if (typeof template === 'string') {
-              template = _ember['default'].Handlebars.compile(template);
-            }
-
-            _ember['default'].run(function () {
-              toplevelView.setOutletState({
-                render: {
-                  controller: module.context,
-                  template: template
-                },
-
-                outlets: {}
-              });
-            });
-
-            // ensure the element is based on the wrapping toplevel view
-            // Ember still wraps the main application template with a
-            // normal tagged view
-            element = _ember['default'].$('#ember-testing > .ember-view');
-          };
-
-          context.$ = function (selector) {
-            // emulates Ember internal behavor of `this.$` in a component
-            // https://github.com/emberjs/ember.js/blob/v2.5.1/packages/ember-views/lib/views/states/has_element.js#L18
-            return selector ? _ember['default'].$(selector, element) : _ember['default'].$(element);
-          };
-
-          context.set = function (key, value) {
-            var ret = _ember['default'].run(function () {
-              return _ember['default'].set(context, key, value);
-            });
-
-            if ((0, _emberTestHelpersHasEmberVersion['default'])(2, 0)) {
-              return ret;
-            }
-          };
-
-          context.setProperties = function (hash) {
-            var ret = _ember['default'].run(function () {
-              return _ember['default'].setProperties(context, hash);
-            });
-
-            if ((0, _emberTestHelpersHasEmberVersion['default'])(2, 0)) {
-              return ret;
-            }
-          };
-
-          context.get = function (key) {
-            return _ember['default'].get(context, key);
-          };
-
-          context.getProperties = function () {
-            var args = Array.prototype.slice.call(arguments);
-            return _ember['default'].getProperties(context, args);
-          };
-
-          context.on = function (actionName, handler) {
-            module.actionHooks[actionName] = handler;
-          };
-
-          context.send = function (actionName) {
-            var hook = module.actionHooks[actionName];
-            if (!hook) {
-              throw new Error("integration testing template received unexpected action " + actionName);
-            }
-            hook.apply(module.context, Array.prototype.slice.call(arguments, 1));
-          };
-
-          context.clearRender = function () {
-            _ember['default'].run(function () {
-              toplevelView.setOutletState({
-                render: {
-                  controller: module.context,
-                  randomKey: 'empty'
-                },
-                outlets: {}
-              });
-            });
-          };
-        };
+        return _emberTestHelpersTestModuleForComponent.setupComponentIntegrationTest;
       }
     })(),
 
@@ -14372,7 +14838,9 @@ define('ember-test-helpers/test-module', ['exports', 'ember', 'ember-test-helper
         keys.forEach(function (typeName) {
           context.inject[typeName] = function (name, opts) {
             var alias = opts && opts.as || name;
-            _ember['default'].set(context, alias, module.container.lookup(typeName + ':' + name));
+            _ember['default'].run(function () {
+              _ember['default'].set(context, alias, module.container.lookup(typeName + ':' + name));
+            });
           };
         });
       }
@@ -14530,7 +14998,7 @@ define('ember-test-helpers/test-resolver', ['exports'], function (exports) {
   }
 });
 define('ember-test-helpers/wait', ['exports', 'ember'], function (exports, _ember) {
-  /* globals jQuery, self */
+  /* globals self */
 
   'use strict';
 
@@ -14539,6 +15007,8 @@ define('ember-test-helpers/wait', ['exports', 'ember'], function (exports, _embe
   exports._teardownAJAXHooks = _teardownAJAXHooks;
   exports._setupAJAXHooks = _setupAJAXHooks;
   exports['default'] = wait;
+
+  var jQuery = _ember['default'].$;
 
   var requests;
   function incrementAjaxPendingRequests(_, xhr) {
@@ -14554,12 +15024,20 @@ define('ember-test-helpers/wait', ['exports', 'ember'], function (exports, _embe
   }
 
   function _teardownAJAXHooks() {
+    if (!jQuery) {
+      return;
+    }
+
     jQuery(document).off('ajaxSend', incrementAjaxPendingRequests);
     jQuery(document).off('ajaxComplete', decrementAjaxPendingRequests);
   }
 
   function _setupAJAXHooks() {
     requests = [];
+
+    if (!jQuery) {
+      return;
+    }
 
     jQuery(document).on('ajaxSend', incrementAjaxPendingRequests);
     jQuery(document).on('ajaxComplete', decrementAjaxPendingRequests);
@@ -14616,21 +15094,6 @@ define('ember-test-helpers/wait', ['exports', 'ember'], function (exports, _embe
       }, 10);
     });
   }
-});
-define('ember-test-helpers', ['exports', 'ember', 'ember-test-helpers/test-module', 'ember-test-helpers/test-module-for-acceptance', 'ember-test-helpers/test-module-for-integration', 'ember-test-helpers/test-module-for-component', 'ember-test-helpers/test-module-for-model', 'ember-test-helpers/test-context', 'ember-test-helpers/test-resolver'], function (exports, _ember, _emberTestHelpersTestModule, _emberTestHelpersTestModuleForAcceptance, _emberTestHelpersTestModuleForIntegration, _emberTestHelpersTestModuleForComponent, _emberTestHelpersTestModuleForModel, _emberTestHelpersTestContext, _emberTestHelpersTestResolver) {
-  'use strict';
-
-  _ember['default'].testing = true;
-
-  exports.TestModule = _emberTestHelpersTestModule['default'];
-  exports.TestModuleForAcceptance = _emberTestHelpersTestModuleForAcceptance['default'];
-  exports.TestModuleForIntegration = _emberTestHelpersTestModuleForIntegration['default'];
-  exports.TestModuleForComponent = _emberTestHelpersTestModuleForComponent['default'];
-  exports.TestModuleForModel = _emberTestHelpersTestModuleForModel['default'];
-  exports.getContext = _emberTestHelpersTestContext.getContext;
-  exports.setContext = _emberTestHelpersTestContext.setContext;
-  exports.unsetContext = _emberTestHelpersTestContext.unsetContext;
-  exports.setResolver = _emberTestHelpersTestResolver.setResolver;
 });
 define('klassy', ['exports'], function (exports) {
   /**

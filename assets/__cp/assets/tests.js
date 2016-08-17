@@ -17563,6 +17563,16 @@ define('frontend-cp/tests/helpers/use-default-scenario', ['exports', 'ember', 'f
     (0, _frontendCpMirageScenariosDefault['default'])(server); //eslint-disable-line no-undef
   });
 });
+define('frontend-cp/tests/helpers/with-feature', ['exports', 'ember'], function (exports, _ember) {
+  exports.withFeature = withFeature;
+
+  function withFeature(app, featureName) {
+    var featuresService = app.__container__.lookup('service:features');
+    featuresService.enable(featureName);
+  }
+
+  _ember['default'].Test.registerHelper('withFeature', withFeature);
+});
 define('frontend-cp/tests/integration/components/ko-admin/sidebar-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
 
   (0, _emberQunit.moduleForComponent)('ko-admin/sidebar', 'Integration | Component | ko-admin/sidebar', {
@@ -17586,11 +17596,7 @@ define('frontend-cp/tests/integration/components/ko-admin/sidebar-test', ['expor
     this.render(Ember.HTMLBars.template((function () {
       return {
         meta: {
-          'fragmentReason': {
-            'name': 'missing-wrapper',
-            'problems': ['wrong-type']
-          },
-          'revision': 'Ember@2.6.2',
+          'revision': 'Ember@2.7.0',
           'loc': {
             'source': null,
             'start': {
@@ -17622,7 +17628,7 @@ define('frontend-cp/tests/integration/components/ko-admin/sidebar-test', ['expor
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [['inline', 'ko-admin/sidebar', [], ['features', ['subexpr', '@mut', [['get', 'features', ['loc', [null, [3, 15], [3, 23]]]]], [], []], 'intl', ['subexpr', '@mut', [['get', 'intl', ['loc', [null, [4, 11], [4, 15]]]]], [], []], 'permissions', ['subexpr', '@mut', [['get', 'permissions', ['loc', [null, [5, 18], [5, 29]]]]], [], []], 'hostname', 'brewfictus.kayako.com'], ['loc', [null, [2, 4], [6, 40]]]]],
+        statements: [['inline', 'ko-admin/sidebar', [], ['features', ['subexpr', '@mut', [['get', 'features', ['loc', [null, [3, 15], [3, 23]]], 0, 0, 0, 0]], [], [], 0, 0], 'intl', ['subexpr', '@mut', [['get', 'intl', ['loc', [null, [4, 11], [4, 15]]], 0, 0, 0, 0]], [], [], 0, 0], 'permissions', ['subexpr', '@mut', [['get', 'permissions', ['loc', [null, [5, 18], [5, 29]]], 0, 0, 0, 0]], [], [], 0, 0], 'hostname', 'brewfictus.kayako.com'], ['loc', [null, [2, 4], [6, 40]]], 0, 0]],
         locals: [],
         templates: []
       };
@@ -17635,11 +17641,7 @@ define('frontend-cp/tests/integration/components/ko-admin/sidebar-test', ['expor
     this.render(Ember.HTMLBars.template((function () {
       return {
         meta: {
-          'fragmentReason': {
-            'name': 'missing-wrapper',
-            'problems': ['wrong-type']
-          },
-          'revision': 'Ember@2.6.2',
+          'revision': 'Ember@2.7.0',
           'loc': {
             'source': null,
             'start': {
@@ -17671,7 +17673,7 @@ define('frontend-cp/tests/integration/components/ko-admin/sidebar-test', ['expor
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [['inline', 'ko-admin/sidebar', [], ['features', ['subexpr', '@mut', [['get', 'features', ['loc', [null, [3, 15], [3, 23]]]]], [], []], 'intl', ['subexpr', '@mut', [['get', 'intl', ['loc', [null, [4, 11], [4, 15]]]]], [], []], 'permissions', ['subexpr', '@mut', [['get', 'permissions', ['loc', [null, [5, 18], [5, 29]]]]], [], []], 'hostname', 'support.kayako.com'], ['loc', [null, [2, 4], [6, 37]]]]],
+        statements: [['inline', 'ko-admin/sidebar', [], ['features', ['subexpr', '@mut', [['get', 'features', ['loc', [null, [3, 15], [3, 23]]], 0, 0, 0, 0]], [], [], 0, 0], 'intl', ['subexpr', '@mut', [['get', 'intl', ['loc', [null, [4, 11], [4, 15]]], 0, 0, 0, 0]], [], [], 0, 0], 'permissions', ['subexpr', '@mut', [['get', 'permissions', ['loc', [null, [5, 18], [5, 29]]], 0, 0, 0, 0]], [], [], 0, 0], 'hostname', 'support.kayako.com'], ['loc', [null, [2, 4], [6, 37]]], 0, 0]],
         locals: [],
         templates: []
       };
@@ -17720,11 +17722,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'fragmentReason': {
-            'name': 'missing-wrapper',
-            'problems': ['wrong-type']
-          },
-          'revision': 'Ember@2.6.2',
+          'revision': 'Ember@2.7.0',
           'loc': {
             'source': null,
             'start': {
@@ -17754,7 +17752,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [['content', 'ko-agent-dropdown/create-user', ['loc', [null, [1, 0], [1, 33]]]]],
+        statements: [['content', 'ko-agent-dropdown/create-user', ['loc', [null, [1, 0], [1, 33]]], 0, 0, 0, 0]],
         locals: [],
         templates: []
       };
@@ -17792,11 +17790,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'fragmentReason': {
-            'name': 'missing-wrapper',
-            'problems': ['wrong-type']
-          },
-          'revision': 'Ember@2.6.2',
+          'revision': 'Ember@2.7.0',
           'loc': {
             'source': null,
             'start': {
@@ -17826,7 +17820,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [['content', 'ko-agent-dropdown/create-user', ['loc', [null, [1, 0], [1, 33]]]]],
+        statements: [['content', 'ko-agent-dropdown/create-user', ['loc', [null, [1, 0], [1, 33]]], 0, 0, 0, 0]],
         locals: [],
         templates: []
       };
@@ -17939,11 +17933,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'fragmentReason': {
-            'name': 'missing-wrapper',
-            'problems': ['wrong-type']
-          },
-          'revision': 'Ember@2.6.2',
+          'revision': 'Ember@2.7.0',
           'loc': {
             'source': null,
             'start': {
@@ -17973,7 +17963,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [['inline', 'ko-agent-dropdown/create-user', [], ['dropdown', ['subexpr', '@mut', [['get', 'dropdown', ['loc', [null, [2, 15], [2, 23]]]]], [], []], 'onCreate', ['subexpr', 'action', ['onCreate'], [], ['loc', [null, [3, 15], [3, 34]]]], 'onCancel', ['subexpr', 'action', ['onCancel'], [], ['loc', [null, [4, 15], [4, 34]]]]], ['loc', [null, [1, 0], [5, 4]]]]],
+        statements: [['inline', 'ko-agent-dropdown/create-user', [], ['dropdown', ['subexpr', '@mut', [['get', 'dropdown', ['loc', [null, [2, 15], [2, 23]]], 0, 0, 0, 0]], [], [], 0, 0], 'onCreate', ['subexpr', 'action', ['onCreate'], [], ['loc', [null, [3, 15], [3, 34]]], 0, 0], 'onCancel', ['subexpr', 'action', ['onCancel'], [], ['loc', [null, [4, 15], [4, 34]]], 0, 0]], ['loc', [null, [1, 0], [5, 4]]], 0, 0]],
         locals: [],
         templates: []
       };
@@ -18062,11 +18052,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'fragmentReason': {
-            'name': 'missing-wrapper',
-            'problems': ['wrong-type']
-          },
-          'revision': 'Ember@2.6.2',
+          'revision': 'Ember@2.7.0',
           'loc': {
             'source': null,
             'start': {
@@ -18096,7 +18082,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [['inline', 'ko-agent-dropdown/create-user', [], ['onCancel', ['subexpr', 'action', ['onCancel'], [], ['loc', [null, [2, 15], [2, 34]]]]], ['loc', [null, [1, 0], [3, 4]]]]],
+        statements: [['inline', 'ko-agent-dropdown/create-user', [], ['onCancel', ['subexpr', 'action', ['onCancel'], [], ['loc', [null, [2, 15], [2, 34]]], 0, 0]], ['loc', [null, [1, 0], [3, 4]]], 0, 0]],
         locals: [],
         templates: []
       };
@@ -18220,11 +18206,7 @@ define('frontend-cp/tests/integration/components/ko-bulk-invitation/component-te
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'fragmentReason': {
-            'name': 'missing-wrapper',
-            'problems': ['wrong-type']
-          },
-          'revision': 'Ember@2.6.2',
+          'revision': 'Ember@2.7.0',
           'loc': {
             'source': null,
             'start': {
@@ -18254,7 +18236,7 @@ define('frontend-cp/tests/integration/components/ko-bulk-invitation/component-te
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [['inline', 'ko-bulk-invitation', [], ['invitation', ['subexpr', '@mut', [['get', 'invitation', ['loc', [null, [1, 32], [1, 42]]]]], [], []]], ['loc', [null, [1, 0], [1, 44]]]]],
+        statements: [['inline', 'ko-bulk-invitation', [], ['invitation', ['subexpr', '@mut', [['get', 'invitation', ['loc', [null, [1, 32], [1, 42]]], 0, 0, 0, 0]], [], [], 0, 0]], ['loc', [null, [1, 0], [1, 44]]], 0, 0]],
         locals: [],
         templates: []
       };
@@ -18286,11 +18268,7 @@ define('frontend-cp/tests/integration/components/ko-bulk-invitation/component-te
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'fragmentReason': {
-            'name': 'missing-wrapper',
-            'problems': ['wrong-type']
-          },
-          'revision': 'Ember@2.6.2',
+          'revision': 'Ember@2.7.0',
           'loc': {
             'source': null,
             'start': {
@@ -18320,7 +18298,7 @@ define('frontend-cp/tests/integration/components/ko-bulk-invitation/component-te
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [['inline', 'ko-bulk-invitation', [], ['invitation', ['subexpr', '@mut', [['get', 'invitation', ['loc', [null, [1, 32], [1, 42]]]]], [], []]], ['loc', [null, [1, 0], [1, 44]]]]],
+        statements: [['inline', 'ko-bulk-invitation', [], ['invitation', ['subexpr', '@mut', [['get', 'invitation', ['loc', [null, [1, 32], [1, 42]]], 0, 0, 0, 0]], [], [], 0, 0]], ['loc', [null, [1, 0], [1, 44]]], 0, 0]],
         locals: [],
         templates: []
       };
@@ -18367,11 +18345,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/component-test', ['
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'fragmentReason': {
-            'name': 'missing-wrapper',
-            'problems': ['wrong-type']
-          },
-          'revision': 'Ember@2.6.2',
+          'revision': 'Ember@2.7.0',
           'loc': {
             'source': null,
             'start': {
@@ -18401,7 +18375,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/component-test', ['
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [['content', 'ko-info-bar', ['loc', [null, [1, 0], [1, 15]]]]],
+        statements: [['content', 'ko-info-bar', ['loc', [null, [1, 0], [1, 15]]], 0, 0, 0, 0]],
         locals: [],
         templates: []
       };
@@ -18442,11 +18416,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'fragmentReason': {
-            'name': 'missing-wrapper',
-            'problems': ['wrong-type']
-          },
-          'revision': 'Ember@2.6.2',
+          'revision': 'Ember@2.7.0',
           'loc': {
             'source': null,
             'start': {
@@ -18476,7 +18446,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [['inline', 'ko-info-bar/field/drill-down', [], ['options', ['subexpr', '@mut', [['get', 'options', ['loc', [null, [1, 39], [1, 46]]]]], [], []]], ['loc', [null, [1, 0], [1, 48]]]]],
+        statements: [['inline', 'ko-info-bar/field/drill-down', [], ['options', ['subexpr', '@mut', [['get', 'options', ['loc', [null, [1, 39], [1, 46]]], 0, 0, 0, 0]], [], [], 0, 0]], ['loc', [null, [1, 0], [1, 48]]], 0, 0]],
         locals: [],
         templates: []
       };
@@ -18499,11 +18469,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'fragmentReason': {
-            'name': 'missing-wrapper',
-            'problems': ['wrong-type']
-          },
-          'revision': 'Ember@2.6.2',
+          'revision': 'Ember@2.7.0',
           'loc': {
             'source': null,
             'start': {
@@ -18533,7 +18499,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [['inline', 'ko-info-bar/field/drill-down', [], ['options', ['subexpr', '@mut', [['get', 'options', ['loc', [null, [1, 39], [1, 46]]]]], [], []]], ['loc', [null, [1, 0], [1, 48]]]]],
+        statements: [['inline', 'ko-info-bar/field/drill-down', [], ['options', ['subexpr', '@mut', [['get', 'options', ['loc', [null, [1, 39], [1, 46]]], 0, 0, 0, 0]], [], [], 0, 0]], ['loc', [null, [1, 0], [1, 48]]], 0, 0]],
         locals: [],
         templates: []
       };
@@ -18569,11 +18535,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'fragmentReason': {
-            'name': 'missing-wrapper',
-            'problems': ['wrong-type']
-          },
-          'revision': 'Ember@2.6.2',
+          'revision': 'Ember@2.7.0',
           'loc': {
             'source': null,
             'start': {
@@ -18603,7 +18565,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [['inline', 'ko-info-bar/field/drill-down', [], ['value', ['subexpr', '@mut', [['get', 'value', ['loc', [null, [1, 37], [1, 42]]]]], [], []], 'options', ['subexpr', '@mut', [['get', 'options', ['loc', [null, [1, 51], [1, 58]]]]], [], []], 'onValueChange', ['subexpr', 'action', ['valueChanged'], [], ['loc', [null, [1, 73], [1, 96]]]]], ['loc', [null, [1, 0], [1, 98]]]]],
+        statements: [['inline', 'ko-info-bar/field/drill-down', [], ['value', ['subexpr', '@mut', [['get', 'value', ['loc', [null, [1, 37], [1, 42]]], 0, 0, 0, 0]], [], [], 0, 0], 'options', ['subexpr', '@mut', [['get', 'options', ['loc', [null, [1, 51], [1, 58]]], 0, 0, 0, 0]], [], [], 0, 0], 'onValueChange', ['subexpr', 'action', ['valueChanged'], [], ['loc', [null, [1, 73], [1, 96]]], 0, 0]], ['loc', [null, [1, 0], [1, 98]]], 0, 0]],
         locals: [],
         templates: []
       };
@@ -18630,11 +18592,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'fragmentReason': {
-            'name': 'missing-wrapper',
-            'problems': ['wrong-type']
-          },
-          'revision': 'Ember@2.6.2',
+          'revision': 'Ember@2.7.0',
           'loc': {
             'source': null,
             'start': {
@@ -18664,7 +18622,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [['inline', 'ko-info-bar/field/drill-down', [], ['options', ['subexpr', '@mut', [['get', 'options', ['loc', [null, [1, 39], [1, 46]]]]], [], []]], ['loc', [null, [1, 0], [1, 48]]]]],
+        statements: [['inline', 'ko-info-bar/field/drill-down', [], ['options', ['subexpr', '@mut', [['get', 'options', ['loc', [null, [1, 39], [1, 46]]], 0, 0, 0, 0]], [], [], 0, 0]], ['loc', [null, [1, 0], [1, 48]]], 0, 0]],
         locals: [],
         templates: []
       };
@@ -18694,11 +18652,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'fragmentReason': {
-            'name': 'missing-wrapper',
-            'problems': ['wrong-type']
-          },
-          'revision': 'Ember@2.6.2',
+          'revision': 'Ember@2.7.0',
           'loc': {
             'source': null,
             'start': {
@@ -18728,7 +18682,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [['inline', 'ko-info-bar/field/drill-down', [], ['options', ['subexpr', '@mut', [['get', 'options', ['loc', [null, [1, 39], [1, 46]]]]], [], []]], ['loc', [null, [1, 0], [1, 48]]]]],
+        statements: [['inline', 'ko-info-bar/field/drill-down', [], ['options', ['subexpr', '@mut', [['get', 'options', ['loc', [null, [1, 39], [1, 46]]], 0, 0, 0, 0]], [], [], 0, 0]], ['loc', [null, [1, 0], [1, 48]]], 0, 0]],
         locals: [],
         templates: []
       };
@@ -18776,11 +18730,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/multiline-tex
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'fragmentReason': {
-            'name': 'missing-wrapper',
-            'problems': ['wrong-type']
-          },
-          'revision': 'Ember@2.6.2',
+          'revision': 'Ember@2.7.0',
           'loc': {
             'source': null,
             'start': {
@@ -18810,7 +18760,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/multiline-tex
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [['inline', 'ko-info-bar/field/multiline-text', [], ['title', 'Some other field', 'value', ['subexpr', '@mut', [['get', 'textAreaFieldValue', ['loc', [null, [3, 10], [3, 28]]]]], [], []], 'onValueChange', ['subexpr', '@mut', [['get', 'onValueChange', ['loc', [null, [4, 18], [4, 31]]]]], [], []]], ['loc', [null, [1, 0], [5, 4]]]]],
+        statements: [['inline', 'ko-info-bar/field/multiline-text', [], ['title', 'Some other field', 'value', ['subexpr', '@mut', [['get', 'textAreaFieldValue', ['loc', [null, [3, 10], [3, 28]]], 0, 0, 0, 0]], [], [], 0, 0], 'onValueChange', ['subexpr', '@mut', [['get', 'onValueChange', ['loc', [null, [4, 18], [4, 31]]], 0, 0, 0, 0]], [], [], 0, 0]], ['loc', [null, [1, 0], [5, 4]]], 0, 0]],
         locals: [],
         templates: []
       };
@@ -18830,11 +18780,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/multiline-tex
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'fragmentReason': {
-            'name': 'missing-wrapper',
-            'problems': ['wrong-type']
-          },
-          'revision': 'Ember@2.6.2',
+          'revision': 'Ember@2.7.0',
           'loc': {
             'source': null,
             'start': {
@@ -18864,7 +18810,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/multiline-tex
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [['inline', 'ko-info-bar/field/multiline-text', [], ['title', 'Some other field', 'onValueChange', ['subexpr', 'action', ['assertTextAreaFieldValueChanged'], [], ['loc', [null, [3, 18], [3, 60]]]]], ['loc', [null, [1, 0], [4, 4]]]]],
+        statements: [['inline', 'ko-info-bar/field/multiline-text', [], ['title', 'Some other field', 'onValueChange', ['subexpr', 'action', ['assertTextAreaFieldValueChanged'], [], ['loc', [null, [3, 18], [3, 60]]], 0, 0]], ['loc', [null, [1, 0], [4, 4]]], 0, 0]],
         locals: [],
         templates: []
       };
@@ -18879,6 +18825,31 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/multiline-tex
     });
   });
 });
+define("frontend-cp/tests/integration/components/ko-info-bar/field/select-multiple/component-test", ["exports"], function (exports) {});
+// import Ember from 'ember';
+// import { moduleForComponent, test } from 'ember-qunit';
+// import hbs from 'htmlbars-inline-precompile';
+// const { getOwner } = Ember;
+//
+// let title = 'span:first';
+//
+// moduleForComponent('ko-info-bar/field/select-multiple', 'Integration | Component | ko-info-bar/field/select-multiple', {
+//   integration: true,
+//   beforeEach() {
+//     let intl = getOwner(this).lookup('service:intl');
+//     intl.setLocale('en-us');
+//   }
+// });
+//
+// test('renders with title', function(assert) {
+//   assert.expect(1);
+//
+//   this.render(hbs`{{ko-info-bar/field/select-multiple
+//     title='Some other field'
+//   }}`);
+//
+//   assert.equal(this.$(title).text(), 'Some other field');
+// });
 define('frontend-cp/tests/integration/components/ko-info-bar/field/select/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/helpers/ember-power-select'], function (exports, _ember, _frontendCpTestsHelpersQunit, _frontendCpTestsHelpersEmberPowerSelect) {
   var getOwner = _ember['default'].getOwner;
 
@@ -18903,11 +18874,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/select/compon
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'fragmentReason': {
-            'name': 'missing-wrapper',
-            'problems': ['wrong-type']
-          },
-          'revision': 'Ember@2.6.2',
+          'revision': 'Ember@2.7.0',
           'loc': {
             'source': null,
             'start': {
@@ -18939,7 +18906,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/select/compon
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [['inline', 'ko-info-bar/field/select', [], ['title', ['subexpr', '@mut', [['get', 'title', ['loc', [null, [3, 12], [3, 17]]]]], [], []], 'options', ['subexpr', '@mut', [['get', 'options', ['loc', [null, [4, 14], [4, 21]]]]], [], []], 'hasEmptyOption', false], ['loc', [null, [2, 4], [6, 6]]]]],
+        statements: [['inline', 'ko-info-bar/field/select', [], ['title', ['subexpr', '@mut', [['get', 'title', ['loc', [null, [3, 12], [3, 17]]], 0, 0, 0, 0]], [], [], 0, 0], 'options', ['subexpr', '@mut', [['get', 'options', ['loc', [null, [4, 14], [4, 21]]], 0, 0, 0, 0]], [], [], 0, 0], 'hasEmptyOption', false], ['loc', [null, [2, 4], [6, 6]]], 0, 0]],
         locals: [],
         templates: []
       };
@@ -18961,11 +18928,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/select/compon
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'fragmentReason': {
-            'name': 'missing-wrapper',
-            'problems': ['wrong-type']
-          },
-          'revision': 'Ember@2.6.2',
+          'revision': 'Ember@2.7.0',
           'loc': {
             'source': null,
             'start': {
@@ -18997,7 +18960,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/select/compon
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [['inline', 'ko-info-bar/field/select', [], ['options', ['subexpr', '@mut', [['get', 'options', ['loc', [null, [3, 14], [3, 21]]]]], [], []]], ['loc', [null, [2, 4], [4, 6]]]]],
+        statements: [['inline', 'ko-info-bar/field/select', [], ['options', ['subexpr', '@mut', [['get', 'options', ['loc', [null, [3, 14], [3, 21]]], 0, 0, 0, 0]], [], [], 0, 0]], ['loc', [null, [2, 4], [4, 6]]], 0, 0]],
         locals: [],
         templates: []
       };
@@ -19019,11 +18982,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/select/compon
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'fragmentReason': {
-            'name': 'missing-wrapper',
-            'problems': ['wrong-type']
-          },
-          'revision': 'Ember@2.6.2',
+          'revision': 'Ember@2.7.0',
           'loc': {
             'source': null,
             'start': {
@@ -19055,7 +19014,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/select/compon
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [['inline', 'ko-info-bar/field/select', [], ['options', ['subexpr', '@mut', [['get', 'options', ['loc', [null, [3, 14], [3, 21]]]]], [], []], 'onValueChange', ['subexpr', '@mut', [['get', 'change', ['loc', [null, [4, 20], [4, 26]]]]], [], []]], ['loc', [null, [2, 4], [5, 6]]]]],
+        statements: [['inline', 'ko-info-bar/field/select', [], ['options', ['subexpr', '@mut', [['get', 'options', ['loc', [null, [3, 14], [3, 21]]], 0, 0, 0, 0]], [], [], 0, 0], 'onValueChange', ['subexpr', '@mut', [['get', 'change', ['loc', [null, [4, 20], [4, 26]]], 0, 0, 0, 0]], [], [], 0, 0]], ['loc', [null, [2, 4], [5, 6]]], 0, 0]],
         locals: [],
         templates: []
       };
@@ -19065,31 +19024,6 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/select/compon
     (0, _frontendCpTestsHelpersEmberPowerSelect.nativeMouseUp)('.ember-power-select-option:nth-child(2)');
   });
 });
-define("frontend-cp/tests/integration/components/ko-info-bar/field/select-multiple/component-test", ["exports"], function (exports) {});
-// import Ember from 'ember';
-// import { moduleForComponent, test } from 'ember-qunit';
-// import hbs from 'htmlbars-inline-precompile';
-// const { getOwner } = Ember;
-//
-// let title = 'span:first';
-//
-// moduleForComponent('ko-info-bar/field/select-multiple', 'Integration | Component | ko-info-bar/field/select-multiple', {
-//   integration: true,
-//   beforeEach() {
-//     let intl = getOwner(this).lookup('service:intl');
-//     intl.setLocale('en-us');
-//   }
-// });
-//
-// test('renders with title', function(assert) {
-//   assert.expect(1);
-//
-//   this.render(hbs`{{ko-info-bar/field/select-multiple
-//     title='Some other field'
-//   }}`);
-//
-//   assert.equal(this.$(title).text(), 'Some other field');
-// });
 define('frontend-cp/tests/integration/components/ko-info-bar/field/text/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit'], function (exports, _ember, _frontendCpTestsHelpersQunit) {
   var getOwner = _ember['default'].getOwner;
 
@@ -19112,11 +19046,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/text/componen
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'fragmentReason': {
-            'name': 'missing-wrapper',
-            'problems': ['wrong-type']
-          },
-          'revision': 'Ember@2.6.2',
+          'revision': 'Ember@2.7.0',
           'loc': {
             'source': null,
             'start': {
@@ -19148,7 +19078,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/text/componen
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [['inline', 'ko-info-bar/field/text', [], ['title', 'Some other field', 'value', ['subexpr', '@mut', [['get', 'textFieldValue', ['loc', [null, [4, 12], [4, 26]]]]], [], []], 'onValueChange', ['subexpr', '@mut', [['get', 'onValueChange', ['loc', [null, [5, 20], [5, 33]]]]], [], []]], ['loc', [null, [2, 4], [6, 6]]]]],
+        statements: [['inline', 'ko-info-bar/field/text', [], ['title', 'Some other field', 'value', ['subexpr', '@mut', [['get', 'textFieldValue', ['loc', [null, [4, 12], [4, 26]]], 0, 0, 0, 0]], [], [], 0, 0], 'onValueChange', ['subexpr', '@mut', [['get', 'onValueChange', ['loc', [null, [5, 20], [5, 33]]], 0, 0, 0, 0]], [], [], 0, 0]], ['loc', [null, [2, 4], [6, 6]]], 0, 0]],
         locals: [],
         templates: []
       };
@@ -19168,11 +19098,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/text/componen
     this.render(_ember['default'].HTMLBars.template((function () {
       return {
         meta: {
-          'fragmentReason': {
-            'name': 'missing-wrapper',
-            'problems': ['wrong-type']
-          },
-          'revision': 'Ember@2.6.2',
+          'revision': 'Ember@2.7.0',
           'loc': {
             'source': null,
             'start': {
@@ -19202,7 +19128,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/text/componen
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [['inline', 'ko-info-bar/field/text', [], ['title', 'Some other field', 'onValueChange', ['subexpr', 'action', ['assertTextFieldValueChanged'], [], ['loc', [null, [3, 18], [3, 56]]]]], ['loc', [null, [1, 0], [4, 4]]]]],
+        statements: [['inline', 'ko-info-bar/field/text', [], ['title', 'Some other field', 'onValueChange', ['subexpr', 'action', ['assertTextFieldValueChanged'], [], ['loc', [null, [3, 18], [3, 56]]], 0, 0]], ['loc', [null, [1, 0], [4, 4]]], 0, 0]],
         locals: [],
         templates: []
       };
@@ -19279,11 +19205,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/update-log/componen
     this.render(Ember.HTMLBars.template((function () {
       return {
         meta: {
-          'fragmentReason': {
-            'name': 'missing-wrapper',
-            'problems': ['wrong-type']
-          },
-          'revision': 'Ember@2.6.2',
+          'revision': 'Ember@2.7.0',
           'loc': {
             'source': null,
             'start': {
@@ -19313,7 +19235,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/update-log/componen
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [['inline', 'ko-info-bar/update-log', [], ['updateLog', ['subexpr', '@mut', [['get', 'testUpdateLog', ['loc', [null, [1, 35], [1, 48]]]]], [], []], 'onClose', ['subexpr', '@mut', [['get', 'emptyCloseFunction', ['loc', [null, [1, 57], [1, 75]]]]], [], []]], ['loc', [null, [1, 0], [1, 77]]]]],
+        statements: [['inline', 'ko-info-bar/update-log', [], ['updateLog', ['subexpr', '@mut', [['get', 'testUpdateLog', ['loc', [null, [1, 35], [1, 48]]], 0, 0, 0, 0]], [], [], 0, 0], 'onClose', ['subexpr', '@mut', [['get', 'emptyCloseFunction', ['loc', [null, [1, 57], [1, 75]]], 0, 0, 0, 0]], [], [], 0, 0]], ['loc', [null, [1, 0], [1, 77]]], 0, 0]],
         locals: [],
         templates: []
       };
@@ -19377,11 +19299,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/update-log/componen
     this.render(Ember.HTMLBars.template((function () {
       return {
         meta: {
-          'fragmentReason': {
-            'name': 'missing-wrapper',
-            'problems': ['wrong-type']
-          },
-          'revision': 'Ember@2.6.2',
+          'revision': 'Ember@2.7.0',
           'loc': {
             'source': null,
             'start': {
@@ -19411,7 +19329,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/update-log/componen
           dom.insertBoundary(fragment, null);
           return morphs;
         },
-        statements: [['inline', 'ko-info-bar/update-log', [], ['updateLog', ['subexpr', '@mut', [['get', 'testUpdateLog', ['loc', [null, [1, 35], [1, 48]]]]], [], []], 'onClose', ['subexpr', '@mut', [['get', 'emptyCloseFunction', ['loc', [null, [1, 57], [1, 75]]]]], [], []]], ['loc', [null, [1, 0], [1, 77]]]]],
+        statements: [['inline', 'ko-info-bar/update-log', [], ['updateLog', ['subexpr', '@mut', [['get', 'testUpdateLog', ['loc', [null, [1, 35], [1, 48]]], 0, 0, 0, 0]], [], [], 0, 0], 'onClose', ['subexpr', '@mut', [['get', 'emptyCloseFunction', ['loc', [null, [1, 57], [1, 75]]], 0, 0, 0, 0]], [], [], 0, 0]], ['loc', [null, [1, 0], [1, 77]]], 0, 0]],
         locals: [],
         templates: []
       };
@@ -19429,6 +19347,36 @@ define('frontend-cp/tests/integration/components/ko-info-bar/update-log/componen
 define('frontend-cp/tests/test-helper', ['exports', 'frontend-cp/tests/helpers/resolver', 'ember-qunit'], function (exports, _frontendCpTestsHelpersResolver, _emberQunit) {
 
   (0, _emberQunit.setResolver)(_frontendCpTestsHelpersResolver['default']);
+});
+define('frontend-cp/tests/unit/components/ko-admin-selectable-card/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit'], function (exports, _ember, _frontendCpTestsHelpersQunit) {
+
+  var component = undefined;
+
+  (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-admin-selectable-card', {
+    needs: ['component:ko-checkbox'],
+
+    setup: function setup() {
+      component = this.subject();
+    }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('setting inactive state adds class', function (assert) {
+    _ember['default'].run(function () {
+      component.set('isActive', false);
+    });
+
+    this.render();
+    assert.ok(this.$().hasClass('ko-admin-selectable-card--inactive'));
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('setting selected state adds class', function (assert) {
+    _ember['default'].run(function () {
+      component.set('isSelected', true);
+    });
+
+    this.render();
+    assert.ok(this.$().hasClass('ko-admin-selectable-card--selected'));
+  });
 });
 define('frontend-cp/tests/unit/components/ko-admin/triggers/form/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit'], function (exports, _ember, _frontendCpTestsHelpersQunit) {
 
@@ -19693,36 +19641,6 @@ define('frontend-cp/tests/unit/components/ko-admin/triggers/form/component-test'
           return assert.notOk(definition.get('disabled'), 'api disabled');
       }
     });
-  });
-});
-define('frontend-cp/tests/unit/components/ko-admin-selectable-card/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit'], function (exports, _ember, _frontendCpTestsHelpersQunit) {
-
-  var component = undefined;
-
-  (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-admin-selectable-card', {
-    needs: ['component:ko-checkbox'],
-
-    setup: function setup() {
-      component = this.subject();
-    }
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('setting inactive state adds class', function (assert) {
-    _ember['default'].run(function () {
-      component.set('isActive', false);
-    });
-
-    this.render();
-    assert.ok(this.$().hasClass('ko-admin-selectable-card--inactive'));
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('setting selected state adds class', function (assert) {
-    _ember['default'].run(function () {
-      component.set('isSelected', true);
-    });
-
-    this.render();
-    assert.ok(this.$().hasClass('ko-admin-selectable-card--selected'));
   });
 });
 define('frontend-cp/tests/unit/components/ko-checkbox/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/lib/keycodes'], function (exports, _ember, _frontendCpTestsHelpersQunit, _frontendCpLibKeycodes) {
@@ -20453,50 +20371,6 @@ define('frontend-cp/tests/unit/components/ko-radio/component-test', ['exports', 
   //  });
   //});
 });
-define('frontend-cp/tests/unit/components/ko-table/component-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'ember'], function (exports, _frontendCpTestsHelpersQunit, _ember) {
-
-  var component = undefined;
-  var rows = undefined;
-
-  (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-table', 'Unit | Component | ko table', {
-    // Specify the other units that are required for this test
-    // needs: ['component:foo', 'helper:bar']
-    unit: true,
-    setup: function setup() {
-      component = this.subject();
-      rows = [_ember['default'].Object.create({ selected: false }), _ember['default'].Object.create({ selected: false }), _ember['default'].Object.create({ selected: false })];
-      rows.forEach(function (row) {
-        return component.send('registerRow', row);
-      });
-    }
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('it tracks the selected state of rows', function (assert) {
-    assert.equal(component.get('allRowsSelected'), false);
-
-    rows[0].set('selected', true);
-    rows[1].set('selected', true);
-    assert.equal(component.get('allRowsSelected'), false);
-
-    rows[2].set('selected', true);
-    assert.equal(component.get('allRowsSelected'), true);
-
-    rows[0].set('selected', false);
-    assert.equal(component.get('allRowsSelected'), false);
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('it selects all rows', function (assert) {
-    component.send('selectAll');
-    rows.forEach(function (row) {
-      return assert.equal(row.get('selected'), true);
-    });
-
-    component.send('deselectAll');
-    rows.forEach(function (row) {
-      return assert.equal(row.get('selected'), false);
-    });
-  });
-});
 define("frontend-cp/tests/unit/components/ko-table-header/component-test", ["exports"], function (exports) {});
 // import { moduleForComponent, test } from 'frontend-cp/tests/helpers/qunit';
 // import Ember from 'ember';
@@ -20673,6 +20547,50 @@ define("frontend-cp/tests/unit/components/ko-table-row/component-test", ["export
 //     assert.equal(row, component);
 //   });
 // });
+define('frontend-cp/tests/unit/components/ko-table/component-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'ember'], function (exports, _frontendCpTestsHelpersQunit, _ember) {
+
+  var component = undefined;
+  var rows = undefined;
+
+  (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-table', 'Unit | Component | ko table', {
+    // Specify the other units that are required for this test
+    // needs: ['component:foo', 'helper:bar']
+    unit: true,
+    setup: function setup() {
+      component = this.subject();
+      rows = [_ember['default'].Object.create({ selected: false }), _ember['default'].Object.create({ selected: false }), _ember['default'].Object.create({ selected: false })];
+      rows.forEach(function (row) {
+        return component.send('registerRow', row);
+      });
+    }
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('it tracks the selected state of rows', function (assert) {
+    assert.equal(component.get('allRowsSelected'), false);
+
+    rows[0].set('selected', true);
+    rows[1].set('selected', true);
+    assert.equal(component.get('allRowsSelected'), false);
+
+    rows[2].set('selected', true);
+    assert.equal(component.get('allRowsSelected'), true);
+
+    rows[0].set('selected', false);
+    assert.equal(component.get('allRowsSelected'), false);
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('it selects all rows', function (assert) {
+    component.send('selectAll');
+    rows.forEach(function (row) {
+      return assert.equal(row.get('selected'), true);
+    });
+
+    component.send('deselectAll');
+    rows.forEach(function (row) {
+      return assert.equal(row.get('selected'), false);
+    });
+  });
+});
 define('frontend-cp/tests/unit/components/ko-timeline/activity/utils-test', ['exports', 'qunit', 'frontend-cp/components/ko-timeline/activity/utils'], function (exports, _qunit, _frontendCpComponentsKoTimelineActivityUtils) {
 
   (0, _qunit.module)('Unit | Component | ko-timeline/item/activity/utils', function () {
@@ -20909,103 +20827,6 @@ define('frontend-cp/tests/unit/helpers/join-classes-test', ['exports', 'frontend
     assert.equal((0, _frontendCpHelpersJoinClasses.joinClasses)(['foo', 'bar', 'baz']), 'foo bar baz');
   });
 });
-define('frontend-cp/tests/unit/services/custom-fields/options-test', ['exports', 'ember', 'ember-qunit'], function (exports, _ember, _emberQunit) {
-  var getOwner = _ember['default'].getOwner;
-
-  (0, _emberQunit.moduleFor)('service:custom-fields/options', 'Unit | Service | custom-fields/options', {
-    needs: ['model:user-field', 'model:field-option', 'model:field', 'model:locale', 'model:locale', 'model:locale-field', 'model:case-priority', 'model:case-status', 'model:case-type']
-  });
-
-  (0, _emberQunit.test)('it add option with sortOrder = 1, when there is no options', function (assert) {
-    assert.expect(2);
-
-    var service = this.subject();
-
-    var options = [];
-
-    _ember['default'].run(function () {
-      service.add(options);
-    });
-
-    assert.equal(options.length, 1);
-    assert.equal(options.get('firstObject').get('sortOrder'), 1);
-  });
-
-  (0, _emberQunit.test)('it add option with sortOrder = sortOrder+1, when there are options', function (assert) {
-    assert.expect(2);
-
-    var service = this.subject();
-    var store = getOwner(this).lookup('service:store');
-
-    var option1 = undefined,
-        option2 = undefined,
-        option3 = undefined;
-
-    _ember['default'].run(function () {
-      option1 = store.createRecord('field-option', { sortOrder: 1, value: 'option1', tag: 'value1' });
-      option2 = store.createRecord('field-option', { sortOrder: 2, value: 'option2', tag: 'value2' });
-      option3 = store.createRecord('field-option', { sortOrder: 3, value: 'option3', tag: 'value3' });
-    });
-
-    var options = [option1, option2, option3];
-
-    _ember['default'].run(function () {
-      service.add(options);
-    });
-
-    assert.equal(options.length, 4);
-    assert.equal(options.get('lastObject').get('sortOrder'), 4);
-  });
-
-  (0, _emberQunit.test)('it can rollback options', function (assert) {
-    assert.expect(2);
-
-    var service = this.subject();
-    var store = getOwner(this).lookup('service:store');
-
-    var locale = undefined;
-    var option = undefined;
-    _ember['default'].run(function () {
-      locale = store.push({
-        data: {
-          id: 1,
-          type: 'locale-field',
-          attributes: {
-            locale: 'en-us',
-            translation: 'translated text'
-          }
-        }
-      });
-      option = store.push({
-        data: {
-          id: 1,
-          type: 'field-option',
-          attributes: {
-            sortOrder: 1,
-            value: 'option1',
-            tag: 'value1'
-          }
-        }
-      });
-      option.get('values').pushObject(locale);
-    });
-
-    locale.reopen({
-      rollbackAttributes: function rollbackAttributes() {
-        assert.equal(true, true);
-      }
-    });
-
-    option.reopen({
-      rollbackAttributes: function rollbackAttributes() {
-        assert.equal(true, true);
-      }
-    });
-
-    service.rollbackAttributes([]);
-    service.rollbackAttributes([option]);
-  });
-});
 define('frontend-cp/tests/unit/services/custom-fields-test', ['exports', 'ember', 'ember-qunit'], function (exports, _ember, _emberQunit) {
   var getOwner = _ember['default'].getOwner;
 
@@ -21212,6 +21033,103 @@ define('frontend-cp/tests/unit/services/custom-fields-test', ['exports', 'ember'
     });
 
     assert.equal(model.get('isEnabled'), false);
+  });
+});
+define('frontend-cp/tests/unit/services/custom-fields/options-test', ['exports', 'ember', 'ember-qunit'], function (exports, _ember, _emberQunit) {
+  var getOwner = _ember['default'].getOwner;
+
+  (0, _emberQunit.moduleFor)('service:custom-fields/options', 'Unit | Service | custom-fields/options', {
+    needs: ['model:user-field', 'model:field-option', 'model:field', 'model:locale', 'model:locale', 'model:locale-field', 'model:case-priority', 'model:case-status', 'model:case-type']
+  });
+
+  (0, _emberQunit.test)('it add option with sortOrder = 1, when there is no options', function (assert) {
+    assert.expect(2);
+
+    var service = this.subject();
+
+    var options = [];
+
+    _ember['default'].run(function () {
+      service.add(options);
+    });
+
+    assert.equal(options.length, 1);
+    assert.equal(options.get('firstObject').get('sortOrder'), 1);
+  });
+
+  (0, _emberQunit.test)('it add option with sortOrder = sortOrder+1, when there are options', function (assert) {
+    assert.expect(2);
+
+    var service = this.subject();
+    var store = getOwner(this).lookup('service:store');
+
+    var option1 = undefined,
+        option2 = undefined,
+        option3 = undefined;
+
+    _ember['default'].run(function () {
+      option1 = store.createRecord('field-option', { sortOrder: 1, value: 'option1', tag: 'value1' });
+      option2 = store.createRecord('field-option', { sortOrder: 2, value: 'option2', tag: 'value2' });
+      option3 = store.createRecord('field-option', { sortOrder: 3, value: 'option3', tag: 'value3' });
+    });
+
+    var options = [option1, option2, option3];
+
+    _ember['default'].run(function () {
+      service.add(options);
+    });
+
+    assert.equal(options.length, 4);
+    assert.equal(options.get('lastObject').get('sortOrder'), 4);
+  });
+
+  (0, _emberQunit.test)('it can rollback options', function (assert) {
+    assert.expect(2);
+
+    var service = this.subject();
+    var store = getOwner(this).lookup('service:store');
+
+    var locale = undefined;
+    var option = undefined;
+    _ember['default'].run(function () {
+      locale = store.push({
+        data: {
+          id: 1,
+          type: 'locale-field',
+          attributes: {
+            locale: 'en-us',
+            translation: 'translated text'
+          }
+        }
+      });
+      option = store.push({
+        data: {
+          id: 1,
+          type: 'field-option',
+          attributes: {
+            sortOrder: 1,
+            value: 'option1',
+            tag: 'value1'
+          }
+        }
+      });
+      option.get('values').pushObject(locale);
+    });
+
+    locale.reopen({
+      rollbackAttributes: function rollbackAttributes() {
+        assert.equal(true, true);
+      }
+    });
+
+    option.reopen({
+      rollbackAttributes: function rollbackAttributes() {
+        assert.equal(true, true);
+      }
+    });
+
+    service.rollbackAttributes([]);
+    service.rollbackAttributes([option]);
   });
 });
 define('frontend-cp/tests/unit/services/error-handler-test', ['exports', 'ember', 'ember-qunit', 'frontend-cp/services/session'], function (exports, _ember, _emberQunit, _frontendCpServicesSession) {
