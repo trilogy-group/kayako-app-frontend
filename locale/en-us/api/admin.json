@@ -750,7 +750,7 @@
   "sla.buttons.add_new": "New SLA",
   "sla.enabled.message": "SLA enabled successfully",
   "sla.disabled.message": "SLA disabled successfully",
-  "sla.delete.success_message": "Case field deleted successfully",
+  "sla.delete.success_message": "SLA deleted successfully",
   "sla.headings.edit": "SLAs / {title}",
   "sla.headings.new": "SLAs / New",
   "sla.edit.details": "SLA details",
