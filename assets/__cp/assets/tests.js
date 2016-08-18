@@ -7361,7 +7361,9 @@ define('frontend-cp/tests/acceptance/admin/manage/localization/list-test', ['exp
     assert.ok(row.text().indexOf(name) !== -1, 'Language name');
 
     var isLocalised = options.indexOf('isLocalised') !== -1;
+    var isDefault = options.indexOf('isDefault') !== -1;
     assert[isLocalised ? 'ok' : 'notOk'](row.text().indexOf('(Officially supported)') !== -1, name + ' (Officially supported)');
+    assert[isDefault ? 'ok' : 'notOk'](row.text().indexOf('(Default)') !== -1, name + ' (Default)');
 
     triggerEvent(row, 'mouseenter');
     andThen(function () {
@@ -7416,7 +7418,7 @@ define('frontend-cp/tests/acceptance/admin/manage/localization/list-test', ['exp
   (0, _frontendCpTestsHelpersQunit.test)('listing index', function (assert) {
     visit('/admin/manage/localization');
     andThen(function () {
-      assertRows(assert, [['English', ['isLocalised', 'canDisable']], ['French', ['canDisable']]], [['German', ['canEnable']], ['Russian', ['canEnable']]]);
+      assertRows(assert, [['English', ['isLocalised', 'canDisable', 'isDefault']], ['French', ['canDisable']]], [['German', ['canEnable']], ['Russian', ['canEnable']]]);
     });
   });
 
@@ -7429,7 +7431,7 @@ define('frontend-cp/tests/acceptance/admin/manage/localization/list-test', ['exp
       return click(getEnabledRows().eq(1).find('.qa-language-disable'));
     });
     andThen(function () {
-      assertRows(assert, [['English', ['isLocalised']]], [['French', ['canEnable']], ['German', ['canEnable']], ['Russian', ['canEnable']]]);
+      assertRows(assert, [['English', ['isLocalised', 'isDefault']]], [['French', ['canEnable']], ['German', ['canEnable']], ['Russian', ['canEnable']]]);
     });
   });
 
@@ -7442,7 +7444,7 @@ define('frontend-cp/tests/acceptance/admin/manage/localization/list-test', ['exp
       return click(getDisabledRows().eq(0).find('.qa-language-enable'));
     });
     andThen(function () {
-      assertRows(assert, [['English', ['isLocalised', 'canDisable']], ['French', ['canDisable']], ['German', ['canDisable']]], [['Russian', ['canEnable']]]);
+      assertRows(assert, [['English', ['isLocalised', 'canDisable', 'isDefault']], ['French', ['canDisable']], ['German', ['canDisable']]], [['Russian', ['canEnable']]]);
     });
   });
 });
@@ -17562,6 +17564,72 @@ define('frontend-cp/tests/helpers/use-default-scenario', ['exports', 'ember', 'f
   exports['default'] = _ember['default'].Test.registerAsyncHelper('useDefaultScenario', function () {
     (0, _frontendCpMirageScenariosDefault['default'])(server); //eslint-disable-line no-undef
   });
+});
+define('frontend-cp/tests/helpers/validate-properties', ['exports', 'ember', 'ember-qunit'], function (exports, _ember, _emberQunit) {
+  exports.testValidPropertyValues = testValidPropertyValues;
+  exports.testInvalidPropertyValues = testInvalidPropertyValues;
+
+  var run = _ember['default'].run;
+
+  function validateValues(object, propertyName, values, isTestForValid) {
+    var promise = null;
+    var validatedValues = [];
+
+    values.forEach(function (value) {
+      function handleValidation(errors) {
+        var hasErrors = object.get('errors.' + propertyName + '.firstObject');
+        if (hasErrors && !isTestForValid || !hasErrors && isTestForValid) {
+          validatedValues.push(value);
+        }
+      }
+
+      run(object, 'set', propertyName, value);
+
+      var objectPromise = null;
+      run(function () {
+        objectPromise = object.validate().then(handleValidation, handleValidation);
+      });
+
+      // Since we are setting the values in a different run loop as we are validating them,
+      // we need to chain the promises so that they run sequentially. The wrong value will
+      // be validated if the promises execute concurrently
+      promise = promise ? promise.then(objectPromise) : objectPromise;
+    });
+
+    return promise.then(function () {
+      return validatedValues;
+    });
+  }
+
+  function testPropertyValues(propertyName, values, isTestForValid, context) {
+    var validOrInvalid = isTestForValid ? 'Valid' : 'Invalid';
+    var testName = validOrInvalid + ' ' + propertyName;
+
+    (0, _emberQunit.test)(testName, function (assert) {
+      var object = this.subject();
+
+      if (context && typeof context === 'function') {
+        context(object);
+      }
+
+      // Use QUnit.dump.parse so null and undefined can be printed as literal 'null' and
+      // 'undefined' strings in the assert message.
+      var valuesString = QUnit.dump.parse(values).replace(/\n(\s+)?/g, '').replace(/,/g, ', ');
+      var assertMessage = 'Expected ' + propertyName + ' to have ' + validOrInvalid.toLowerCase() + ' values: ' + valuesString;
+
+      return validateValues(object, propertyName, values, isTestForValid).then(function (validatedValues) {
+        assert.deepEqual(validatedValues, values, assertMessage);
+      });
+    });
+  }
+
+  function testValidPropertyValues(propertyName, values, context) {
+    testPropertyValues(propertyName, values, true, context);
+  }
+
+  function testInvalidPropertyValues(propertyName, values, context) {
+    testPropertyValues(propertyName, values, false, context);
+  }
 });
 define('frontend-cp/tests/helpers/with-feature', ['exports', 'ember'], function (exports, _ember) {
   exports.withFeature = withFeature;
