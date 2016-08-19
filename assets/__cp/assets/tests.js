@@ -16133,7 +16133,7 @@ define('frontend-cp/tests/acceptance/agent/users/edit-test', ['exports', 'fronte
     click('.button--primary');
   });
 });
-define('frontend-cp/tests/acceptance/login/login-test', ['exports', 'qunit', 'frontend-cp/tests/helpers/qunit'], function (exports, _qunit, _frontendCpTestsHelpersQunit) {
+define('frontend-cp/tests/acceptance/login/login-test', ['exports', 'qunit', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/login/styles'], function (exports, _qunit, _frontendCpTestsHelpersQunit, _frontendCpLoginStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | login/login', {
     afterEach: function afterEach() {
@@ -16158,7 +16158,7 @@ define('frontend-cp/tests/acceptance/login/login-test', ['exports', 'qunit', 'fr
 
     andThen(function () {
       assert.equal(currentURL(), '/agent/login');
-      assert.equal(find('.ko-login__flipper.login__error').length, 1);
+      assert.equal(find('.ko-login__flipper.' + _frontendCpLoginStyles['default'].error).length, 1);
       assert.equal(find('.ko-login__error').text().trim(), 'Email and password combination is incorrect');
     });
   });
