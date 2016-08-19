@@ -12911,10 +12911,6 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
     });
 
     andThen(function () {
-      click('.qa-ko-confirm-modal__confirm');
-    });
-
-    andThen(function () {
       var status = find('.ko-info-bar_item__header:contains("Status")').next().val();
       assert.equal(status, 'Open', 'Status has updated to OPEN');
       assert.equal(find('.' + _frontendCpSessionStyles['default'].tab).length, 1, 'There is only one tab');
@@ -13727,7 +13723,8 @@ define('frontend-cp/tests/acceptance/agent/cases/pusher-test', ['exports', 'fron
         };
       });
 
-      window.FrontendCp.__container__.lookup('service:case-tab').updateCaseFromPusher(pusherObject, '/agent/cases/1', '1');
+      var channel = Pusher.singleton.channel('pusher-case-1');
+      channel.emit('CHANGE', pusherObject);
     });
 
     andThen(function () {
@@ -13764,6 +13761,7 @@ define('frontend-cp/tests/acceptance/agent/cases/pusher-test', ['exports', 'fron
     return object;
   }
 });
+/* global Pusher */
 define('frontend-cp/tests/acceptance/agent/cases/replying-to-a-facebook-message-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'qunit', 'ember-platform'], function (exports, _frontendCpTestsHelpersQunit, _qunit, _emberPlatform) {
   function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -15725,7 +15723,7 @@ define('frontend-cp/tests/acceptance/agent/tabs/tabs-test', ['exports', 'fronten
       is_system: true
     });
 
-    var status = server.create('case-status');
+    var status = server.create('case-status', { type: 'OPEN' });
 
     server.create('case', {
       tags: [],
@@ -20136,7 +20134,7 @@ define('frontend-cp/tests/unit/components/ko-people-popover/component-test', ['e
     _ember['default'].run(function () {
       component.set('selectedPeople', []);
       component.set('suggestedPeople', null);
-      component.set('attrs.onPeopleSuggestion', function (term, selected) {
+      component.set('onPeopleSuggestion', function (term, selected) {
         assert.equal('R', term);
         assert.equal([].length, selected);
       });
@@ -20155,8 +20153,8 @@ define('frontend-cp/tests/unit/components/ko-people-popover/component-test', ['e
     _ember['default'].run(function () {
       component.set('selectedPeople', []);
       component.set('suggestedPeople', null);
-      component.set('attrs.onPeopleSuggestion', function () {});
-      component.set('attrs.onPersonSelect', function () {
+      component.set('onPeopleSuggestion', function () {});
+      component.set('onPersonSelect', function () {
         assert.equal(1, 1);
       });
     });
