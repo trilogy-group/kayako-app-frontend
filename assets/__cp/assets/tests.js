@@ -18756,6 +18756,67 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
     (0, _frontendCpTestsHelpersEmberPowerSelect.clickTrigger)();
     (0, _frontendCpTestsHelpersEmberPowerSelect.nativeMouseUp)(secondOption);
 
+    var expectedListLevel1 = ['Back', 'Team A', 'Jesse Bennett-Chamberlain', 'Jamie Edwards', 'Drew Warkentin'];
+
+    var actualListLevel1 = this.$(optionListItem).map(function (i, el) {
+      return $(el).text().trim();
+    }).get();
+    assert.deepEqual(actualListLevel1, expectedListLevel1, 'level 1 hierarchy list');
+    (0, _frontendCpTestsHelpersEmberPowerSelect.nativeMouseUp)(firstOption);
+
+    var expectedRootLevelList = ['-', 'Team A', 'Team B', 'Team C', 'Team D'];
+
+    var actualRootLevelList = this.$(optionListItem).map(function (i, el) {
+      return $(el).text().trim();
+    }).get();
+    assert.deepEqual(actualRootLevelList, expectedRootLevelList, 'root list');
+  });
+
+  (0, _emberQunit.test)('moving up and down the hierarchy by mouse with full path on leaves', function (assert) {
+    assert.expect(2);
+
+    this.render(_ember['default'].HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@2.7.0',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 1,
+              'column': 74
+            }
+          }
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 0, 0, contextualElement);
+          dom.insertBoundary(fragment, 0);
+          dom.insertBoundary(fragment, null);
+          return morphs;
+        },
+        statements: [['inline', 'ko-info-bar/field/drill-down', [], ['options', ['subexpr', '@mut', [['get', 'options', ['loc', [null, [1, 39], [1, 46]]], 0, 0, 0, 0]], [], [], 0, 0], 'showFullPathOnLeaves', true], ['loc', [null, [1, 0], [1, 74]]], 0, 0]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    (0, _frontendCpTestsHelpersEmberPowerSelect.clickTrigger)();
+    (0, _frontendCpTestsHelpersEmberPowerSelect.nativeMouseUp)(secondOption);
+
     var expectedListLevel1 = ['Back', 'Team A', 'Team A / Jesse Bennett-Chamberlain', 'Team A / Jamie Edwards', 'Team A / Drew Warkentin'];
 
     var actualListLevel1 = this.$(optionListItem).map(function (i, el) {
