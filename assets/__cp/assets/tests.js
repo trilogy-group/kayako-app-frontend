@@ -12740,7 +12740,7 @@ define('frontend-cp/tests/acceptance/admin/settings/security-test', ['exports', 
           'security.agent.ip_restriction': '192.168.0.1'
         }
       }
-    });
+    }, assert);
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('agent field validation errors', function (assert) {
@@ -17172,7 +17172,7 @@ define('frontend-cp/tests/helpers/expect-request', ['exports', 'ember'], functio
       `[status, headers, body]`.
   */
 
-  function expectRequest(pretender, options) {
+  function expectRequest(pretender, options, assert) {
     var message = options.message || 'request';
     var expectedVerb = (options.verb || options.method || 'get').toUpperCase();
     var expectedPath = options.path || '/';
@@ -17214,7 +17214,7 @@ define('frontend-cp/tests/helpers/expect-request', ['exports', 'ember'], functio
     }
 
     function assertion() {
-      equal(actualCount, expectedCount, 'Expected ' + message + ' ' + key);
+      assert.equal(actualCount, expectedCount, 'Expected ' + message + ' ' + key);
     }
 
     // Register our specialised handler in the queue as many
@@ -17263,7 +17263,6 @@ define('frontend-cp/tests/helpers/expect-request', ['exports', 'ember'], functio
     return result;
   }
 });
-/* global equal */
 define('frontend-cp/tests/helpers/fill-in-rich-text-editor', ['exports', 'ember', 'frontend-cp/components/ko-text-editor/styles'], function (exports, _ember, _frontendCpComponentsKoTextEditorStyles) {
   exports['default'] = _ember['default'].Test.registerAsyncHelper('fillInRichTextEditor', function (app, html) {
     var editor = _ember['default'].$('.' + _frontendCpComponentsKoTextEditorStyles['default'].froalaTextArea);
@@ -17365,7 +17364,7 @@ define('frontend-cp/tests/helpers/native-focus', ['exports', 'ember'], function 
     }
   };
 });
-define('frontend-cp/tests/helpers/qunit', ['exports', 'ember', 'qunit', 'ember-qunit/qunit-module', 'ember-test-helpers', 'ember-qunit/test', 'frontend-cp/tests/helpers/start-app', 'ember-truth-helpers/helpers/and', 'ember-truth-helpers/helpers/equal', 'ember-truth-helpers/helpers/not', 'ember-truth-helpers/helpers/or', 'ember-truth-helpers/utils/register-helper', 'frontend-cp/tests/assertions/properties-equal'], function (exports, _ember, _qunit, _emberQunitQunitModule, _emberTestHelpers, _emberQunitTest, _frontendCpTestsHelpersStartApp, _emberTruthHelpersHelpersAnd, _emberTruthHelpersHelpersEqual, _emberTruthHelpersHelpersNot, _emberTruthHelpersHelpersOr, _emberTruthHelpersUtilsRegisterHelper, _frontendCpTestsAssertionsPropertiesEqual) {
+define('frontend-cp/tests/helpers/qunit', ['exports', 'ember', 'qunit', 'ember-qunit/qunit-module', 'ember-test-helpers', 'frontend-cp/tests/helpers/start-app', 'ember-truth-helpers/helpers/and', 'ember-truth-helpers/helpers/equal', 'ember-truth-helpers/helpers/not', 'ember-truth-helpers/helpers/or', 'ember-truth-helpers/utils/register-helper', 'frontend-cp/tests/assertions/properties-equal'], function (exports, _ember, _qunit, _emberQunitQunitModule, _emberTestHelpers, _frontendCpTestsHelpersStartApp, _emberTruthHelpersHelpersAnd, _emberTruthHelpersHelpersEqual, _emberTruthHelpersHelpersNot, _emberTruthHelpersHelpersOr, _emberTruthHelpersUtilsRegisterHelper, _frontendCpTestsAssertionsPropertiesEqual) {
   exports.createModule = createModule;
   exports.moduleForComponent = moduleForComponent;
   exports.moduleForModel = moduleForModel;
@@ -17407,7 +17406,7 @@ define('frontend-cp/tests/helpers/qunit', ['exports', 'ember', 'qunit', 'ember-q
     createModule(_emberTestHelpers.TestModule, name, description, callbacks);
   }
 
-  exports.test = _emberQunitTest['default'];
+  exports.test = _qunit.test;
   exports.setResolver = _emberTestHelpers.setResolver;
 
   function app(name) {
@@ -21255,6 +21254,7 @@ define('frontend-cp/tests/unit/services/error-handler-test', ['exports', 'ember'
   });
 
   (0, _emberQunit.test)('it will logout and send notification on AUTHORIZATION_REQUIRED error', function (assert) {
+    var done = assert.async();
     assert.expect(5);
 
     var service = this.subject();
@@ -21284,6 +21284,7 @@ define('frontend-cp/tests/unit/services/error-handler-test', ['exports', 'ember'
           assert.equal('user_logged_out', object.title);
           assert.equal('session_expired', object.body);
           assert.equal(true, object.autodismiss);
+          done();
         }
       });
     });
