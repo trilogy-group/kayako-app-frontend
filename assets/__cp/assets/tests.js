@@ -4024,7 +4024,7 @@ define('frontend-cp/tests/acceptance/admin/channels/email/list-test', ['exports'
   (0, _frontendCpTestsHelpersQunit.test)('listing mailboxes', function (assert) {
     visit('/admin/channels/email');
     andThen(function () {
-      (0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.assertRows)(assert, [['main@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault']], ['support@kayako.com', ['isDefault', 'canEdit']], ['sales@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']]], [['jobs@kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
+      (0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.assertRows)(assert, [['main@kayako.com', ['canEdit', 'canMakeDefault']], ['support@kayako.com', ['isDefault', 'canEdit']], ['sales@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']]], [['jobs@kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
     });
   });
 
@@ -4037,7 +4037,7 @@ define('frontend-cp/tests/acceptance/admin/channels/email/list-test', ['exports'
       return click((0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.getEnabledRows)().eq(2).find('.qa-mailbox-disable'));
     });
     andThen(function () {
-      (0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.assertRows)(assert, [['main@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault']], ['support@kayako.com', ['isDefault', 'canEdit']]], [['sales@kayako.com', ['canEdit', 'canEnable', 'canDelete']], ['jobs@kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
+      (0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.assertRows)(assert, [['main@kayako.com', ['canEdit', 'canMakeDefault']], ['support@kayako.com', ['isDefault', 'canEdit']]], [['sales@kayako.com', ['canEdit', 'canEnable', 'canDelete']], ['jobs@kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
     });
   });
 
@@ -4050,7 +4050,7 @@ define('frontend-cp/tests/acceptance/admin/channels/email/list-test', ['exports'
       return click((0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.getDisabledRows)().eq(0).find('.qa-mailbox-enable'));
     });
     andThen(function () {
-      (0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.assertRows)(assert, [['main@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault']], ['support@kayako.com', ['isDefault', 'canEdit']], ['sales@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']], ['jobs@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']]]);
+      (0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.assertRows)(assert, [['main@kayako.com', ['canEdit', 'canMakeDefault']], ['support@kayako.com', ['isDefault', 'canEdit']], ['sales@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']], ['jobs@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']]]);
     });
   });
 
@@ -4065,7 +4065,7 @@ define('frontend-cp/tests/acceptance/admin/channels/email/list-test', ['exports'
       });
     });
     andThen(function () {
-      (0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.assertRows)(assert, [['main@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault']], ['support@kayako.com', ['isDefault', 'canEdit']]], [['jobs@kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
+      (0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.assertRows)(assert, [['main@kayako.com', ['canEdit', 'canMakeDefault']], ['support@kayako.com', ['isDefault', 'canEdit']]], [['jobs@kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
     });
   });
 
@@ -4078,7 +4078,7 @@ define('frontend-cp/tests/acceptance/admin/channels/email/list-test', ['exports'
       return click((0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.getEnabledRows)().eq(2).find('.qa-mailbox-make-default'));
     });
     andThen(function () {
-      (0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.assertRows)(assert, [['main@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault']], ['support@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']], ['sales@kayako.com', ['isDefault', 'canEdit']]], [['jobs@kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
+      (0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.assertRows)(assert, [['main@kayako.com', ['canEdit', 'canMakeDefault']], ['support@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']], ['sales@kayako.com', ['isDefault', 'canEdit']]], [['jobs@kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
     });
   });
 
@@ -4152,7 +4152,7 @@ define('frontend-cp/tests/acceptance/admin/channels/email/new-test', ['exports',
       return assert.equal(currentURL(), '/admin/channels/email');
     });
     andThen(function () {
-      return (0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.assertRows)(assert, [['main@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault']], ['support@kayako.com', ['isDefault', 'canEdit']], ['sales@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']], ['hello@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete'], { brand: 'Second Brand' }]], [['jobs@kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
+      return (0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.assertRows)(assert, [['main@kayako.com', ['canEdit', 'canMakeDefault']], ['support@kayako.com', ['isDefault', 'canEdit']], ['sales@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete']], ['hello@kayako.com', ['canEdit', 'canDisable', 'canMakeDefault', 'canDelete'], { brand: 'Second Brand' }]], [['jobs@kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
     });
   });
 });
