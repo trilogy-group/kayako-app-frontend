@@ -2028,7 +2028,10 @@ img {
   border: 0;
   text-align: inherit;
   background-color: transparent;
-  outline: none; }
+  outline: none;
+  cursor: pointer; }
+  .button-naked[disabled] {
+    cursor: default; }
 
 .ko-dropdown_list {
   list-style-type: none;
