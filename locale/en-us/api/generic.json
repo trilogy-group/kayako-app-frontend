@@ -37,6 +37,7 @@
   "delete": "Delete",
   "edit": "Edit",
   "default": "Default",
+  "system": "System",
   "profile.position": "{position}",
   "profile.place": "{place}",
   "profile.openCases": "{number} Open Cases",
