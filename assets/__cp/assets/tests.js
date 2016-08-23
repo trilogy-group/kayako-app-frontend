@@ -17028,12 +17028,15 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'jquery', 'em
 
   exports['default'] = function () {
     _emberTest['default'].registerAsyncHelper('selectChoose', function (app, cssPath, value) {
-      var $trigger = find(cssPath).find('.ember-power-select-trigger');
+      var $trigger = find(cssPath);
+      if (!$trigger.hasClass('ember-power-select-trigger')) {
+        $trigger = $trigger.find('.ember-power-select-trigger');
+      }
       var contentId = '' + $trigger.attr('aria-controls');
       var $content = find('#' + contentId);
       // If the dropdown is closed, open it
       if ($content.length === 0) {
-        nativeMouseDown(cssPath + ' .ember-power-select-trigger');
+        nativeMouseDown($trigger.get(0));
         wait();
       }
 
@@ -17053,26 +17056,34 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'jquery', 'em
     });
 
     _emberTest['default'].registerAsyncHelper('selectSearch', function (app, cssPath, value) {
-      var $trigger = find(cssPath).find('.ember-power-select-trigger');
+      var $trigger = find(cssPath);
+      var triggerPath = undefined;
+      if ($trigger.hasClass('ember-power-select-trigger')) {
+        triggerPath = cssPath;
+      } else {
+        $trigger = $trigger.find('.ember-power-select-trigger');
+        triggerPath = cssPath + ' .ember-power-select-trigger';
+      }
+
       var contentId = '' + $trigger.attr('aria-controls');
       var isMultipleSelect = (0, _jquery['default'])(cssPath + ' .ember-power-select-trigger-multiple-input').length > 0;
 
       var dropdownIsClosed = (0, _jquery['default'])('#' + contentId).length === 0;
       if (dropdownIsClosed) {
-        nativeMouseDown(cssPath + ' .ember-power-select-trigger');
+        nativeMouseDown(triggerPath);
         wait();
       }
       var isDefaultSingleSelect = (0, _jquery['default'])('.ember-power-select-search-input').length > 0;
 
       if (isMultipleSelect) {
-        fillIn(cssPath + ' .ember-power-select-trigger-multiple-input', value);
+        fillIn(triggerPath + ' .ember-power-select-trigger-multiple-input', value);
       } else if (isDefaultSingleSelect) {
         fillIn('.ember-power-select-search-input', value);
       } else {
         // It's probably a customized version
         var inputIsInTrigger = !!find(cssPath + ' .ember-power-select-trigger input[type=search]')[0];
         if (inputIsInTrigger) {
-          fillIn(cssPath + ' .ember-power-select-trigger input[type=search]', value);
+          fillIn(triggerPath + ' input[type=search]', value);
         } else {
           fillIn('#' + contentId + ' .ember-power-select-search-input[type=search]', 'input');
         }
