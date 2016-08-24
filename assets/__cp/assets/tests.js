@@ -15746,12 +15746,8 @@ define('frontend-cp/tests/acceptance/agent/tabs/tabs-test', ['exports', 'fronten
 });
 define('frontend-cp/tests/acceptance/agent/users/change-role-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'qunit', 'frontend-cp/locales/en-us/users'], function (exports, _frontendCpTestsHelpersQunit, _qunit, _frontendCpLocalesEnUsUsers) {
 
-  var originalConfirm = window.confirm;
-
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | User | Change role', {
     beforeEach: function beforeEach() {
-      var _this = this;
-
       server.create('permission', { name: 'agent.users.update' });
 
       this.roles = {
@@ -15759,24 +15755,14 @@ define('frontend-cp/tests/acceptance/agent/users/change-role-test', ['exports', 
         agent: server.create('role', { type: 'AGENT', title: 'Agent' }),
         customer: server.create('role', { type: 'CUSTOMER', title: 'Customer' })
       };
-
-      this.confirmationMessages = [];
-
-      window.confirm = function (msg) {
-        _this.confirmationMessages.push(msg);
-        return true;
-      };
     },
 
     afterEach: function afterEach() {
-      window.confirm = originalConfirm;
       logout();
     }
   });
 
   (0, _qunit.test)('Changing another user’s role from CUSTOMER requires confirmation', function (assert) {
-    var _this2 = this;
-
     var me = server.create('user', { role: this.roles.admin, time_zone: 'Europe/London' });
     var other = server.create('user', { role: this.roles.customer, time_zone: 'Europe/London' });
     var session = server.create('session', { user: me });
@@ -15786,20 +15772,16 @@ define('frontend-cp/tests/acceptance/agent/users/change-role-test', ['exports', 
 
     visit('/agent/users/' + other.id);
 
-    andThen(function () {
-      selectChoose('.ko-user-content__role-field', 'Agent');
-      click('button:contains(Submit)');
-    });
+    selectChoose('.ko-user-content__role-field', 'Agent');
+    click('button:contains(Submit)');
 
     andThen(function () {
       assert.ok(find('.ko-user-content__role-field').is(':contains(Agent)'), 'expected role field to contain "Agent"');
-      assert.deepEqual(_this2.confirmationMessages, [_frontendCpLocalesEnUsUsers['default']['change_role.from_customer']]);
+      assert.equal(find('.qa-confirm-text').html(), _frontendCpLocalesEnUsUsers['default']['change_role.from_customer']);
     });
   });
 
   (0, _qunit.test)('Changing another user’s role to CUSTOMER requires confirmation', function (assert) {
-    var _this3 = this;
-
     var me = server.create('user', { role: this.roles.admin, time_zone: 'Europe/London' });
     var other = server.create('user', { role: this.roles.agent, time_zone: 'Europe/London' });
     var session = server.create('session', { user: me });
@@ -15809,14 +15791,12 @@ define('frontend-cp/tests/acceptance/agent/users/change-role-test', ['exports', 
 
     visit('/agent/users/' + other.id);
 
-    andThen(function () {
-      selectChoose('.ko-user-content__role-field', 'Customer');
-      click('button:contains(Submit)');
-    });
+    selectChoose('.ko-user-content__role-field', 'Customer');
+    click('button:contains(Submit)');
 
     andThen(function () {
       assert.ok(find('.ko-user-content__role-field').is(':contains(Customer)'), 'expected role field to contain "Customer"');
-      assert.deepEqual(_this3.confirmationMessages, [_frontendCpLocalesEnUsUsers['default']['change_role.to_customer']]);
+      assert.equal(find('.qa-confirm-text').html(), _frontendCpLocalesEnUsUsers['default']['change_role.to_customer']);
     });
   });
 
@@ -16050,10 +16030,6 @@ define('frontend-cp/tests/acceptance/agent/users/edit-test', ['exports', 'fronte
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('changing a customer to an owner and changing the case access field', function (assert) {
-    window.confirm = function () {
-      return true;
-    };
-
     assert.expect(3);
 
     server.put('/api/v1/users/' + customer.id, function (_, _ref3) {
@@ -16075,13 +16051,10 @@ define('frontend-cp/tests/acceptance/agent/users/edit-test', ['exports', 'fronte
     selectChoose('.qa-user-content__case-access-field', 'Cases assigned to agent');
 
     click('.button--primary');
+    click('button[name="confirm"]');
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('changing an owner to a customer and changing the case access field', function (assert) {
-    window.confirm = function () {
-      return true;
-    };
-
     assert.expect(3);
 
     server.put('/api/v1/users/' + owner.id, function (_, _ref4) {
@@ -16103,6 +16076,7 @@ define('frontend-cp/tests/acceptance/agent/users/edit-test', ['exports', 'fronte
     selectChoose('.qa-user-content__case-access-field', 'All organization\'s cases');
 
     click('.button--primary');
+    click('button[name="confirm"]');
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a customer\'s locale', function (assert) {
