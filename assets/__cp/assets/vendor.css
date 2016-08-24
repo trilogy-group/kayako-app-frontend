@@ -3694,34 +3694,6 @@ img.fr-view.fr-bordered {
   content: "";
   height: 0;
 }
-.fr-line-breaker {
-  cursor: text;
-  border-top: 1px solid #1e88e5;
-  position: fixed;
-  z-index: 2;
-  display: none;
-}
-.fr-line-breaker.fr-visible {
-  display: block;
-}
-.fr-line-breaker a.fr-floating-btn {
-  position: absolute;
-  left: calc(50% - (32px / 2));
-  top: -16px;
-}
-
-/*!
- * froala_editor v2.3.4 (https://www.froala.com/wysiwyg-editor)
- * License https://froala.com/wysiwyg-editor/terms/
- * Copyright 2014-2016 Froala Labs
- */
-
-.clearfix::after {
-  clear: both;
-  display: block;
-  content: "";
-  height: 0;
-}
 .royal-theme.fr-box.fr-basic .fr-element {
   color: #000000;
   padding: 10px;
