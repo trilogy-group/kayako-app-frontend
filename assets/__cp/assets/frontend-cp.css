@@ -5681,7 +5681,7 @@ a.ko-admin_plans_index__cancel_1br1r5 {
 .ko-admin_rateplans_item__cell_1y732x.ko-admin_rateplans_item__selected_1y732x {
   background: #fff;
   border-color: #89a83b;
-  padding-bottom: 34px; }
+  padding-bottom: 54px; }
 
 .ko-admin_rateplans_item__cell_1y732x.ko-admin_rateplans_item__disabled_1y732x {
   pointer-events: none;
@@ -5857,6 +5857,15 @@ a.ko-admin_plans_index__cancel_1br1r5 {
 
 .ko-admin_rateplans_summary__disabled_paqoi0 {
   background: #EEEEEE; }
+
+.ko-admin_rateplans_summary__summary-label_paqoi0 {
+  text-transform: uppercase;
+  color: #838D94;
+  font-weight: 600; }
+
+.ko-admin_rateplans_summary__summary-content_paqoi0 {
+  line-height: 20px;
+  max-height: 20px; }
 
 /* styles for frontend-cp/components/ko-admin/rateplans/units/styles.css */
 .ko-admin_rateplans_units__plan-units_1wpx3s {

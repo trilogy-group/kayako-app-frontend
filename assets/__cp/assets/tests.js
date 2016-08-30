@@ -262,7 +262,16 @@ define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports'
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/account/trial/index-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-admin/rateplans/item/styles', 'frontend-cp/components/ko-admin/rateplans/price/styles', 'frontend-cp/components/ko-admin/plans/notification/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoAdminRateplansItemStyles, _frontendCpComponentsKoAdminRateplansPriceStyles, _frontendCpComponentsKoAdminPlansNotificationStyles) {
+define('frontend-cp/tests/acceptance/admin/account/trial/index-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-admin/rateplans/item/styles', 'frontend-cp/components/ko-admin/rateplans/price/styles', 'frontend-cp/components/ko-admin/plans/notification/styles', 'lodash'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoAdminRateplansItemStyles, _frontendCpComponentsKoAdminRateplansPriceStyles, _frontendCpComponentsKoAdminPlansNotificationStyles, _lodash) {
+
+  var getDiscountForTerm = function getDiscountForTerm(term) {
+    var charges = server.db.discountRateplans.get('firstObject.resources.product_rateplan_charge');
+    var discounts = _lodash['default'].transform(charges, function (results, charge) {
+      results[charge.billing_period] = charge.default_quantity;
+      return results;
+    }, {});
+    return discounts[term];
+  };
 
   var currencyToNumber = function currencyToNumber(value) {
     return Number(value.replace(/[^0-9\.]+/g, ''));
@@ -281,6 +290,7 @@ define('frontend-cp/tests/acceptance/admin/account/trial/index-test', ['exports'
       var agent = server.create('user', { role: adminRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
       server.createList('user', 5);
+      server.loadFixtures('discountRateplans');
       login(session.id);
     },
 
@@ -446,6 +456,47 @@ define('frontend-cp/tests/acceptance/admin/account/trial/index-test', ['exports'
     andThen(function () {
       assert.equal(currentURL(), '/admin/account/trial');
       assert.equal(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].cell).length, 5);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('show discount when account is grandfather and discount is applicable', function (assert) {
+    server.create('plan', { opportunity_id: 20, is_grandfathered: true, account_id: null, limits: {}, features: [] });
+    visit('/admin/account/trial');
+
+    andThen(function () {
+      fillIn('.agents-count', 5);
+    });
+
+    andThen(function () {
+      var selectedPlan = find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].selected);
+      var price = currencyToNumber(selectedPlan.find('.' + _frontendCpComponentsKoAdminRateplansPriceStyles['default']['plan-price-amount']).text());
+      var subscriptionAmount = currencyToNumber(selectedPlan.find('.gross-total').text());
+      var discountAmount = currencyToNumber(selectedPlan.find('.discount-amount').text());
+      var total = price * 5;
+      var calculatedDiscount = total * getDiscountForTerm('MONTH') / 100;
+      assert.equal(total - calculatedDiscount, subscriptionAmount);
+      assert.equal(discountAmount, calculatedDiscount);
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('calculate correct discount when term is changed', function (assert) {
+    server.create('plan', { opportunity_id: 20, is_grandfathered: true, account_id: null, limits: {}, features: [] });
+    visit('/admin/account/trial');
+
+    andThen(function () {
+      fillIn('.agents-count', 5);
+      click('.ko-radio__label:eq(1)');
+    });
+
+    andThen(function () {
+      var selectedPlan = find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].selected);
+      var price = currencyToNumber(selectedPlan.find('.' + _frontendCpComponentsKoAdminRateplansPriceStyles['default']['plan-price-amount']).text());
+      var subscriptionAmount = currencyToNumber(selectedPlan.find('.gross-total').text());
+      var discountAmount = currencyToNumber(selectedPlan.find('.discount-amount').text());
+      var total = price * 5 * 12;
+      var calculatedDiscount = total * getDiscountForTerm('ANNUAL') / 100;
+      assert.equal(total - calculatedDiscount, subscriptionAmount);
+      assert.equal(discountAmount, calculatedDiscount);
     });
   });
 });
@@ -21025,6 +21076,295 @@ define('frontend-cp/tests/unit/services/rateplans-test', ['exports', 'ember', 'e
     var ratePlans = _ember['default'].A([rateplan]);
     var subscriptonRatePlan = service.getSubscriptionRatePlan(ratePlans);
     assert.equal(subscriptonRatePlan, null);
+  });
+
+  (0, _emberQunit.test)('should return true for fixed discount when model is DISCOUNTFIXEDAMOUNT', function (assert) {
+    var service = this.subject();
+    var charge = _ember['default'].Object.create({
+      id: 1,
+      model: 'DISCOUNTFIXEDAMOUNT'
+    });
+    var isFixedDiscount = service.isFixedDiscount(charge);
+    assert.equal(isFixedDiscount, true);
+  });
+
+  (0, _emberQunit.test)('should return true for percentage discount when model is DISCOUNTPERCENTAGE', function (assert) {
+    var service = this.subject();
+    var charge = _ember['default'].Object.create({
+      id: 1,
+      model: 'DISCOUNTPERCENTAGE'
+    });
+    var isPercentageDiscount = service.isPercentageDiscount(charge);
+    assert.equal(isPercentageDiscount, true);
+  });
+
+  (0, _emberQunit.test)('should return true for isDiscount when model is of valid discount type', function (assert) {
+    var service = this.subject();
+    var charge = _ember['default'].Object.create({
+      id: 1,
+      model: 'DISCOUNTPERCENTAGE'
+    });
+    var isDiscount = service.isDiscount(charge);
+    assert.equal(isDiscount, true);
+  });
+
+  (0, _emberQunit.test)('should return false for isDiscount when model is not of valid discount type', function (assert) {
+    var service = this.subject();
+    var charge = _ember['default'].Object.create({
+      id: 1,
+      model: 'AGENTS'
+    });
+    var isDiscount = service.isDiscount(charge);
+    assert.equal(isDiscount, false);
+  });
+
+  (0, _emberQunit.test)('should apply flat discount when defined', function (assert) {
+    var service = this.subject();
+    var total = 1000;
+    var flatDiscount = 100;
+    var percentageDiscount = 0;
+    var discount = service.getDiscount(total, flatDiscount, percentageDiscount);
+    assert.equal(discount, 100);
+  });
+
+  (0, _emberQunit.test)('should apply percentage discount when defined', function (assert) {
+    var service = this.subject();
+    var total = 1000;
+    var flatDiscount = 0;
+    var percentageDiscount = 15;
+    var discount = service.getDiscount(total, flatDiscount, percentageDiscount);
+    assert.equal(discount, 150);
+  });
+
+  (0, _emberQunit.test)('should apply both discounts when defined | first fixed discount', function (assert) {
+    var service = this.subject();
+    var total = 1000;
+    var flatDiscount = 100;
+    var percentageDiscount = 15;
+    var discount = service.getDiscount(total, flatDiscount, percentageDiscount);
+    assert.equal(discount, 235);
+  });
+
+  (0, _emberQunit.test)('should return 0 when discount is not available', function (assert) {
+    var service = this.subject();
+    var total = 1000;
+    var flatDiscount = 0;
+    var percentageDiscount = 0;
+    var discount = service.getDiscount(total, flatDiscount, percentageDiscount);
+    assert.equal(discount, 0);
+  });
+
+  (0, _emberQunit.test)('should return 0 for discounts when current term does not have discount', function (assert) {
+    var service = this.subject();
+    var productRateplan = _ember['default'].Object.create({
+      name: 'Discount Annually'
+    });
+
+    var charge = _ember['default'].Object.create({
+      id: 2,
+      model: 'DISCOUNTFIXEDAMOUNT',
+      defaultQuantity: 20,
+      billingPeriod: 'ANNUAL'
+    });
+
+    var rateplan = _ember['default'].Object.create({
+      id: 1,
+      productRateplan: productRateplan,
+      charges: _ember['default'].A([charge])
+    });
+
+    var ratePlans = _ember['default'].A([rateplan]);
+    var discounts = service.getTermDiscount(ratePlans, 'MONTH');
+    assert.deepEqual(discounts, { fixed: 0, percentage: 0 });
+  });
+
+  (0, _emberQunit.test)('should return 0 for discounts when unable to find charges for valid discount types', function (assert) {
+    var service = this.subject();
+    var productRateplan = _ember['default'].Object.create({
+      name: 'Primary Annually'
+    });
+
+    var charge = _ember['default'].Object.create({
+      id: 2,
+      model: 'PRIMARY',
+      defaultQuantity: 20,
+      billingPeriod: 'MONTH'
+    });
+
+    var rateplan = _ember['default'].Object.create({
+      id: 1,
+      productRateplan: productRateplan,
+      charges: _ember['default'].A([charge])
+    });
+
+    var ratePlans = _ember['default'].A([rateplan]);
+    var discounts = service.getTermDiscount(ratePlans, 'MONTH');
+    assert.deepEqual(discounts, { fixed: 0, percentage: 0 });
+  });
+
+  (0, _emberQunit.test)('should set fixed discount amount when fixed discount is available', function (assert) {
+    var service = this.subject();
+    var productRateplan = _ember['default'].Object.create({
+      name: 'Primary Annually'
+    });
+
+    var charge = _ember['default'].Object.create({
+      id: 2,
+      model: 'DISCOUNTFIXEDAMOUNT',
+      defaultQuantity: 20,
+      billingPeriod: 'MONTH'
+    });
+
+    var rateplan = _ember['default'].Object.create({
+      id: 1,
+      productRateplan: productRateplan,
+      charges: _ember['default'].A([charge])
+    });
+
+    var ratePlans = _ember['default'].A([rateplan]);
+    var discounts = service.getTermDiscount(ratePlans, 'MONTH');
+    assert.deepEqual(discounts, { fixed: 20, percentage: 0 });
+  });
+
+  (0, _emberQunit.test)('should set percentage discount when percentage discount is available', function (assert) {
+    var service = this.subject();
+    var productRateplan = _ember['default'].Object.create({
+      name: 'Primary Annually'
+    });
+
+    var charge = _ember['default'].Object.create({
+      id: 2,
+      model: 'DISCOUNTPERCENTAGE',
+      defaultQuantity: 20,
+      billingPeriod: 'MONTH'
+    });
+
+    var rateplan = _ember['default'].Object.create({
+      id: 1,
+      productRateplan: productRateplan,
+      charges: _ember['default'].A([charge])
+    });
+
+    var ratePlans = _ember['default'].A([rateplan]);
+    var discounts = service.getTermDiscount(ratePlans, 'MONTH');
+    assert.deepEqual(discounts, { fixed: 0, percentage: 20 });
+  });
+
+  (0, _emberQunit.test)('should set both discounts when they are available on a single a rateplan', function (assert) {
+    var service = this.subject();
+    var productRateplan = _ember['default'].Object.create({
+      name: 'Primary Annually'
+    });
+
+    var charge = _ember['default'].Object.create({
+      id: 2,
+      model: 'DISCOUNTPERCENTAGE',
+      defaultQuantity: 20,
+      billingPeriod: 'MONTH'
+    });
+
+    var anotherCharge = _ember['default'].Object.create({
+      id: 2,
+      model: 'DISCOUNTFIXEDAMOUNT',
+      defaultQuantity: 10,
+      billingPeriod: 'MONTH'
+    });
+
+    var rateplan = _ember['default'].Object.create({
+      id: 1,
+      productRateplan: productRateplan,
+      charges: _ember['default'].A([charge, anotherCharge])
+    });
+
+    var ratePlans = _ember['default'].A([rateplan]);
+    var discounts = service.getTermDiscount(ratePlans, 'MONTH');
+    assert.deepEqual(discounts, { fixed: 10, percentage: 20 });
+  });
+
+  (0, _emberQunit.test)('should set both discounts when they are available on a different rateplans', function (assert) {
+    var service = this.subject();
+    var productRateplan = _ember['default'].Object.create({
+      name: 'Discount Monthly Percentage'
+    });
+
+    var charge = _ember['default'].Object.create({
+      id: 2,
+      model: 'DISCOUNTPERCENTAGE',
+      defaultQuantity: 8,
+      billingPeriod: 'MONTH'
+    });
+
+    var anotherProductRateplan = _ember['default'].Object.create({
+      name: 'Discount Monthly Fixed'
+    });
+
+    var anotherCharge = _ember['default'].Object.create({
+      id: 2,
+      model: 'DISCOUNTFIXEDAMOUNT',
+      defaultQuantity: 4,
+      billingPeriod: 'MONTH'
+    });
+
+    var rateplan = _ember['default'].Object.create({
+      id: 1,
+      productRateplan: productRateplan,
+      charges: _ember['default'].A([charge])
+    });
+
+    var anotherRateplan = _ember['default'].Object.create({
+      id: 1,
+      productRateplan: anotherProductRateplan,
+      charges: _ember['default'].A([anotherCharge])
+    });
+
+    var ratePlans = _ember['default'].A([rateplan, anotherRateplan]);
+    var discounts = service.getTermDiscount(ratePlans, 'MONTH');
+    assert.deepEqual(discounts, { fixed: 4, percentage: 8 });
+  });
+
+  (0, _emberQunit.test)('should return a unique list of terms', function (assert) {
+    var service = this.subject();
+    var productRateplan = _ember['default'].Object.create({
+      name: 'Standard'
+    });
+
+    var charge = _ember['default'].Object.create({
+      id: 2,
+      defaultQuantity: 8,
+      billingPeriod: 'MONTH'
+    });
+
+    var charge2 = _ember['default'].Object.create({
+      id: 2,
+      defaultQuantity: 8,
+      billingPeriod: 'ANNUAL'
+    });
+
+    var anotherProductRateplan = _ember['default'].Object.create({
+      name: 'Standard'
+    });
+
+    var anotherCharge = _ember['default'].Object.create({
+      id: 2,
+      defaultQuantity: 4,
+      billingPeriod: 'ANNUAL'
+    });
+
+    var rateplan = _ember['default'].Object.create({
+      id: 1,
+      productRateplan: productRateplan,
+      charges: _ember['default'].A([charge, charge2])
+    });
+
+    var anotherRateplan = _ember['default'].Object.create({
+      id: 1,
+      productRateplan: anotherProductRateplan,
+      charges: _ember['default'].A([anotherCharge])
+    });
+
+    var ratePlans = _ember['default'].A([rateplan, anotherRateplan]);
+    var terms = service.getTerms(ratePlans);
+    assert.deepEqual(terms, ['MONTH', 'ANNUAL']);
   });
 });
 define('frontend-cp/tests/unit/utils/promise-queue-test', ['exports', 'ember', 'qunit', 'ember-qunit', 'frontend-cp/utils/promise-queue'], function (exports, _ember, _qunit, _emberQunit, _frontendCpUtilsPromiseQueue) {
