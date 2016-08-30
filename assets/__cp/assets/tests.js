@@ -4772,8 +4772,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
   var optionTitle = 'option title';
   var regEx = 'regEx';
 
-  var originalConfirm = window.confirm;
-
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/manage/case fields/edit', {
     beforeEach: function beforeEach() {
       server.create('setting', {
@@ -5077,16 +5075,11 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
     },
 
     afterEach: function afterEach() {
-      window.confirm = originalConfirm;
       logout();
     }
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a text field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/manage/case-fields');
 
     andThen(function () {
@@ -5125,10 +5118,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a text area field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/manage/case-fields');
 
     andThen(function () {
@@ -5164,10 +5153,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a radio field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/manage/case-fields');
 
     andThen(function () {
@@ -5206,10 +5191,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a select field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/manage/case-fields');
 
     andThen(function () {
@@ -5248,10 +5229,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a checkbox field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/manage/case-fields');
 
     andThen(function () {
@@ -5290,10 +5267,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a numeric field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/manage/case-fields');
 
     andThen(function () {
@@ -5329,10 +5302,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a decimal field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/manage/case-fields');
 
     andThen(function () {
@@ -5368,10 +5337,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a file field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/manage/case-fields');
 
     andThen(function () {
@@ -5407,10 +5372,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a yes no field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/manage/case-fields');
 
     andThen(function () {
@@ -5446,10 +5407,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a cascading select field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/manage/case-fields');
 
     andThen(function () {
@@ -5488,10 +5445,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a date field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/manage/case-fields');
 
     andThen(function () {
@@ -5527,10 +5480,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a regular expression field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/manage/case-fields');
 
     andThen(function () {
@@ -5569,11 +5518,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('cancelling an edit', function (assert) {
-    window.confirm = function (message) {
-      assert.equal(message, 'You have unsaved changes on this page. Are you sure you want to discard these changes?', 'The proper confirm message is shown');
-      return true;
-    };
-
     visit('/admin/manage/case-fields');
 
     andThen(function () {
@@ -5591,6 +5535,11 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
       click('.button[name=cancel]');
+    });
+
+    andThen(function () {
+      assert.equal(find('.qa-ko-confirm-modal__body').text().trim(), 'You have unsaved changes on this page. Are you sure you want to discard these changes?', 'The proper confirm message is shown');
+      click('.qa-ko-confirm-modal__confirm');
     });
 
     andThen(function () {
@@ -5704,9 +5653,8 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-priorities-
 
     triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':first', 'mouseenter');
 
-    confirming(true, function () {
-      click('.qa-custom-priority-delete:first');
-    });
+    click('.qa-custom-priority-delete:first');
+    click('.qa-ko-confirm-modal__confirm');
 
     andThen(function () {
       assert.equal(find('.qa-custom-priority-label:contains("Test Priority 1")').length, 0);
@@ -5718,9 +5666,8 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-priorities-
 
     triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':first', 'mouseenter');
 
-    confirming(false, function () {
-      click('.qa-custom-priority-delete:first');
-    });
+    click('.qa-custom-priority-delete:first');
+    click('.qa-ko-confirm-modal__cancel');
 
     andThen(function () {
       assert.equal(find('.qa-custom-priority-label:contains("Test Priority 1")').length, 1);
@@ -5826,9 +5773,8 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-statuses-te
 
     triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':first', 'mouseenter');
 
-    confirming(true, function () {
-      click('.qa-custom-status-delete:first');
-    });
+    click('.qa-custom-status-delete:first');
+    click('.qa-ko-confirm-modal__confirm');
 
     andThen(function () {
       assert.equal(find('.qa-custom-status-label:contains("Test Status 1")').length, 0);
@@ -5840,9 +5786,8 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-statuses-te
 
     triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':first', 'mouseenter');
 
-    confirming(false, function () {
-      click('.qa-custom-status-delete:first');
-    });
+    click('.qa-custom-status-delete:first');
+    click('.qa-ko-confirm-modal__cancel');
 
     andThen(function () {
       assert.equal(find('.qa-custom-status-label:contains("Test Status 1")').length, 1);
@@ -5928,9 +5873,8 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-types-test'
 
     triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':first', 'mouseenter');
 
-    confirming(true, function () {
-      click('.qa-custom-type-delete:first');
-    });
+    click('.qa-custom-type-delete:first');
+    click('.qa-ko-confirm-modal__confirm');
 
     andThen(function () {
       assert.equal(find('.qa-custom-type-label:contains("Test Type 1")').length, 0);
@@ -5942,9 +5886,8 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-types-test'
 
     triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':first', 'mouseenter');
 
-    confirming(false, function () {
-      click('.qa-custom-type-delete:first');
-    });
+    click('.qa-custom-type-delete:first');
+    click('.qa-ko-confirm-modal__cancel');
 
     andThen(function () {
       assert.equal(find('.qa-custom-type-label:contains("Test Type 1")').length, 1);
@@ -5952,8 +5895,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-types-test'
   });
 });
 define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/helpers/dom-helpers', 'frontend-cp/components/ko-checkbox/styles', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsHelpersDomHelpers, _frontendCpComponentsKoCheckboxStyles, _frontendCpComponentsKoSimpleListRowStyles) {
-
-  var originalConfirm = window.confirm;
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/manage/case fields/new', {
     beforeEach: function beforeEach() {
@@ -5976,7 +5917,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
     },
 
     afterEach: function afterEach() {
-      window.confirm = originalConfirm;
       logout();
     }
   });
@@ -5997,9 +5937,9 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       assert.equal(requestData.customer_titles.length, 1, '1 customer title');
       assert.equal(requestData.descriptions.length, 1, '1 description');
       assert.equal(requestData.customer_titles[0].locale, 'en-us', 'customer title locale');
-      assert.equal(requestData.customer_titles[0].translation, null, 'customer title translation');
+      assert.equal(requestData.customer_titles[0].translation, '', 'customer title translation');
       assert.equal(requestData.descriptions[0].locale, 'en-us', 'description locale');
-      assert.equal(requestData.descriptions[0].translation, null, 'description translation');
+      assert.equal(requestData.descriptions[0].translation, '', 'description translation');
     });
 
     andThen(function () {
@@ -6011,12 +5951,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new text field', function (assert) {
-    assert.expect(9);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -6033,11 +5967,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -6055,12 +5984,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new text area field', function (assert) {
-    assert.expect(7);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -6076,11 +5999,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -6097,12 +6015,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new radio field', function (assert) {
-    assert.expect(9);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -6125,11 +6037,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -6148,12 +6055,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new dropdown box field', function (assert) {
-    assert.expect(9);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -6176,11 +6077,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -6199,12 +6095,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new checkbox field', function (assert) {
-    assert.expect(9);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -6227,11 +6117,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -6250,12 +6135,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new numeric field', function (assert) {
-    assert.expect(7);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -6271,11 +6150,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -6292,12 +6166,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new decimal field', function (assert) {
-    assert.expect(7);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -6313,11 +6181,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -6334,12 +6197,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new file field', function (assert) {
-    assert.expect(7);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -6355,11 +6212,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -6376,12 +6228,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new yes/no toggle field', function (assert) {
-    assert.expect(7);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -6397,11 +6243,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -6418,12 +6259,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new cascading select field', function (assert) {
-    assert.expect(9);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -6446,11 +6281,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -6469,12 +6299,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new date field', function (assert) {
-    assert.expect(7);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -6490,11 +6314,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -6511,12 +6330,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new regular expression field', function (assert) {
-    assert.expect(8);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -6535,11 +6348,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('input.ko-admin_case-fields_edit_regex__input', regEx);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -8442,8 +8250,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
   var optionTitle = 'option title';
   var regEx = 'regEx';
 
-  var originalConfirm = window.confirm;
-
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/people/organization fields/edit', {
     beforeEach: function beforeEach() {
       /*eslint-disable camelcase*/
@@ -8737,16 +8543,11 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
     },
 
     afterEach: function afterEach() {
-      window.confirm = originalConfirm;
       logout();
     }
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a text field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/people/organization-fields');
 
     andThen(function () {
@@ -8782,10 +8583,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a text area field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/people/organization-fields');
 
     andThen(function () {
@@ -8818,10 +8615,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a radio field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/people/organization-fields');
 
     andThen(function () {
@@ -8857,10 +8650,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a select field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/people/organization-fields');
 
     andThen(function () {
@@ -8896,10 +8685,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a checkbox field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/people/organization-fields');
 
     andThen(function () {
@@ -8935,10 +8720,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a numeric field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/people/organization-fields');
 
     andThen(function () {
@@ -8971,10 +8752,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a decimal field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/people/organization-fields');
 
     andThen(function () {
@@ -9007,10 +8784,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a file field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/people/organization-fields');
 
     andThen(function () {
@@ -9043,10 +8816,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a yes no field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/people/organization-fields');
 
     andThen(function () {
@@ -9079,10 +8848,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a cascading select field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/people/organization-fields');
 
     andThen(function () {
@@ -9118,10 +8883,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a date field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/people/organization-fields');
 
     andThen(function () {
@@ -9154,10 +8915,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a regular expression field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/people/organization-fields');
 
     andThen(function () {
@@ -9193,11 +8950,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('cancelling an edit', function (assert) {
-    window.confirm = function (message) {
-      assert.equal(message, 'You have unsaved changes on this page. Are you sure you want to discard these changes?', 'The proper confirm message is shown');
-      return true;
-    };
-
     visit('/admin/people/organization-fields');
 
     andThen(function () {
@@ -9217,6 +8969,11 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
     });
 
     andThen(function () {
+      assert.equal(find('.qa-ko-confirm-modal__body').text().trim(), 'You have unsaved changes on this page. Are you sure you want to discard these changes?', 'The proper confirm message is shown');
+      click('.qa-ko-confirm-modal__confirm');
+    });
+
+    andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("' + textFieldTitle + '")');
     });
@@ -9230,8 +8987,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
   });
 });
 define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/helpers/dom-helpers', 'frontend-cp/components/ko-checkbox/styles', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsHelpersDomHelpers, _frontendCpComponentsKoCheckboxStyles, _frontendCpComponentsKoSimpleListRowStyles) {
-
-  var originalConfirm = window.confirm;
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/people/organization fields/new', {
     beforeEach: function beforeEach() {
@@ -9254,7 +9009,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
     },
 
     afterEach: function afterEach() {
-      window.confirm = originalConfirm;
       logout();
     }
   });
@@ -9275,9 +9029,9 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       assert.equal(requestData.customer_titles.length, 1, '1 customer title');
       assert.equal(requestData.descriptions.length, 1, '1 description');
       assert.equal(requestData.customer_titles[0].locale, 'en-us', 'customer title locale');
-      assert.equal(requestData.customer_titles[0].translation, null, 'customer title translation');
+      assert.equal(requestData.customer_titles[0].translation, '', 'customer title translation');
       assert.equal(requestData.descriptions[0].locale, 'en-us', 'description locale');
-      assert.equal(requestData.descriptions[0].translation, null, 'description translation');
+      assert.equal(requestData.descriptions[0].translation, '', 'description translation');
     });
 
     andThen(function () {
@@ -9289,12 +9043,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new text field', function (assert) {
-    assert.expect(9);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -9311,11 +9059,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -9333,12 +9076,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new text area field', function (assert) {
-    assert.expect(7);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -9354,11 +9091,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -9375,12 +9107,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new radio field', function (assert) {
-    assert.expect(9);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -9403,11 +9129,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -9426,12 +9147,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new dropdown box field', function (assert) {
-    assert.expect(9);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -9454,11 +9169,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -9477,12 +9187,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new checkbox field', function (assert) {
-    assert.expect(9);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -9505,11 +9209,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -9528,12 +9227,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new numeric field', function (assert) {
-    assert.expect(7);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -9549,11 +9242,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -9570,12 +9258,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new decimal field', function (assert) {
-    assert.expect(7);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -9591,11 +9273,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -9612,12 +9289,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new file field', function (assert) {
-    assert.expect(7);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -9633,11 +9304,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -9654,12 +9320,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new yes/no toggle field', function (assert) {
-    assert.expect(7);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -9675,11 +9335,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -9696,12 +9351,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new cascading select field', function (assert) {
-    assert.expect(9);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -9724,11 +9373,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -9747,12 +9391,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new date field', function (assert) {
-    assert.expect(7);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -9768,11 +9406,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -9789,12 +9422,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new regular expression field', function (assert) {
-    assert.expect(8);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -9813,11 +9440,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('input.ko-admin_case-fields_edit_regex__input', regEx);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -10812,8 +10434,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
   var optionTitle = 'option title';
   var regEx = 'regEx';
 
-  var originalConfirm = window.confirm;
-
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/people/user fields/edit', {
     beforeEach: function beforeEach() {
       server.create('setting', {
@@ -11105,16 +10725,11 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
     },
 
     afterEach: function afterEach() {
-      window.confirm = originalConfirm;
       logout();
     }
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a text field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/people/user-fields');
 
     andThen(function () {
@@ -11153,10 +10768,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a text area field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/people/user-fields');
 
     andThen(function () {
@@ -11191,10 +10802,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a radio field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/people/user-fields');
 
     andThen(function () {
@@ -11233,10 +10840,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a select field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/people/user-fields');
 
     andThen(function () {
@@ -11275,10 +10878,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a checkbox field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/people/user-fields');
 
     andThen(function () {
@@ -11317,10 +10916,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a numeric field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/people/user-fields');
 
     andThen(function () {
@@ -11356,10 +10951,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a decimal field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/people/user-fields');
 
     andThen(function () {
@@ -11395,10 +10986,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a file field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/people/user-fields');
 
     andThen(function () {
@@ -11434,10 +11021,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a yes no field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/people/user-fields');
 
     andThen(function () {
@@ -11473,10 +11056,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a cascading select field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/people/user-fields');
 
     andThen(function () {
@@ -11515,10 +11094,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a date field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/people/user-fields');
 
     andThen(function () {
@@ -11554,10 +11129,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a regular expression field', function (assert) {
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     visit('/admin/people/user-fields');
 
     andThen(function () {
@@ -11596,11 +11167,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('cancel editing a text field', function (assert) {
-    window.confirm = function (message) {
-      assert.equal(message, 'You have unsaved changes on this page. Are you sure you want to discard these changes?', 'The proper confirm message is shown');
-      return true;
-    };
-
     visit('/admin/people/user-fields');
 
     andThen(function () {
@@ -11621,6 +11187,11 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
     });
 
     andThen(function () {
+      assert.equal(find('.qa-ko-confirm-modal__body').text().trim(), 'You have unsaved changes on this page. Are you sure you want to discard these changes?', 'The proper confirm message is shown');
+      click('.qa-ko-confirm-modal__confirm');
+    });
+
+    andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("' + textFieldTitle + '")');
     });
@@ -11636,8 +11207,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
   });
 });
 define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/helpers/dom-helpers', 'frontend-cp/components/ko-checkbox/styles', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsHelpersDomHelpers, _frontendCpComponentsKoCheckboxStyles, _frontendCpComponentsKoSimpleListRowStyles) {
-
-  var originalConfirm = window.confirm;
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/people/user fields/new', {
     beforeEach: function beforeEach() {
@@ -11660,7 +11229,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
     },
 
     afterEach: function afterEach() {
-      window.confirm = originalConfirm;
       logout();
     }
   });
@@ -11681,9 +11249,9 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       assert.equal(requestData.customer_titles.length, 1, '1 customer title');
       assert.equal(requestData.descriptions.length, 1, '1 description');
       assert.equal(requestData.customer_titles[0].locale, 'en-us', 'customer title locale');
-      assert.equal(requestData.customer_titles[0].translation, null, 'customer title translation');
+      assert.equal(requestData.customer_titles[0].translation, '', 'customer title translation');
       assert.equal(requestData.descriptions[0].locale, 'en-us', 'description locale');
-      assert.equal(requestData.descriptions[0].translation, null, 'description translation');
+      assert.equal(requestData.descriptions[0].translation, '', 'description translation');
     });
 
     andThen(function () {
@@ -11695,12 +11263,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new text field', function (assert) {
-    assert.expect(9);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -11717,11 +11279,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -11739,12 +11296,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new text area field', function (assert) {
-    assert.expect(7);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -11760,11 +11311,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -11781,12 +11327,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new radio field', function (assert) {
-    assert.expect(9);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -11809,11 +11349,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -11832,12 +11367,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new dropdown box field', function (assert) {
-    assert.expect(9);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -11860,11 +11389,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -11883,12 +11407,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new checkbox field', function (assert) {
-    assert.expect(9);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -11911,11 +11429,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -11934,12 +11447,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new numeric field', function (assert) {
-    assert.expect(7);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -11955,11 +11462,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -11976,12 +11478,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new decimal field', function (assert) {
-    assert.expect(7);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -11997,11 +11493,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -12018,12 +11509,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new file field', function (assert) {
-    assert.expect(7);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -12039,11 +11524,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -12060,12 +11540,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new yes/no toggle field', function (assert) {
-    assert.expect(7);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -12081,11 +11555,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -12102,12 +11571,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new cascading select field', function (assert) {
-    assert.expect(9);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -12130,11 +11593,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -12153,12 +11611,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new date field', function (assert) {
-    assert.expect(7);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -12174,11 +11626,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -12195,12 +11642,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new regular expression field', function (assert) {
-    assert.expect(8);
-
-    window.confirm = function () {
-      return assert.ok(false, 'dialogue not expected to be shown');
-    };
-
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
     var description = 'description';
@@ -12219,11 +11660,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('input.ko-admin_case-fields_edit_regex__input', regEx);
-    });
-
-    andThen(function () {
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / ' + fieldTitle, 'Edit form title is correct');
-
       click('.button--primary:first');
     });
 
@@ -15777,7 +15213,7 @@ define('frontend-cp/tests/acceptance/agent/users/change-role-test', ['exports', 
 
     andThen(function () {
       assert.ok(find('.ko-user-content__role-field').is(':contains(Agent)'), 'expected role field to contain "Agent"');
-      assert.equal(find('.qa-confirm-text').html(), _frontendCpLocalesEnUsUsers['default']['change_role.from_customer']);
+      assert.equal(find('.qa-ko-confirm-modal__body').html(), _frontendCpLocalesEnUsUsers['default']['change_role.from_customer']);
     });
   });
 
@@ -15796,7 +15232,7 @@ define('frontend-cp/tests/acceptance/agent/users/change-role-test', ['exports', 
 
     andThen(function () {
       assert.ok(find('.ko-user-content__role-field').is(':contains(Customer)'), 'expected role field to contain "Customer"');
-      assert.equal(find('.qa-confirm-text').html(), _frontendCpLocalesEnUsUsers['default']['change_role.to_customer']);
+      assert.equal(find('.qa-ko-confirm-modal__body').html(), _frontendCpLocalesEnUsUsers['default']['change_role.to_customer']);
     });
   });
 
@@ -20942,7 +20378,8 @@ define('frontend-cp/tests/unit/services/custom-fields-test', ['exports', 'ember'
   var getOwner = _ember['default'].getOwner;
 
   (0, _emberQunit.moduleFor)('service:custom-fields', 'Unit | Service | custom-fields', {
-    needs: ['model:user-field', 'model:field-option', 'model:field', 'model:locale', 'model:locale-field', 'model:locale-string', 'service:custom-fields/types', 'service:custom-fields/options', 'service:intl', 'service:notification', 'service:request-history', 'ember-intl@adapter:default', 'adapter:application', 'service:session', 'service:error-handler', 'service:error-handler/notification-strategy', 'service:server-clock', 'service:adapterRequestLogger'],
+    integration: true,
+
     beforeEach: function beforeEach() {
       var intl = getOwner(this).lookup('service:intl');
 
@@ -21008,7 +20445,7 @@ define('frontend-cp/tests/unit/services/custom-fields-test', ['exports', 'ember'
     assert.equal(service.getTitleBreadcrumbs(model), 'userfields / Test Select');
   });
 
-  (0, _emberQunit.test)('it creates new records through create method', function (assert) {
+  (0, _emberQunit.test)('it populates new records with data through ensureLocaleFieldsAndOptions method', function (assert) {
     assert.expect(4);
 
     var service = this.subject();
@@ -21039,15 +20476,14 @@ define('frontend-cp/tests/unit/services/custom-fields-test', ['exports', 'ember'
       });
     });
 
-    var returnedModel = undefined;
     _ember['default'].run(function () {
-      returnedModel = service.create(userField);
+      service.ensureLocaleFieldsAndOptions(userField);
     });
 
-    assert.equal(returnedModel.get('customerTitles').length, 3);
-    assert.equal(returnedModel.get('descriptions').length, 3);
-    assert.equal(returnedModel.get('options').length, 1);
-    assert.equal(returnedModel.get('options.firstObject.values.length'), 3);
+    assert.equal(userField.get('customerTitles').length, 3);
+    assert.equal(userField.get('descriptions').length, 3);
+    assert.equal(userField.get('options').length, 1);
+    assert.equal(userField.get('options.firstObject.values.length'), 3);
   });
 
   (0, _emberQunit.test)('it persist new record through save method', function (assert) {
@@ -21071,44 +20507,6 @@ define('frontend-cp/tests/unit/services/custom-fields-test', ['exports', 'ember'
     });
 
     service.save(model);
-  });
-
-  (0, _emberQunit.test)('it can rollback model', function (assert) {
-    assert.expect(2);
-
-    var service = this.subject();
-    var store = getOwner(this).lookup('service:store');
-
-    var userField = undefined;
-    var fieldOption = undefined;
-
-    _ember['default'].run(function () {
-      fieldOption = store.createRecord('field-option', { value: 'value', tag: 'tag' });
-
-      userField = store.createRecord('user-field', {
-        fieldType: 'SELECT',
-        options: [fieldOption]
-      });
-    });
-
-    service.reopen({
-      customFieldsOptions: {
-        rollbackAttributes: function rollbackAttributes() {
-          assert.equal(true, true);
-        }
-      }
-    });
-
-    userField.reopen({
-      rollbackAttributes: function rollbackAttributes() {
-        return new _ember['default'].RSVP.Promise(function (resolve) {
-          assert.ok(true);
-          return resolve();
-        });
-      }
-    });
-
-    service.rollback(userField);
   });
 
   (0, _emberQunit.test)('it can toggle enabled state on the record', function (assert) {
@@ -21144,103 +20542,6 @@ define('frontend-cp/tests/unit/services/custom-fields-test', ['exports', 'ember'
     });
 
     assert.equal(model.get('isEnabled'), false);
-  });
-});
-define('frontend-cp/tests/unit/services/custom-fields/options-test', ['exports', 'ember', 'ember-qunit'], function (exports, _ember, _emberQunit) {
-  var getOwner = _ember['default'].getOwner;
-
-  (0, _emberQunit.moduleFor)('service:custom-fields/options', 'Unit | Service | custom-fields/options', {
-    needs: ['model:user-field', 'model:field-option', 'model:field', 'model:locale', 'model:locale', 'model:locale-field', 'model:case-priority', 'model:case-status', 'model:case-type']
-  });
-
-  (0, _emberQunit.test)('it add option with sortOrder = 1, when there is no options', function (assert) {
-    assert.expect(2);
-
-    var service = this.subject();
-
-    var options = [];
-
-    _ember['default'].run(function () {
-      service.add(options);
-    });
-
-    assert.equal(options.length, 1);
-    assert.equal(options.get('firstObject').get('sortOrder'), 1);
-  });
-
-  (0, _emberQunit.test)('it add option with sortOrder = sortOrder+1, when there are options', function (assert) {
-    assert.expect(2);
-
-    var service = this.subject();
-    var store = getOwner(this).lookup('service:store');
-
-    var option1 = undefined,
-        option2 = undefined,
-        option3 = undefined;
-
-    _ember['default'].run(function () {
-      option1 = store.createRecord('field-option', { sortOrder: 1, value: 'option1', tag: 'value1' });
-      option2 = store.createRecord('field-option', { sortOrder: 2, value: 'option2', tag: 'value2' });
-      option3 = store.createRecord('field-option', { sortOrder: 3, value: 'option3', tag: 'value3' });
-    });
-
-    var options = [option1, option2, option3];
-
-    _ember['default'].run(function () {
-      service.add(options);
-    });
-
-    assert.equal(options.length, 4);
-    assert.equal(options.get('lastObject').get('sortOrder'), 4);
-  });
-
-  (0, _emberQunit.test)('it can rollback options', function (assert) {
-    assert.expect(2);
-
-    var service = this.subject();
-    var store = getOwner(this).lookup('service:store');
-
-    var locale = undefined;
-    var option = undefined;
-    _ember['default'].run(function () {
-      locale = store.push({
-        data: {
-          id: 1,
-          type: 'locale-field',
-          attributes: {
-            locale: 'en-us',
-            translation: 'translated text'
-          }
-        }
-      });
-      option = store.push({
-        data: {
-          id: 1,
-          type: 'field-option',
-          attributes: {
-            sortOrder: 1,
-            value: 'option1',
-            tag: 'value1'
-          }
-        }
-      });
-      option.get('values').pushObject(locale);
-    });
-
-    locale.reopen({
-      rollbackAttributes: function rollbackAttributes() {
-        assert.equal(true, true);
-      }
-    });
-
-    option.reopen({
-      rollbackAttributes: function rollbackAttributes() {
-        assert.equal(true, true);
-      }
-    });
-
-    service.rollbackAttributes([]);
-    service.rollbackAttributes([option]);
   });
 });
 define('frontend-cp/tests/unit/services/error-handler-test', ['exports', 'ember', 'ember-qunit', 'frontend-cp/services/session'], function (exports, _ember, _emberQunit, _frontendCpServicesSession) {

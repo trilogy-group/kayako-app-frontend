@@ -2238,29 +2238,6 @@ img {
   margin-top: 9px;
   margin-bottom: 9px; }
 
-.ko-reorderable-crud-list-item {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex; }
-
-.ko-reorderable-crud-list-item__values {
-  margin-right: 15px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center; }
-
-.ko-admin_case-fields_edit_options__actions {
-  margin-left: 4.5px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center; }
-
 .ko-admin_case-fields_select-type {
   position: relative;
   padding: 13.5px 0;
@@ -3882,36 +3859,6 @@ label {
   .ko-radio__label--disabled {
     opacity: 0.5; }
 
-.ko-reorderable-crud-list__item {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  padding: 9px 9px 9px 9px; }
-  .ko-reorderable-crud-list__item:hover {
-    background: #F7F8F9; }
-    .ko-reorderable-crud-list__item:hover .ko-reorderable-crud-list-actions {
-      visibility: visible; }
-
-.ko-reorderable-crud-list-actions {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  max-width: 38px;
-  visibility: hidden; }
-
-.ko-reorderable-crud-list-actions__item {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  font-size: 18px;
-  line-height: 1;
-  cursor: pointer; }
-  .ko-reorderable-crud-list-actions__item > [class*="i-"]:before {
-    vertical-align: initial; }
-
 .ko-reorderable-list .ko-reorderable-list {
   list-style: none; }
 
@@ -4317,8 +4264,8 @@ label {
 .ko-admin_forms_group__contents_9ysg3g {
   width: 75%; }
 
-/* styles for frontend-cp/components/ko-admin/case-fields/edit/priorities/styles.css */
-.ko-admin_case-fields_edit_priorities__buttons_1yqe9o {
+/* styles for frontend-cp/components/ko-admin/fields/form/priorities/styles.css */
+.ko-admin_fields_form_priorities__buttons_1sa0l0 {
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
@@ -4329,14 +4276,23 @@ label {
       -ms-flex-pack: end;
           justify-content: flex-end; }
 
-.ko-admin_case-fields_edit_priorities__add-priority_1yqe9o {
+.ko-admin_fields_form_priorities__add-priority_1sa0l0 {
   margin: 9px 0 18px; }
 
-.ko-admin_case-fields_edit_priorities__legend_1yqe9o {
+.ko-admin_fields_form_priorities__legend_1sa0l0 {
   margin-bottom: 9px; }
 
-/* styles for frontend-cp/components/ko-admin/case-fields/edit/statuses/styles.css */
-.ko-admin_case-fields_edit_statuses__buttons_1pfjyo {
+.ko-admin_fields_form_priorities__loader_1sa0l0 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-right: 10px; }
+
+/* styles for frontend-cp/components/ko-admin/fields/form/statuses/styles.css */
+.ko-admin_fields_form_statuses__buttons_1c1bl5 {
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
@@ -4347,14 +4303,23 @@ label {
       -ms-flex-pack: end;
           justify-content: flex-end; }
 
-.ko-admin_case-fields_edit_statuses__add-status_1pfjyo {
+.ko-admin_fields_form_statuses__add-status_1c1bl5 {
   margin: 9px 0 18px; }
 
-.ko-admin_case-fields_edit_statuses__legend_1pfjyo {
+.ko-admin_fields_form_statuses__legend_1c1bl5 {
   margin-bottom: 9px; }
 
-/* styles for frontend-cp/components/ko-admin/case-fields/edit/types/styles.css */
-.ko-admin_case-fields_edit_types__buttons_7vw8ba {
+.ko-admin_fields_form_statuses__loader_1c1bl5 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-right: 10px; }
+
+/* styles for frontend-cp/components/ko-admin/fields/form/types/styles.css */
+.ko-admin_fields_form_types__buttons_1bpurs {
   -webkit-box-flex: 1;
       -ms-flex: 1;
           flex: 1;
@@ -4365,11 +4330,20 @@ label {
       -ms-flex-pack: end;
           justify-content: flex-end; }
 
-.ko-admin_case-fields_edit_types__add-type_7vw8ba {
+.ko-admin_fields_form_types__add-type_1bpurs {
   margin: 9px 0 18px; }
 
-.ko-admin_case-fields_edit_types__legend_7vw8ba {
+.ko-admin_fields_form_types__legend_1bpurs {
   margin-bottom: 9px; }
+
+.ko-admin_fields_form_types__loader_1bpurs {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-right: 10px; }
 
 /* styles for frontend-cp/components/ko-select/shared.css */
 ._statusIcon_jvqwfg .ember-power-select-status-icon {
@@ -5335,15 +5309,6 @@ label {
 .ko-admin_brands_form__textarea_1fb6v1 {
   width: calc(100% - 120px); }
 
-/* styles for frontend-cp/components/ko-admin/case-fields/edit/styles.css */
-.ko-admin_case-fields_edit__localizableGroup_10t5bc {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center; }
-
 /* styles for frontend-cp/components/ko-admin/case-forms/edit/fields/styles.css */
 .ko-admin_case-forms_edit_fields__row_1lld7s {
   width: 100%;
@@ -5424,6 +5389,25 @@ label {
 
 .ko-admin_facebook_index__error_pgnhe8 {
   color: #E86048; }
+
+/* styles for frontend-cp/components/ko-admin/fields/form/option/styles.css */
+.ko-admin_fields_form_option__item_1ow81a {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin-right: 15px; }
+
+/* styles for frontend-cp/components/ko-admin/fields/form/styles.css */
+.ko-admin_fields_form__localizableGroup_14dmha {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
 
 /* styles for frontend-cp/components/ko-admin/forms/description/styles.css */
 .ko-admin_forms_description__description_krmqn9 {
@@ -8055,6 +8039,38 @@ span#HW_badge.HW_softHidden {
 
 .ko-recent-cases__missing_1tzzxl {
   padding: 0 18px; }
+
+/* styles for frontend-cp/components/ko-reorderable-crud-list/styles.css */
+.ko-reorderable-crud-list__item_1qs79g {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 9px; }
+
+.ko-reorderable-crud-list__item_1qs79g:hover {
+  background: #F7F8F9; }
+
+.ko-reorderable-crud-list__item_1qs79g:hover .ko-reorderable-crud-list__actions_1qs79g {
+  visibility: visible; }
+
+.ko-reorderable-crud-list__actions_1qs79g {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  max-width: 38px;
+  visibility: hidden; }
+
+.ko-reorderable-crud-list__actions-item_1qs79g {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 18px;
+  cursor: pointer; }
+  .ko-reorderable-crud-list__actions-item_1qs79g > [class*="i-"]:before {
+    vertical-align: initial; }
 
 /* styles for frontend-cp/components/ko-role-pill/styles.css */
 .ko-role-pill__role-pill_zg8r7t {
