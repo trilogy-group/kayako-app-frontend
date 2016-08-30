@@ -2517,6 +2517,12 @@ img {
       -ms-flex-pack: end;
           justify-content: flex-end; }
 
+.ko-bulk-sidebar__field-placeholder {
+  padding: 9px 18px;
+  border-bottom: 1px solid #D1D5D7;
+  font-size: 12px;
+  line-height: 1.5; }
+
 .textEditor {
   margin-bottom: 9px;
   border-left: 1px solid #d1d5d7;
