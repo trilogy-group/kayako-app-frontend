@@ -6526,40 +6526,13 @@ a.ko-admin_plans_index__cancel_1br1r5 {
 
 /* Reload icon */
 .ko-cases-list_sidebar_item__reload-icon_1km4cn {
-  font-family: 'icomoon';
-  font-style: normal;
-  font-variant: normal;
-  font-weight: normal;
-  font-size: 18px;
-  display: none;
-  margin-right: 6px; }
-
-.ko-cases-list_sidebar_item__reload-icon_1km4cn::before {
-  color: #838D94;
-  content: "\E908"; }
+  margin-right: 6px;
+  display: none; }
 
 .active:not(.ember-transitioning-out) .ko-cases-list_sidebar_item__reload-icon_1km4cn {
-  display: inline-block; }
-
-@-webkit-keyframes ko-cases-list_sidebar_item__spin_1km4cn {
-  0% {
-    -webkit-transform: rotate(0);
-            transform: rotate(0); }
-  100% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg); } }
-
-@keyframes ko-cases-list_sidebar_item__spin_1km4cn {
-  0% {
-    -webkit-transform: rotate(0);
-            transform: rotate(0); }
-  100% {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg); } }
-
-.ko-cases-list_sidebar_item__reload-icon--active_1km4cn {
-  -webkit-animation: ko-cases-list_sidebar_item__spin_1km4cn 1s infinite linear;
-          animation: ko-cases-list_sidebar_item__spin_1km4cn 1s infinite linear; }
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
 
 /* Counter */
 .ko-cases-list_sidebar_item__counter_1km4cn {
