@@ -12224,7 +12224,8 @@ define('frontend-cp/tests/acceptance/admin/settings/security-test', ['exports', 
           'security.agent.password.min_symbols': '2',
           'security.agent.password.require_mixed_case': '0',
           'security.agent.password.max_consecutive': '1',
-          'security.agent.ip_restriction': '192.168.0.1'
+          'security.agent.ip_restriction': '192.168.0.1',
+          'security.allow_unsafe_html_in_articles': '1'
         }
       }
     }, assert);
@@ -12233,7 +12234,7 @@ define('frontend-cp/tests/acceptance/admin/settings/security-test', ['exports', 
   (0, _frontendCpTestsHelpersQunit.test)('agent field validation errors', function (assert) {
     assert.expect(2);
 
-    var errors = ['security.agent.authentication_type', 'security.agent.sso.jwt.login_url', 'security.agent.sso.jwt.logout_url', 'security.agent.sso.jwt.shared_secret', 'security.agent.session_expiry', 'security.agent.login_attempt_limit', 'security.agent.password.expires_in', 'security.agent.password.min_characters', 'security.agent.password.min_numbers', 'security.agent.password.min_symbols', 'security.agent.password.require_mixed_case', 'security.agent.password.max_consecutive', 'security.agent.ip_restriction'].map(function (key) {
+    var errors = ['security.agent.authentication_type', 'security.agent.sso.jwt.login_url', 'security.agent.sso.jwt.logout_url', 'security.agent.sso.jwt.shared_secret', 'security.agent.session_expiry', 'security.agent.login_attempt_limit', 'security.agent.password.expires_in', 'security.agent.password.min_characters', 'security.agent.password.min_numbers', 'security.agent.password.min_symbols', 'security.agent.password.require_mixed_case', 'security.agent.password.max_consecutive', 'security.agent.ip_restriction', 'security.allow_unsafe_html_in_articles'].map(function (key) {
       return {
         code: 'FIELD_INVALID',
         parameter: 'values',
@@ -12253,7 +12254,7 @@ define('frontend-cp/tests/acceptance/admin/settings/security-test', ['exports', 
     click('button[name=submit].button');
 
     andThen(function () {
-      assert.equal(find('.qa-field-error').length, 13, 'Field validation errors displayed on each field');
+      assert.equal(find('.qa-field-error').length, 14, 'Field validation errors displayed on each field');
       assert.equal(find('.qa-field-error:eq(0)').text().trim(), 'The value of the field is invalid', 'Field validation text');
     });
   });
