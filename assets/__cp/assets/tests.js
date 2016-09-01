@@ -15169,6 +15169,30 @@ define('frontend-cp/tests/acceptance/agent/tabs/tabs-test', ['exports', 'fronten
     });
   });
 
+  (0, _frontendCpTestsHelpersQunit.test)('REGRESSION(FT-1233) can navigate to index whilst a tab is being closed', function (assert) {
+
+    setupBasicScenario();
+    login();
+
+    visit('/');
+    visit('/agent/cases/1');
+    visit('/agent/cases/2');
+    visit('/agent/cases/3');
+
+    andThen(function () {
+      var $activeTabElement = getActiveTabElement();
+      closeTab($activeTabElement);
+
+      setTimeout(function () {
+        $('[href="/agent/cases/view/1"]').click();
+      }, 0);
+    });
+
+    andThen(function () {
+      assert.equal(currentURL(), '/agent/cases/view/1');
+    });
+  });
+
   function getTabElements() {
     return find('.' + _frontendCpSessionStyles['default'].tab);
   }
