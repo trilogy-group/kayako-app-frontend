@@ -7961,7 +7961,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('creating a new view with a single proposition using contains one of the following', function (assert) {
+  (0, _frontendCpTestsHelpersQunit.test)('creating a new view with a single proposition using contains all of the following', function (assert) {
     visit('/admin/manage/views/new');
 
     andThen(function () {
@@ -7970,7 +7970,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       fillIn('input.ko-admin_views_edit__title', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Tags');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'contains one of the following');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'contains all of the following');
       fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
       click('.button[name=submit]:first');
     });
@@ -8001,7 +8001,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('creating a new view with a single proposition using is contains one of the following', function (assert) {
+  (0, _frontendCpTestsHelpersQunit.test)('creating a new view with a single proposition using is contains all of the following', function (assert) {
     visit('/admin/manage/views/new');
 
     andThen(function () {
@@ -8010,7 +8010,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       fillIn('input.ko-admin_views_edit__title', fieldTitle);
       click('.ko-radio__label:contains(Just myself)');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Tags');
-      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'contains one of the following');
+      selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'contains all of the following');
       fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
       click('.button[name=submit]:first');
     });
