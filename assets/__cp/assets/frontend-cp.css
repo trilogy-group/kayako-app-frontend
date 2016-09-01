@@ -3142,13 +3142,6 @@ label {
 .ko-info-bar_field_drill-down .ember-power-select-dropdown {
   margin-top: -1px; }
 
-.ko-field-file__input {
-  width: 100%;
-  border: none;
-  background-color: inherit; }
-  .ko-field-file__input:focus {
-    outline: none; }
-
 .ko-info-bar_multiline-text {
   cursor: pointer; }
 

@@ -6247,37 +6247,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('creating a new file field', function (assert) {
-    var fieldTitle = 'fieldTitle';
-    var customerTitle = 'customer title';
-    var description = 'description';
-
-    visit('/admin/manage/case-fields/new/FILE');
-
-    andThen(function () {
-      assert.equal(currentURL(), '/admin/manage/case-fields/new/FILE');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Case fields / File upload / New', 'Edit form default title is correct');
-
-      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
-
-      click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
-      fillIn('textarea.ko-admin_case-fields_edit__description', description);
-      click('.button--primary:first');
-    });
-
-    andThen(function () {
-      assert.equal(currentURL(), '/admin/manage/case-fields');
-      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
-    });
-
-    andThen(function () {
-      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
-      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
-      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
-    });
-  });
-
   (0, _frontendCpTestsHelpersQunit.test)('creating a new yes/no toggle field', function (assert) {
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
@@ -9339,37 +9308,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('creating a new file field', function (assert) {
-    var fieldTitle = 'fieldTitle';
-    var customerTitle = 'customer title';
-    var description = 'description';
-
-    visit('/admin/people/organization-fields/new/FILE');
-
-    andThen(function () {
-      assert.equal(currentURL(), '/admin/people/organization-fields/new/FILE');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / File upload / New', 'Edit form default title is correct');
-
-      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
-
-      click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
-      fillIn('textarea.ko-admin_case-fields_edit__description', description);
-      click('.button--primary:first');
-    });
-
-    andThen(function () {
-      assert.equal(currentURL(), '/admin/people/organization-fields');
-      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
-    });
-
-    andThen(function () {
-      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
-      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
-      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
-    });
-  });
-
   (0, _frontendCpTestsHelpersQunit.test)('creating a new yes/no toggle field', function (assert) {
     var fieldTitle = 'fieldTitle';
     var customerTitle = 'customer title';
@@ -11538,37 +11476,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields/new/DECIMAL');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / Decimal input / New', 'Edit form default title is correct');
-
-      fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
-
-      click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
-      fillIn('textarea.ko-admin_case-fields_edit__description', description);
-      click('.button--primary:first');
-    });
-
-    andThen(function () {
-      assert.equal(currentURL(), '/admin/people/user-fields');
-      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains(' + fieldTitle + ')');
-    });
-
-    andThen(function () {
-      assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
-      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
-      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
-    });
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('creating a new file field', function (assert) {
-    var fieldTitle = 'fieldTitle';
-    var customerTitle = 'customer title';
-    var description = 'description';
-
-    visit('/admin/people/user-fields/new/FILE');
-
-    andThen(function () {
-      assert.equal(currentURL(), '/admin/people/user-fields/new/FILE');
-      assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'User fields / File upload / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
