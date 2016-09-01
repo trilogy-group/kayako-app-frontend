@@ -676,7 +676,7 @@ textarea {
 /* ==========================================================================
    	Positioning
    ========================================================================= */
-.i-after[class*="i-"]:before, .ko-admin_case-fields_select-type__action > [class*="i-"]:before, .ko-admin_endpoints_select-type__action > [class*="i-"]:before, .ko-case_macro-selector .ember-power-select-search::before, .editable-text > [class*="i-"]:before, .ko-predicate-builder_proposition__label, .ko-reorderable-list .ko-reorderable-list_item_handle[class*="i-"]:before, .universal-search_result__action, .ko-input_search__search_njcqam > [class*="i-"]:before, .ko-case_macro-selector_trigger__icon_7wpnlb, .ko-simple-list__list_djax4 [class*="ko-reorderable-list_item_handle"][class*="i-"]:before,
+.i-after[class*="i-"]:before, .ko-admin_endpoints_select-type__action > [class*="i-"]:before, .ko-case_macro-selector .ember-power-select-search::before, .editable-text > [class*="i-"]:before, .ko-predicate-builder_proposition__label, .ko-reorderable-list .ko-reorderable-list_item_handle[class*="i-"]:before, .universal-search_result__action, .ko-input_search__search_njcqam > [class*="i-"]:before, .ko-admin_fields_select-type__action_1ygtgy > [class*="i-"]:before, .ko-case_macro-selector_trigger__icon_7wpnlb, .ko-simple-list__list_djax4 [class*="ko-reorderable-list_item_handle"][class*="i-"]:before,
 .u-v-center {
   position: absolute;
   top: 50%;
@@ -762,42 +762,6 @@ textarea {
   background-size: 50%;
   background-repeat: no-repeat;
   background-position: center; }
-
-.i-png-TEXT {
-  background-image: url("/__apps/frontend/assets/__cp/images/icons/text.png"); }
-
-.i-png-TEXTAREA {
-  background-image: url("/__apps/frontend/assets/__cp/images/icons/textarea.png"); }
-
-.i-png-RADIO {
-  background-image: url("/__apps/frontend/assets/__cp/images/icons/radio.png"); }
-
-.i-png-SELECT {
-  background-image: url("/__apps/frontend/assets/__cp/images/icons/select.png"); }
-
-.i-png-CHECKBOX {
-  background-image: url("/__apps/frontend/assets/__cp/images/icons/checkbox.png"); }
-
-.i-png-NUMERIC {
-  background-image: url("/__apps/frontend/assets/__cp/images/icons/numeric.png"); }
-
-.i-png-DECIMAL {
-  background-image: url("/__apps/frontend/assets/__cp/images/icons/decimal.png"); }
-
-.i-png-FILE {
-  background-image: url("/__apps/frontend/assets/__cp/images/icons/file.png"); }
-
-.i-png-YESNO {
-  background-image: url("/__apps/frontend/assets/__cp/images/icons/yes-no.png"); }
-
-.i-png-CASCADINGSELECT {
-  background-image: url("/__apps/frontend/assets/__cp/images/icons/cascading-select.png"); }
-
-.i-png-DATE {
-  background-image: url("/__apps/frontend/assets/__cp/images/icons/date.png"); }
-
-.i-png-REGEX {
-  background-image: url("/__apps/frontend/assets/__cp/images/icons/regex.png"); }
 
 .i-png-endpoint-EMAIL {
   background-size: 90%;
@@ -2132,12 +2096,6 @@ img {
   text-align: center;
   pointer-events: none; }
 
-.ko-admin_case-fields_select-type__icon {
-  width: 24px;
-  height: 24px;
-  border-radius: 2px;
-  padding: 0px; }
-
 .ko-admin_macros__title {
   text-overflow: ellipsis;
   overflow: hidden;
@@ -2237,31 +2195,6 @@ img {
 .ko-admin_businesshours__add-holiday {
   margin-top: 9px;
   margin-bottom: 9px; }
-
-.ko-admin_case-fields_select-type {
-  position: relative;
-  padding: 13.5px 0;
-  border-bottom: 1px solid #EBEEF0;
-  cursor: pointer; }
-
-.ko-admin_case-fields_select-type__icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 2px; }
-
-.ko-admin_case-fields_select-type__action > [class*="i-"]:before {
-  right: 0; }
-
-.ko-admin_case-fields_select-type__title {
-  font-weight: 600;
-  margin-bottom: 5px; }
-
-.ko-admin_case-fields_type-icon {
-  display: inline-block;
-  height: 16px;
-  width: 16px;
-  border: 1px solid #D2D2D2;
-  border-radius: 2px; }
 
 .availablePages {
   min-height: 15px; }
@@ -3441,7 +3374,10 @@ label {
   display: flex; }
 
 .ko-layout_advanced_heading__right-item {
-  margin-left: 3px; }
+  margin-left: 3px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
 
 .ko-layout_advanced_section {
   display: -webkit-box;
@@ -5402,6 +5338,40 @@ label {
       -ms-flex-align: center;
           align-items: center; }
 
+/* styles for frontend-cp/components/ko-admin/fields/index/styles.css */
+.ko-admin_fields_index__icon_1ul4un {
+  margin-right: 9px; }
+
+/* styles for frontend-cp/components/ko-admin/fields/select-type/styles.css */
+.ko-admin_fields_select-type__field-type_1ygtgy {
+  position: relative;
+  padding: 14px 0;
+  border-bottom: 1px solid #EBEEF0;
+  cursor: pointer;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+
+.ko-admin_fields_select-type__icon_1ygtgy {
+  width: 32px;
+  margin-right: 12px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
+
+.ko-admin_fields_select-type__title_1ygtgy {
+  font-weight: 600;
+  margin-bottom: 5px; }
+
+.ko-admin_fields_select-type__action_1ygtgy > [class*="i-"]:before {
+  right: 0; }
+
 /* styles for frontend-cp/components/ko-admin/forms/description/styles.css */
 .ko-admin_forms_description__description_krmqn9 {
   color: #838D94;
@@ -6114,57 +6084,37 @@ a.ko-admin_plans_index__cancel_1br1r5 {
   display: inline-block; }
 
 .ko-agent-dropdown__iconSquare_15uh4p {
-  line-height: initial;
-  display: inline-block;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   height: 20px;
   width: 20px;
   background-color: #4EAFCB;
-  border-radius: 2px;
-  text-align: center;
-  margin-top: 12px; }
+  border-radius: 2px; }
 
-.ko-agent-dropdown__addIcon_15uh4p {
-  color: #FFFFFF;
-  font-weight: 600;
-  width: 20px;
-  height: 20px;
-  display: inline-block;
-  cursor: pointer; }
+.ko-agent-dropdown__icon_15uh4p {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-transition: all 200ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: all 200ms cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 
 .ko-agent-dropdown__trigger_15uh4p {
   outline: none;
+  padding-top: 12px;
   margin-left: 10px;
-  height: 42px; }
+  height: 42px;
+  cursor: pointer; }
 
-@-webkit-keyframes ko-agent-dropdown__roll_15uh4p {
-  0% {
-    -webkit-transform: rotate(0);
-            transform: rotate(0); }
-  100% {
-    -webkit-transform: rotate(45deg);
-            transform: rotate(45deg); } }
-
-@keyframes ko-agent-dropdown__roll_15uh4p {
-  0% {
-    -webkit-transform: rotate(0);
-            transform: rotate(0); }
-  100% {
-    -webkit-transform: rotate(45deg);
-            transform: rotate(45deg); } }
-
-.ko-agent-dropdown__trigger_15uh4p[aria-expanded="true"] i {
-  -webkit-animation-name: ko-agent-dropdown__roll_15uh4p;
-          animation-name: ko-agent-dropdown__roll_15uh4p;
-  -webkit-animation-fill-mode: forwards;
-          animation-fill-mode: forwards; }
-
-.ko-agent-dropdown__trigger_15uh4p[aria-expanded="false"] i {
-  -webkit-animation-name: ko-agent-dropdown__roll_15uh4p;
-          animation-name: ko-agent-dropdown__roll_15uh4p;
-  -webkit-animation-direction: reverse;
-          animation-direction: reverse;
-  -webkit-animation-fill-mode: forwards;
-          animation-fill-mode: forwards; }
+.ko-agent-dropdown__trigger_15uh4p[aria-expanded="true"] .ko-agent-dropdown__icon_15uh4p {
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg); }
 
 @-webkit-keyframes ko-agent-dropdown__slide-in_15uh4p {
   0% {
@@ -9591,6 +9541,10 @@ span#HW_badge.HW_softHidden {
 .session_admin_apps_zapier__findOutCTA_1dcq2z {
   padding: 0 10px; }
 
+/* styles for frontend-cp/session/admin/people/organization-fields/index/styles.css */
+.session_admin_people_organization-fields_index__icon_1d6n90 {
+  margin-right: 9px; }
+
 /* styles for frontend-cp/session/admin/people/staff/add/styles.css */
 .session_admin_people_staff_add__footer_p2kqpy {
   display: -webkit-box;
@@ -9634,6 +9588,10 @@ span#HW_badge.HW_softHidden {
 .session_admin_people_teams_index__team_17837l {
   width: 50%;
   padding-left: 18px; }
+
+/* styles for frontend-cp/session/admin/people/user-fields/index/styles.css */
+.session_admin_people_user-fields_index__icon_fbha42 {
+  margin-right: 9px; }
 
 /* styles for frontend-cp/session/admin/settings/security/customers/styles.css */
 .session_admin_settings_security_customers__field_133x9d {

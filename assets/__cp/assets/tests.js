@@ -12252,7 +12252,7 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
   (0, _frontendCpTestsHelpersQunit.test)('Creating a case using the "+" button in the main header', function (assert) {
     visit('/agent');
 
-    click('.' + _frontendCpComponentsKoAgentDropdownStyles['default'].addIcon);
+    click('.' + _frontendCpComponentsKoAgentDropdownStyles['default'].icon);
 
     andThen(function () {
       assert.equal(find('.' + _frontendCpComponentsKoAgentDropdownStyles['default'].drop).is(':visible'), true, '"+" Dropdown content should be visible');
@@ -15296,7 +15296,7 @@ define('frontend-cp/tests/acceptance/agent/users/create-test', ['exports', 'fron
   (0, _frontendCpTestsHelpersQunit.test)('Creating a user using the "+" button in the main header', function (assert) {
     visit('/agent');
 
-    click('.' + _frontendCpComponentsKoAgentDropdownStyles['default'].addIcon);
+    click('.' + _frontendCpComponentsKoAgentDropdownStyles['default'].icon);
 
     andThen(function () {
       assert.equal(find('.' + _frontendCpComponentsKoAgentDropdownStyles['default'].drop).length, 1, '"+" Dropdown content should be visible');
