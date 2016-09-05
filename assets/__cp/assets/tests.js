@@ -500,9 +500,8 @@ define('frontend-cp/tests/acceptance/admin/account/trial/index-test', ['exports'
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/apps/webhooks/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+define('frontend-cp/tests/acceptance/admin/apps/webhooks/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-modal/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoModalStyles) {
 
-  var originalConfirm = undefined;
   var webhook = undefined;
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/apps/webhooks/edit', {
@@ -525,12 +524,9 @@ define('frontend-cp/tests/acceptance/admin/apps/webhooks/edit-test', ['exports',
         token: 'abc',
         is_enabled: true
       });
-
-      originalConfirm = window.confirm;
     },
 
     afterEach: function afterEach() {
-      window.confirm = originalConfirm;
       logout();
     }
   });
@@ -568,11 +564,6 @@ define('frontend-cp/tests/acceptance/admin/apps/webhooks/edit-test', ['exports',
   (0, _frontendCpTestsHelpersQunit.test)('Exit having pending changes ask for confirmation', function (assert) {
     assert.expect(3);
 
-    window.confirm = function (message) {
-      assert.equal(message, 'You have unsaved changes on this page. Are you sure you want to discard these changes?', 'The proper confirm message is shown');
-      return true;
-    };
-
     visit('/admin/apps/webhooks/' + webhook.id);
 
     andThen(function () {
@@ -582,17 +573,17 @@ define('frontend-cp/tests/acceptance/admin/apps/webhooks/edit-test', ['exports',
     });
 
     andThen(function () {
+      assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 1, 'A modal opened to confirm leaving unsaved changes');
+      click('.button:contains("Discard changes")');
+    });
+
+    andThen(function () {
       assert.equal(currentURL(), '/admin/apps/webhooks');
     });
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('Exit without having pending changes doesn\'t ask for confirmation', function (assert) {
     assert.expect(4);
-
-    window.confirm = function (message) {
-      assert.ok(false, 'This should never be called');
-      return false;
-    };
 
     visit('/admin/apps/webhooks/' + webhook.id);
 
@@ -608,9 +599,7 @@ define('frontend-cp/tests/acceptance/admin/apps/webhooks/edit-test', ['exports',
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/apps/webhooks/index-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
-
-  var originalConfirm = undefined;
+define('frontend-cp/tests/acceptance/admin/apps/webhooks/index-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-modal/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoModalStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/apps/webhooks/index', {
     beforeEach: function beforeEach() {
@@ -625,11 +614,9 @@ define('frontend-cp/tests/acceptance/admin/apps/webhooks/index-test', ['exports'
       login(session.id);
 
       server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
-      originalConfirm = window.confirm;
     },
 
     afterEach: function afterEach() {
-      window.confirm = originalConfirm;
       logout();
     }
   });
@@ -641,15 +628,15 @@ define('frontend-cp/tests/acceptance/admin/apps/webhooks/index-test', ['exports'
 
     visit('/admin/apps/webhooks');
 
-    window.confirm = function (message) {
-      assert.equal(message, 'Are you sure you want to delete this?', 'The proper confirm message is shown');
-      return true;
-    };
-
     andThen(function () {
       assert.equal(currentURL(), '/admin/apps/webhooks');
       triggerEvent('.qa-admin_webhooks--enabled .qa-admin_row div:contains("test webhook")', 'mouseenter');
       click('.qa-admin_webhooks--enabled .qa-admin_row div:contains("test webhook") a:contains(Delete)');
+    });
+
+    andThen(function () {
+      assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 1, 'A modal opened to confirm leaving unsaved changes');
+      click('.button:contains("Confirm")');
     });
 
     andThen(function () {
@@ -665,15 +652,15 @@ define('frontend-cp/tests/acceptance/admin/apps/webhooks/index-test', ['exports'
 
     visit('/admin/apps/webhooks');
 
-    window.confirm = function (message) {
-      assert.equal(message, 'Are you sure you want to delete this?', 'The proper confirm message is shown');
-      return true;
-    };
-
     andThen(function () {
       assert.equal(currentURL(), '/admin/apps/webhooks');
       triggerEvent('.qa-admin_webhooks--disabled .qa-admin_row div:contains("test webhook")', 'mouseenter');
       click('.qa-admin_webhooks--disabled .qa-admin_row div:contains("test webhook") a:contains(Delete)');
+    });
+
+    andThen(function () {
+      assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 1, 'A modal opened to confirm leaving unsaved changes');
+      click('.button:contains("Confirm")');
     });
 
     andThen(function () {
@@ -747,9 +734,7 @@ define('frontend-cp/tests/acceptance/admin/apps/webhooks/index-test', ['exports'
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/apps/webhooks/new-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
-
-  var originalConfirm = undefined;
+define('frontend-cp/tests/acceptance/admin/apps/webhooks/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-modal/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoModalStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/apps/webhooks/new', {
     beforeEach: function beforeEach() {
@@ -764,11 +749,9 @@ define('frontend-cp/tests/acceptance/admin/apps/webhooks/new-test', ['exports', 
       login(session.id);
 
       server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
-      originalConfirm = window.confirm;
     },
 
     afterEach: function afterEach() {
-      window.confirm = originalConfirm;
       logout();
     }
   });
@@ -805,11 +788,6 @@ define('frontend-cp/tests/acceptance/admin/apps/webhooks/new-test', ['exports', 
   (0, _frontendCpTestsHelpersQunit.test)('Exit having pending changes ask for confirmation', function (assert) {
     assert.expect(3);
 
-    window.confirm = function (message) {
-      assert.equal(message, 'You have unsaved changes on this page. Are you sure you want to discard these changes?', 'The proper confirm message is shown');
-      return true;
-    };
-
     visit('/admin/apps/webhooks/new');
 
     andThen(function () {
@@ -822,17 +800,17 @@ define('frontend-cp/tests/acceptance/admin/apps/webhooks/new-test', ['exports', 
     });
 
     andThen(function () {
+      assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 1, 'A modal opened to confirm leaving unsaved changes');
+      click('.button:contains("Discard changes")');
+    });
+
+    andThen(function () {
       assert.equal(currentURL(), '/admin/apps/webhooks');
     });
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('Exit without having pending changes doesn\'t ask for confirmation', function (assert) {
     assert.expect(4);
-
-    window.confirm = function (message) {
-      assert.ok(false, 'This should never be called');
-      return false;
-    };
 
     visit('/admin/apps/webhooks/new');
 
@@ -924,9 +902,8 @@ define('frontend-cp/tests/acceptance/admin/automation/businesshours/edit-test', 
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/automation/monitors/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles) {
+define('frontend-cp/tests/acceptance/admin/automation/monitors/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-modal/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoModalStyles) {
 
-  var originalConfirm = undefined;
   var monitor = undefined;
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/automation/monitors - Edit a monitor', {
@@ -1134,12 +1111,10 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/edit-test', ['exp
       login(session.id);
 
       server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
-      originalConfirm = window.confirm;
       /*eslint-enable quote-props*/
     },
 
     afterEach: function afterEach() {
-      window.confirm = originalConfirm;
       logout();
     }
   });
@@ -1201,11 +1176,6 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/edit-test', ['exp
   (0, _frontendCpTestsHelpersQunit.test)('Exit having pending changes ask for confirmation', function (assert) {
     assert.expect(3);
 
-    window.confirm = function (message) {
-      assert.equal(message, 'You have unsaved changes on this page. Are you sure you want to discard these changes?', 'The proper confirm message is shown');
-      return true;
-    };
-
     visit('/admin/automation/monitors/' + monitor.id);
 
     andThen(function () {
@@ -1215,17 +1185,17 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/edit-test', ['exp
     });
 
     andThen(function () {
+      assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 1, 'A modal opened to confirm leaving unsaved changes');
+      click('.button:contains("Discard changes")');
+    });
+
+    andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
     });
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('Exit without having pending changes doesn\'t ask for confirmation', function (assert) {
     assert.expect(2);
-
-    window.confirm = function (message) {
-      assert.ok(false, 'This should never be called');
-      return false;
-    };
 
     visit('/admin/automation/monitors/' + monitor.id);
 
@@ -1239,9 +1209,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/edit-test', ['exp
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/automation/monitors/index-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles) {
-
-  var originalConfirm = undefined;
+define('frontend-cp/tests/acceptance/admin/automation/monitors/index-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-modal/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoModalStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/automation/monitors - Index of monitors', {
     beforeEach: function beforeEach() {
@@ -1255,11 +1223,9 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/index-test', ['ex
       login(session.id);
 
       server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
-      originalConfirm = window.confirm;
     },
 
     afterEach: function afterEach() {
-      window.confirm = originalConfirm;
       logout();
     }
   });
@@ -1271,15 +1237,15 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/index-test', ['ex
 
     visit('/admin/automation/monitors');
 
-    window.confirm = function (message) {
-      assert.equal(message, 'Are you sure you want to delete this?', 'The proper confirm message is shown');
-      return true;
-    };
-
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
       triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("test monitor")', 'mouseenter');
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("test monitor") a:contains(Delete)');
+    });
+
+    andThen(function () {
+      assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 1, 'A modal opened to confirm leaving unsaved changes');
+      click('.button:contains("Confirm")');
     });
 
     andThen(function () {
@@ -1295,18 +1261,15 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/index-test', ['ex
 
     visit('/admin/automation/monitors');
 
-    window.confirm = function (message) {
-      assert.equal(message, 'Are you sure you want to delete this?', 'The proper confirm message is shown');
-      return true;
-    };
-
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
       triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("test monitor")', 'mouseenter');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("test monitor") a:contains(Delete)');
     });
 
     andThen(function () {
-      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("test monitor") a:contains(Delete)');
+      assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 1, 'A modal opened to confirm leaving unsaved changes');
+      click('.button:contains("Confirm")');
     });
 
     andThen(function () {
@@ -1413,10 +1376,9 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/index-test', ['ex
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'moment', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-admin/automation-actions-builder/styles'], function (exports, _frontendCpTestsHelpersQunit, _moment, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoAdminAutomationActionsBuilderStyles) {
+define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'moment', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-admin/automation-actions-builder/styles', 'frontend-cp/components/ko-modal/styles'], function (exports, _frontendCpTestsHelpersQunit, _moment, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoAdminAutomationActionsBuilderStyles, _frontendCpComponentsKoModalStyles) {
 
-  var originalConfirm = undefined,
-      role = undefined;
+  var role = undefined;
 
   function fillPredicateCollections() {
     selectChoose('.qa-predicate-builder--proposition:eq(0) .qa-proposition--column', 'Subject');
@@ -1633,13 +1595,11 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
       login(session.id);
 
       server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
-      originalConfirm = window.confirm;
       /*eslint-enable quote-props*/
     },
 
     afterEach: function afterEach() {
-      window.confirm = originalConfirm;
-      originalConfirm = role = null;
+      role = null;
       logout();
     }
   });
@@ -2530,11 +2490,6 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
   (0, _frontendCpTestsHelpersQunit.test)('Exit having pending changes ask for confirmation', function (assert) {
     assert.expect(3);
 
-    window.confirm = function (message) {
-      assert.equal(message, 'You have unsaved changes on this page. Are you sure you want to discard these changes?', 'The proper confirm message is shown');
-      return true;
-    };
-
     visit('/admin/automation/monitors/new');
 
     andThen(function () {
@@ -2544,17 +2499,17 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     });
 
     andThen(function () {
+      assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 1, 'A modal opened to confirm leaving unsaved changes');
+      click('.button:contains("Discard changes")');
+    });
+
+    andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
     });
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('Exit without having pending changes doesn\'t ask for confirmation', function (assert) {
     assert.expect(2);
-
-    window.confirm = function (message) {
-      assert.ok(false, 'This should never be called');
-      return false;
-    };
 
     visit('/admin/automation/monitors/new');
 
@@ -2637,9 +2592,8 @@ define('frontend-cp/tests/acceptance/admin/automation/sla/index-test', ['exports
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/automation/triggers/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles) {
+define('frontend-cp/tests/acceptance/admin/automation/triggers/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-modal/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoModalStyles) {
 
-  var originalConfirm = undefined;
   var trigger = undefined;
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/automation/triggers/edit', {
@@ -2852,12 +2806,10 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/edit-test', ['exp
       login(session.id);
 
       server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
-      originalConfirm = window.confirm;
       /*eslint-enable quote-props*/
     },
 
     afterEach: function afterEach() {
-      window.confirm = originalConfirm;
       logout();
     }
   });
@@ -2920,14 +2872,8 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/edit-test', ['exp
     });
   });
 
-  (0, _frontendCpTestsHelpersQunit.test)('Exit having pending changes ask for confirmation', function (assert) {
+  (0, _frontendCpTestsHelpersQunit.test)('Exit having pending changes asks for confirmation', function (assert) {
     assert.expect(3);
-
-    window.confirm = function (message) {
-      assert.equal(message, 'You have unsaved changes on this page. Are you sure you want to discard these changes?', 'The proper confirm message is shown');
-      return true;
-    };
-
     visit('/admin/automation/triggers/' + trigger.id);
 
     andThen(function () {
@@ -2937,17 +2883,17 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/edit-test', ['exp
     });
 
     andThen(function () {
+      assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 1, 'A modal opened to confirm leaving unsaved changes');
+      click('.button:contains("Discard changes")');
+    });
+
+    andThen(function () {
       assert.equal(currentURL(), '/admin/automation/triggers');
     });
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('Exit without having pending changes doesn\'t ask for confirmation', function (assert) {
     assert.expect(2);
-
-    window.confirm = function (message) {
-      assert.ok(false, 'This should never be called');
-      return false;
-    };
 
     visit('/admin/automation/triggers/' + trigger.id);
 
@@ -3035,9 +2981,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/edit-test', ['exp
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/automation/triggers/index-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles) {
-
-  var originalConfirm = undefined;
+define('frontend-cp/tests/acceptance/admin/automation/triggers/index-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-modal/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoModalStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/automation/triggers/index', {
     beforeEach: function beforeEach() {
@@ -3052,11 +2996,9 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/index-test', ['ex
       login(session.id);
 
       server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
-      originalConfirm = window.confirm;
     },
 
     afterEach: function afterEach() {
-      window.confirm = originalConfirm;
       logout();
     }
   });
@@ -3068,18 +3010,15 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/index-test', ['ex
 
     visit('/admin/automation/triggers');
 
-    window.confirm = function (message) {
-      assert.equal(message, 'Are you sure you want to delete this?', 'The proper confirm message is shown');
-      return true;
-    };
-
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/triggers');
       triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("test trigger")', 'mouseenter');
+      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("test trigger") a:contains(Delete)');
     });
 
     andThen(function () {
-      click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("test trigger") a:contains(Delete)');
+      assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 1, 'A modal opened to confirm leaving unsaved changes');
+      click('.button:contains("Confirm")');
     });
 
     andThen(function () {
@@ -3186,11 +3125,10 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/index-test', ['ex
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-admin/automation-actions-builder/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoAdminAutomationActionsBuilderStyles) {
+define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-admin/automation-actions-builder/styles', 'frontend-cp/components/ko-modal/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoAdminAutomationActionsBuilderStyles, _frontendCpComponentsKoModalStyles) {
   function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-  var originalConfirm = undefined,
-      role = undefined;
+  var role = undefined;
 
   function fillPredicateCollections() {
     selectChoose('.qa-predicate-builder--proposition:eq(0) .qa-proposition--column', 'Subject');
@@ -3419,12 +3357,10 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
       login(session.id);
 
       server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
-      originalConfirm = window.confirm;
       /*eslint-enable quote-props*/
     },
 
     afterEach: function afterEach() {
-      window.confirm = originalConfirm;
       logout();
     }
   });
@@ -3877,11 +3813,6 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
   (0, _frontendCpTestsHelpersQunit.test)('Exit having pending changes ask for confirmation', function (assert) {
     assert.expect(3);
 
-    window.confirm = function (message) {
-      assert.equal(message, 'You have unsaved changes on this page. Are you sure you want to discard these changes?', 'The proper confirm message is shown');
-      return true;
-    };
-
     visit('/admin/automation/triggers/new');
 
     andThen(function () {
@@ -3891,17 +3822,17 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
     });
 
     andThen(function () {
+      assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 1, 'A modal opened to confirm leaving unsaved changes');
+      click('.button:contains("Discard changes")');
+    });
+
+    andThen(function () {
       assert.equal(currentURL(), '/admin/automation/triggers');
     });
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('Exit without having pending changes doesn\'t ask for confirmation', function (assert) {
     assert.expect(2);
-
-    window.confirm = function (message) {
-      assert.ok(false, 'This should never be called');
-      return false;
-    };
 
     visit('/admin/automation/triggers/new');
 
@@ -4047,7 +3978,7 @@ define('frontend-cp/tests/acceptance/admin/channels/email/helpers', ['exports', 
   };
   exports.assertRows = assertRows;
 });
-define('frontend-cp/tests/acceptance/admin/channels/email/list-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/acceptance/admin/channels/email/helpers'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers) {
+define('frontend-cp/tests/acceptance/admin/channels/email/list-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/acceptance/admin/channels/email/helpers', 'frontend-cp/components/ko-modal/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers, _frontendCpComponentsKoModalStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/channels/email/list', {
     beforeEach: function beforeEach() {
@@ -4111,10 +4042,14 @@ define('frontend-cp/tests/acceptance/admin/channels/email/list-test', ['exports'
       return triggerEvent((0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.getEnabledRows)().eq(2), 'mouseenter');
     });
     andThen(function () {
-      return confirming(true, function () {
-        click((0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.getEnabledRows)().eq(2).find('.qa-mailbox-delete'));
-      });
+      click((0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.getEnabledRows)().eq(2).find('.qa-mailbox-delete'));
     });
+
+    andThen(function () {
+      assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 1, 'A modal opened to confirm leaving unsaved changes');
+      click('.button:contains("Confirm")');
+    });
+
     andThen(function () {
       (0, _frontendCpTestsAcceptanceAdminChannelsEmailHelpers.assertRows)(assert, [['main@kayako.com', ['canEdit', 'canMakeDefault']], ['support@kayako.com', ['isDefault', 'canEdit']]], [['jobs@kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
     });
@@ -4550,7 +4485,7 @@ define('frontend-cp/tests/acceptance/admin/manage/brands/helpers', ['exports', '
   };
   exports.assertRows = assertRows;
 });
-define('frontend-cp/tests/acceptance/admin/manage/brands/list-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/acceptance/admin/manage/brands/helpers'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsAcceptanceAdminManageBrandsHelpers) {
+define('frontend-cp/tests/acceptance/admin/manage/brands/list-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/acceptance/admin/manage/brands/helpers', 'frontend-cp/components/ko-modal/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsAcceptanceAdminManageBrandsHelpers, _frontendCpComponentsKoModalStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/manage/brands', {
     beforeEach: function beforeEach() {
@@ -4613,10 +4548,14 @@ define('frontend-cp/tests/acceptance/admin/manage/brands/list-test', ['exports',
       return triggerEvent((0, _frontendCpTestsAcceptanceAdminManageBrandsHelpers.getEnabledRows)().eq(1), 'mouseenter');
     });
     andThen(function () {
-      return confirming(true, function () {
-        click((0, _frontendCpTestsAcceptanceAdminManageBrandsHelpers.getEnabledRows)().eq(0).find('.qa-brand-delete'));
-      });
+      click((0, _frontendCpTestsAcceptanceAdminManageBrandsHelpers.getEnabledRows)().eq(0).find('.qa-brand-delete'));
     });
+
+    andThen(function () {
+      assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 1, 'A modal opened to confirm leaving unsaved changes');
+      click('.button:contains("Confirm")');
+    });
+
     andThen(function () {
       (0, _frontendCpTestsAcceptanceAdminManageBrandsHelpers.assertRows)(assert, [['Default', 'support.kayako.com', ['isDefault', 'canEdit']]], [['Disabled', 'disabled.kayako.com', ['canEdit', 'canEnable', 'canDelete']]]);
     });
@@ -4734,9 +4673,8 @@ define('frontend-cp/tests/acceptance/admin/manage/brands/new-test', ['exports', 
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/manage/case-fields/delete-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles) {
+define('frontend-cp/tests/acceptance/admin/manage/case-fields/delete-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-modal/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoModalStyles) {
 
-  var originalConfirm = undefined;
   var fieldTitle = 'test field';
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/manage/case fields/delete', {
@@ -4769,11 +4707,9 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/delete-test', ['ex
       login(session.id);
 
       server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
-      originalConfirm = window.confirm;
     },
 
     afterEach: function afterEach() {
-      window.confirm = originalConfirm;
       logout();
     }
   });
@@ -4783,11 +4719,6 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/delete-test', ['ex
 
     visit('/admin/manage/case-fields');
 
-    window.confirm = function (message) {
-      assert.equal(message, 'Are you sure you want to delete this?', 'The proper confirm message is shown');
-      return true;
-    };
-
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-fields');
       triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("' + fieldTitle + '")', 'mouseenter');
@@ -4795,6 +4726,11 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/delete-test', ['ex
 
     andThen(function () {
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("' + fieldTitle + '") a:contains(Delete)');
+    });
+
+    andThen(function () {
+      assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 1, 'A modal opened to confirm leaving unsaved changes');
+      click('.button:contains("Confirm")');
     });
 
     andThen(function () {
@@ -6782,8 +6718,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/reorder-test', ['e
 define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'npm:lodash', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-simple-list/cell/styles', 'frontend-cp/components/ko-simple-list/actions/styles', 'frontend-cp/components/ko-toggle/styles'], function (exports, _frontendCpTestsHelpersQunit, _npmLodash, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoSimpleListCellStyles, _frontendCpComponentsKoSimpleListActionsStyles, _frontendCpComponentsKoToggleStyles) {
 
   var brand = undefined,
-      locale = undefined,
-      originalConfirm = undefined;
+      locale = undefined;
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Admin | Manage | Case Forms', {
     beforeEach: function beforeEach() {
       var emails = [server.create('identity-email', { email: 'first@example.com', is_primary: true, is_validated: true }), server.create('identity-email', { email: 'second@example.com', is_primary: false, is_validated: true }), server.create('identity-email', { email: 'third@example.com', is_primary: false, is_validated: false })];
@@ -6792,13 +6727,11 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
       var session = server.create('session', { user: user });
       server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
       brand = server.create('brand', { name: 'Brewfictus', locale: locale });
-      originalConfirm = window.confirm;
       login(session.id);
     },
 
     afterEach: function afterEach() {
       logout();
-      window.confirm = originalConfirm;
     }
   });
 
@@ -7090,7 +7023,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/manage/facebook/manage-pages-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-admin/facebook/index/styles', 'frontend-cp/components/ko-simple-list/cell/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoAdminFacebookIndexStyles, _frontendCpComponentsKoSimpleListCellStyles) {
+define('frontend-cp/tests/acceptance/admin/manage/facebook/manage-pages-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-admin/facebook/index/styles', 'frontend-cp/components/ko-simple-list/cell/styles', 'frontend-cp/components/ko-modal/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoAdminFacebookIndexStyles, _frontendCpComponentsKoSimpleListCellStyles, _frontendCpComponentsKoModalStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/manage/facebook/pages', {
     beforeEach: function beforeEach() {
@@ -7156,10 +7089,15 @@ define('frontend-cp/tests/acceptance/admin/manage/facebook/manage-pages-test', [
 
   (0, _frontendCpTestsHelpersQunit.test)('deleting a facebook page', function (assert) {
     visit('/admin/channels/facebook');
-    triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':first', 'mouseenter');
 
-    confirming(true, function () {
+    andThen(function () {
+      triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':first', 'mouseenter');
       click('.qa-admin-facebook-page__delete');
+    });
+
+    andThen(function () {
+      assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 1, 'A modal opened to confirm leaving unsaved changes');
+      click('.button:contains("Confirm")');
     });
 
     andThen(function () {
@@ -7383,7 +7321,6 @@ define('frontend-cp/tests/acceptance/admin/manage/macros/new-test', ['exports', 
 });
 define('frontend-cp/tests/acceptance/admin/manage/views/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
 
-  var originalConfirm = undefined;
   var view = undefined;
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/manage/views/edit', {
@@ -7612,17 +7549,11 @@ define('frontend-cp/tests/acceptance/admin/manage/views/edit-test', ['exports', 
     },
 
     afterEach: function afterEach() {
-      window.confirm = originalConfirm;
       logout();
     }
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a view and leaving without making changes', function (assert) {
-    window.confirm = function (message) {
-      assert.ok(false, 'This confirm shouln\'t be invoked');
-      return true;
-    };
-
     visit('/admin/manage/views/' + view.id);
 
     andThen(function () {
@@ -7637,7 +7568,6 @@ define('frontend-cp/tests/acceptance/admin/manage/views/edit-test', ['exports', 
 });
 define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
 
-  var originalConfirm = undefined;
   var fieldTitle = 'fieldTitle';
   var rule1String = 'rule1string';
 
@@ -7857,7 +7787,6 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
     },
 
     afterEach: function afterEach() {
-      window.confirm = originalConfirm;
       logout();
     }
   });
@@ -8059,11 +7988,6 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new view and cancelling without changes', function (assert) {
-    window.confirm = function (message) {
-      assert.ok(false, 'this confirm should never be called');
-      return true;
-    };
-
     visit('/admin/manage/views/new');
 
     andThen(function () {
@@ -8185,9 +8109,8 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/people/organization-fields/delete-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles) {
+define('frontend-cp/tests/acceptance/admin/people/organization-fields/delete-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-modal/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoModalStyles) {
 
-  var originalConfirm = undefined;
   var fieldTitle = 'test field';
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/people/organization fields/delete', {
@@ -8216,11 +8139,9 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/delete-tes
       login(sessionId);
 
       server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
-      originalConfirm = window.confirm;
     },
 
     afterEach: function afterEach() {
-      window.confirm = originalConfirm;
       logout();
     }
   });
@@ -8230,11 +8151,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/delete-tes
 
     visit('/admin/people/organization-fields');
 
-    window.confirm = function (message) {
-      assert.equal(message, 'Are you sure you want to delete this?', 'The proper confirm message is shown');
-      return true;
-    };
-
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields');
       triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("' + fieldTitle + '")', 'mouseenter');
@@ -8242,6 +8158,11 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/delete-tes
 
     andThen(function () {
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("' + fieldTitle + '") a:contains(Delete)');
+    });
+
+    andThen(function () {
+      assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 1, 'A modal opened to confirm leaving unsaved changes');
+      click('.button:contains("Confirm")');
     });
 
     andThen(function () {
@@ -9928,7 +9849,7 @@ define('frontend-cp/tests/acceptance/admin/people/roles/form-test', ['exports', 
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/people/roles/index-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles) {
+define('frontend-cp/tests/acceptance/admin/people/roles/index-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-modal/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoModalStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/people/roles index', {
     beforeEach: function beforeEach() {
@@ -10080,11 +10001,13 @@ define('frontend-cp/tests/acceptance/admin/people/roles/index-test', ['exports',
 
     andThen(function () {
       assert.equal(find('.qa-ko-admin_roles_list-item__title:contains("Custom Role")').length, 1);
+      triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("Custom Role")', 'mouseenter');
+      click('.qa-ko-admin_roles_list-item__delete:first');
     });
 
-    triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("Custom Role")', 'mouseenter');
-    confirming(true, function () {
-      click('.qa-ko-admin_roles_list-item__delete:first');
+    andThen(function () {
+      assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 1, 'A modal opened to confirm leaving unsaved changes');
+      click('.button:contains("Confirm")');
     });
 
     andThen(function () {
@@ -10281,8 +10204,6 @@ define('frontend-cp/tests/acceptance/admin/people/staff/add/permission-test', ['
 });
 define('frontend-cp/tests/acceptance/admin/people/teams-forms-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
 
-  var originalConfirm = undefined;
-
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Admin | People | Teams', {
     beforeEach: function beforeEach() {
       var emails = [server.create('identity-email', { email: 'first@example.com', is_primary: true, is_validated: true }), server.create('identity-email', { email: 'second@example.com', is_primary: false, is_validated: true }), server.create('identity-email', { email: 'third@example.com', is_primary: false, is_validated: false })];
@@ -10304,11 +10225,9 @@ define('frontend-cp/tests/acceptance/admin/people/teams-forms-test', ['exports',
       server.create('brand', { locale: server.create('locale') });
 
       login(session.id);
-      originalConfirm = window.confirm;
     },
 
     afterEach: function afterEach() {
-      window.confirm = originalConfirm;
       logout();
     }
   });
@@ -10334,9 +10253,8 @@ define('frontend-cp/tests/acceptance/admin/people/teams-forms-test', ['exports',
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/people/user-fields/delete-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles) {
+define('frontend-cp/tests/acceptance/admin/people/user-fields/delete-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-modal/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoModalStyles) {
 
-  var originalConfirm = undefined;
   var fieldTitle = 'test field';
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/people/user fields/delete', {
@@ -10369,11 +10287,9 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/delete-test', ['ex
       login(session.id);
 
       server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
-      originalConfirm = window.confirm;
     },
 
     afterEach: function afterEach() {
-      window.confirm = originalConfirm;
       logout();
     }
   });
@@ -10383,11 +10299,6 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/delete-test', ['ex
 
     visit('/admin/people/user-fields');
 
-    window.confirm = function (message) {
-      assert.equal(message, 'Are you sure you want to delete this?', 'The proper confirm message is shown');
-      return true;
-    };
-
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/user-fields');
       triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("' + fieldTitle + '")', 'mouseenter');
@@ -10395,6 +10306,11 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/delete-test', ['ex
 
     andThen(function () {
       click('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':contains("' + fieldTitle + '") a:contains(Delete)');
+    });
+
+    andThen(function () {
+      assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 1, 'A modal opened to confirm leaving unsaved changes');
+      click('.button:contains("Confirm")');
     });
 
     andThen(function () {
@@ -12342,9 +12258,7 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
   }
 });
 /* eslint-disable new-cap */
-define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'ember', 'frontend-cp/session/styles', 'frontend-cp/components/ko-checkbox/styles', 'frontend-cp/components/ko-info-bar/field/select/trigger/styles', 'frontend-cp/components/ko-pagination/styles', 'frontend-cp/components/ko-cases-list/sidebar/styles', 'frontend-cp/components/ko-cases-list/sidebar/item/styles'], function (exports, _frontendCpTestsHelpersQunit, _ember, _frontendCpSessionStyles, _frontendCpComponentsKoCheckboxStyles, _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles, _frontendCpComponentsKoPaginationStyles, _frontendCpComponentsKoCasesListSidebarStyles, _frontendCpComponentsKoCasesListSidebarItemStyles) {
-
-  var originalConfirm = window.confirm;
+define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'ember', 'frontend-cp/session/styles', 'frontend-cp/components/ko-checkbox/styles', 'frontend-cp/components/ko-info-bar/field/select/trigger/styles', 'frontend-cp/components/ko-pagination/styles', 'frontend-cp/components/ko-cases-list/sidebar/styles', 'frontend-cp/components/ko-cases-list/sidebar/item/styles', 'frontend-cp/components/ko-modal/styles'], function (exports, _frontendCpTestsHelpersQunit, _ember, _frontendCpSessionStyles, _frontendCpComponentsKoCheckboxStyles, _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles, _frontendCpComponentsKoPaginationStyles, _frontendCpComponentsKoCasesListSidebarStyles, _frontendCpComponentsKoCasesListSidebarItemStyles, _frontendCpComponentsKoModalStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Case | List', {
     beforeEach: function beforeEach() {
@@ -12532,7 +12446,6 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
     },
 
     afterEach: function afterEach() {
-      window.confirm = originalConfirm;
       logout();
     }
   });
@@ -12683,9 +12596,6 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
   (0, _frontendCpTestsHelpersQunit.test)('Show confirmation when trashing cases', function (assert) {
     assert.expect(2);
 
-    window.confirm = function () {
-      return assert.ok(true, 'dialogue shown');
-    };
     visit('/agent/cases/view/1');
 
     andThen(function () {
@@ -12698,6 +12608,10 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
 
     andThen(function () {
       click('.ko-cases-list__action-button');
+    });
+
+    andThen(function () {
+      assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 1, 'A modal opened to confirm leaving unsaved changes');
     });
   });
 
@@ -13495,8 +13409,7 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
 
   var targetCase = undefined,
       identityEmail = undefined,
-      agent = undefined,
-      originalConfirm = undefined;
+      agent = undefined;
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Case | Timeline', {
     beforeEach: function beforeEach() {
@@ -13566,12 +13479,9 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
       });
 
       login(session.id);
-
-      originalConfirm = window.confirm;
     },
 
     afterEach: function afterEach() {
-      window.confirm = originalConfirm;
       logout();
       targetCase = null;
     }
@@ -14298,9 +14208,8 @@ define("frontend-cp/tests/acceptance/agent/macros/select-macro-test", ["exports"
 //     assert.equal(find(textAreaSelector).text().trim(), 'I am Cat 1 / Bar', 'Selected macro should apply');
 //   });
 // });
-define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-toast/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoToastStyles) {
+define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-toast/styles', 'frontend-cp/components/ko-modal/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoToastStyles, _frontendCpComponentsKoModalStyles) {
 
-  var originalConfirm = undefined;
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Manage Email Identities', {
     beforeEach: function beforeEach() {
       server.create('permission', { name: 'agent.users.update' });
@@ -14316,11 +14225,9 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
       login(session.id);
 
       visit('/agent/users/' + user.id);
-      originalConfirm = window.confirm;
     },
 
     afterEach: function afterEach() {
-      window.confirm = originalConfirm;
       logout();
     }
   });
@@ -14354,14 +14261,16 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
 
   (0, _frontendCpTestsHelpersQunit.test)('Remove an email', function (assert) {
     assert.expect(4);
-    window.confirm = function (message) {
-      assert.equal(message, 'Are you sure you want to remove this identity?');
-      return true;
-    };
+
     click('[class*=ember-basic-dropdown-trigger ]:contains("second@example.com")');
 
     andThen(function () {
       click('.ko-identities__list--emails .ember-basic-dropdown-content li:contains("Remove identity")');
+    });
+
+    andThen(function () {
+      assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 1, 'A modal opened to confirm leaving unsaved changes');
+      click('.button:contains("Confirm")');
     });
 
     andThen(function () {
@@ -14441,14 +14350,15 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
 
   (0, _frontendCpTestsHelpersQunit.test)('Remove a twitter identity', function (assert) {
     assert.expect(4);
-    window.confirm = function (message) {
-      assert.equal(message, 'Are you sure you want to remove this identity?');
-      return true;
-    };
     click('[class*=ember-basic-dropdown-trigger ]:contains("@second")');
 
     andThen(function () {
       click('.ko-identities__list--twitters .ember-basic-dropdown-content li:contains("Remove identity")');
+    });
+
+    andThen(function () {
+      assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 1, 'A modal opened to confirm leaving unsaved changes');
+      click('.button:contains("Confirm")');
     });
 
     andThen(function () {
@@ -14508,14 +14418,16 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
 
   (0, _frontendCpTestsHelpersQunit.test)('Remove a facebook identity', function (assert) {
     assert.expect(4);
-    window.confirm = function (message) {
-      assert.equal(message, 'Are you sure you want to remove this identity?');
-      return true;
-    };
+
     click('[class*=ember-basic-dropdown-trigger ]:contains("Mary")');
 
     andThen(function () {
       click('.ko-identities__list--facebooks .ember-basic-dropdown-content li:contains("Remove identity")');
+    });
+
+    andThen(function () {
+      assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 1, 'A modal opened to confirm leaving unsaved changes');
+      click('.button:contains("Confirm")');
     });
 
     andThen(function () {
@@ -14562,14 +14474,16 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
 
   (0, _frontendCpTestsHelpersQunit.test)('Remove a phone identity', function (assert) {
     assert.expect(4);
-    window.confirm = function (message) {
-      assert.equal(message, 'Are you sure you want to remove this identity?');
-      return true;
-    };
+
     click('[class*=ember-basic-dropdown-trigger ]:contains("+44 2222 222222")');
 
     andThen(function () {
       click('.ko-identities__list--phones .ember-basic-dropdown-content li:contains("Remove identity")');
+    });
+
+    andThen(function () {
+      assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 1, 'A modal opened to confirm leaving unsaved changes');
+      click('.button:contains("Confirm")');
     });
 
     andThen(function () {
@@ -15237,10 +15151,6 @@ define('frontend-cp/tests/acceptance/agent/users/change-role-test', ['exports', 
     selectChoose('.ko-user-content__role-field', 'Customer');
     click('button:contains(Submit)');
 
-    window.confirm = function () {
-      return false;
-    };
-
     andThen(function () {
       assert.equal(requested, false, 'expect NOT to request PUT ' + endpoint);
     });
@@ -15499,10 +15409,6 @@ define('frontend-cp/tests/acceptance/agent/users/edit-test', ['exports', 'fronte
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('editing a customer\'s locale', function (assert) {
-    window.confirm = function () {
-      return true;
-    };
-
     assert.expect(1);
 
     server.create('locale', {
@@ -15658,8 +15564,6 @@ define('frontend-cp/tests/acceptance/login/login-test', ['exports', 'qunit', 'fr
 });
 define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-checkbox/styles', 'frontend-cp/components/ko-modal/styles', 'frontend-cp/components/ko-pagination/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoCheckboxStyles, _frontendCpComponentsKoModalStyles, _frontendCpComponentsKoPaginationStyles) {
 
-  var originalConfirm = window.confirm;
-
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | suspended messages', {
     beforeEach: function beforeEach() {
       var locale = server.create('locale', { locale: 'en-us' });
@@ -15695,7 +15599,6 @@ define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'fron
     },
 
     afterEach: function afterEach() {
-      window.confirm = originalConfirm;
       logout();
     }
   });
@@ -15784,9 +15687,6 @@ define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'fron
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('delete permanently in batch', function (assert) {
-    window.confirm = function () {
-      return true;
-    };
     visit('/agent/cases/suspended-messages?page=2');
 
     andThen(function () {
@@ -15798,6 +15698,11 @@ define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'fron
     andThen(function () {
       assert.equal($('.suspended-messages-section__delete-all').length, 1, 'The button to delete in batch appeared');
       click('.suspended-messages-section__delete-all');
+    });
+
+    andThen(function () {
+      assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 1, 'A modal opened to confirm leaving unsaved changes');
+      click('.button:contains("Confirm")');
     });
 
     andThen(function () {
@@ -16088,21 +15993,6 @@ define('frontend-cp/tests/fixtures/services/mock-local-store', ['exports', 'embe
       this.set('_localStore', {});
       this.set('_sessionStore', {});
     }
-  });
-});
-define('frontend-cp/tests/helpers/confirming', ['exports', 'ember'], function (exports, _ember) {
-  exports['default'] = _ember['default'].Test.registerAsyncHelper('confirming', function (app, confirming, fn) {
-    var originalConfirm = window.confirm;
-
-    window.confirm = function () {
-      return confirming;
-    };
-
-    fn();
-
-    return app.testHelpers.wait().then(function () {
-      window.confirm = originalConfirm;
-    });
   });
 });
 define('frontend-cp/tests/helpers/destroy-app', ['exports', 'ember'], function (exports, _ember) {
@@ -16919,7 +16809,7 @@ define('frontend-cp/tests/helpers/setup-mirage-for-integration', ['exports', 'fr
 });
 //Work around until this is real
 //https://github.com/samselikoff/ember-cli-mirage/issues/183
-define('frontend-cp/tests/helpers/start-app', ['exports', 'ember', 'frontend-cp/app', 'frontend-cp/config/environment', 'frontend-cp/tests/helpers/login', 'frontend-cp/tests/helpers/fill-in-rich-text-editor', 'frontend-cp/tests/helpers/use-default-scenario', 'frontend-cp/tests/helpers/ember-power-select', 'frontend-cp/tests/helpers/reorder-inputs', 'frontend-cp/tests/helpers/reorder-list-items', 'frontend-cp/tests/helpers/confirming', 'frontend-cp/tests/helpers/ember-sortable/test-helpers', 'frontend-cp/tests/helpers/scroll-to-bottom-of-page', 'frontend-cp/tests/helpers/input-array-to-input-val-array', 'frontend-cp/tests/helpers/text-nodes-to-array', 'frontend-cp/tests/helpers/logout'], function (exports, _ember, _frontendCpApp, _frontendCpConfigEnvironment, _frontendCpTestsHelpersLogin, _frontendCpTestsHelpersFillInRichTextEditor, _frontendCpTestsHelpersUseDefaultScenario, _frontendCpTestsHelpersEmberPowerSelect, _frontendCpTestsHelpersReorderInputs, _frontendCpTestsHelpersReorderListItems, _frontendCpTestsHelpersConfirming, _frontendCpTestsHelpersEmberSortableTestHelpers, _frontendCpTestsHelpersScrollToBottomOfPage, _frontendCpTestsHelpersInputArrayToInputValArray, _frontendCpTestsHelpersTextNodesToArray, _frontendCpTestsHelpersLogout) {
+define('frontend-cp/tests/helpers/start-app', ['exports', 'ember', 'frontend-cp/app', 'frontend-cp/config/environment', 'frontend-cp/tests/helpers/login', 'frontend-cp/tests/helpers/fill-in-rich-text-editor', 'frontend-cp/tests/helpers/use-default-scenario', 'frontend-cp/tests/helpers/ember-power-select', 'frontend-cp/tests/helpers/reorder-inputs', 'frontend-cp/tests/helpers/reorder-list-items', 'frontend-cp/tests/helpers/ember-sortable/test-helpers', 'frontend-cp/tests/helpers/scroll-to-bottom-of-page', 'frontend-cp/tests/helpers/input-array-to-input-val-array', 'frontend-cp/tests/helpers/text-nodes-to-array', 'frontend-cp/tests/helpers/logout'], function (exports, _ember, _frontendCpApp, _frontendCpConfigEnvironment, _frontendCpTestsHelpersLogin, _frontendCpTestsHelpersFillInRichTextEditor, _frontendCpTestsHelpersUseDefaultScenario, _frontendCpTestsHelpersEmberPowerSelect, _frontendCpTestsHelpersReorderInputs, _frontendCpTestsHelpersReorderListItems, _frontendCpTestsHelpersEmberSortableTestHelpers, _frontendCpTestsHelpersScrollToBottomOfPage, _frontendCpTestsHelpersInputArrayToInputValArray, _frontendCpTestsHelpersTextNodesToArray, _frontendCpTestsHelpersLogout) {
   exports['default'] = startApp;
   // eslint-disable-line
 
@@ -16940,7 +16830,6 @@ define('frontend-cp/tests/helpers/start-app', ['exports', 'ember', 'frontend-cp/
     return application;
   }
 });
-// eslint-disable-line
 // eslint-disable-line
 // eslint-disable-line
 // eslint-disable-line
