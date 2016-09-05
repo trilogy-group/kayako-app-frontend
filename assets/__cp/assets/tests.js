@@ -13793,11 +13793,10 @@ define('frontend-cp/tests/acceptance/agent/cases/user-test', ['exports', 'fronte
     var agent = server.create('user', { role: agentRole, locale: locale, time_zone: 'Europe/London' });
     var sessionId = server.db.sessions[0].id;
     server.db.sessions.update(sessionId, { user: agent });
-    server.create('user', { full_name: 'Barney Stinson', role: customerRole, locale: locale, time_zone: 'Europe/London' });
+    server.create('user', { full_name: 'Barney Stinson', role: customerRole, locale: locale });
     server.createList('case-status', 5);
     server.createList('case-priority', 4);
     login(sessionId);
-
     server.create('plan', { limits: { agents: 20 }, features: [], account_id: '123', subscription_id: '123' });
 
     assert.expect(1);
@@ -13809,7 +13808,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-test', ['exports', 'fronte
     });
 
     andThen(function () {
-      assert.equal(find('.qa-action-menu__dropdown .ko-dropdown_list__item').length, 3);
+      assert.equal(find('.qa-action-menu__dropdown .ko-dropdown_list__item').length, 1);
     });
   });
 
