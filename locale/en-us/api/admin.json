@@ -718,8 +718,8 @@
   "settings.security.customers.password_policy.maximum_consecutive_characters.title": "Maximum consecutive characters",
   "settings.security.customers.password_policy.maximum_consecutive_characters.description": "(0 for unlimited)",
 
-  "settings.users.title": "Users and registration",
-  "settings.users.title_breadcrumbs": "Settings / Users",
+  "settings.users.title": "User registration",
+  "settings.users.title_breadcrumbs": "Settings / User Registration",
   "settings.users.registration.heading": "Registration",
   "settings.users.registration.allow_requests_from_unregistered.title": "Allow new conversations from unregistered users",
   "settings.users.registration.allow_requests_from_unregistered.description": "When this is disabled, any incoming cases from unregistered users will be suspended by Kayako.",
