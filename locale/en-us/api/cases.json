@@ -190,5 +190,12 @@
   "more_info.from": "From:",
   "more_info.to": "To:",
   "more_info.cc": "CC:",
-  "log.title": "The case has been updated"
+  "log.title": "The case has been updated",
+
+  "text_editor.link_manager.link": "Link",
+  "text_editor.link_manager.url": "URL",
+  "text_editor.link_manager.shown_text": "Shown text",
+  "text_editor.link_manager.text": "Text",
+  "text_editor.link_manager.quote.increase": "Increase",
+  "text_editor.link_manager.quote.decrease": "Decrease"
 }
