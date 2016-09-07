@@ -5304,6 +5304,55 @@ label {
 .ko-admin_case-forms_edit_fields__list_1lld7s .sortable-item {
   margin: 6px 0; }
 
+/* styles for frontend-cp/components/ko-admin/email/edit/styles.css */
+.ko-admin_email_edit__heading_1fk1jd {
+  font-size: 16px;
+  margin-bottom: 10px; }
+
+.ko-admin_email_edit__info_1fk1jd {
+  color: #838D94;
+  max-width: 400px; }
+
+.ko-admin_email_edit__table_1fk1jd {
+  width: 100%;
+  margin-bottom: 10px; }
+
+.ko-admin_email_edit__table-header-row_1fk1jd, .ko-admin_email_edit__table-row_1fk1jd {
+  border-bottom: 1px solid #EAEDEF; }
+
+.ko-admin_email_edit__table-header-cell_1fk1jd, .ko-admin_email_edit__table-cell_1fk1jd {
+  text-align: left;
+  padding: 8px 0;
+  vertical-align: top; }
+
+.ko-admin_email_edit__table-header-cell_1fk1jd:not(:last-child), .ko-admin_email_edit__table-cell_1fk1jd:not(:last-child) {
+  padding-right: 8px; }
+
+.ko-admin_email_edit__table-header-cell_1fk1jd {
+  font-weight: bold; }
+
+.ko-admin_email_edit__table-cell_1fk1jd {
+  word-break: break-word; }
+
+.ko-admin_email_edit__valid-cell_1fk1jd {
+  color: green; }
+
+.ko-admin_email_edit__invalid-cell_1fk1jd {
+  color: red; }
+
+.ko-admin_email_edit__dns-type_1fk1jd, .ko-admin_email_edit__dns-status_1fk1jd {
+  word-break: normal;
+  white-space: nowrap; }
+
+.ko-admin_email_edit__error_1fk1jd {
+  color: red; }
+
+.ko-admin_email_edit__reload_1fk1jd {
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  cursor: pointer; }
+
 /* styles for frontend-cp/components/ko-admin/facebook/index/styles.css */
 .ko-admin_facebook_index__availablePages_pgnhe8 {
   min-height: 15px; }
