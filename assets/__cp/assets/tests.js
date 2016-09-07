@@ -14909,7 +14909,7 @@ define('frontend-cp/tests/acceptance/agent/tabs/tabs-test', ['exports', 'fronten
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('tabs are loaded from session storage', function (assert) {
-    assert.expect(3);
+    assert.expect(4);
 
     sessionStorage.setItem('ko:core:tabs', JSON.stringify([{
       url: '/agent/cases/1',
@@ -14936,6 +14936,15 @@ define('frontend-cp/tests/acceptance/agent/tabs/tabs-test', ['exports', 'fronten
       var $secondTabElement = $tabElements.eq(1);
       assert.equal($firstTabElement.text().trim(), 'Case 1');
       assert.equal($secondTabElement.text().trim(), 'Case 2');
+    });
+
+    andThen(function () {
+      var $firstTabElement = getTabElements().eq(0);
+      closeTab($firstTabElement);
+    });
+
+    andThen(function () {
+      assert.equal(getTabElements().length, 1, 'tab can be closed');
     });
   });
 
