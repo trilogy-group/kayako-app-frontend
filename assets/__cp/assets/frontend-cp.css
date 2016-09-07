@@ -4954,6 +4954,13 @@ label {
   color: #838D94;
   font-size: 12px; }
 
+/* styles for frontend-cp/components/ko-admin/automation-actions-builder/autocomplete-user/before-options/styles.css */
+.ko-admin_automation-actions-builder_autocomplete-user_before-options__before-options_w7tbno {
+  padding: 0 8px 6px 8px;
+  line-height: 22px;
+  color: #838D94;
+  font-style: italic; }
+
 /* styles for frontend-cp/components/ko-admin/automation-actions-builder/styles.css */
 .ko-admin_automation-actions-builder__automation-action_63xv7e {
   position: relative;
