@@ -1599,7 +1599,8 @@ textarea {
     display: table;
     clear: both; }
 
-.ember-power-select-trigger:focus, .ember-power-select-trigger--active {
+.ember-power-select-trigger:focus,
+.ember-power-select-trigger--active {
   border: 1px solid #D1D5D7;
   box-shadow: none; }
 
