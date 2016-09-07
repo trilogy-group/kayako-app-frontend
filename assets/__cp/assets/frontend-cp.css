@@ -3165,6 +3165,9 @@ label {
   .ko-info-bar_item:hover, .ko-info-bar_field_select-multiple_trigger__trigger_1xeoxb:hover {
     background-color: #FFFFFF; }
 
+.ko-info-bar_item__fixed-submit {
+  height: 51px; }
+
 .ko-info-bar_item--no-hover:hover {
   background-color: transparent; }
 
