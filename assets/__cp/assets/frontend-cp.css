@@ -9852,6 +9852,21 @@ span#HW_badge.HW_softHidden {
 .session_agent_cases_index_suspended-messages__empty_2bvtoz {
   margin-top: 18px; }
 
+/* styles for frontend-cp/session/agent/search-loading/styles.css */
+.session_agent_search-loading__index_p94ixd {
+  margin: 40px 45px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  background-color: #ffffff;
+  border: 1px solid #d1d5d7;
+  border-radius: 2px;
+  min-height: 500px; }
+
+.session_agent_search-loading__loader_p94ixd {
+  width: 100%;
+  margin-top: 100px; }
+
 /* styles for frontend-cp/session/agent/search/styles.css */
 .session_agent_search__index_2b3a56 {
   margin: 40px 45px;
