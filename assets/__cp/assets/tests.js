@@ -12139,6 +12139,14 @@ define('frontend-cp/tests/acceptance/admin/settings/security-test', ['exports', 
       assert.equal(find('.qa-field-error:eq(0)').text().trim(), 'The value of the field is invalid', 'Field validation text');
     });
   });
+
+  (0, _frontendCpTestsHelpersQunit.test)('leaving the route', function (assert) {
+    visit('/admin/settings/security');
+    visit('/agent/welcome');
+    andThen(function () {
+      assert.equal(currentURL(), '/agent/welcome');
+    });
+  });
 });
 define('frontend-cp/tests/acceptance/admin/settings/users-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
 
