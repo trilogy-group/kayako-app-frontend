@@ -7214,7 +7214,7 @@ define('frontend-cp/tests/acceptance/admin/manage/localization/list-test', ['exp
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/manage/macros/new-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+define('frontend-cp/tests/acceptance/admin/manage/macros/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-admin/automation-actions-builder/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoAdminAutomationActionsBuilderStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/manage/macros/new', {
     beforeEach: function beforeEach() {
@@ -7229,7 +7229,7 @@ define('frontend-cp/tests/acceptance/admin/manage/macros/new-test', ['exports', 
       var locale = server.create('locale', { locale: 'en-us' });
 
       server.create('user', { teams: [salesTeam], role: agentRole, full_name: 'Leeroy Jenkins', locale: locale, time_zone: 'Europe/London' });
-      server.create('case-status', { label: 'New' });
+      server.create('case-status', { label: 'Important' });
       server.create('case-type', { label: 'Question' });
       server.create('case-priority', { label: 'Low' });
 
@@ -7249,52 +7249,42 @@ define('frontend-cp/tests/acceptance/admin/manage/macros/new-test', ['exports', 
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new macro', function (assert) {
-    var actionSelect = '.ko-admin_macros_edit__actions-selector:contains("Please select an action")';
-
-    function formSelectFor(id) {
-      return '.qa-ko-admin-macros-action-' + id + '\n           .ko-admin-macros-action__form';
-    }
-
-    function formOptionFor(id, value) {
-      return formSelectFor(id) + ' .ember-power-select-trigger:contains("' + value + '")';
-    }
-
-    function typeOptionFor(id, value) {
-      return '.qa-ko-admin-macros-action-' + id + '\n            .ko-admin-macros-action__types\n            .ember-power-select-trigger:contains("' + value + '")';
-    }
-
-    function addTag(id, name) {
-      var input = '.qa-ko-admin-macros-action-' + id + ' input';
-
-      fillIn(input, name);
-      triggerEvent(input, 'focus');
-      triggerEvent(input, 'input');
-      triggerEvent(input, 'blur');
-    }
+    assert.expect(23);
 
     visit('/admin/manage/macros/new');
 
     fillIn('.qa-admin_macros_edit__title-input', 'New Macro');
-    selectChoose(actionSelect, 'Add reply text');
-    selectChoose(actionSelect, 'Set reply type');
-    selectChoose(actionSelect, 'Change status');
-    selectChoose(actionSelect, 'Change type');
-    selectChoose(actionSelect, 'Change assignee');
-    selectChoose(actionSelect, 'Add tags');
-    selectChoose(actionSelect, 'Remove tags');
-    selectChoose(actionSelect, 'Priority');
 
-    fillIn('.qa-ko-admin-macros-action-reply-contents textarea', 'Some contents');
-    selectChoose(formSelectFor('reply-type'), 'Note');
-    selectChoose(formSelectFor('status'), 'New');
-    selectChoose(formSelectFor('type'), 'Question');
-    selectChoose(formSelectFor('priority'), 'Low');
+    selectPriority();
 
-    var assigneeFormSelect = formSelectFor('assignee');
-    selectChoose(assigneeFormSelect, 'Sales');
-    selectChoose(assigneeFormSelect, 'Leeroy Jenkins');
-    addTag('add-tags', 'tag-to-add');
-    addTag('remove-tags', 'tag-to-remove');
+    click('.qa-add-action-button');
+
+    selectRemoveTags();
+
+    click('.qa-add-action-button');
+
+    selectAddTags();
+
+    click('.qa-add-action-button');
+
+    selectType();
+
+    click('.qa-add-action-button');
+
+    selectStatus();
+
+    click('.qa-add-action-button');
+
+    selectReplyType();
+
+    click('.qa-add-action-button');
+
+    selectReplyContents();
+
+    click('.qa-add-action-button');
+
+    selectAssignee();
+
     click('.qa-admin_macros_edit__submit-button');
 
     andThen(function () {
@@ -7305,19 +7295,87 @@ define('frontend-cp/tests/acceptance/admin/manage/macros/new-test', ['exports', 
 
     andThen(function () {
       assert.equal(find('.qa-admin_macros_edit__title-input').val(), 'New Macro');
-      assert.equal(find('.qa-admin-macros-action-reply-contents__textarea').val(), 'Some contents');
-      assert.equal(find(typeOptionFor('reply-type', 'change to')).length, 1);
-      assert.equal(find(typeOptionFor('assignee', 'change to')).length, 1);
-      assert.equal(find(typeOptionFor('status', 'change to')).length, 1);
-      assert.equal(find(typeOptionFor('type', 'change to')).length, 1);
-      assert.equal(find(typeOptionFor('priority', 'change to')).length, 1);
-      assert.equal(find(formOptionFor('reply-type', 'Note')).length, 1);
-      assert.equal(find(formOptionFor('assignee', 'Sales / Leeroy Jenkins')).length, 1);
-      assert.equal(find(formOptionFor('status', 'New')).length, 1);
-      assert.equal(find(formOptionFor('type', 'Question')).length, 1);
-      assert.equal(find(formOptionFor('priority', 'Low')).length, 1);
+
+      assert.equal($('.qa-action-row:eq(0) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0) .ember-power-select-trigger').text().trim(), 'Priority', 'The priority action type is selected');
+      assert.equal($('.qa-action-row:eq(0) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1) .ember-power-select-trigger').text().trim(), 'change', 'The priority modifier is selected');
+      assert.equal($('.qa-action-row:eq(0) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2) .ember-power-select-trigger').text().trim(), 'Low', 'The priority value is selected');
+
+      assert.equal($('.qa-action-row:eq(1) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2) .ember-power-select-trigger .ember-power-select-multiple-option').length, 1, 'There is one remove tag in this action');
+      assert.equal($('.qa-action-row:eq(1) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2) .ember-power-select-trigger .ember-power-select-multiple-option').text().trim(), 'nonexistent', 'The remove tag exists');
+
+      assert.equal($('.qa-action-row:eq(2) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2) .ember-power-select-trigger .ember-power-select-multiple-option').length, 1, 'There is one add tag in this action');
+      assert.equal($('.qa-action-row:eq(2) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2) .ember-power-select-trigger .ember-power-select-multiple-option').text().trim(), 'foo', 'The add tag exists');
+
+      assert.equal($('.qa-action-row:eq(3) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0) .ember-power-select-trigger').text().trim(), 'Change type', 'The change type action type is selected');
+      assert.equal($('.qa-action-row:eq(3) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1) .ember-power-select-trigger').text().trim(), 'change', 'The change type modifier is selected');
+      assert.equal($('.qa-action-row:eq(3) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2) .ember-power-select-trigger').text().trim(), 'Question', 'The change type value is selected');
+
+      assert.equal($('.qa-action-row:eq(4) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0) .ember-power-select-trigger').text().trim(), 'Change status', 'The change status action type is selected');
+      assert.equal($('.qa-action-row:eq(4) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1) .ember-power-select-trigger').text().trim(), 'change', 'The change status modifier is selected');
+      assert.equal($('.qa-action-row:eq(4) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2) .ember-power-select-trigger').text().trim(), 'Important', 'The change status value is selected');
+
+      assert.equal($('.qa-action-row:eq(5) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0) .ember-power-select-trigger').text().trim(), 'Set reply type', 'The change reply-type action type is selected');
+      assert.equal($('.qa-action-row:eq(5) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1) .ember-power-select-trigger').text().trim(), 'change', 'The change reply-type modifier is selected');
+      assert.equal($('.qa-action-row:eq(5) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2) .ember-power-select-trigger').text().trim(), 'Note', 'The change reply-type value is selected');
+
+      assert.equal($('.qa-action-row:eq(6) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0) .ember-power-select-trigger').text().trim(), 'Add reply text', 'The change reply-contents action type is selected');
+      assert.equal($('.qa-action-row:eq(6) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['big-slot'] + ':eq(0) textarea').val().trim(), 'Some contents', 'The change reply-contents modifier is selected');
+
+      assert.equal($('.qa-action-row:eq(7) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0) .ember-power-select-trigger').text().trim(), 'Change assignee', 'The change assignee action type is selected');
+      assert.equal($('.qa-action-row:eq(7) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1) .ember-power-select-trigger').text().trim(), 'change', 'The change assignee modifier is selected');
+      assert.equal($('.qa-action-row:eq(7) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2) .ember-power-select-trigger').text().trim(), 'Sales / Leeroy Jenkins', 'The change assignee value is selected');
     });
   });
+
+  function selectPriority() {
+    selectChoose('.qa-action-row:eq(0) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Priority');
+    selectChoose('.qa-action-row:eq(0) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'change');
+    selectChoose('.qa-action-row:eq(0) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'Low');
+  }
+
+  function selectRemoveTags() {
+    selectChoose('.qa-action-row:eq(1) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Remove tags');
+    selectChoose('.qa-action-row:eq(1) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'remove');
+    selectSearch('.qa-action-row:eq(1) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'nonexistent');
+    selectChoose('.qa-action-row:eq(1) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'Add tag “nonexistent”');
+  }
+
+  function selectAddTags() {
+    selectChoose('.qa-action-row:eq(2) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Add tags');
+    selectChoose('.qa-action-row:eq(2) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'add');
+    selectSearch('.qa-action-row:eq(2) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'foo');
+    selectChoose('.qa-action-row:eq(2) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'Add tag “foo”');
+  }
+
+  function selectType() {
+    selectChoose('.qa-action-row:eq(3) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Change type');
+    selectChoose('.qa-action-row:eq(3) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'change');
+    selectChoose('.qa-action-row:eq(3) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'Question');
+  }
+
+  function selectStatus() {
+    selectChoose('.qa-action-row:eq(4) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Change status');
+    selectChoose('.qa-action-row:eq(4) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'change');
+    selectChoose('.qa-action-row:eq(4) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'Important');
+  }
+
+  function selectReplyType() {
+    selectChoose('.qa-action-row:eq(5) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Set reply type');
+    selectChoose('.qa-action-row:eq(5) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'change');
+    selectChoose('.qa-action-row:eq(5) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'Note');
+  }
+
+  function selectReplyContents() {
+    selectChoose('.qa-action-row:eq(6) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Add reply text');
+    fillIn('.qa-action-row:eq(6) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['big-slot'] + ':eq(0) textarea', 'Some contents');
+  }
+
+  function selectAssignee() {
+    selectChoose('.qa-action-row:eq(7) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'Change assignee');
+    selectChoose('.qa-action-row:eq(7) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'change');
+    selectChoose('.qa-action-row:eq(7) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'Sales');
+    selectChoose('.qa-action-row:eq(7) .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2)', 'Leeroy Jenkins');
+  }
 });
 define('frontend-cp/tests/acceptance/admin/manage/views/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
 
