@@ -17015,7 +17015,7 @@ define('frontend-cp/tests/integration/components/ko-admin/sidebar-test', ['expor
       this.set('features', { isEnabled: function isEnabled() {
           return true;
         } });
-      this.set('intl', { findTranslationByKey: function findTranslationByKey(key) {
+      this.set('i18n', { t: function t(key) {
           return key;
         } });
       this.set('permissions', { has: function has() {
@@ -17060,7 +17060,7 @@ define('frontend-cp/tests/integration/components/ko-admin/sidebar-test', ['expor
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [['inline', 'ko-admin/sidebar', [], ['features', ['subexpr', '@mut', [['get', 'features', ['loc', [null, [3, 15], [3, 23]]], 0, 0, 0, 0]], [], [], 0, 0], 'intl', ['subexpr', '@mut', [['get', 'intl', ['loc', [null, [4, 11], [4, 15]]], 0, 0, 0, 0]], [], [], 0, 0], 'permissions', ['subexpr', '@mut', [['get', 'permissions', ['loc', [null, [5, 18], [5, 29]]], 0, 0, 0, 0]], [], [], 0, 0], 'hostname', 'brewfictus.kayako.com'], ['loc', [null, [2, 4], [6, 40]]], 0, 0]],
+        statements: [['inline', 'ko-admin/sidebar', [], ['features', ['subexpr', '@mut', [['get', 'features', ['loc', [null, [3, 15], [3, 23]]], 0, 0, 0, 0]], [], [], 0, 0], 'i18n', ['subexpr', '@mut', [['get', 'i18n', ['loc', [null, [4, 11], [4, 15]]], 0, 0, 0, 0]], [], [], 0, 0], 'permissions', ['subexpr', '@mut', [['get', 'permissions', ['loc', [null, [5, 18], [5, 29]]], 0, 0, 0, 0]], [], [], 0, 0], 'hostname', 'brewfictus.kayako.com'], ['loc', [null, [2, 4], [6, 40]]], 0, 0]],
         locals: [],
         templates: []
       };
@@ -17105,7 +17105,7 @@ define('frontend-cp/tests/integration/components/ko-admin/sidebar-test', ['expor
           morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
           return morphs;
         },
-        statements: [['inline', 'ko-admin/sidebar', [], ['features', ['subexpr', '@mut', [['get', 'features', ['loc', [null, [3, 15], [3, 23]]], 0, 0, 0, 0]], [], [], 0, 0], 'intl', ['subexpr', '@mut', [['get', 'intl', ['loc', [null, [4, 11], [4, 15]]], 0, 0, 0, 0]], [], [], 0, 0], 'permissions', ['subexpr', '@mut', [['get', 'permissions', ['loc', [null, [5, 18], [5, 29]]], 0, 0, 0, 0]], [], [], 0, 0], 'hostname', 'support.kayako.com'], ['loc', [null, [2, 4], [6, 37]]], 0, 0]],
+        statements: [['inline', 'ko-admin/sidebar', [], ['features', ['subexpr', '@mut', [['get', 'features', ['loc', [null, [3, 15], [3, 23]]], 0, 0, 0, 0]], [], [], 0, 0], 'i18n', ['subexpr', '@mut', [['get', 'i18n', ['loc', [null, [4, 11], [4, 15]]], 0, 0, 0, 0]], [], [], 0, 0], 'permissions', ['subexpr', '@mut', [['get', 'permissions', ['loc', [null, [5, 18], [5, 29]]], 0, 0, 0, 0]], [], [], 0, 0], 'hostname', 'support.kayako.com'], ['loc', [null, [2, 4], [6, 37]]], 0, 0]],
         locals: [],
         templates: []
       };
@@ -18652,7 +18652,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/update-log/componen
   var intlStub = _emberService['default'].extend({
     on: function on() {},
     off: function off() {},
-    findTranslationByKey: function findTranslationByKey(key) {
+    t: function t(key) {
       switch (key) {
         case 'cases.log.title':
           return 'This case has been updated';
@@ -18666,10 +18666,10 @@ define('frontend-cp/tests/integration/components/ko-info-bar/update-log/componen
     integration: true,
 
     beforeEach: function beforeEach() {
-      this.register('service:intl', intlStub);
+      this.register('service:i18n', intlStub);
       this.register('service:server-clock', serverClockStub);
       this.register('service:date', dateStub);
-      this.inject.service('intl', { as: 'intl' });
+      this.inject.service('i18n', { as: 'i18n' });
       this.inject.service('server-clock', { as: 'serverClock' });
       this.inject.service('date', { as: 'date' });
     }
@@ -19512,7 +19512,7 @@ define('frontend-cp/tests/unit/components/ko-people-popover/component-test', ['e
   var debounce = _ember['default'].run.debounce;
 
   (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-people-popover', {
-    needs: ['component:ko-checkbox', 'component:ko-avatar', 'component:ko-loader', 'component:ko-flag', 'helper:t', 'service:intl', 'ember-intl@adapter:default', 'ember-intl@formatter:format-message', 'util:intl/missing-message'],
+    needs: ['component:ko-checkbox', 'component:ko-avatar', 'component:ko-loader', 'component:ko-flag', 'helper:t', 'service:intl', 'service:i18n', 'ember-intl@adapter:default', 'ember-intl@formatter:format-message', 'util:intl/missing-message'],
     beforeEach: function beforeEach() {
       var intl = getOwner(this).lookup('service:intl');
       intl.setLocale('en-us');
@@ -20494,7 +20494,7 @@ define('frontend-cp/tests/unit/services/error-handler-test', ['exports', 'ember'
   var getOwner = _ember['default'].getOwner;
 
   (0, _emberQunit.moduleFor)('service:error-handler', 'Unit | Service | error-handler', {
-    needs: ['service:error-handler/session-loading-failed-strategy', 'service:error-handler/notification-strategy', 'service:error-handler/permissions-denied-strategy', 'service:error-handler/resource-not-found-strategy', 'service:error-handler/credential-expired-strategy', 'service:error-handler/generic-strategy', 'service:intl', 'service:notification', 'service:plan', 'service:localStore', 'service:session', 'service:tabStore', 'service:locale', 'service:cookies', 'service:moment', 'ember-intl@adapter:default'],
+    needs: ['service:error-handler/session-loading-failed-strategy', 'service:error-handler/notification-strategy', 'service:error-handler/permissions-denied-strategy', 'service:error-handler/resource-not-found-strategy', 'service:error-handler/credential-expired-strategy', 'service:error-handler/generic-strategy', 'service:intl', 'service:i18n', 'service:notification', 'service:plan', 'service:localStore', 'service:session', 'service:tabStore', 'service:locale', 'service:cookies', 'service:moment', 'ember-intl@adapter:default', 'ember-intl@formatter:format-message'],
     beforeEach: function beforeEach() {
       var intl = getOwner(this).lookup('service:intl');
       intl.setLocale('en-us');
