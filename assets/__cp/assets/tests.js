@@ -8244,8 +8244,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
   var dateFieldTitle = 'date field';
   var regexFieldTitle = 'regex field';
 
-  var customerTitle = 'customer title';
-  var description = 'description';
   var optionTitle = 'option title';
   var regEx = 'regEx';
 
@@ -8557,14 +8555,9 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
     andThen(function () {
       assert.equal(find('.qa-admin_case-fields_edit__api-key').length, 1);
       findWithAssert('.qa-admin_case-fields_edit__api-key');
-
       fillIn('input.ko-admin_case-fields_edit__title', textFieldTitle);
 
-      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
-      fillIn('textarea.ko-admin_case-fields_edit__description', description);
-
       click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
-
       click('.button--primary:first');
     });
 
@@ -8575,8 +8568,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), textFieldTitle);
-      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
-      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
     });
   });
@@ -8591,12 +8582,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       fillIn('input.ko-admin_case-fields_edit__title', textAreaFieldTitle);
-
-      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
-      fillIn('textarea.ko-admin_case-fields_edit__description', description);
-
       click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
-
       click('.button--primary:first');
     });
 
@@ -8607,8 +8593,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), textAreaFieldTitle);
-      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
-      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
     });
   });
@@ -8623,14 +8607,8 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       fillIn('input.ko-admin_case-fields_edit__title', radioFieldTitle);
-
-      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
-      fillIn('textarea.ko-admin_case-fields_edit__description', description);
-
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
-
       click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
-
       click('.button--primary:first');
     });
 
@@ -8641,8 +8619,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), radioFieldTitle);
-      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
-      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
     });
@@ -8658,14 +8634,8 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       fillIn('input.ko-admin_case-fields_edit__title', normalSelectFieldTitle);
-
-      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
-      fillIn('textarea.ko-admin_case-fields_edit__description', description);
-
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
-
       click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
-
       click('.button--primary:first');
     });
 
@@ -8676,8 +8646,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), normalSelectFieldTitle);
-      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
-      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
     });
@@ -8693,14 +8661,8 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       fillIn('input.ko-admin_case-fields_edit__title', checkboxFieldTitle);
-
-      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
-      fillIn('textarea.ko-admin_case-fields_edit__description', description);
-
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
-
       click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
-
       click('.button--primary:first');
     });
 
@@ -8711,8 +8673,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), checkboxFieldTitle);
-      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
-      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
     });
@@ -8728,12 +8688,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       fillIn('input.ko-admin_case-fields_edit__title', numericFieldTitle);
-
-      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
-      fillIn('textarea.ko-admin_case-fields_edit__description', description);
-
       click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
-
       click('.button--primary:first');
     });
 
@@ -8744,8 +8699,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), numericFieldTitle);
-      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
-      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
     });
   });
@@ -8760,12 +8713,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       fillIn('input.ko-admin_case-fields_edit__title', decimalFieldTitle);
-
-      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
-      fillIn('textarea.ko-admin_case-fields_edit__description', description);
-
       click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
-
       click('.button--primary:first');
     });
 
@@ -8776,8 +8724,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), decimalFieldTitle);
-      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
-      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
     });
   });
@@ -8792,12 +8738,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       fillIn('input.ko-admin_case-fields_edit__title', fileFieldTitle);
-
-      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
-      fillIn('textarea.ko-admin_case-fields_edit__description', description);
-
       click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
-
       click('.button--primary:first');
     });
 
@@ -8808,8 +8749,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fileFieldTitle);
-      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
-      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
     });
   });
@@ -8824,12 +8763,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       fillIn('input.ko-admin_case-fields_edit__title', yesNoFieldTitle);
-
-      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
-      fillIn('textarea.ko-admin_case-fields_edit__description', description);
-
       click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
-
       click('.button--primary:first');
     });
 
@@ -8840,8 +8774,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), yesNoFieldTitle);
-      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
-      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
     });
   });
@@ -8856,14 +8788,8 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       fillIn('input.ko-admin_case-fields_edit__title', cascadingSelectFieldTitle);
-
-      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
-      fillIn('textarea.ko-admin_case-fields_edit__description', description);
-
       fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
-
       click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
-
       click('.button--primary:first');
     });
 
@@ -8874,8 +8800,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), cascadingSelectFieldTitle);
-      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
-      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
     });
@@ -8891,12 +8815,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       fillIn('input.ko-admin_case-fields_edit__title', dateFieldTitle);
-
-      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
-      fillIn('textarea.ko-admin_case-fields_edit__description', description);
-
       click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
-
       click('.button--primary:first');
     });
 
@@ -8907,8 +8826,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), dateFieldTitle);
-      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
-      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
     });
   });
@@ -8923,14 +8840,8 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       fillIn('input.ko-admin_case-fields_edit__title', regexFieldTitle);
-
-      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
-      fillIn('textarea.ko-admin_case-fields_edit__description', description);
-
       fillIn('input.ko-admin_case-fields_edit_regex__input', regEx);
-
       click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
-
       click('.button--primary:first');
     });
 
@@ -8941,8 +8852,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), regexFieldTitle);
-      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
-      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       assert.equal(find('input.ko-admin_case-fields_edit_regex__input').val(), regEx);
       findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
     });
@@ -8958,12 +8867,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       fillIn('input.ko-admin_case-fields_edit__title', 'edited field title');
-
-      fillIn('input.ko-admin_case-fields_edit__customer-title', 'edited customer title');
-      fillIn('textarea.ko-admin_case-fields_edit__description', 'edited description');
-
       click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
-
       click('.button[name=cancel]');
     });
 
@@ -8979,13 +8883,11 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), 'text field');
-      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), 'locale specific text here');
-      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), 'locale specific text here');
       findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=true]');
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/helpers/dom-helpers', 'frontend-cp/components/ko-checkbox/styles', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsHelpersDomHelpers, _frontendCpComponentsKoCheckboxStyles, _frontendCpComponentsKoSimpleListRowStyles) {
+define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/helpers/dom-helpers', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsHelpersDomHelpers, _frontendCpComponentsKoSimpleListRowStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/people/organization fields/new', {
     beforeEach: function beforeEach() {
@@ -9043,8 +8945,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new text field', function (assert) {
     var fieldTitle = 'fieldTitle';
-    var customerTitle = 'customer title';
-    var description = 'description';
 
     visit('/admin/people/organization-fields/new/TEXT');
 
@@ -9054,10 +8954,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / Text / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
-
-      click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
-      fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('.button--primary:first');
     });
 
@@ -9069,15 +8965,11 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
     andThen(function () {
       assert.equal(find('.qa-admin_case-fields_edit__api-key').length, 1);
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
-      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
-      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
     });
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new text area field', function (assert) {
     var fieldTitle = 'fieldTitle';
-    var customerTitle = 'customer title';
-    var description = 'description';
 
     visit('/admin/people/organization-fields/new/TEXTAREA');
 
@@ -9086,10 +8978,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / Multi-line text / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
-
-      click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
-      fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('.button--primary:first');
     });
 
@@ -9100,15 +8988,11 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
-      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
-      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
     });
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new radio field', function (assert) {
     var fieldTitle = 'fieldTitle';
-    var customerTitle = 'customer title';
-    var description = 'description';
     var option1Title = 'option 1 title';
     var option2Title = 'option 2 title';
 
@@ -9119,11 +9003,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / Radio buttons (single choice) / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
-
-      click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
-      fillIn('textarea.ko-admin_case-fields_edit__description', description);
-
       fillIn('.ko-reorderable-list-item:first input:first', option1Title);
 
       click('.i-add-circle');
@@ -9138,8 +9017,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
-      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
-      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
       assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
     });
@@ -9147,8 +9024,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new dropdown box field', function (assert) {
     var fieldTitle = 'fieldTitle';
-    var customerTitle = 'customer title';
-    var description = 'description';
     var option1Title = 'option 1 title';
     var option2Title = 'option 2 title';
 
@@ -9159,13 +9034,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / Dropdown list (single choice) / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
-
-      click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
-      fillIn('textarea.ko-admin_case-fields_edit__description', description);
-
       fillIn('.ko-reorderable-list-item:first input:first', option1Title);
-
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
       click('.button--primary:first');
@@ -9178,8 +9047,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
-      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
-      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
       assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
     });
@@ -9187,8 +9054,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new checkbox field', function (assert) {
     var fieldTitle = 'fieldTitle';
-    var customerTitle = 'customer title';
-    var description = 'description';
     var option1Title = 'option 1 title';
     var option2Title = 'option 2 title';
 
@@ -9200,12 +9065,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
-      click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
-      fillIn('textarea.ko-admin_case-fields_edit__description', description);
-
       fillIn('.ko-reorderable-list-item:first input:first', option1Title);
-
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
       click('.button--primary:first');
@@ -9218,8 +9078,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
-      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
-      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
       assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
     });
@@ -9227,20 +9085,13 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new numeric field', function (assert) {
     var fieldTitle = 'fieldTitle';
-    var customerTitle = 'customer title';
-    var description = 'description';
 
     visit('/admin/people/organization-fields/new/NUMERIC');
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields/new/NUMERIC');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / Numerical input / New', 'Edit form default title is correct');
-
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
-
-      click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
-      fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('.button--primary:first');
     });
 
@@ -9251,15 +9102,11 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
-      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
-      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
     });
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new decimal field', function (assert) {
     var fieldTitle = 'fieldTitle';
-    var customerTitle = 'customer title';
-    var description = 'description';
 
     visit('/admin/people/organization-fields/new/DECIMAL');
 
@@ -9268,10 +9115,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / Decimal input / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
-
-      click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
-      fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('.button--primary:first');
     });
 
@@ -9282,15 +9125,11 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
-      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
-      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
     });
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new yes/no toggle field', function (assert) {
     var fieldTitle = 'fieldTitle';
-    var customerTitle = 'customer title';
-    var description = 'description';
 
     visit('/admin/people/organization-fields/new/YESNO');
 
@@ -9299,10 +9138,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / Yes/No toggle / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
-
-      click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
-      fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('.button--primary:first');
     });
 
@@ -9313,15 +9148,11 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
-      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
-      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
     });
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new cascading select field', function (assert) {
     var fieldTitle = 'fieldTitle';
-    var customerTitle = 'customer title';
-    var description = 'description';
     var option1Title = 'option 1 title';
     var option2Title = 'option 2 title';
 
@@ -9333,12 +9164,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
-      click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
-      fillIn('textarea.ko-admin_case-fields_edit__description', description);
-
       fillIn('.ko-reorderable-list-item:first input:first', option1Title);
-
       click('.i-add-circle');
       fillIn('.ko-reorderable-list-item:last input:first', option2Title);
       click('.button--primary:first');
@@ -9351,8 +9177,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
-      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
-      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
       assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
     });
@@ -9360,20 +9184,13 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new date field', function (assert) {
     var fieldTitle = 'fieldTitle';
-    var customerTitle = 'customer title';
-    var description = 'description';
 
     visit('/admin/people/organization-fields/new/DATE');
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/people/organization-fields/new/DATE');
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / Date / New', 'Edit form default title is correct');
-
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
-
-      click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
-      fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('.button--primary:first');
     });
 
@@ -9384,15 +9201,11 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
-      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
-      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
     });
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('creating a new regular expression field', function (assert) {
     var fieldTitle = 'fieldTitle';
-    var customerTitle = 'customer title';
-    var description = 'description';
     var regEx = 'regex';
 
     visit('/admin/people/organization-fields/new/REGEX');
@@ -9402,10 +9215,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / Regular expression / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
-
-      click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can see this field) div');
-      fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
-      fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
       fillIn('input.ko-admin_case-fields_edit_regex__input', regEx);
       click('.button--primary:first');
@@ -9418,8 +9227,6 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
-      assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
-      assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
       assert.equal(find('input.ko-admin_case-fields_edit_regex__input').val(), regEx);
     });
   });
