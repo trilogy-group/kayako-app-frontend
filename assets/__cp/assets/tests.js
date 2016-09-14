@@ -12382,7 +12382,7 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
         is_default: true,
         is_enabled: true,
         is_system: true,
-        order_by: 'DESC',
+        order_by: 'ASC',
         order_by_column: 'caseid',
         columns: columns,
         predicate_collections: [{ id: inboxPredicateCollection.id, resource_type: 'predicate_collection' }],
@@ -12395,7 +12395,7 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
         is_default: false,
         is_enabled: true,
         is_system: false,
-        order_by: 'DESC',
+        order_by: 'ASC',
         order_by_column: 'caseid',
         columns: columns,
         predicate_collections: [{ id: simplePredicateCollection.id, resource_type: 'predicate_collection' }],
@@ -12517,7 +12517,7 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('sort case list', function (assert) {
-    assert.expect(6);
+    assert.expect(7);
     visit('/agent/cases');
 
     andThen(function () {
@@ -12528,13 +12528,14 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
     });
 
     andThen(function () {
-      assert.ok(find('thead th:nth-child(3) span:last').hasClass('i-chevron-small-up'));
+      assert.ok(find('thead th:nth-child(3) span:last').hasClass('i-chevron-small-down'));
+      assert.equal(find('tbody tr:first td:nth-child(3)').text().trim(), '22');
       click('thead th:nth-child(3)');
     });
 
     andThen(function () {
-      assert.ok(find('thead th:nth-child(3) span:last').hasClass('i-chevron-small-down'));
-      assert.equal(find('tbody tr:first td:nth-child(3)').text().trim(), '22');
+      assert.ok(find('thead th:nth-child(3) span:last').hasClass('i-chevron-small-up'));
+      assert.equal(find('tbody tr:first td:nth-child(3)').text().trim(), '1');
     });
   });
 
