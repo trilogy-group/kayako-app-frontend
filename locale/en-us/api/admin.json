@@ -32,6 +32,7 @@
   "apps.endpoints.list.last_triggered": "last triggered {date}",
   "apps.endpoints.list.http.title": "Title",
   "apps.endpoints.list.http.description": "Title",
+  "apps.endpoints.list.details": "click for details",
   "apps.endpoints.form.email.destination": "Destination email address",
   "apps.endpoints.form.email.subject": "Email subject",
   "apps.endpoints.form.slack.title": "Slack Webhook URL",
@@ -47,6 +48,9 @@
   "apps.endpoints.form.webhook.http_auth.password": "Password",
   "apps.endpoints.labels.confirm_delete": "Delete Endpoint",
   "apps.endpoints.labels.delete_confirmation": "Are you sure you wish to delete this endpoint?",
+
+  "apps.endpoints.failure.title": "There was a problem reaching this endpoint",
+  "apps.endpoints.failure.description": "We tried to contact this endpoint on {date} and received the following response:",
 
   "apps.zapier.title": "Zapier",
   "apps.zapier.heading": "Integrate 100s of apps with Zapier",
