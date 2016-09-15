@@ -9018,6 +9018,10 @@ span#HW_badge.HW_softHidden {
 .ko-timeline_item__attachments_1j6wjf {
   margin-top: 14px; }
 
+.ko-timeline_item__content_1j6wjf img {
+  max-width: 100% !important;
+  /* overrides width/height in the actual HTML itself (from K4 content) */ }
+
 /* styles for frontend-cp/components/ko-timeline/styles.css */
 .ko-timeline__dropdowns_l37cvm {
   padding: 9px 12px;
