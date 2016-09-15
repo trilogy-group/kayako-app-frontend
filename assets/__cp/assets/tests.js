@@ -12095,8 +12095,6 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
     });
 
     andThen(function () {
-      var status = find('.ko-info-bar_item__header:contains("Status")').next().val();
-      assert.equal(status, 'Open', 'Status has updated to OPEN');
       assert.equal(find('.' + _frontendCpSessionStyles['default'].tab).length, 1, 'There is only one tab');
       assert.equal(find('.' + _frontendCpSessionStyles['default'].tab).text().trim(), 'No internet', 'That title of the tab has updated');
       assert.equal(currentURL(), '/agent/cases/1');
@@ -13110,7 +13108,7 @@ define('frontend-cp/tests/acceptance/agent/cases/replying-to-a-facebook-message-
       subject: 'ERS Audit 1',
       requester_id: '2',
       in_reply_to_uuid: null,
-      status_id: null,
+      status_id: '1',
       priority_id: null,
       type_id: null,
       assigned_team_id: null,
