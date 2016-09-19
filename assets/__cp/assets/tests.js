@@ -21068,58 +21068,6 @@ define('frontend-cp/tests/unit/services/rateplans-test', ['exports', 'ember', 'e
     assert.deepEqual(terms, ['MONTH', 'ANNUAL']);
   });
 });
-define('frontend-cp/tests/unit/utils/promise-queue-test', ['exports', 'ember', 'qunit', 'ember-qunit', 'frontend-cp/utils/promise-queue'], function (exports, _ember, _qunit, _emberQunit, _frontendCpUtilsPromiseQueue) {
-
-  (0, _qunit.module)('Unit | Utils | promise-queue');
-
-  (0, _emberQunit.test)('it stores promises by term', function (assert) {
-    var queue = new _frontendCpUtilsPromiseQueue['default']();
-
-    var promise = new _ember['default'].RSVP.Promise(function (resolve, reject) {
-      resolve();
-    });
-
-    queue.push('a', promise);
-    queue.push('ab', promise);
-    queue.push('abc', promise);
-
-    assert.equal(3, queue.queue.length);
-  });
-
-  (0, _emberQunit.test)('it validates if promise is discarded (not the last one)', function (assert) {
-    var queue = new _frontendCpUtilsPromiseQueue['default']();
-
-    var promise = new _ember['default'].RSVP.Promise(function (resolve, reject) {
-      resolve();
-    });
-
-    queue.push('a', promise);
-    queue.push('ab', promise);
-    queue.push('abc', promise);
-
-    assert.equal(true, queue.isDiscarded('a'));
-    assert.equal(true, queue.isDiscarded('ab'));
-    assert.equal(false, queue.isDiscarded('abc'));
-  });
-
-  (0, _emberQunit.test)('it flushes all promise queue', function (assert) {
-    var queue = new _frontendCpUtilsPromiseQueue['default']();
-
-    var promise = new _ember['default'].RSVP.Promise(function (resolve, reject) {
-      resolve();
-    });
-
-    queue.push('a', promise);
-    queue.push('ab', promise);
-    queue.push('abc', promise);
-
-    assert.equal(3, queue.queue.length);
-
-    queue.flush();
-
-    assert.equal(0, queue.queue.length);
-  });
-});
 define('frontend-cp/tests/unit/utils/tweet-length-test', ['exports', 'frontend-cp/utils/tweet-length', 'qunit'], function (exports, _frontendCpUtilsTweetLength, _qunit) {
 
   (0, _qunit.module)('Unit | Utility | tweet length');
