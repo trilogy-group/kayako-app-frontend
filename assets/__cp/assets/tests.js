@@ -13300,7 +13300,7 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
         brand: brand
       });
       var agentRole = server.create('role', { type: 'AGENT' });
-      var customerRole = server.create('role', { type: 'AGENT' });
+      var customerRole = server.create('role', { type: 'CUSTOMER' });
       agent = server.create('user', { role: agentRole, locale: locale, time_zone: 'Europe/London' });
       var session = server.create('session', { user: agent });
       var customer = server.create('user', { full_name: 'Barney Stinson', role: customerRole, locale: locale, time_zone: 'Europe/London' });
@@ -13325,7 +13325,7 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
       var caseMessage = server.create('case-message', { type: 'case-message' });
 
       server.createList('post', 3, {
-        creator: agent,
+        creator: customer,
         identity: identityEmail,
         'case': targetCase,
         original: caseMessage,
