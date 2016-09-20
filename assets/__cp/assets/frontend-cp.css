@@ -5632,6 +5632,14 @@ label {
   position: relative;
   top: 2px; }
 
+.ko-admin_overview_subscription__input-label_woapeu {
+  color: #838D94;
+  display: block;
+  text-align: right; }
+
+.ko-admin_overview_subscription__input-label-error_woapeu {
+  color: #E86048; }
+
 /* styles for frontend-cp/components/ko-admin/page/styles.css */
 .ko-admin_page__header_1mhmh2 {
   display: -webkit-box;
