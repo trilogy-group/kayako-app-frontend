@@ -677,11 +677,6 @@ textarea {
 /* ==========================================================================
    	Display
    ========================================================================= */
-.u-inline-block {
-  display: inline-block;
-  height: 100%;
-  vertical-align: top; }
-
 .u-hidden {
   display: none !important; }
 
@@ -2198,17 +2193,6 @@ img {
   right: 9px;
   bottom: 19px; }
 
-.ko-admin_businesshours__grid-title {
-  width: 100px;
-  height: 30px;
-  line-height: 30px;
-  text-align: right;
-  margin-right: 9px; }
-
-.ko-admin_businesshours__add-holiday {
-  margin-top: 9px;
-  margin-bottom: 9px; }
-
 .availablePages {
   min-height: 15px; }
   .availablePages ul {
@@ -2243,10 +2227,6 @@ img {
 
 .error {
   color: #E86048; }
-
-.ko-admin_macros_edit__team-selector {
-  margin-top: -3px;
-  margin-left: 3px; }
 
 .channel-layout {
   display: -webkit-box;
@@ -2444,29 +2424,6 @@ img {
 
 .ko-cases-list__heading {
   margin: 0; }
-
-.dropdown :global(.button--dropdown) {
-  height: 32px;
-  width: 32px;
-  padding: 0; }
-
-.dropdown :global(.ember-basic-dropdown-trigger[aria-expanded="true"]) :global(.button--dropdown) {
-  /* Allows menu button to overlap menu */
-  padding-bottom: 1px;
-  z-index: 60;
-  border-bottom: #FFFFFF;
-  border-radius: 2px 2px 0 0;
-  background-color: #FFFFFF;
-  background-image: none;
-  box-shadow: none; }
-
-.dropdown :global(.ember-basic-dropdown-content) {
-  border: 1px solid #d1d5d7;
-  width: 120px;
-  position: absolute;
-  right: 0;
-  top: 31px;
-  z-index: 30; }
 
 .checkboxWrap {
   display: -webkit-box;
@@ -5255,6 +5212,19 @@ label {
 .ko-admin_brands_form__textarea_1fb6v1 {
   width: calc(100% - 120px); }
 
+/* styles for frontend-cp/components/ko-admin/businesshours/edit/styles.css */
+.ko-admin_businesshours_edit__title_1pht6q {
+  width: 100px;
+  height: 30px;
+  line-height: 30px;
+  text-align: right;
+  font-weight: 600;
+  margin-right: 9px; }
+
+.ko-admin_businesshours_edit__add-holiday_1pht6q {
+  margin-top: 9px;
+  margin-bottom: 9px; }
+
 /* styles for frontend-cp/components/ko-admin/case-forms/edit/fields/styles.css */
 .ko-admin_case-forms_edit_fields__row_1lld7s {
   width: 100%;
@@ -5520,6 +5490,16 @@ label {
 
 .ko-admin_inline-locale-edit__dropdownContent_17qbpf {
   margin-top: 12px; }
+
+/* styles for frontend-cp/components/ko-admin/macros/edit/styles.css */
+.ko-admin_macros_edit__team-sharing_687nx7 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+
+.ko-admin_macros_edit__team-selector_687nx7 {
+  margin-top: -6px;
+  margin-left: 15px; }
 
 /* styles for frontend-cp/components/ko-admin/messenger/code/styles.css */
 .ko-admin_messenger_code__form-section_y7yygo {
@@ -5862,7 +5842,8 @@ a.ko-admin_plans_index__cancel_1br1r5 {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  padding: 0 45px; }
+  padding: 0 45px;
+  /* 1px for the border */ }
 
 .ko-admin_rateplans_summary__sticky_paqoi0 .ko-admin_rateplans_summary__flex-content-column_paqoi0 {
   margin-right: 200px;
@@ -6154,9 +6135,6 @@ a.ko-admin_plans_index__cancel_1br1r5 {
   font-size: 12px; }
 
 /* styles for frontend-cp/components/ko-agent-dropdown/styles.css */
-.ko-agent-dropdown__container_15uh4p {
-  display: inline-block; }
-
 .ko-agent-dropdown__iconSquare_15uh4p {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -6351,30 +6329,6 @@ a.ko-admin_plans_index__cancel_1br1r5 {
 .ko-bulk-invitation__addNew_g264ud {
   margin-top: 13.5px;
   color: #38a0be; }
-
-/* styles for frontend-cp/components/ko-case-content/action-menu/styles.css */
-.ko-case-content_action-menu__dropdown_2mjexi .button--dropdown {
-  height: 32px;
-  width: 32px;
-  padding: 0; }
-
-.ko-case-content_action-menu__dropdown_2mjexi .ember-basic-dropdown-trigger[aria-expanded="true"] .button--dropdown {
-  /* Allows menu button to overlap menu */
-  padding-bottom: 1px;
-  z-index: 60;
-  border-bottom: #FFFFFF;
-  border-radius: 2px 2px 0 0;
-  background-color: #FFFFFF;
-  background-image: none;
-  box-shadow: none; }
-
-.ko-case-content_action-menu__dropdown_2mjexi .ember-basic-dropdown-content {
-  border: 1px solid #d1d5d7;
-  width: 120px;
-  position: absolute;
-  right: 0;
-  top: 31px;
-  z-index: 30; }
 
 /* styles for frontend-cp/components/ko-case-content/field/post/styles.css */
 .ko-case-content_field_post__textEditor_1te2i0 {
@@ -9793,7 +9747,7 @@ span#HW_badge.HW_softHidden {
 
 /* styles for frontend-cp/session/agent/cases/index/styles.css */
 .session_agent_cases_index__index_1qjm74 {
-  margin: 40px 45px;
+  margin: 40px 44px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -9893,7 +9847,7 @@ span#HW_badge.HW_softHidden {
 
 /* styles for frontend-cp/session/agent/search-loading/styles.css */
 .session_agent_search-loading__index_p94ixd {
-  margin: 40px 45px;
+  margin: 40px 44px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -9908,7 +9862,7 @@ span#HW_badge.HW_softHidden {
 
 /* styles for frontend-cp/session/agent/search/styles.css */
 .session_agent_search__index_2b3a56 {
-  margin: 40px 45px;
+  margin: 40px 44px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
