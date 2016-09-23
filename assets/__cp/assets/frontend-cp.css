@@ -669,7 +669,7 @@ textarea {
 /*
 	Brand configuration
    ========================================================================== */
-.ko-case_macro-selector .ember-power-select-search input:focus, .checkbox:focus, .ko-radio__container:focus, .ko-input__input_v1243j:focus, .ko-admin_billing-form_form-input__prefixed-input_17ctb2.ko-admin_billing-form_form-input__focused_17ctb2, .ko-admin_brands_form_domain-input__container_1kwwd3.ko-admin_brands_form_domain-input__focused_1kwwd3, .ko-agent-dropdown__navItem_15uh4p:focus, .ko-case_macro-selector_trigger__trigger_7wpnlb:focus, .ko-checkbox__checkbox_11qxzi:focus, .ko-toggle__container_1lf7sj:focus {
+.ko-case_macro-selector .ember-power-select-search input:focus, .checkbox:focus, .ko-input__input_v1243j:focus, .ko-admin_billing-form_form-input__prefixed-input_17ctb2.ko-admin_billing-form_form-input__focused_17ctb2, .ko-admin_brands_form_domain-input__container_1kwwd3.ko-admin_brands_form_domain-input__focused_1kwwd3, .ko-agent-dropdown__navItem_15uh4p:focus, .ko-case_macro-selector_trigger__trigger_7wpnlb:focus, .ko-checkbox__checkbox_11qxzi:focus, .ko-radio__container_7jk1h4:focus, .ko-toggle__container_1lf7sj:focus {
   outline: none;
   border-color: #4EAFCB;
   box-shadow: 0 0 4px 0 rgba(78, 174, 203, 0.65), inset 0 1px 1px 0 rgba(0, 0, 0, 0.08); }
@@ -3602,48 +3602,6 @@ label {
     opacity: 0; }
   to {
     opacity: 1; } }
-
-.ko-radio {
-  margin-bottom: 4.5px; }
-
-.ko-radio__container {
-  width: 16px;
-  height: 16px;
-  position: relative;
-  display: inline-block;
-  vertical-align: middle;
-  background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.5) 0%, #FAFAFA 100%);
-  background-image: linear-gradient(-180deg, rgba(255, 255, 255, 0.5) 0%, #FAFAFA 100%);
-  border: 1px solid #BEC4C7;
-  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05);
-  border-radius: 50%;
-  cursor: pointer; }
-  .ko-radio__container--large {
-    width: 18px;
-    height: 18px; }
-  .ko-radio__container--disabled {
-    opacity: 0.5; }
-
-.ko-radio__radio {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
-  width: 5px;
-  height: 5px;
-  background: #616C73;
-  border-radius: 50%; }
-  .ko-radio__radio--large {
-    width: 6px;
-    height: 6px; }
-
-.ko-radio__label {
-  margin-left: 4.5px;
-  vertical-align: middle;
-  cursor: pointer; }
-  .ko-radio__label--disabled {
-    opacity: 0.5; }
 
 .ko-reorderable-list .ko-reorderable-list {
   list-style: none; }
@@ -7994,6 +7952,55 @@ span#HW_badge.HW_softHidden {
   border-top: 1px solid #BEC4C7;
   border-left: 1px solid #BEC4C7;
   background: #FFFFFF; }
+
+/* styles for frontend-cp/components/ko-radio/styles.css */
+.ko-radio__radio_7jk1h4 {
+  margin-bottom: 4.5px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  cursor: pointer; }
+
+.ko-radio__radio--disabled_7jk1h4 {
+  opacity: 0.5; }
+
+.ko-radio__container_7jk1h4 {
+  width: 15px;
+  height: 15px;
+  background-image: -webkit-linear-gradient(top, rgba(255, 255, 255, 0.5) 0%, #FAFAFA 100%);
+  background-image: linear-gradient(-180deg, rgba(255, 255, 255, 0.5) 0%, #FAFAFA 100%);
+  border: 1px solid #BEC4C7;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05);
+  border-radius: 50%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin-right: 4.5px;
+  -webkit-transition: border-color 0.1s, box-shadow 0.1s;
+  transition: border-color 0.1s, box-shadow 0.1s; }
+
+.ko-radio__check_7jk1h4 {
+  width: 5px;
+  height: 5px;
+  background: #616C73;
+  border-radius: 50%;
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
+  -webkit-transform: scale(0);
+          transform: scale(0); }
+
+.ko-radio__check--on_7jk1h4 {
+  -webkit-transform: scale(1);
+          transform: scale(1); }
 
 /* styles for frontend-cp/components/ko-recent-cases/styles.css */
 .ko-recent-cases__root_1tzzxl {

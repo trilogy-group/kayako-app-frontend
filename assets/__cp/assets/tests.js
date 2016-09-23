@@ -190,7 +190,7 @@ define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports'
     visit('/admin/account/plans');
     andThen(function () {
       selectedIndex = find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].selected).index();
-      click('.ko-radio__label:eq(1)');
+      click('.ko-admin_rateplans_list--radio:eq(1)');
     });
     andThen(function () {
       assert.equal(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].cell + ':eq(' + selectedIndex + ')').hasClass(_frontendCpComponentsKoAdminRateplansItemStyles['default'].selected), true);
@@ -228,7 +228,7 @@ define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports'
     visit('/admin/account/plans');
     andThen(function () {
       selectedPlanAmount = find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].selected + ' .' + _frontendCpComponentsKoAdminRateplansPriceStyles['default']['plan-price-amount']).text().trim();
-      click('.ko-radio__label:eq(1)');
+      click('.ko-admin_rateplans_list--radio:eq(1)');
     });
     andThen(function () {
       assert.notEqual(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].selected + ' .' + _frontendCpComponentsKoAdminRateplansPriceStyles['default']['plan-price-amount']).text().trim(), selectedPlanAmount);
@@ -351,7 +351,7 @@ define('frontend-cp/tests/acceptance/admin/account/trial/index-test', ['exports'
     andThen(function () {
       var selectedPlan = find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].selected);
       initialSubscriptionAmount = currencyToNumber(selectedPlan.find('.gross-total').text());
-      click('.ko-radio__label:eq(1)');
+      click('.ko-admin_rateplans_list--radio:eq(1)');
     });
 
     andThen(function () {
@@ -485,7 +485,7 @@ define('frontend-cp/tests/acceptance/admin/account/trial/index-test', ['exports'
 
     andThen(function () {
       fillIn('.agents-count', 5);
-      click('.ko-radio__label:eq(1)');
+      click('.ko-admin_rateplans_list--radio:eq(1)');
     });
 
     andThen(function () {
@@ -2184,9 +2184,9 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     });
 
     andThen(function () {
-      assert.equal($('.ko-radio__container:eq(0)').attr('aria-checked'), 'true', 'The first radio is selected');
-      assert.equal($('.ko-radio__container:eq(1)').attr('aria-checked'), 'false', 'The second radio is not selected');
-      click('.ko-radio__label:eq(1)');
+      assert.equal($('.ko-admin_automation-actions-builder_endpoint-http-post--simple [role="radio"]').attr('aria-checked'), 'true', 'The first radio is selected');
+      assert.equal($('.ko-admin_automation-actions-builder_endpoint-http-post--custom [role="radio"]').attr('aria-checked'), 'false', 'The second radio is not selected');
+      click('.ko-admin_automation-actions-builder_endpoint-http-post--custom');
       fillIn('[name="endpoint-payload"]', '<foo>bar</foo>');
       click('.button[name=submit]');
     });
@@ -2202,8 +2202,8 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
       assert.equal(currentURL(), '/admin/automation/monitors/1');
       assertPredicateCollestionsAreCorrect(assert);
       assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0) .ember-power-select-trigger').text().trim(), 'Endpoint: Some XML thing');
-      assert.equal($('.ko-radio__container:eq(0)').attr('aria-checked'), 'false', 'The first radio is not selected');
-      assert.equal($('.ko-radio__container:eq(1)').attr('aria-checked'), 'true', 'The second radio is selected');
+      assert.equal($('.ko-admin_automation-actions-builder_endpoint-http-post--simple [role="radio"]').attr('aria-checked'), 'false', 'The first radio is not selected');
+      assert.equal($('.ko-admin_automation-actions-builder_endpoint-http-post--custom [role="radio"]').attr('aria-checked'), 'true', 'The second radio is selected');
       assert.equal(find('[name="endpoint-payload"]').val(), '<foo>bar</foo>');
     });
   });
@@ -2233,9 +2233,9 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     });
 
     andThen(function () {
-      assert.equal($('.ko-radio__container:eq(0)').attr('aria-checked'), 'true', 'The first radio is selected');
-      assert.equal($('.ko-radio__container:eq(1)').attr('aria-checked'), 'false', 'The second radio is not selected');
-      click('.ko-radio__label:eq(1)');
+      assert.equal($('.ko-admin_automation-actions-builder_endpoint-http-post--simple [role="radio"]').attr('aria-checked'), 'true', 'The first radio is selected');
+      assert.equal($('.ko-admin_automation-actions-builder_endpoint-http-post--custom [role="radio"]').attr('aria-checked'), 'false', 'The second radio is not selected');
+      click('.ko-admin_automation-actions-builder_endpoint-http-post--custom');
       fillIn('[name="endpoint-payload"]', '{ "foo": "bar" }');
       click('.button[name=submit]');
     });
@@ -2251,8 +2251,8 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
       assert.equal(currentURL(), '/admin/automation/monitors/1');
       assertPredicateCollestionsAreCorrect(assert);
       assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0) .ember-power-select-trigger').text().trim(), 'Endpoint: POST json example');
-      assert.equal($('.ko-radio__container:eq(0)').attr('aria-checked'), 'false', 'The first radio is not selected');
-      assert.equal($('.ko-radio__container:eq(1)').attr('aria-checked'), 'true', 'The second radio is selected');
+      assert.equal($('.ko-admin_automation-actions-builder_endpoint-http-post--simple [role="radio"]').attr('aria-checked'), 'false', 'The first radio is not selected');
+      assert.equal($('.ko-admin_automation-actions-builder_endpoint-http-post--custom [role="radio"]').attr('aria-checked'), 'true', 'The second radio is selected');
       assert.equal(find('[name="endpoint-payload"]').val(), '{ "foo": "bar" }');
     });
   });
@@ -2281,9 +2281,9 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     });
 
     andThen(function () {
-      assert.equal($('.ko-radio__container:eq(0)').attr('aria-checked'), 'true', 'The first radio is selected');
-      assert.equal($('.ko-radio__container:eq(1)').attr('aria-checked'), 'false', 'The second radio is not selected');
-      click('.ko-radio__label:eq(1)');
+      assert.equal($('.ko-admin_automation-actions-builder_endpoint-http--simple [role="radio"]').attr('aria-checked'), 'true', 'The first radio is selected');
+      assert.equal($('.ko-admin_automation-actions-builder_endpoint-http--custom [role="radio"]').attr('aria-checked'), 'false', 'The second radio is not selected');
+      click('.ko-admin_automation-actions-builder_endpoint-http--custom');
     });
 
     andThen(function () {
@@ -2303,8 +2303,8 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
       assert.equal(currentURL(), '/admin/automation/monitors/1');
       assertPredicateCollestionsAreCorrect(assert);
       assert.equal($('.' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0) .ember-power-select-trigger').text().trim(), 'Endpoint: GET example');
-      assert.equal($('.ko-radio__container:eq(0)').attr('aria-checked'), 'false', 'The first radio is not selected');
-      assert.equal($('.ko-radio__container:eq(1)').attr('aria-checked'), 'true', 'The second radio is selected');
+      assert.equal($('.ko-admin_automation-actions-builder_endpoint-http--simple [role="radio"]').attr('aria-checked'), 'false', 'The first radio is not selected');
+      assert.equal($('.ko-admin_automation-actions-builder_endpoint-http--custom [role="radio"]').attr('aria-checked'), 'true', 'The second radio is selected');
       assert.equal(find('[name="parameters-key-0"]').val(), 'foo');
       assert.equal(find('[name="parameters-value-0"]').val(), 'bar');
     });
@@ -7855,7 +7855,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/views/new');
       fillIn('input.ko-admin_views_edit__title', fieldTitle);
-      click('.ko-radio__label:contains(Just myself)');
+      click('.qa-just-myself');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Subject');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'does not contain');
       fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
@@ -7875,7 +7875,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       assert.equal(currentURL(), '/admin/manage/views/new');
 
       fillIn('input.ko-admin_views_edit__title', fieldTitle);
-      click('.ko-radio__label:contains(Just myself)');
+      click('.qa-just-myself');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Status');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'equal to');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--property', 'New');
@@ -7895,7 +7895,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       assert.equal(currentURL(), '/admin/manage/views/new');
 
       fillIn('input.ko-admin_views_edit__title', fieldTitle);
-      click('.ko-radio__label:contains(Just myself)');
+      click('.qa-just-myself');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Status');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'not equal to');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--property', 'New');
@@ -7915,7 +7915,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       assert.equal(currentURL(), '/admin/manage/views/new');
 
       fillIn('input.ko-admin_views_edit__title', fieldTitle);
-      click('.ko-radio__label:contains(Just myself)');
+      click('.qa-just-myself');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Priority');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'less than');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--property', 'Low');
@@ -7935,7 +7935,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       assert.equal(currentURL(), '/admin/manage/views/new');
 
       fillIn('input.ko-admin_views_edit__title', fieldTitle);
-      click('.ko-radio__label:contains(Just myself)');
+      click('.qa-just-myself');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Priority');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'greater than');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--property', 'Low');
@@ -7955,7 +7955,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       assert.equal(currentURL(), '/admin/manage/views/new');
 
       fillIn('input.ko-admin_views_edit__title', fieldTitle);
-      click('.ko-radio__label:contains(Just myself)');
+      click('.qa-just-myself');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Tags');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'contains all of the following');
       fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
@@ -7975,7 +7975,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       assert.equal(currentURL(), '/admin/manage/views/new');
 
       fillIn('input.ko-admin_views_edit__title', fieldTitle);
-      click('.ko-radio__label:contains(Just myself)');
+      click('.qa-just-myself');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Tags');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'does not contain');
       fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
@@ -7995,7 +7995,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       assert.equal(currentURL(), '/admin/manage/views/new');
 
       fillIn('input.ko-admin_views_edit__title', fieldTitle);
-      click('.ko-radio__label:contains(Just myself)');
+      click('.qa-just-myself');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Tags');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'contains all of the following');
       fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
@@ -8015,7 +8015,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       assert.equal(currentURL(), '/admin/manage/views/new');
 
       fillIn('input.ko-admin_views_edit__title', fieldTitle);
-      click('.ko-radio__label:contains(Just myself)');
+      click('.qa-just-myself');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--column', 'Subject');
       selectChoose('.qa-predicate-builder--proposition:first .qa-proposition--operator', 'contains');
       fillIn('.qa-predicate-builder--proposition:first input:last', rule1String);
@@ -18643,6 +18643,122 @@ define('frontend-cp/tests/integration/components/ko-info-bar/update-log/componen
     assert.equal(this.$('li:nth-of-type(2) .qa-time-from-now').text().trim(), 'a few seconds ago', 'time from now is correct');
   });
 });
+define('frontend-cp/tests/integration/components/ko-radio/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit'], function (exports, _ember, _frontendCpTestsHelpersQunit) {
+
+  (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-radio', {
+    integration: true
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('can be selected by clicking on radio', function (assert) {
+    var _this = this;
+
+    assert.expect(1);
+
+    this.set('checked', true);
+    this.set('onChange', function (value) {
+      assert.equal(value, true, 'it has been selected');
+    });
+    this.render(_ember['default'].HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@2.7.0',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 6,
+              'column': 2
+            }
+          }
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode('\n    ');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode('\n  ');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [['inline', 'ko-radio', [], ['checked', ['subexpr', '@mut', [['get', 'checked', ['loc', [null, [3, 14], [3, 21]]], 0, 0, 0, 0]], [], [], 0, 0], 'onChange', ['subexpr', '@mut', [['get', 'onChange', ['loc', [null, [4, 15], [4, 23]]], 0, 0, 0, 0]], [], [], 0, 0]], ['loc', [null, [2, 4], [5, 6]]], 0, 0]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    _ember['default'].run(function () {
+      _this.$('div:first').click();
+    });
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('when disabled radio can\'t be selected', function (assert) {
+    var _this2 = this;
+
+    assert.expect(0);
+
+    this.set('checked', true);
+    this.set('onChange', function (value) {
+      assert.equal(true, false, 'radio can\'t be selected when disabled');
+    });
+    this.render(_ember['default'].HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@2.7.0',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 7,
+              'column': 2
+            }
+          }
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode('\n    ');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode('\n  ');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [['inline', 'ko-radio', [], ['checked', ['subexpr', '@mut', [['get', 'checked', ['loc', [null, [3, 14], [3, 21]]], 0, 0, 0, 0]], [], [], 0, 0], 'onChange', ['subexpr', '@mut', [['get', 'onChange', ['loc', [null, [4, 15], [4, 23]]], 0, 0, 0, 0]], [], [], 0, 0], 'disabled', true], ['loc', [null, [2, 4], [6, 6]]], 0, 0]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    _ember['default'].run(function () {
+      _this2.$('div:first').click();
+    });
+  });
+});
 define('frontend-cp/tests/test-helper', ['exports', 'frontend-cp/tests/helpers/resolver', 'ember-qunit'], function (exports, _frontendCpTestsHelpersResolver, _emberQunit) {
 
   (0, _emberQunit.setResolver)(_frontendCpTestsHelpersResolver['default']);
@@ -19445,230 +19561,6 @@ define('frontend-cp/tests/unit/components/ko-people-popover/component-test', ['e
       component.$(x).click();
     });
   });
-});
-define('frontend-cp/tests/unit/components/ko-radio/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/lib/keycodes'], function (exports, _ember, _frontendCpTestsHelpersQunit, _frontendCpLibKeycodes) {
-
-  var component = undefined;
-  var radio = 'div:first';
-  var label = 'label:first';
-
-  (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-radio', {
-    unit: true,
-    setup: function setup() {
-      component = this.subject();
-      component.set('label', 'You can do this!');
-      component.set('tabindex', 0);
-      component.set('value', 'one');
-    },
-    teardown: function teardown() {}
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('can not be unselected by pressing spacebar', function (assert) {
-    assert.expect(1);
-
-    this.render();
-
-    _ember['default'].run(function () {
-      component.set('selected', true);
-    });
-
-    _ember['default'].run(function () {
-      component.keyUp({ keyCode: _frontendCpLibKeycodes.space });
-    });
-
-    assert.equal(component.checked, true, 'it has not been unselected');
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('can be selected by clicking on radio', function (assert) {
-    var _this = this;
-
-    assert.expect(1);
-
-    this.render();
-
-    _ember['default'].run(function () {
-      _this.$(radio).click();
-    });
-
-    assert.equal(component.checked, true, 'it has been selected');
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('can be selected by clicking on radio (DDAU)', function (assert) {
-    var _this2 = this;
-
-    assert.expect(1);
-
-    this.render();
-
-    _ember['default'].run(function () {
-      component.set('onRadio', 'checked');
-      component.set('checked', false);
-    });
-
-    component.set('targetObject', {
-      checked: function checked(value) {
-        assert.equal(value, true, 'it has been selected');
-      }
-    });
-
-    _ember['default'].run(function () {
-      _this2.$(radio).click();
-    });
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('can not be unselected by clicking on radio', function (assert) {
-    var _this3 = this;
-
-    assert.expect(1);
-
-    this.render();
-
-    _ember['default'].run(function () {
-      component.set('selected', true);
-    });
-
-    _ember['default'].run(function () {
-      _this3.$(radio).click();
-    });
-
-    assert.equal(component.checked, true, 'it has not been unselected');
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('can not be unselected by clicking on radio (DDAU)', function (assert) {
-    assert.expect(1);
-
-    this.render();
-
-    _ember['default'].run(function () {
-      component.set('onRadio', 'checked');
-      component.set('checked', true);
-    });
-
-    component.set('targetObject', {
-      checked: function checked(value) {
-        assert.equal(value, true, 'it has not been unselected');
-      }
-    });
-
-    this.$(radio).click();
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('can be selected by clicking on label', function (assert) {
-    var _this4 = this;
-
-    assert.expect(1);
-
-    this.render();
-
-    _ember['default'].run(function () {
-      component.set('selected', false);
-    });
-
-    _ember['default'].run(function () {
-      _this4.$(label).click();
-    });
-
-    assert.equal(component.get('checked'), true, 'it has been selected');
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('can be selected by clicking on label (DDAU)', function (assert) {
-    assert.expect(1);
-
-    this.render();
-
-    _ember['default'].run(function () {
-      component.set('onRadio', 'checked');
-      component.set('checked', false);
-    });
-
-    component.set('targetObject', {
-      checked: function checked(value) {
-        assert.equal(value, true, 'it has been checked');
-      }
-    });
-
-    this.$(label).click();
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('can not be unselected by clicking on label', function (assert) {
-    var _this5 = this;
-
-    assert.expect(1);
-
-    this.render();
-
-    _ember['default'].run(function () {
-      component.set('selected', true);
-    });
-
-    _ember['default'].run(function () {
-      _this5.$(label).click();
-    });
-    assert.equal(component.get('checked'), true, 'it has not been unselected');
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('can not be unselected by clicking on label (DDAU)', function (assert) {
-    assert.expect(1);
-
-    this.render();
-
-    _ember['default'].run(function () {
-      component.set('onRadio', 'checked');
-      component.set('checked', true);
-    });
-
-    component.set('targetObject', {
-      checked: function checked(value) {
-        assert.equal(value, true, 'it has not been unselected');
-      }
-    });
-
-    this.$(label).click();
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('when disabled radio can\'t be selected', function (assert) {
-    var _this6 = this;
-
-    assert.expect(1);
-
-    this.render();
-
-    _ember['default'].run(function () {
-      component.set('disabled', true);
-    });
-
-    _ember['default'].run(function () {
-      _this6.$(radio).click();
-    });
-
-    assert.equal(component.value === component.checked, false, 'radio cant be selected');
-  });
-
-  // TODO: make this tests to be as Integration
-  //test('when disabled radio can\'t be selected (DDAU)', function(assert) {
-  //  assert.expect(0);
-  //
-  //  this.render();
-  //
-  //  Ember.run(() => {
-  //    component.set('disabled', true);
-  //  });
-  //
-  //  Ember.run(() => {
-  //    component.set('onRadio', 'selected');
-  //    component.set('checked', 'one');
-  //  });
-  //
-  //  component.set('targetObject', {
-  //    selected() {
-  //      assert.equal(true, false, 'it can\'t be selected');
-  //    }
-  //  });
-  //
-  //  Ember.run(() => {
-  //    this.$(radio).click();
-  //  });
-  //});
 });
 define("frontend-cp/tests/unit/components/ko-table-header/component-test", ["exports"], function (exports) {});
 // import { moduleForComponent, test } from 'frontend-cp/tests/helpers/qunit';
