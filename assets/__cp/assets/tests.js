@@ -16191,10 +16191,12 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'jquery', 'em
 
   exports['default'] = function () {
     _emberTest['default'].registerAsyncHelper('selectChoose', function (app, cssPath, value) {
-      var $trigger = find(cssPath);
-      if (!$trigger.hasClass('ember-power-select-trigger')) {
-        $trigger = $trigger.find('.ember-power-select-trigger');
+      var $trigger = find(cssPath + ' .ember-power-select-trigger');
+
+      if ($trigger === undefined || $trigger.length === 0) {
+        $trigger = find(cssPath);
       }
+
       var contentId = '' + $trigger.attr('aria-controls');
       var $content = find('#' + contentId);
       // If the dropdown is closed, open it
@@ -16219,13 +16221,11 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'jquery', 'em
     });
 
     _emberTest['default'].registerAsyncHelper('selectSearch', function (app, cssPath, value) {
-      var $trigger = find(cssPath);
-      var triggerPath = undefined;
-      if ($trigger.hasClass('ember-power-select-trigger')) {
+      var triggerPath = cssPath + ' .ember-power-select-trigger';
+      var $trigger = find(triggerPath);
+      if ($trigger === undefined || $trigger.length === 0) {
         triggerPath = cssPath;
-      } else {
-        $trigger = $trigger.find('.ember-power-select-trigger');
-        triggerPath = cssPath + ' .ember-power-select-trigger';
+        $trigger = find(triggerPath);
       }
 
       var contentId = '' + $trigger.attr('aria-controls');
@@ -17620,6 +17620,183 @@ define('frontend-cp/tests/integration/components/ko-info-bar/component-test', ['
     })()));
 
     assert.equal(this.$().text().trim(), '');
+  });
+});
+define('frontend-cp/tests/integration/components/ko-info-bar/field/checkbox/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit'], function (exports, _ember, _frontendCpTestsHelpersQunit) {
+
+  (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-info-bar/field/checkbox', {
+    integration: true
+  });
+
+  var options = [{ id: 1, value: 'Red' }, { id: 2, value: 'Green' }, { id: 3, value: 'Blue' }];
+
+  (0, _frontendCpTestsHelpersQunit.test)('it has a title', function (assert) {
+    var _this = this;
+
+    assert.expect(2);
+
+    this.set('title', '');
+
+    this.render(_ember['default'].HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@2.7.0',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 5,
+              'column': 2
+            }
+          }
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode('\n    ');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode('\n  ');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [['inline', 'ko-info-bar/field/checkbox', [], ['title', ['subexpr', '@mut', [['get', 'title', ['loc', [null, [3, 12], [3, 17]]], 0, 0, 0, 0]], [], [], 0, 0]], ['loc', [null, [2, 4], [4, 6]]], 0, 0]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.equal($.trim(this.$().text()), '');
+
+    var title = 'Title Goes Here';
+    _ember['default'].run(function () {
+      _this.set('title', title);
+    });
+
+    assert.equal($.trim(this.$('.ko-info-bar_item__header').text()), title);
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('it has checkboxes', function (assert) {
+    assert.expect(3);
+
+    this.set('options', options);
+    this.render(_ember['default'].HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@2.7.0',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 5,
+              'column': 2
+            }
+          }
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode('\n    ');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode('\n  ');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [['inline', 'ko-info-bar/field/checkbox', [], ['options', ['subexpr', '@mut', [['get', 'options', ['loc', [null, [3, 14], [3, 21]]], 0, 0, 0, 0]], [], [], 0, 0]], ['loc', [null, [2, 4], [4, 6]]], 0, 0]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.equal($.trim(this.$('label:eq(0)').text().trim()), options[0].value);
+    assert.equal($.trim(this.$('label:eq(1)').text().trim()), options[1].value);
+    assert.equal($.trim(this.$('label:eq(2)').text().trim()), options[2].value);
+  });
+
+  (0, _frontendCpTestsHelpersQunit.test)('checkbox state is in sync with the data', function (assert) {
+    var _this2 = this;
+
+    assert.expect(4);
+
+    this.set('options', options);
+    this.set('value', '2');
+    this.set('actions.checked', function (value) {
+      assert.deepEqual(value, '1,2', 'it has been checked');
+    });
+
+    this.render(_ember['default'].HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@2.7.0',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 7,
+              'column': 2
+            }
+          }
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode('\n    ');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode('\n  ');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [['inline', 'ko-info-bar/field/checkbox', [], ['options', ['subexpr', '@mut', [['get', 'options', ['loc', [null, [3, 14], [3, 21]]], 0, 0, 0, 0]], [], [], 0, 0], 'value', ['subexpr', '@mut', [['get', 'value', ['loc', [null, [4, 12], [4, 17]]], 0, 0, 0, 0]], [], [], 0, 0], 'onValueChange', ['subexpr', 'action', ['checked'], [], ['loc', [null, [5, 20], [5, 38]]], 0, 0]], ['loc', [null, [2, 4], [6, 6]]], 0, 0]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.equal(this.$('[aria-checked]:eq(0)').attr('aria-checked'), 'false');
+    assert.equal(this.$('[aria-checked]:eq(1)').attr('aria-checked'), 'true');
+    assert.equal(this.$('[aria-checked]:eq(2)').attr('aria-checked'), 'false');
+
+    _ember['default'].run(function () {
+      _this2.$('[aria-checked]:eq(0)').click();
+    });
   });
 });
 define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/component-test', ['exports', 'ember', 'ember-qunit', 'frontend-cp/lib/keycodes', 'ember-test-helpers/wait', 'frontend-cp/tests/helpers/ember-power-select'], function (exports, _ember, _emberQunit, _frontendCpLibKeycodes, _emberTestHelpersWait, _frontendCpTestsHelpersEmberPowerSelect) {
@@ -19361,68 +19538,6 @@ define('frontend-cp/tests/unit/components/ko-editable-text/component-test', ['ex
     assert.equal(component.isEditing, false, 'is not editable');
   });
 });
-define('frontend-cp/tests/unit/components/ko-info-bar/field/checkbox/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit'], function (exports, _ember, _frontendCpTestsHelpersQunit) {
-
-  (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-info-bar/field/checkbox', {
-    needs: ['component:ko-checkbox', 'template:components/ko-checkbox', 'helper:ko-helper', 'helper:qa-cls']
-  });
-
-  var options = [{ id: 1, value: 'Red' }, { id: 2, value: 'Green' }, { id: 3, value: 'Blue' }];
-
-  (0, _frontendCpTestsHelpersQunit.test)('it has a title', function (assert) {
-    assert.expect(2);
-
-    var component = this.subject();
-
-    assert.equal($.trim(this.$().text()), '');
-
-    var title = 'Title Goes Here';
-    _ember['default'].run(function () {
-      component.set('title', title);
-    });
-
-    assert.equal($.trim(this.$('.ko-info-bar_item__header').text()), title);
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('it has checkboxes', function (assert) {
-    var component = this.subject();
-
-    _ember['default'].run(function () {
-      component.set('options', options);
-    });
-
-    assert.equal($.trim(this.$('label:eq(0)').text().trim()), options[0].value);
-    assert.equal($.trim(this.$('label:eq(1)').text().trim()), options[1].value);
-    assert.equal($.trim(this.$('label:eq(2)').text().trim()), options[2].value);
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('checkbox state is in sync with the data', function (assert) {
-    var _this = this;
-
-    assert.expect(4);
-    var component = this.subject();
-
-    _ember['default'].run(function () {
-      component.set('options', options);
-      component.set('value', '2');
-    });
-
-    assert.equal(this.$('[aria-checked]:eq(0)').attr('aria-checked'), 'false');
-    assert.equal(this.$('[aria-checked]:eq(1)').attr('aria-checked'), 'true');
-    assert.equal(this.$('[aria-checked]:eq(2)').attr('aria-checked'), 'false');
-
-    component.set('onValueChange', 'checked');
-    component.set('targetObject', {
-      checked: function checked(value) {
-        assert.deepEqual(value, '1,2', 'it has been checked');
-      }
-    });
-
-    _ember['default'].run(function () {
-      _this.$('[aria-checked]:eq(0)').click();
-    });
-  });
-});
 define('frontend-cp/tests/unit/components/ko-people-popover/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-people-popover/styles'], function (exports, _ember, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoPeoplePopoverStyles) {
   var getOwner = _ember['default'].getOwner;
 
@@ -19434,7 +19549,7 @@ define('frontend-cp/tests/unit/components/ko-people-popover/component-test', ['e
   var debounce = _ember['default'].run.debounce;
 
   (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-people-popover', {
-    needs: ['component:ko-checkbox', 'component:ko-avatar', 'component:ko-loader', 'component:ko-flag', 'helper:t', 'service:intl', 'service:i18n', 'ember-intl@adapter:default', 'ember-intl@formatter:format-message', 'util:intl/missing-message'],
+    needs: ['component:ko-checkbox', 'component:ko-avatar', 'component:ko-loader', 'component:ko-flag', 'helper:t', 'service:intl', 'service:i18n', 'ember-intl@adapter:default', 'ember-intl@formatter:format-message', 'util:intl/missing-message', 'component:ko-layout/popup-with-arrow'],
     beforeEach: function beforeEach() {
       var intl = getOwner(this).lookup('service:intl');
       intl.setLocale('en-us');
