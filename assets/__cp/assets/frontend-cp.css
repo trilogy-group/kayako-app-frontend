@@ -2110,23 +2110,27 @@ img {
   white-space: nowrap;
   width: 350px; }
 
-.dropdown :global(.button--dropdown) {
+.dropdown-trigger {
   height: 32px;
   width: 32px;
   padding: 0; }
 
-.dropdown :global(.ember-basic-dropdown-trigger[aria-expanded="true"]) :global(.button--dropdown) {
-  /* Allows menu button to overlap menu */
-  padding-bottom: 1px;
-  z-index: 60;
-  border-bottom: #FFFFFF;
-  border-radius: 2px 2px 0 0;
-  background-color: #FFFFFF;
-  background-image: none;
-  box-shadow: none; }
+.chevron {
+  -webkit-transition: -webkit-transform 0.125s;
+  transition: -webkit-transform 0.125s;
+  transition: transform 0.125s;
+  transition: transform 0.125s, -webkit-transform 0.125s;
+  display: block; }
 
-.dropdown :global(.ember-basic-dropdown-content) {
+.dropdown-trigger[aria-expanded=true] .chevron {
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg); }
+
+.dropdown-body {
+  padding: 6px 0;
+  margin-top: 6px;
   border: 1px solid #d1d5d7;
+  border-radius: 2px;
   width: 160px;
   position: absolute;
   right: 0;
@@ -4747,23 +4751,27 @@ label {
   color: #38a0be; }
 
 /* styles for frontend-cp/components/ko-action-menu/styles.css */
-.ko-action-menu__dropdown_1d4fb5 .button--dropdown {
+.ko-action-menu__dropdown-trigger_1d4fb5 {
   height: 32px;
   width: 32px;
   padding: 0; }
 
-.ko-action-menu__dropdown_1d4fb5 .ember-basic-dropdown-trigger[aria-expanded="true"] .button--dropdown {
-  /* Allows menu button to overlap menu */
-  padding-bottom: 1px;
-  z-index: 60;
-  border-bottom: #FFFFFF;
-  border-radius: 2px 2px 0 0;
-  background-color: #FFFFFF;
-  background-image: none;
-  box-shadow: none; }
+.ko-action-menu__chevron_1d4fb5 {
+  -webkit-transition: -webkit-transform 0.125s;
+  transition: -webkit-transform 0.125s;
+  transition: transform 0.125s;
+  transition: transform 0.125s, -webkit-transform 0.125s;
+  display: block; }
 
-.ko-action-menu__dropdown_1d4fb5 .ember-basic-dropdown-content {
+.ko-action-menu__dropdown-trigger_1d4fb5[aria-expanded=true] .ko-action-menu__chevron_1d4fb5 {
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg); }
+
+.ko-action-menu__dropdown-body_1d4fb5 {
+  padding: 6px 0;
+  margin-top: 6px;
   border: 1px solid #d1d5d7;
+  border-radius: 2px;
   width: 160px;
   position: absolute;
   right: 0;
@@ -8185,36 +8193,6 @@ span#HW_badge.HW_softHidden {
   display: flex;
   height: 42px; }
 
-.ko-session-widgets__root_ztxb45 .ember-basic-dropdown-trigger {
-  border-left: 1px solid #D1D5D7;
-  border-right: 1px solid #D1D5D7;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  outline: none;
-  height: 42px; }
-
-.ko-session-widgets__root_ztxb45 .ember-basic-dropdown-content {
-  position: initial;
-  border: 1px solid #D1D5D7;
-  border-top: none;
-  border-bottom-right-radius: 4px;
-  border-bottom-left-radius: 4px; }
-
-.ko-session-widgets__root_ztxb45 .i-chevron-large-down {
-  padding: 0 0.4rem;
-  -webkit-transition: -webkit-transform 0.125s;
-  transition: -webkit-transform 0.125s;
-  transition: transform 0.125s;
-  transition: transform 0.125s, -webkit-transform 0.125s; }
-
-.ko-session-widgets__root_ztxb45 .ember-basic-dropdown-trigger[aria-expanded=true] .i-chevron-large-down {
-  -webkit-transform: rotate(180deg);
-          transform: rotate(180deg); }
-
 .ko-session-widgets__avatar-container_ztxb45 {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -8232,7 +8210,7 @@ span#HW_badge.HW_softHidden {
       -ms-flex: 1;
           flex: 1; }
 
-.ko-session-widgets__user-dropdown_ztxb45 {
+.ko-session-widgets__user-dropdown-trigger_ztxb45 {
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
@@ -8242,7 +8220,36 @@ span#HW_badge.HW_softHidden {
       -ms-flex: 0 0 257px;
           flex: 0 0 257px;
   width: 257px;
-  /* http://stackoverflow.com/questions/38227597/difference-between-width-and-flex-basis */ }
+  /* http://stackoverflow.com/questions/38227597/difference-between-width-and-flex-basis */
+  border-left: 1px solid #D1D5D7;
+  border-right: 1px solid #D1D5D7;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  outline: none;
+  height: 42px; }
+
+.ko-session-widgets__chevron_ztxb45 {
+  padding: 0 0.4rem;
+  -webkit-transition: -webkit-transform 0.125s;
+  transition: -webkit-transform 0.125s;
+  transition: transform 0.125s;
+  transition: transform 0.125s, -webkit-transform 0.125s; }
+
+.ko-session-widgets__user-dropdown-trigger_ztxb45[aria-expanded=true] .ko-session-widgets__chevron_ztxb45 {
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg); }
+
+.ko-session-widgets__user-dropdown-content_ztxb45 {
+  position: initial;
+  border: 1px solid #D1D5D7;
+  border-top: none;
+  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 4px;
+  padding: 6px 0; }
 
 .ko-session-widgets__menu_ztxb45 {
   list-style-type: none; }
