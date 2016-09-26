@@ -4672,12 +4672,12 @@ img {
       -ms-flex-align: center;
           align-items: center; }
 
-/* styles for frontend-cp/components/ko-admin/apps/endpoints/edit/styles.css */
-.ko-admin_apps_endpoints_edit__select_1f23oy {
+/* styles for frontend-cp/components/ko-admin/apps/endpoints/form/styles.css */
+.ko-admin_apps_endpoints_form__select_ncqmvx {
   width: 100px;
   margin-right: 20px; }
 
-.ko-admin_apps_endpoints_edit__checkbox_1f23oy {
+.ko-admin_apps_endpoints_form__checkbox_ncqmvx {
   margin-top: 13.5px; }
 
 /* styles for frontend-cp/components/ko-admin/apps/endpoints/list-row/styles.css */
