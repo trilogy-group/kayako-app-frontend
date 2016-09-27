@@ -205,6 +205,8 @@
   "text_editor.attach_file": "Attach a file",
   "text_editor.clear_formatting": "Clear formatting",
   "text_editor.show_controls": "Show controls",
+  "text_editor.link": "Link",
+  "text_editor.cc": "CC",
   "text_editor.link_manager.link": "Link",
   "text_editor.link_manager.url": "URL",
   "text_editor.link_manager.shown_text": "Shown text",
