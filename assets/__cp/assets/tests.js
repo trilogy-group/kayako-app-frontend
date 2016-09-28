@@ -1376,7 +1376,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/index-test', ['ex
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'moment', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-admin/automation-actions-builder/styles', 'frontend-cp/components/ko-modal/styles'], function (exports, _frontendCpTestsHelpersQunit, _moment, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoAdminAutomationActionsBuilderStyles, _frontendCpComponentsKoModalStyles) {
+define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'moment', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-admin/automation-actions-builder/styles', 'frontend-cp/components/ko-modal/styles', 'frontend-cp/components/ko-date-select/styles', 'frontend-cp/components/ko-datepicker/styles'], function (exports, _frontendCpTestsHelpersQunit, _moment, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoAdminAutomationActionsBuilderStyles, _frontendCpComponentsKoModalStyles, _frontendCpComponentsKoDateSelectStyles, _frontendCpComponentsKoDatepickerStyles) {
 
   var role = undefined;
 
@@ -2333,12 +2333,12 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
 
       selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(0)', 'RZ: Date');
       selectChoose('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(1)', 'change');
-      click('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2) .ko-date-select__trigger');
+      click('.ko-automation-actions-builder .' + _frontendCpComponentsKoAdminAutomationActionsBuilderStyles['default']['small-slot'] + ':eq(2) .' + _frontendCpComponentsKoDateSelectStyles['default'].trigger);
     });
 
     andThen(function () {
       var dayText = (0, _moment['default'])().date().toString();
-      var dayCell = find('.ko-datepicker__date--current-month').filter(function (_, el) {
+      var dayCell = find('.' + _frontendCpComponentsKoDatepickerStyles['default'].dateCurrentMonth).filter(function (_, el) {
         return el.textContent.trim() === dayText;
       });
       click(dayCell);
@@ -12131,7 +12131,7 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
   }
 });
 /* eslint-disable new-cap */
-define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'ember', 'frontend-cp/session/styles', 'frontend-cp/components/ko-checkbox/styles', 'frontend-cp/components/ko-info-bar/field/select/trigger/styles', 'frontend-cp/components/ko-pagination/styles', 'frontend-cp/components/ko-cases-list/sidebar/styles', 'frontend-cp/components/ko-cases-list/sidebar/item/styles', 'frontend-cp/components/ko-modal/styles'], function (exports, _frontendCpTestsHelpersQunit, _ember, _frontendCpSessionStyles, _frontendCpComponentsKoCheckboxStyles, _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles, _frontendCpComponentsKoPaginationStyles, _frontendCpComponentsKoCasesListSidebarStyles, _frontendCpComponentsKoCasesListSidebarItemStyles, _frontendCpComponentsKoModalStyles) {
+define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'ember', 'frontend-cp/session/styles', 'frontend-cp/components/ko-checkbox/styles', 'frontend-cp/components/ko-info-bar/field/select/trigger/styles', 'frontend-cp/components/ko-pagination/styles', 'frontend-cp/components/ko-cases-list/sidebar/styles', 'frontend-cp/components/ko-cases-list/sidebar/item/styles', 'frontend-cp/components/ko-modal/styles', 'frontend-cp/components/ko-bulk-sidebar/styles', 'frontend-cp/components/ko-cases-list/styles'], function (exports, _frontendCpTestsHelpersQunit, _ember, _frontendCpSessionStyles, _frontendCpComponentsKoCheckboxStyles, _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles, _frontendCpComponentsKoPaginationStyles, _frontendCpComponentsKoCasesListSidebarStyles, _frontendCpComponentsKoCasesListSidebarItemStyles, _frontendCpComponentsKoModalStyles, _frontendCpComponentsKoBulkSidebarStyles, _frontendCpComponentsKoCasesListStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Case | List', {
     beforeEach: function beforeEach() {
@@ -12372,12 +12372,12 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
     andThen(function () {
       assert.equal(currentURL(), '/agent/cases/view/1');
       assert.equal(find('.' + _frontendCpSessionStyles['default'].tab).length, 0);
-      triggerEvent('.ko-cases-list__row:first-child', 'click', { metaKey: true });
+      triggerEvent('.' + _frontendCpComponentsKoCasesListStyles['default'].row + ':first-child', 'click', { metaKey: true });
     });
 
     andThen(function () {
       assert.equal(find('.' + _frontendCpSessionStyles['default'].tab).length, 1);
-      triggerEvent('.ko-cases-list__row:first-child', 'click', { metaKey: true });
+      triggerEvent('.' + _frontendCpComponentsKoCasesListStyles['default'].row + ':first-child', 'click', { metaKey: true });
     });
 
     andThen(function () {
@@ -12435,7 +12435,7 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
 
     andThen(function () {
       assert.equal(currentURL(), '/agent/cases/view/1');
-      assert.equal(find('.ko-cases-list__action-button').length, 0);
+      assert.equal(find('.' + _frontendCpComponentsKoCasesListStyles['default'].actionButton).length, 0);
     });
 
     andThen(function () {
@@ -12444,9 +12444,9 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
     });
 
     andThen(function () {
-      assert.equal(find('.ko-cases-list__action-button').length, 1);
+      assert.equal(find('.' + _frontendCpComponentsKoCasesListStyles['default'].actionButton).length, 1);
       assert.notOk(find('.' + _frontendCpComponentsKoPaginationStyles['default'].paginationContainer).length);
-      assert.equal(find('.ko-bulk-sidebar__title').text().trim(), 'Update Cases');
+      assert.equal(find('.' + _frontendCpComponentsKoBulkSidebarStyles['default'].title).text().trim(), 'Update Cases');
     });
   });
 
@@ -12481,7 +12481,7 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
     });
 
     andThen(function () {
-      click('.ko-cases-list__action-button');
+      click('.' + _frontendCpComponentsKoCasesListStyles['default'].actionButton);
     });
 
     andThen(function () {
@@ -12526,7 +12526,7 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
     });
 
     andThen(function () {
-      assert.equal(find('.ko-bulk-sidebar__title').text().trim(), 'Update Cases');
+      assert.equal(find('.' + _frontendCpComponentsKoBulkSidebarStyles['default'].title).text().trim(), 'Update Cases');
       assert.equal(find('button:contains("Trash cases")').length, 1);
       click('button[name=cancel]');
     });
@@ -12552,8 +12552,8 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
     });
 
     andThen(function () {
-      assert.equal(find('.ko-bulk-sidebar__title').text().trim(), 'Update Cases');
-      selectChoose('.fields div:nth-child(2)', 'Open');
+      assert.equal(find('.' + _frontendCpComponentsKoBulkSidebarStyles['default'].title).text().trim(), 'Update Cases');
+      selectChoose('.' + _frontendCpComponentsKoBulkSidebarStyles['default'].fields + ' div:nth-child(2)', 'Open');
       click('button[name=update-cases]');
     });
 
@@ -12577,15 +12577,15 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
     });
 
     andThen(function () {
-      assert.equal(find('.ko-bulk-sidebar__title').text().trim(), 'Update Cases');
-      selectChoose('.fields div:nth-child(2)', 'Open');
-      selectChoose('.fields div:nth-child(3)', 'Question');
-      selectChoose('.fields div:nth-child(4)', 'Low');
+      assert.equal(find('.' + _frontendCpComponentsKoBulkSidebarStyles['default'].title).text().trim(), 'Update Cases');
+      selectChoose('.' + _frontendCpComponentsKoBulkSidebarStyles['default'].fields + ' div:nth-child(2)', 'Open');
+      selectChoose('.' + _frontendCpComponentsKoBulkSidebarStyles['default'].fields + ' div:nth-child(3)', 'Question');
+      selectChoose('.' + _frontendCpComponentsKoBulkSidebarStyles['default'].fields + ' div:nth-child(4)', 'Low');
     });
 
     andThen(function () {
-      _ember['default'].$('.fields div:nth-child(5) input').val('tag test');
-      _ember['default'].$('.fields div:nth-child(5) input').trigger('input');
+      _ember['default'].$('.' + _frontendCpComponentsKoBulkSidebarStyles['default'].fields + ' div:nth-child(5) input').val('tag test');
+      _ember['default'].$('.' + _frontendCpComponentsKoBulkSidebarStyles['default'].fields + ' div:nth-child(5) input').trigger('input');
     });
 
     andThen(function () {
@@ -12602,7 +12602,7 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
       find('.' + _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles['default'].placeholder).each(function (index, placeholder) {
         assert.equal(_this2.$(placeholder).text(), 'No Changes');
       });
-      assert.equal(find('.fields div:nth-child(5) ul').text().trim(), '');
+      assert.equal(find('.' + _frontendCpComponentsKoBulkSidebarStyles['default'].fields + ' div:nth-child(5) ul').text().trim(), '');
     });
   });
 
