@@ -7214,7 +7214,7 @@ define('frontend-cp/tests/acceptance/admin/manage/localization/list-test', ['exp
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/manage/macros/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-admin/automation-actions-builder/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoAdminAutomationActionsBuilderStyles) {
+define('frontend-cp/tests/acceptance/admin/manage/macros/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-admin/automation-actions-builder/styles', 'frontend-cp/session/admin/manage/macros/index/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoAdminAutomationActionsBuilderStyles, _frontendCpSessionAdminManageMacrosIndexStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/manage/macros/new', {
     beforeEach: function beforeEach() {
@@ -7288,10 +7288,10 @@ define('frontend-cp/tests/acceptance/admin/manage/macros/new-test', ['exports', 
     click('.qa-admin_macros_edit__submit-button');
 
     andThen(function () {
-      assert.equal(find('.ko-admin_macros__title:contains("New Macro")').length, 1);
+      assert.equal(find('.' + _frontendCpSessionAdminManageMacrosIndexStyles['default'].title + ':contains("New Macro")').length, 1);
     });
 
-    click('.ko-admin_macros__title:contains("New Macro")');
+    click('.' + _frontendCpSessionAdminManageMacrosIndexStyles['default'].title + ':contains("New Macro")');
 
     andThen(function () {
       assert.equal(find('.qa-admin_macros_edit__title-input').val(), 'New Macro');
@@ -7624,7 +7624,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/edit-test', ['exports', 
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-admin/views/edit/columns/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoAdminViewsEditColumnsStyles) {
 
   var fieldTitle = 'fieldTitle';
   var rule1String = 'rule1string';
@@ -8077,10 +8077,10 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       expectedColumns.push('Updated at');
       expectedColumns.push('Requester');
 
-      assert.deepEqual(textNodesToArray('.ko-views-column .ko-views-column__content'), expectedColumns);
+      assert.deepEqual(textNodesToArray('.' + _frontendCpComponentsKoAdminViewsEditColumnsStyles['default'].content), expectedColumns);
     });
 
-    reorderListItems('.i-dragstrip', '.ko-views-column__content', 'Subject', 'Case ID', 'Status', 'Assigned agent', 'Updated at', 'Requester');
+    reorderListItems('.i-dragstrip', '.' + _frontendCpComponentsKoAdminViewsEditColumnsStyles['default'].content, 'Subject', 'Case ID', 'Status', 'Assigned agent', 'Updated at', 'Requester');
 
     andThen(function () {
       var expectedColumns = [];
@@ -8091,7 +8091,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       expectedColumns.push('Updated at');
       expectedColumns.push('Requester');
 
-      assert.deepEqual(textNodesToArray('.ko-views-column .ko-views-column__content'), expectedColumns);
+      assert.deepEqual(textNodesToArray('.' + _frontendCpComponentsKoAdminViewsEditColumnsStyles['default'].content), expectedColumns);
     });
   });
 
@@ -8115,7 +8115,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       expectedColumns.push('Updated at');
       expectedColumns.push('Requester');
 
-      assert.deepEqual(textNodesToArray('.ko-views-column .ko-views-column__content'), expectedColumns);
+      assert.deepEqual(textNodesToArray('.' + _frontendCpComponentsKoAdminViewsEditColumnsStyles['default'].content), expectedColumns);
     });
 
     andThen(function () {
@@ -8132,10 +8132,12 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       expectedColumns.push('Requester');
       expectedColumns.push('Priority');
 
-      assert.deepEqual(textNodesToArray('.ko-views-column .ko-views-column__content'), expectedColumns);
+      assert.deepEqual(textNodesToArray('.' + _frontendCpComponentsKoAdminViewsEditColumnsStyles['default'].content), expectedColumns);
     });
 
-    reorderListItems('.i-dragstrip', '.ko-views-column__content', 'Case ID', 'Priority', 'Subject', 'Status', 'Assigned agent', 'Updated at', 'Requester');
+    andThen(function () {
+      reorderListItems('.i-dragstrip', '.' + _frontendCpComponentsKoAdminViewsEditColumnsStyles['default'].content, 'Case ID', 'Priority', 'Subject', 'Status', 'Assigned agent', 'Updated at', 'Requester');
+    });
 
     andThen(function () {
       var expectedColumns = [];
@@ -8147,11 +8149,11 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       expectedColumns.push('Updated at');
       expectedColumns.push('Requester');
 
-      assert.deepEqual(textNodesToArray('.ko-views-column .ko-views-column__content'), expectedColumns);
+      assert.deepEqual(textNodesToArray('.' + _frontendCpComponentsKoAdminViewsEditColumnsStyles['default'].content), expectedColumns);
     });
 
     andThen(function () {
-      click('.ko-views-column .ko-views-column__item:contains("Priority") .qa-configure-column__remove');
+      click('.' + _frontendCpComponentsKoAdminViewsEditColumnsStyles['default'].item + ':contains("Priority") .qa-configure-column__remove');
     });
 
     andThen(function () {
@@ -8163,7 +8165,7 @@ define('frontend-cp/tests/acceptance/admin/manage/views/new-test', ['exports', '
       expectedColumns.push('Updated at');
       expectedColumns.push('Requester');
 
-      assert.deepEqual(textNodesToArray('.ko-views-column .ko-views-column__content'), expectedColumns);
+      assert.deepEqual(textNodesToArray('.' + _frontendCpComponentsKoAdminViewsEditColumnsStyles['default'].content), expectedColumns);
     });
   });
 });
@@ -10067,7 +10069,7 @@ define('frontend-cp/tests/acceptance/admin/people/staff/add/permission-test', ['
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/people/teams-forms-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+define('frontend-cp/tests/acceptance/admin/people/teams-forms-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-admin-card-team/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoAdminCardTeamStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Admin | People | Teams', {
     beforeEach: function beforeEach() {
@@ -10103,8 +10105,8 @@ define('frontend-cp/tests/acceptance/admin/people/teams-forms-test', ['exports',
     visit('/admin/people/teams');
 
     andThen(function () {
-      assert.equal(find('.ko-admin-card-team').length, 2);
-      click('.ko-admin-card-team:eq(0) a');
+      assert.equal(find('.' + _frontendCpComponentsKoAdminCardTeamStyles['default'].container).length, 2);
+      click('.' + _frontendCpComponentsKoAdminCardTeamStyles['default'].container + ':eq(0) a');
     });
 
     andThen(function () {
@@ -14546,7 +14548,7 @@ define('frontend-cp/tests/acceptance/agent/organizations/edit-test', ['exports',
   });
 });
 /* eslint-disable camelcase, new-cap */
-define('frontend-cp/tests/acceptance/agent/search/search-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/lib/keycodes', 'frontend-cp/session/styles', 'frontend-cp/components/ko-search-sidebar/item/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpLibKeycodes, _frontendCpSessionStyles, _frontendCpComponentsKoSearchSidebarItemStyles) {
+define('frontend-cp/tests/acceptance/agent/search/search-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/lib/keycodes', 'frontend-cp/session/styles', 'frontend-cp/components/ko-search-sidebar/item/styles', 'frontend-cp/components/ko-universal-search/input/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpLibKeycodes, _frontendCpSessionStyles, _frontendCpComponentsKoSearchSidebarItemStyles, _frontendCpComponentsKoUniversalSearchInputStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Case | Search', {
     beforeEach: function beforeEach() {
@@ -14573,7 +14575,7 @@ define('frontend-cp/tests/acceptance/agent/search/search-test', ['exports', 'fro
 
     andThen(function () {
       assert.equal(find('.' + _frontendCpSessionStyles['default']['tab-label']).text().trim(), 'Search: "' + term + '"');
-      assert.equal(find('.ko-universal-search_entry').val(), term);
+      assert.equal(find('.' + _frontendCpComponentsKoUniversalSearchInputStyles['default'].entry).val(), term);
     });
   });
 
@@ -14588,8 +14590,8 @@ define('frontend-cp/tests/acceptance/agent/search/search-test', ['exports', 'fro
     });
 
     andThen(function () {
-      fillIn('.ko-universal-search_entry', term2);
-      keyEvent('.ko-universal-search_entry', 'keydown', _frontendCpLibKeycodes.enter);
+      fillIn('.' + _frontendCpComponentsKoUniversalSearchInputStyles['default'].entry, term2);
+      keyEvent('.' + _frontendCpComponentsKoUniversalSearchInputStyles['default'].entry, 'keydown', _frontendCpLibKeycodes.enter);
     });
 
     andThen(function () {
@@ -16811,6 +16813,92 @@ define('frontend-cp/tests/helpers/with-feature', ['exports', 'ember'], function 
 
   _ember['default'].Test.registerHelper('withFeature', withFeature);
 });
+define('frontend-cp/tests/integration/components/ko-admin-selectable-card/component-test', ['exports', 'ember-qunit', 'frontend-cp/components/ko-admin-selectable-card/styles'], function (exports, _emberQunit, _frontendCpComponentsKoAdminSelectableCardStyles) {
+
+  (0, _emberQunit.moduleForComponent)('ko-admin/views/edit/columns', 'Integration | Component | ko-admin/views/edit/columns', {
+    integration: true
+  });
+
+  (0, _emberQunit.test)('it adds selected class when isSelected=true', function (assert) {
+    this.render(Ember.HTMLBars.template((function () {
+      var child0 = (function () {
+        return {
+          meta: {
+            'revision': 'Ember@2.7.0',
+            'loc': {
+              'source': null,
+              'start': {
+                'line': 2,
+                'column': 4
+              },
+              'end': {
+                'line': 4,
+                'column': 4
+              }
+            }
+          },
+          isEmpty: false,
+          arity: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          buildFragment: function buildFragment(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode('      name\n');
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          buildRenderNodes: function buildRenderNodes() {
+            return [];
+          },
+          statements: [],
+          locals: [],
+          templates: []
+        };
+      })();
+
+      return {
+        meta: {
+          'revision': 'Ember@2.7.0',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 5,
+              'column': 2
+            }
+          }
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode('\n');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode('  ');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [['block', 'ko-admin-selectable-card', [], ['model', ['subexpr', '@mut', [['get', 'user', ['loc', [null, [2, 38], [2, 42]]], 0, 0, 0, 0]], [], [], 0, 0], 'isSelected', true, 'onSelectedAction', 'onUserSelected'], 0, null, ['loc', [null, [2, 4], [4, 33]]]]],
+        locals: [],
+        templates: [child0]
+      };
+    })()));
+
+    assert.ok(this.$().find('.' + _frontendCpComponentsKoAdminSelectableCardStyles['default'].selected).length, 'expected to see the selected class');
+  });
+});
 define('frontend-cp/tests/integration/components/ko-admin/sidebar-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
 
   (0, _emberQunit.moduleForComponent)('ko-admin/sidebar', 'Integration | Component | ko-admin/sidebar', {
@@ -18939,36 +19027,6 @@ define('frontend-cp/tests/integration/components/ko-radio/component-test', ['exp
 define('frontend-cp/tests/test-helper', ['exports', 'frontend-cp/tests/helpers/resolver', 'ember-qunit'], function (exports, _frontendCpTestsHelpersResolver, _emberQunit) {
 
   (0, _emberQunit.setResolver)(_frontendCpTestsHelpersResolver['default']);
-});
-define('frontend-cp/tests/unit/components/ko-admin-selectable-card/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit'], function (exports, _ember, _frontendCpTestsHelpersQunit) {
-
-  var component = undefined;
-
-  (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-admin-selectable-card', {
-    needs: ['component:ko-checkbox'],
-
-    setup: function setup() {
-      component = this.subject();
-    }
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('setting inactive state adds class', function (assert) {
-    _ember['default'].run(function () {
-      component.set('isActive', false);
-    });
-
-    this.render();
-    assert.ok(this.$().hasClass('ko-admin-selectable-card--inactive'));
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('setting selected state adds class', function (assert) {
-    _ember['default'].run(function () {
-      component.set('isSelected', true);
-    });
-
-    this.render();
-    assert.ok(this.$().hasClass('ko-admin-selectable-card--selected'));
-  });
 });
 define('frontend-cp/tests/unit/components/ko-admin/triggers/form/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit'], function (exports, _ember, _frontendCpTestsHelpersQunit) {
 
