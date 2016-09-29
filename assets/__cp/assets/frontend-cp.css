@@ -5701,6 +5701,17 @@ a.ko-admin_plans_index__cancel_1br1r5 {
 .ko-cases-list_column_avatar__avatar_1dyx7p {
   margin-right: 9px; }
 
+/* styles for frontend-cp/components/ko-cases-list/sidebar/item/reload-icon/styles.css */
+/* Reload icon */
+.ko-cases-list_sidebar_item_reload-icon__reload-icon_1s3p95 {
+  margin-right: 6px;
+  display: none; }
+
+.active:not(.ember-transitioning-out) .ko-cases-list_sidebar_item_reload-icon__reload-icon_1s3p95 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+
 /* styles for frontend-cp/components/ko-cases-list/sidebar/item/styles.css */
 /* Icon */
 .ko-cases-list_sidebar_item__icon_1km4cn {
@@ -5717,16 +5728,6 @@ a.ko-admin_plans_index__cancel_1br1r5 {
           flex: 1;
   overflow-x: hidden;
   text-overflow: ellipsis; }
-
-/* Reload icon */
-.ko-cases-list_sidebar_item__reload-icon_1km4cn {
-  margin-right: 6px;
-  display: none; }
-
-.active:not(.ember-transitioning-out) .ko-cases-list_sidebar_item__reload-icon_1km4cn {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex; }
 
 /* Counter */
 .ko-cases-list_sidebar_item__counter_1km4cn {
