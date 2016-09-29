@@ -91,7 +91,6 @@
   "create_user_panel.name_label": "First and last name",
   "create_user_panel.email_label": "Email address",
   "create_user_panel.name_required": "Name is required",
-  "create_user_panel.email_required": "Email address is required",
   "create_user_panel.email_invalid": "Invalid email address",
   "create_user_panel.submit": "Add user",
   "create_user_panel.info": "You can add additional contact details once you've created the user.",
@@ -148,6 +147,7 @@
   "identities.confirm_remove": "Are you sure you want to remove this identity?",
   "identities.added.success_message": "Identity added successfully",
   "identities.removed.success_message": "Identity removed successfully",
+  "identities.see_profile": "See profile",
 
   "error.field_required": "This action requires the field to be specified",
   "error.field_duplicate": "The value of the field is already used for another resource",

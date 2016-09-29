@@ -826,7 +826,7 @@ define('frontend-cp/tests/acceptance/admin/apps/webhooks/new-test', ['exports', 
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/automation/businesshours/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles) {
+define('frontend-cp/tests/acceptance/admin/automation/businesshours/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-grid-picker/styles', 'frontend-cp/components/ko-form/field/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoGridPickerStyles, _frontendCpComponentsKoFormFieldStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/automation/businesshours Edit', {
     beforeEach: function beforeEach() {
@@ -867,17 +867,17 @@ define('frontend-cp/tests/acceptance/admin/automation/businesshours/edit-test', 
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/businesshours/1');
-      click('.ko-grid-picker__row:first-child .ko-grid-picker__cell:first-child');
-      click('.ko-grid-picker__row:nth-child(2) .ko-grid-picker__cell:first-child');
+      click('.' + _frontendCpComponentsKoGridPickerStyles['default'].row + ':first-child .' + _frontendCpComponentsKoGridPickerStyles['default'].cell + ':first-child');
+      click('.' + _frontendCpComponentsKoGridPickerStyles['default'].row + ':nth-child(2) .' + _frontendCpComponentsKoGridPickerStyles['default'].cell + ':first-child');
     });
 
     andThen(function () {
-      assert.equal(find('.ko-grid-picker__row .selected').length, 2);
-      click('.ko-grid-picker__row:first-child .ko-grid-picker__cell:first-child');
+      assert.equal(find('.' + _frontendCpComponentsKoGridPickerStyles['default'].row + ' .' + _frontendCpComponentsKoGridPickerStyles['default'].selected).length, 2);
+      click('.' + _frontendCpComponentsKoGridPickerStyles['default'].row + ':first-child .' + _frontendCpComponentsKoGridPickerStyles['default'].cell + ':first-child');
     });
 
     andThen(function () {
-      assert.equal(find('.ko-grid-picker__row .selected').length, 1);
+      assert.equal(find('.' + _frontendCpComponentsKoGridPickerStyles['default'].row + ' .' + _frontendCpComponentsKoGridPickerStyles['default'].selected).length, 1);
     });
   });
 
@@ -890,7 +890,7 @@ define('frontend-cp/tests/acceptance/admin/automation/businesshours/edit-test', 
     });
 
     andThen(function () {
-      fillIn('.ko-form_field input', 'My Birthday');
+      fillIn('.' + _frontendCpComponentsKoFormFieldStyles['default'].container + ' input', 'My Birthday');
     });
 
     andThen(function () {
@@ -902,7 +902,7 @@ define('frontend-cp/tests/acceptance/admin/automation/businesshours/edit-test', 
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/automation/monitors/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-modal/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoModalStyles) {
+define('frontend-cp/tests/acceptance/admin/automation/monitors/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-modal/styles', 'frontend-cp/components/ko-admin/predicate-builder/proposition/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoModalStyles, _frontendCpComponentsKoAdminPredicateBuilderPropositionStyles) {
 
   var monitor = undefined;
 
@@ -1126,19 +1126,19 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/edit-test', ['exp
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors/' + monitor.id);
-      click('.ko-predicate-builder__add');
+      click('.qa-predicate-builder__add');
 
       selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--column', 'Subject');
       selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--operator', 'does not contain');
       fillIn('.qa-predicate-builder--proposition:eq(1) input:last', 'collection1proposition2');
 
-      click('.ko-predicate-builder__new');
+      click('.qa-predicate-builder__new');
 
       selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--column', 'Subject');
       selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--operator', 'does not contain');
       fillIn('.qa-predicate-builder--proposition:eq(2) input:last', 'collection2proposition1');
 
-      click('.ko-predicate-builder_proposition__remove:eq(0)');
+      click('.' + _frontendCpComponentsKoAdminPredicateBuilderPropositionStyles['default'].remove + ':eq(0)');
       click('.button[name=submit]');
     });
 
@@ -1151,10 +1151,10 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/edit-test', ['exp
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors/' + monitor.id);
-      assert.equal(find('.ko-predicate-builder').length, 2, 'There is 2 predicate collections');
-      assert.equal(find('.ko-predicate-builder:eq(0) .qa-predicate-builder--proposition').length, 1, 'There is 1 proposition in the first predicate collection');
-      assert.equal(find('.ko-predicate-builder:eq(1) .qa-predicate-builder--proposition').length, 1, 'There is 1 proposition in the second predicate collection');
-      click('.ko-predicate-builder__remove:eq(0)'); // Remove the first predicate collection
+      assert.equal(find('.qa-predicate-builder').length, 2, 'There is 2 predicate collections');
+      assert.equal(find('.qa-predicate-builder:eq(0) .qa-predicate-builder--proposition').length, 1, 'There is 1 proposition in the first predicate collection');
+      assert.equal(find('.qa-predicate-builder:eq(1) .qa-predicate-builder--proposition').length, 1, 'There is 1 proposition in the second predicate collection');
+      click('.qa-predicate-builder__remove:eq(0)'); // Remove the first predicate collection
       click('.button[name=submit]');
     });
 
@@ -1167,9 +1167,9 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/edit-test', ['exp
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors/' + monitor.id);
-      assert.equal(find('.ko-predicate-builder').length, 1, 'There is 1 predicate collection');
-      assert.equal(find('.ko-predicate-builder:eq(0) .qa-predicate-builder--proposition').length, 1, 'There is 1 proposition in the first predicate collection');
-      assert.equal(find('.ko-predicate-builder_proposition__input').val(), 'collection2proposition1', 'The proposition left is the expected one');
+      assert.equal(find('.qa-predicate-builder').length, 1, 'There is 1 predicate collection');
+      assert.equal(find('.qa-predicate-builder:eq(0) .qa-predicate-builder--proposition').length, 1, 'There is 1 proposition in the first predicate collection');
+      assert.equal(find('.qa-predicate-builder_proposition__input').val(), 'collection2proposition1', 'The proposition left is the expected one');
     });
   });
 
@@ -1385,13 +1385,13 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/new-test', ['expo
     selectChoose('.qa-predicate-builder--proposition:eq(0) .qa-proposition--operator', 'does not contain');
     fillIn('.qa-predicate-builder--proposition:eq(0) input:last', 'collection1proposition1');
 
-    click('.ko-predicate-builder__add');
+    click('.qa-predicate-builder__add');
 
     selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--column', 'Subject');
     selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--operator', 'does not contain');
     fillIn('.qa-predicate-builder--proposition:eq(1) input:last', 'collection1proposition2');
 
-    click('.ko-predicate-builder__new');
+    click('.qa-predicate-builder__new');
 
     selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--column', 'Subject');
     selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--operator', 'does not contain');
@@ -2592,7 +2592,7 @@ define('frontend-cp/tests/acceptance/admin/automation/sla/index-test', ['exports
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/automation/triggers/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-modal/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoModalStyles) {
+define('frontend-cp/tests/acceptance/admin/automation/triggers/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-modal/styles', 'frontend-cp/components/ko-admin/predicate-builder/proposition/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoModalStyles, _frontendCpComponentsKoAdminPredicateBuilderPropositionStyles) {
 
   var trigger = undefined;
 
@@ -2821,7 +2821,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/edit-test', ['exp
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/triggers/' + trigger.id);
-      click('.ko-predicate-builder__add');
+      click('.qa-predicate-builder__add');
       selectChoose('.qa-channels', 'Facebook');
       selectChoose('.qa-events', 'Facebook Wall Post');
 
@@ -2829,13 +2829,13 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/edit-test', ['exp
       selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--operator', 'does not contain');
       fillIn('.qa-predicate-builder--proposition:eq(1) input:last', 'collection1proposition2');
 
-      click('.ko-predicate-builder__new');
+      click('.qa-predicate-builder__new');
 
       selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--column', 'Subject');
       selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--operator', 'does not contain');
       fillIn('.qa-predicate-builder--proposition:eq(2) input:last', 'collection2proposition1');
 
-      click('.ko-predicate-builder_proposition__remove:eq(0)');
+      click('.' + _frontendCpComponentsKoAdminPredicateBuilderPropositionStyles['default'].remove + ':eq(0)');
       click('.button[name=submit]');
     });
 
@@ -2850,10 +2850,10 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/edit-test', ['exp
       assert.equal(currentURL(), '/admin/automation/triggers/' + trigger.id);
       assert.equal(find('.qa-channels .ember-power-select-selected-item').text().trim(), 'Facebook');
       assert.equal(find('.qa-events .ember-power-select-selected-item').text().trim(), 'Facebook Wall Post');
-      assert.equal(find('.ko-predicate-builder').length, 2, 'There are 2 predicate collections');
-      assert.equal(find('.ko-predicate-builder:eq(0) .qa-predicate-builder--proposition').length, 1, 'There are 1 proposition in the first predicate collection');
-      assert.equal(find('.ko-predicate-builder:eq(1) .qa-predicate-builder--proposition').length, 1, 'There are 1 proposition in the second predicate collection');
-      click('.ko-predicate-builder__remove:eq(0)'); // Remove the first predicate collection
+      assert.equal(find('.qa-predicate-builder').length, 2, 'There are 2 predicate collections');
+      assert.equal(find('.qa-predicate-builder:eq(0) .qa-predicate-builder--proposition').length, 1, 'There are 1 proposition in the first predicate collection');
+      assert.equal(find('.qa-predicate-builder:eq(1) .qa-predicate-builder--proposition').length, 1, 'There are 1 proposition in the second predicate collection');
+      click('.qa-predicate-builder__remove:eq(0)'); // Remove the first predicate collection
       click('.button[name=submit]');
     });
 
@@ -2866,9 +2866,9 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/edit-test', ['exp
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/triggers/' + trigger.id);
-      assert.equal(find('.ko-predicate-builder').length, 1, 'There are 1 predicate collection');
-      assert.equal(find('.ko-predicate-builder:eq(0) .qa-predicate-builder--proposition').length, 1, 'There are 1 proposition in the first predicate collection');
-      assert.equal(find('.ko-predicate-builder_proposition__input').val(), 'collection2proposition1', 'The proposition left is the expected one');
+      assert.equal(find('.qa-predicate-builder').length, 1, 'There are 1 predicate collection');
+      assert.equal(find('.qa-predicate-builder:eq(0) .qa-predicate-builder--proposition').length, 1, 'There are 1 proposition in the first predicate collection');
+      assert.equal(find('.qa-predicate-builder_proposition__input').val(), 'collection2proposition1', 'The proposition left is the expected one');
     });
   });
 
@@ -3135,13 +3135,13 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/new-test', ['expo
     selectChoose('.qa-predicate-builder--proposition:eq(0) .qa-proposition--operator', 'does not contain');
     fillIn('.qa-predicate-builder--proposition:eq(0) input:last', 'collection1proposition1');
 
-    click('.ko-predicate-builder__add');
+    click('.qa-predicate-builder__add');
 
     selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--column', 'Subject');
     selectChoose('.qa-predicate-builder--proposition:eq(1) .qa-proposition--operator', 'does not contain');
     fillIn('.qa-predicate-builder--proposition:eq(1) input:last', 'collection1proposition2');
 
-    click('.ko-predicate-builder__new');
+    click('.qa-predicate-builder__new');
 
     selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--column', 'Subject');
     selectChoose('.qa-predicate-builder--proposition:eq(2) .qa-proposition--operator', 'does not contain');
@@ -5154,7 +5154,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
-      fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
+      fillIn('.qa-sortable-item:first input:first', optionTitle);
 
       click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
@@ -5173,7 +5173,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=false]');
       findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
-      assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
+      assert.equal(find('.qa-sortable-item:first input:first').val(), optionTitle);
     });
   });
 
@@ -5192,7 +5192,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
-      fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
+      fillIn('.qa-sortable-item:first input:first', optionTitle);
 
       click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
@@ -5211,7 +5211,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=false]');
       findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
-      assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
+      assert.equal(find('.qa-sortable-item:first input:first').val(), optionTitle);
     });
   });
 
@@ -5230,7 +5230,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
-      fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
+      fillIn('.qa-sortable-item:first input:first', optionTitle);
 
       click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
@@ -5249,7 +5249,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=false]');
       findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
-      assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
+      assert.equal(find('.qa-sortable-item:first input:first').val(), optionTitle);
     });
   });
 
@@ -5408,7 +5408,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
-      fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
+      fillIn('.qa-sortable-item:first input:first', optionTitle);
 
       click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
@@ -5427,7 +5427,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=false]');
       findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
-      assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
+      assert.equal(find('.qa-sortable-item:first input:first').val(), optionTitle);
     });
   });
 
@@ -5544,7 +5544,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/edit-test', ['expo
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-priorities-test', ['exports', 'ember', 'qunit', 'frontend-cp/tests/helpers/start-app', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _ember, _qunit, _frontendCpTestsHelpersStartApp, _frontendCpComponentsKoSimpleListRowStyles) {
+define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-priorities-test', ['exports', 'ember', 'qunit', 'frontend-cp/tests/helpers/start-app', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-reorderable-list/styles'], function (exports, _ember, _qunit, _frontendCpTestsHelpersStartApp, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoReorderableListStyles) {
 
   var caseFieldId = 1;
 
@@ -5596,7 +5596,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-priorities-
     visit('/admin/manage/case-fields/' + caseFieldId);
 
     andThen(function () {
-      var handleSelector = '.ko-reorderable-list_item_handle';
+      var handleSelector = '.' + _frontendCpComponentsKoReorderableListStyles['default'].handle;
       var items = findWithAssert(handleSelector);
       var sortedItems = [items[1], items[0], items[2]];
 
@@ -5661,7 +5661,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-priorities-
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-statuses-test', ['exports', 'ember', 'qunit', 'frontend-cp/tests/helpers/start-app', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _ember, _qunit, _frontendCpTestsHelpersStartApp, _frontendCpComponentsKoSimpleListRowStyles) {
+define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-statuses-test', ['exports', 'ember', 'qunit', 'frontend-cp/tests/helpers/start-app', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-reorderable-list/styles'], function (exports, _ember, _qunit, _frontendCpTestsHelpersStartApp, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoReorderableListStyles) {
 
   var caseFieldId = 1;
 
@@ -5714,7 +5714,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/manage-statuses-te
     visit('/admin/manage/case-fields/' + caseFieldId);
 
     andThen(function () {
-      var handleSelector = '.ko-reorderable-list_item_handle';
+      var handleSelector = '.' + _frontendCpComponentsKoReorderableListStyles['default'].handle;
       var items = findWithAssert(handleSelector);
       var sortedItems = [items[1], items[0], items[2]];
 
@@ -6020,10 +6020,10 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
-      fillIn('.ko-reorderable-list-item:first input:first', option1Title);
+      fillIn('.qa-sortable-item:first input:first', option1Title);
 
       click('.i-add-circle');
-      fillIn('.ko-reorderable-list-item:last input:first', option2Title);
+      fillIn('.qa-sortable-item:last input:first', option2Title);
       click('.button--primary:first');
     });
 
@@ -6036,8 +6036,8 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
       assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
-      assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
-      assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
+      assert.equal(find('.qa-sortable-item:first input:first').val(), option1Title);
+      assert.equal(find('.qa-sortable-item:last input:first').val(), option2Title);
     });
   });
 
@@ -6060,10 +6060,10 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
-      fillIn('.ko-reorderable-list-item:first input:first', option1Title);
+      fillIn('.qa-sortable-item:first input:first', option1Title);
 
       click('.i-add-circle');
-      fillIn('.ko-reorderable-list-item:last input:first', option2Title);
+      fillIn('.qa-sortable-item:last input:first', option2Title);
       click('.button--primary:first');
     });
 
@@ -6076,8 +6076,8 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
       assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
-      assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
-      assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
+      assert.equal(find('.qa-sortable-item:first input:first').val(), option1Title);
+      assert.equal(find('.qa-sortable-item:last input:first').val(), option2Title);
     });
   });
 
@@ -6100,10 +6100,10 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
-      fillIn('.ko-reorderable-list-item:first input:first', option1Title);
+      fillIn('.qa-sortable-item:first input:first', option1Title);
 
       click('.i-add-circle');
-      fillIn('.ko-reorderable-list-item:last input:first', option2Title);
+      fillIn('.qa-sortable-item:last input:first', option2Title);
       click('.button--primary:first');
     });
 
@@ -6116,8 +6116,8 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
       assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
-      assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
-      assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
+      assert.equal(find('.qa-sortable-item:first input:first').val(), option1Title);
+      assert.equal(find('.qa-sortable-item:last input:first').val(), option2Title);
     });
   });
 
@@ -6233,10 +6233,10 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
-      fillIn('.ko-reorderable-list-item:first input:first', option1Title);
+      fillIn('.qa-sortable-item:first input:first', option1Title);
 
       click('.i-add-circle');
-      fillIn('.ko-reorderable-list-item:last input:first', option2Title);
+      fillIn('.qa-sortable-item:last input:first', option2Title);
       click('.button--primary:first');
     });
 
@@ -6249,8 +6249,8 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
       assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
-      assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
-      assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
+      assert.equal(find('.qa-sortable-item:first input:first').val(), option1Title);
+      assert.equal(find('.qa-sortable-item:last input:first').val(), option2Title);
     });
   });
 
@@ -6320,7 +6320,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/manage/case-fields/reorder-test', ['exports', 'ember', 'qunit', 'frontend-cp/tests/helpers/start-app', 'frontend-cp/components/ko-simple-list/row/styles'], function (exports, _ember, _qunit, _frontendCpTestsHelpersStartApp, _frontendCpComponentsKoSimpleListRowStyles) {
+define('frontend-cp/tests/acceptance/admin/manage/case-fields/reorder-test', ['exports', 'ember', 'qunit', 'frontend-cp/tests/helpers/start-app', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-reorderable-list/styles'], function (exports, _ember, _qunit, _frontendCpTestsHelpersStartApp, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoReorderableListStyles) {
 
   var radioFieldTitle = 'radio field';
   var normalSelectFieldTitle = 'normal select field';
@@ -6700,7 +6700,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/reorder-test', ['e
     visit('/admin/manage/case-fields');
 
     andThen(function () {
-      var handleSelector = '.ko-reorderable-list_item_handle';
+      var handleSelector = '.' + _frontendCpComponentsKoReorderableListStyles['default'].handle;
       var items = findWithAssert(handleSelector);
       var sortedItems = [items[1], items[2], items[3], items[4], items[0]];
 
@@ -6890,7 +6890,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
 
     visit('/admin/manage/case-forms');
     andThen(function () {
-      assert.equal(find('.ko-reorderable-list .' + _frontendCpComponentsKoSimpleListCellStyles['default'].cell + ':eq(0)').text().trim().replace(/[\s\n]+/g, ' '), 'The Default Case Form (Brewfictus) (Default)');
+      assert.equal(find('.qa-reordable-list .' + _frontendCpComponentsKoSimpleListCellStyles['default'].cell + ':eq(0)').text().trim().replace(/[\s\n]+/g, ' '), 'The Default Case Form (Brewfictus) (Default)');
     });
   });
 
@@ -6904,7 +6904,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
     visit('/admin/manage/case-forms');
     triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':first', 'mouseenter');
     andThen(function () {
-      assert.deepEqual(_npmLodash['default'].map(find('.ko-reorderable-list .' + _frontendCpComponentsKoSimpleListActionsStyles['default'].actions + ' a'), function (element) {
+      assert.deepEqual(_npmLodash['default'].map(find('.qa-reordable-list .' + _frontendCpComponentsKoSimpleListActionsStyles['default'].actions + ' a'), function (element) {
         return $(element).text().trim();
       }), ['Edit', 'Disable', 'Make default', 'Delete']);
     });
@@ -6920,7 +6920,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
     visit('/admin/manage/case-forms');
     triggerEvent('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':first', 'mouseenter');
     andThen(function () {
-      assert.deepEqual(_npmLodash['default'].map(find('.ko-reorderable-list .' + _frontendCpComponentsKoSimpleListActionsStyles['default'].actions + ' a'), function (element) {
+      assert.deepEqual(_npmLodash['default'].map(find('.qa-reordable-list .' + _frontendCpComponentsKoSimpleListActionsStyles['default'].actions + ' a'), function (element) {
         return $(element).text().trim();
       }), ['Edit']);
     });
@@ -8609,7 +8609,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       fillIn('input.ko-admin_case-fields_edit__title', radioFieldTitle);
-      fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
+      fillIn('.qa-sortable-item:first input:first', optionTitle);
       click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
       click('.button--primary:first');
     });
@@ -8622,7 +8622,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
     andThen(function () {
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), radioFieldTitle);
       findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
-      assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
+      assert.equal(find('.qa-sortable-item:first input:first').val(), optionTitle);
     });
   });
 
@@ -8636,7 +8636,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       fillIn('input.ko-admin_case-fields_edit__title', normalSelectFieldTitle);
-      fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
+      fillIn('.qa-sortable-item:first input:first', optionTitle);
       click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
       click('.button--primary:first');
     });
@@ -8649,7 +8649,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
     andThen(function () {
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), normalSelectFieldTitle);
       findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
-      assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
+      assert.equal(find('.qa-sortable-item:first input:first').val(), optionTitle);
     });
   });
 
@@ -8663,7 +8663,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       fillIn('input.ko-admin_case-fields_edit__title', checkboxFieldTitle);
-      fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
+      fillIn('.qa-sortable-item:first input:first', optionTitle);
       click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
       click('.button--primary:first');
     });
@@ -8676,7 +8676,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
     andThen(function () {
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), checkboxFieldTitle);
       findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
-      assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
+      assert.equal(find('.qa-sortable-item:first input:first').val(), optionTitle);
     });
   });
 
@@ -8790,7 +8790,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
 
     andThen(function () {
       fillIn('input.ko-admin_case-fields_edit__title', cascadingSelectFieldTitle);
-      fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
+      fillIn('.qa-sortable-item:first input:first', optionTitle);
       click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
       click('.button--primary:first');
     });
@@ -8803,7 +8803,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/edit-test'
     andThen(function () {
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), cascadingSelectFieldTitle);
       findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
-      assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
+      assert.equal(find('.qa-sortable-item:first input:first').val(), optionTitle);
     });
   });
 
@@ -9005,10 +9005,10 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / Radio buttons (single choice) / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
-      fillIn('.ko-reorderable-list-item:first input:first', option1Title);
+      fillIn('.qa-sortable-item:first input:first', option1Title);
 
       click('.i-add-circle');
-      fillIn('.ko-reorderable-list-item:last input:first', option2Title);
+      fillIn('.qa-sortable-item:last input:first', option2Title);
       click('.button--primary:first');
     });
 
@@ -9019,8 +9019,8 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
-      assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
-      assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
+      assert.equal(find('.qa-sortable-item:first input:first').val(), option1Title);
+      assert.equal(find('.qa-sortable-item:last input:first').val(), option2Title);
     });
   });
 
@@ -9036,9 +9036,9 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       assert.equal((0, _frontendCpTestsHelpersDomHelpers.text)('.qa-layout_two-columns__content h3'), 'Organization fields / Dropdown list (single choice) / New', 'Edit form default title is correct');
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
-      fillIn('.ko-reorderable-list-item:first input:first', option1Title);
+      fillIn('.qa-sortable-item:first input:first', option1Title);
       click('.i-add-circle');
-      fillIn('.ko-reorderable-list-item:last input:first', option2Title);
+      fillIn('.qa-sortable-item:last input:first', option2Title);
       click('.button--primary:first');
     });
 
@@ -9049,8 +9049,8 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
-      assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
-      assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
+      assert.equal(find('.qa-sortable-item:first input:first').val(), option1Title);
+      assert.equal(find('.qa-sortable-item:last input:first').val(), option2Title);
     });
   });
 
@@ -9067,9 +9067,9 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
-      fillIn('.ko-reorderable-list-item:first input:first', option1Title);
+      fillIn('.qa-sortable-item:first input:first', option1Title);
       click('.i-add-circle');
-      fillIn('.ko-reorderable-list-item:last input:first', option2Title);
+      fillIn('.qa-sortable-item:last input:first', option2Title);
       click('.button--primary:first');
     });
 
@@ -9080,8 +9080,8 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
-      assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
-      assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
+      assert.equal(find('.qa-sortable-item:first input:first').val(), option1Title);
+      assert.equal(find('.qa-sortable-item:last input:first').val(), option2Title);
     });
   });
 
@@ -9166,9 +9166,9 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
-      fillIn('.ko-reorderable-list-item:first input:first', option1Title);
+      fillIn('.qa-sortable-item:first input:first', option1Title);
       click('.i-add-circle');
-      fillIn('.ko-reorderable-list-item:last input:first', option2Title);
+      fillIn('.qa-sortable-item:last input:first', option2Title);
       click('.button--primary:first');
     });
 
@@ -9179,8 +9179,8 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
     andThen(function () {
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
-      assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
-      assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
+      assert.equal(find('.qa-sortable-item:first input:first').val(), option1Title);
+      assert.equal(find('.qa-sortable-item:last input:first').val(), option2Title);
     });
   });
 
@@ -9882,7 +9882,7 @@ define('frontend-cp/tests/acceptance/admin/people/roles/index-test', ['exports',
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/people/staff/add/invite-users-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'qunit', 'frontend-cp/lib/role-types', 'frontend-cp/tests/helpers/ember-power-select'], function (exports, _frontendCpTestsHelpersQunit, _qunit, _frontendCpLibRoleTypes, _frontendCpTestsHelpersEmberPowerSelect) {
+define('frontend-cp/tests/acceptance/admin/people/staff/add/invite-users-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'qunit', 'frontend-cp/lib/role-types', 'frontend-cp/tests/helpers/ember-power-select', 'frontend-cp/components/ko-form/field/errors/styles'], function (exports, _frontendCpTestsHelpersQunit, _qunit, _frontendCpLibRoleTypes, _frontendCpTestsHelpersEmberPowerSelect, _frontendCpComponentsKoFormFieldErrorsStyles) {
 
   var owner, admin;
 
@@ -9926,7 +9926,7 @@ define('frontend-cp/tests/acceptance/admin/people/staff/add/invite-users-test', 
     click('.qa-modal-save');
 
     andThen(function () {
-      ['.qa-fullname .ko-form_field_errors__error', '.qa-email .ko-form_field_errors__error', '.qa-role .ko-form_field_errors__error', '.qa-teams .ko-form_field_errors__error'].forEach(function (selector) {
+      ['.qa-fullname .' + _frontendCpComponentsKoFormFieldErrorsStyles['default'].error, '.qa-email .' + _frontendCpComponentsKoFormFieldErrorsStyles['default'].error, '.qa-role .' + _frontendCpComponentsKoFormFieldErrorsStyles['default'].error, '.qa-teams .' + _frontendCpComponentsKoFormFieldErrorsStyles['default'].error].forEach(function (selector) {
         assert.equal(find(selector).text(), 'The value of the field cannot be empty', 'Field error');
       });
     });
@@ -10588,7 +10588,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
-      fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
+      fillIn('.qa-sortable-item:first input:first', optionTitle);
 
       click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
@@ -10607,7 +10607,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
-      assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
+      assert.equal(find('.qa-sortable-item:first input:first').val(), optionTitle);
     });
   });
 
@@ -10626,7 +10626,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
-      fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
+      fillIn('.qa-sortable-item:first input:first', optionTitle);
 
       click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
@@ -10645,7 +10645,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
-      assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
+      assert.equal(find('.qa-sortable-item:first input:first').val(), optionTitle);
     });
   });
 
@@ -10664,7 +10664,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
-      fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
+      fillIn('.qa-sortable-item:first input:first', optionTitle);
 
       click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
@@ -10683,7 +10683,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
-      assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
+      assert.equal(find('.qa-sortable-item:first input:first').val(), optionTitle);
     });
   });
 
@@ -10842,7 +10842,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
       click('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div');
 
-      fillIn('.ko-reorderable-list-item:first input:first', optionTitle);
+      fillIn('.qa-sortable-item:first input:first', optionTitle);
 
       click('.' + _frontendCpComponentsKoToggleStyles['default'].container);
 
@@ -10861,7 +10861,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/edit-test', ['expo
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(Customers can edit this field) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoCheckboxStyles['default'].checkboxWrap + ':contains(This field is required for customers) div[aria-checked=true]');
       findWithAssert('div .' + _frontendCpComponentsKoToggleStyles['default'].container + '[aria-checked=false]');
-      assert.equal(find('.ko-reorderable-list-item:first input:first').val(), optionTitle);
+      assert.equal(find('.qa-sortable-item:first input:first').val(), optionTitle);
     });
   });
 
@@ -11117,10 +11117,10 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
-      fillIn('.ko-reorderable-list-item:first input:first', option1Title);
+      fillIn('.qa-sortable-item:first input:first', option1Title);
 
       click('.i-add-circle');
-      fillIn('.ko-reorderable-list-item:last input:first', option2Title);
+      fillIn('.qa-sortable-item:last input:first', option2Title);
       click('.button--primary:first');
     });
 
@@ -11133,8 +11133,8 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
       assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
-      assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
-      assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
+      assert.equal(find('.qa-sortable-item:first input:first').val(), option1Title);
+      assert.equal(find('.qa-sortable-item:last input:first').val(), option2Title);
     });
   });
 
@@ -11157,10 +11157,10 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
-      fillIn('.ko-reorderable-list-item:first input:first', option1Title);
+      fillIn('.qa-sortable-item:first input:first', option1Title);
 
       click('.i-add-circle');
-      fillIn('.ko-reorderable-list-item:last input:first', option2Title);
+      fillIn('.qa-sortable-item:last input:first', option2Title);
       click('.button--primary:first');
     });
 
@@ -11173,8 +11173,8 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
       assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
-      assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
-      assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
+      assert.equal(find('.qa-sortable-item:first input:first').val(), option1Title);
+      assert.equal(find('.qa-sortable-item:last input:first').val(), option2Title);
     });
   });
 
@@ -11197,10 +11197,10 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
-      fillIn('.ko-reorderable-list-item:first input:first', option1Title);
+      fillIn('.qa-sortable-item:first input:first', option1Title);
 
       click('.i-add-circle');
-      fillIn('.ko-reorderable-list-item:last input:first', option2Title);
+      fillIn('.qa-sortable-item:last input:first', option2Title);
       click('.button--primary:first');
     });
 
@@ -11213,8 +11213,8 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
       assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
-      assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
-      assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
+      assert.equal(find('.qa-sortable-item:first input:first').val(), option1Title);
+      assert.equal(find('.qa-sortable-item:last input:first').val(), option2Title);
     });
   });
 
@@ -11330,10 +11330,10 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       fillIn('input.ko-admin_case-fields_edit__customer-title', customerTitle);
       fillIn('textarea.ko-admin_case-fields_edit__description', description);
 
-      fillIn('.ko-reorderable-list-item:first input:first', option1Title);
+      fillIn('.qa-sortable-item:first input:first', option1Title);
 
       click('.i-add-circle');
-      fillIn('.ko-reorderable-list-item:last input:first', option2Title);
+      fillIn('.qa-sortable-item:last input:first', option2Title);
       click('.button--primary:first');
     });
 
@@ -11346,8 +11346,8 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
       assert.equal(find('input.ko-admin_case-fields_edit__title').val(), fieldTitle);
       assert.equal(find('input.ko-admin_case-fields_edit__customer-title').val(), customerTitle);
       assert.equal(find('textarea.ko-admin_case-fields_edit__description').val(), description);
-      assert.equal(find('.ko-reorderable-list-item:first input:first').val(), option1Title);
-      assert.equal(find('.ko-reorderable-list-item:last input:first').val(), option2Title);
+      assert.equal(find('.qa-sortable-item:first input:first').val(), option1Title);
+      assert.equal(find('.qa-sortable-item:last input:first').val(), option2Title);
     });
   });
 
@@ -12008,7 +12008,7 @@ define('frontend-cp/tests/acceptance/admin/settings/users-test', ['exports', 'fr
     });
   });
 });
-define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-tabs/styles', 'frontend-cp/session/styles', 'frontend-cp/components/ko-agent-dropdown/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoTabsStyles, _frontendCpSessionStyles, _frontendCpComponentsKoAgentDropdownStyles) {
+define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-tabs/styles', 'frontend-cp/session/styles', 'frontend-cp/components/ko-agent-dropdown/styles', 'frontend-cp/components/ko-editable-text/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoTabsStyles, _frontendCpSessionStyles, _frontendCpComponentsKoAgentDropdownStyles, _frontendCpComponentsKoEditableTextStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Case | Create case', {
     beforeEach: function beforeEach() {
@@ -12078,7 +12078,7 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
       assert.equal(find('.' + _frontendCpSessionStyles['default'].tab).length, 1, 'There is only one tab');
       assert.equal(find('.' + _frontendCpSessionStyles['default'].tab + '.active').length, 1, 'That tab is active');
       assert.equal(find('.' + _frontendCpSessionStyles['default'].tab).text().trim(), 'New case', 'That tab belongs to the case being created');
-      click('.ko-layout_advanced_section__subject .editable-text__text');
+      click('.ko-layout_advanced_section__subject .' + _frontendCpComponentsKoEditableTextStyles['default'].text);
       fillIn('.ko-layout_advanced_section__subject input', 'No internet');
       triggerEvent('.ko-layout_advanced_section__subject input', 'input');
     });
@@ -12822,7 +12822,7 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
     });
   });
 });
-define('frontend-cp/tests/acceptance/agent/cases/pusher-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+define('frontend-cp/tests/acceptance/agent/cases/pusher-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-editable-text/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoEditableTextStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Case | Update triggered by pusher', {
     beforeEach: function beforeEach() {
@@ -12911,7 +12911,7 @@ define('frontend-cp/tests/acceptance/agent/cases/pusher-test', ['exports', 'fron
     });
 
     andThen(function () {
-      assert.equal(find('.qa-ko-case-content__subject input').val(), responseSubject, 'check subject is what was returned in the data fetched after pusher triggered a reload');
+      assert.equal(find('.qa-ko-case-content__subject .' + _frontendCpComponentsKoEditableTextStyles['default'].text).text().trim(), responseSubject, 'check subject is what was returned in the data fetched after pusher triggered a reload');
       assert.equal(find('.qa-ko-case-content__status input').val(), 'Pending', 'check status is what was returned in the data fetched after pusher triggered a reload');
       findWithAssert('.qa-ko-case-content__status .qa-is-pusher-edited');
       assert.equal(find('.qa-ko-case-content__type input').val(), 'Task', 'check type is what was returned in the data fetched after pusher triggered a reload');
@@ -13471,7 +13471,7 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
   });
 });
 /* eslint-disable new-cap */
-define('frontend-cp/tests/acceptance/agent/cases/update-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+define('frontend-cp/tests/acceptance/agent/cases/update-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-editable-text/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoEditableTextStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Case | Update', {
     beforeEach: function beforeEach() {
@@ -13597,7 +13597,7 @@ define('frontend-cp/tests/acceptance/agent/cases/update-test', ['exports', 'fron
     });
 
     andThen(function () {
-      assert.equal(find('.qa-ko-case-content__subject input').val(), responseSubject, 'check subject is what was returned in the success data');
+      assert.equal(find('.qa-ko-case-content__subject .' + _frontendCpComponentsKoEditableTextStyles['default'].text).text().trim(), responseSubject, 'check subject is what was returned in the success data');
       assert.equal(find('.qa-ko-case-content__status input').val(), 'Pending', 'check status is what was returned in the success data');
       findWithAssert('.qa-ko-case-content__status .qa-is-pusher-edited');
       assert.equal(find('.qa-ko-case-content__type input').val(), 'Task', 'check type is what was returned in the success data');
@@ -14081,7 +14081,7 @@ define("frontend-cp/tests/acceptance/agent/macros/select-macro-test", ["exports"
 //     assert.equal(find(textAreaSelector).text().trim(), 'I am Cat 1 / Bar', 'Selected macro should apply');
 //   });
 // });
-define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-toast/styles', 'frontend-cp/components/ko-modal/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoToastStyles, _frontendCpComponentsKoModalStyles) {
+define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-toast/styles', 'frontend-cp/components/ko-modal/styles', 'frontend-cp/components/ko-identities/styles', 'frontend-cp/components/ko-form/field/errors/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoToastStyles, _frontendCpComponentsKoModalStyles, _frontendCpComponentsKoIdentitiesStyles, _frontendCpComponentsKoFormFieldErrorsStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Manage Email Identities', {
     beforeEach: function beforeEach() {
@@ -14109,9 +14109,9 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
     click('[class*=ember-basic-dropdown-trigger]:contains("third@example.com")');
 
     andThen(function () {
-      assert.equal(find('.ko-identities__list--emails .ember-basic-dropdown-content li:eq(0)').text().trim(), 'Remove identity', 'The identity can be removed');
-      assert.equal(find('.ko-identities__list--emails .ember-basic-dropdown-content li:eq(1)').text().trim(), 'Send verification email', 'The identity is not validated');
-      click('.ko-identities__list--emails .ember-basic-dropdown-content li:eq(1)');
+      assert.equal(find('.qa-identities__list--emails .ember-basic-dropdown-content li:eq(0)').text().trim(), 'Remove identity', 'The identity can be removed');
+      assert.equal(find('.qa-identities__list--emails .ember-basic-dropdown-content li:eq(1)').text().trim(), 'Send verification email', 'The identity is not validated');
+      click('.qa-identities__list--emails .ember-basic-dropdown-content li:eq(1)');
     });
 
     andThen(function () {
@@ -14123,12 +14123,12 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
     click('[class*=ember-basic-dropdown-trigger ]:contains("second@example.com")');
 
     andThen(function () {
-      click('.ko-identities__list--emails .ember-basic-dropdown-content li:contains("Make primary")');
+      click('.qa-identities__list--emails .ember-basic-dropdown-content li:contains("Make primary")');
     });
 
     andThen(function () {
-      assert.ok(/\(primary\)/.test(find('.ko-identities__list--emails li:contains("second@example.com")').text().trim()), 'The second address became the primary one');
-      assert.ok(!/\(primary\)/.test(find('.ko-identities__list--emails li:contains("first@example.com")').text().trim()), 'That first address isn\'t the primary anymore');
+      assert.ok(/\(primary\)/.test(find('.qa-identities__list--emails li:contains("second@example.com")').text().trim()), 'The second address became the primary one');
+      assert.ok(!/\(primary\)/.test(find('.qa-identities__list--emails li:contains("first@example.com")').text().trim()), 'That first address isn\'t the primary anymore');
     });
   });
 
@@ -14138,7 +14138,7 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
     click('[class*=ember-basic-dropdown-trigger ]:contains("second@example.com")');
 
     andThen(function () {
-      click('.ko-identities__list--emails .ember-basic-dropdown-content li:contains("Remove identity")');
+      click('.qa-identities__list--emails .ember-basic-dropdown-content li:contains("Remove identity")');
     });
 
     andThen(function () {
@@ -14147,9 +14147,9 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
     });
 
     andThen(function () {
-      assert.equal(find('.ko-identities__list--emails li:contains("first@example.com (primary)")').length, 1, 'The first email is still there');
-      assert.equal(find('.ko-identities__list--emails li:contains("second@example.com")').length, 0, 'The first email is NOT there');
-      assert.equal(find('.ko-identities__list--emails li:contains("third@example.com")').length, 1, 'The third email is still there');
+      assert.equal(find('.qa-identities__list--emails li:contains("first@example.com (primary)")').length, 1, 'The first email is still there');
+      assert.equal(find('.qa-identities__list--emails li:contains("second@example.com")').length, 0, 'The first email is NOT there');
+      assert.equal(find('.qa-identities__list--emails li:contains("third@example.com")').length, 1, 'The third email is still there');
     });
   });
 
@@ -14157,14 +14157,14 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
     click('[class*=ember-basic-dropdown-trigger ]:contains("Add new")');
 
     andThen(function () {
-      click('.ko-identities__create-dropdown .ember-basic-dropdown-content li:contains("Email")');
+      click('.' + _frontendCpComponentsKoIdentitiesStyles['default'].createDropdown + ' .ember-basic-dropdown-content li:contains("Email")');
       fillIn('.ko-identities_form input', 'newemail@example.com');
       click('.ko-identities_form button:contains("Save")');
     });
 
     andThen(function () {
-      assert.equal(find('.ko-identities__list--emails li:contains("newemail@example.com")').length, 1, 'The new email is in the list');
-      assert.equal(find('.ko-identities__list--emails li:contains("newemail@example.com") .i-caution').length, 1, 'This new email is marked as not validate');
+      assert.equal(find('.qa-identities__list--emails li:contains("newemail@example.com")').length, 1, 'The new email is in the list');
+      assert.equal(find('.qa-identities__list--emails li:contains("newemail@example.com") .i-caution').length, 1, 'This new email is marked as not validate');
     });
   });
 
@@ -14172,13 +14172,13 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
     click('[class*=ember-basic-dropdown-trigger ]:contains("Add new")');
 
     andThen(function () {
-      click('.ko-identities__create-dropdown .ember-basic-dropdown-content li:contains("Email")');
+      click('.' + _frontendCpComponentsKoIdentitiesStyles['default'].createDropdown + ' .ember-basic-dropdown-content li:contains("Email")');
       fillIn('.ko-identities_form input', 'wrong@example');
       click('.ko-identities_form button:contains("Save")');
     });
 
     andThen(function () {
-      assert.equal(find('.ko-identities_form .ko-form_field_errors__error').text(), 'Email format invalid');
+      assert.equal(find('.ko-identities_form .' + _frontendCpComponentsKoFormFieldErrorsStyles['default'].error).text(), 'Email format invalid');
     });
   });
 
@@ -14212,12 +14212,12 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
     click('[class*=ember-basic-dropdown-trigger ]:contains("@second")');
 
     andThen(function () {
-      click('.ko-identities__list--twitters .ember-basic-dropdown-content li:contains("Make primary")');
+      click('.qa-identities__list--twitters .ember-basic-dropdown-content li:contains("Make primary")');
     });
 
     andThen(function () {
-      assert.ok(/\(primary\)/.test(find('.ko-identities__list--twitters li:contains("@second")').text().trim()), 'The second address became the primary one');
-      assert.ok(!/\(primary\)/.test(find('.ko-identities__list--twitters li:contains("@first")').text().trim()), 'That first address isn\'t the primary anymore');
+      assert.ok(/\(primary\)/.test(find('.qa-identities__list--twitters li:contains("@second")').text().trim()), 'The second address became the primary one');
+      assert.ok(!/\(primary\)/.test(find('.qa-identities__list--twitters li:contains("@first")').text().trim()), 'That first address isn\'t the primary anymore');
     });
   });
 
@@ -14226,7 +14226,7 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
     click('[class*=ember-basic-dropdown-trigger ]:contains("@second")');
 
     andThen(function () {
-      click('.ko-identities__list--twitters .ember-basic-dropdown-content li:contains("Remove identity")');
+      click('.qa-identities__list--twitters .ember-basic-dropdown-content li:contains("Remove identity")');
     });
 
     andThen(function () {
@@ -14235,9 +14235,9 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
     });
 
     andThen(function () {
-      assert.equal(find('.ko-identities__list--twitters li:contains("@first (primary)")').length, 1, 'The first twitter is still there');
-      assert.equal(find('.ko-identities__list--twitters li:contains("@second")').length, 0, 'The first twitter is NOT there');
-      assert.equal(find('.ko-identities__list--twitters li:contains("@third")').length, 1, 'The third twitter is still there');
+      assert.equal(find('.qa-identities__list--twitters li:contains("@first (primary)")').length, 1, 'The first twitter is still there');
+      assert.equal(find('.qa-identities__list--twitters li:contains("@second")').length, 0, 'The first twitter is NOT there');
+      assert.equal(find('.qa-identities__list--twitters li:contains("@third")').length, 1, 'The third twitter is still there');
     });
   });
 
@@ -14245,13 +14245,13 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
     click('[class*=ember-basic-dropdown-trigger ]:contains("Add new")');
 
     andThen(function () {
-      click('.ko-identities__create-dropdown .ember-basic-dropdown-content li:contains("Twitter")');
+      click('.' + _frontendCpComponentsKoIdentitiesStyles['default'].createDropdown + ' .ember-basic-dropdown-content li:contains("Twitter")');
       fillIn('.ko-identities_form input', '@miguelcamba');
       click('.ko-identities_form button:contains("Save")');
     });
 
     andThen(function () {
-      assert.equal(find('.ko-identities__list--twitters li:contains("@miguelcamba")').length, 1, 'The new email is in the list');
+      assert.equal(find('.qa-identities__list--twitters li:contains("@miguelcamba")').length, 1, 'The new email is in the list');
     });
   });
 
@@ -14280,12 +14280,12 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
     click('[class*=ember-basic-dropdown-trigger ]:contains("Mary")');
 
     andThen(function () {
-      click('.ko-identities__list--facebooks .ember-basic-dropdown-content li:contains("Make primary")');
+      click('.qa-identities__list--facebooks .ember-basic-dropdown-content li:contains("Make primary")');
     });
 
     andThen(function () {
-      assert.ok(/\(primary\)/.test(find('.ko-identities__list--facebooks li:contains("Mary")').text().trim()), 'The second address became the primary one');
-      assert.ok(!/\(primary\)/.test(find('.ko-identities__list--facebooks li:contains("Mike")').text().trim()), 'That first address isn\'t the primary anymore');
+      assert.ok(/\(primary\)/.test(find('.qa-identities__list--facebooks li:contains("Mary")').text().trim()), 'The second address became the primary one');
+      assert.ok(!/\(primary\)/.test(find('.qa-identities__list--facebooks li:contains("Mike")').text().trim()), 'That first address isn\'t the primary anymore');
     });
   });
 
@@ -14295,7 +14295,7 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
     click('[class*=ember-basic-dropdown-trigger ]:contains("Mary")');
 
     andThen(function () {
-      click('.ko-identities__list--facebooks .ember-basic-dropdown-content li:contains("Remove identity")');
+      click('.qa-identities__list--facebooks .ember-basic-dropdown-content li:contains("Remove identity")');
     });
 
     andThen(function () {
@@ -14304,9 +14304,9 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
     });
 
     andThen(function () {
-      assert.equal(find('.ko-identities__list--facebooks li:contains("Mike (primary)")').length, 1, 'The first facebook is still there');
-      assert.equal(find('.ko-identities__list--facebooks li:contains("Mary")').length, 0, 'The first facebook is NOT there');
-      assert.equal(find('.ko-identities__list--facebooks li:contains("John")').length, 1, 'The third facebook is still there');
+      assert.equal(find('.qa-identities__list--facebooks li:contains("Mike (primary)")').length, 1, 'The first facebook is still there');
+      assert.equal(find('.qa-identities__list--facebooks li:contains("Mary")').length, 0, 'The first facebook is NOT there');
+      assert.equal(find('.qa-identities__list--facebooks li:contains("John")').length, 1, 'The third facebook is still there');
     });
   });
 
@@ -14336,12 +14336,12 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
     click('[class*=ember-basic-dropdown-trigger ]:contains("+44 2222 222222")');
 
     andThen(function () {
-      click('.ko-identities__list--phones .ember-basic-dropdown-content li:contains("Make primary")');
+      click('.qa-identities__list--phones .ember-basic-dropdown-content li:contains("Make primary")');
     });
 
     andThen(function () {
-      assert.ok(/\(primary\)/.test(find('.ko-identities__list--phones li:contains("+44 2222 222222")').text().trim()), 'The second address became the primary one');
-      assert.ok(!/\(primary\)/.test(find('.ko-identities__list--phones li:contains("+44 1111 111111")').text().trim()), 'That first address isn\'t the primary anymore');
+      assert.ok(/\(primary\)/.test(find('.qa-identities__list--phones li:contains("+44 2222 222222")').text().trim()), 'The second address became the primary one');
+      assert.ok(!/\(primary\)/.test(find('.qa-identities__list--phones li:contains("+44 1111 111111")').text().trim()), 'That first address isn\'t the primary anymore');
     });
   });
 
@@ -14351,7 +14351,7 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
     click('[class*=ember-basic-dropdown-trigger ]:contains("+44 2222 222222")');
 
     andThen(function () {
-      click('.ko-identities__list--phones .ember-basic-dropdown-content li:contains("Remove identity")');
+      click('.qa-identities__list--phones .ember-basic-dropdown-content li:contains("Remove identity")');
     });
 
     andThen(function () {
@@ -14360,9 +14360,9 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
     });
 
     andThen(function () {
-      assert.equal(find('.ko-identities__list--phones li:contains("+44 1111 111111 (primary)")').length, 1, 'The first phone is still there');
-      assert.equal(find('.ko-identities__list--phones li:contains("+44 2222 222222")').length, 0, 'The first phone is NOT there');
-      assert.equal(find('.ko-identities__list--phones li:contains("+44 3333 333333")').length, 1, 'The third phone is still there');
+      assert.equal(find('.qa-identities__list--phones li:contains("+44 1111 111111 (primary)")').length, 1, 'The first phone is still there');
+      assert.equal(find('.qa-identities__list--phones li:contains("+44 2222 222222")').length, 0, 'The first phone is NOT there');
+      assert.equal(find('.qa-identities__list--phones li:contains("+44 3333 333333")').length, 1, 'The third phone is still there');
     });
   });
 
@@ -14370,13 +14370,13 @@ define('frontend-cp/tests/acceptance/agent/manage-user-identities-test', ['expor
     click('[class*=ember-basic-dropdown-trigger ]:contains("Add new")');
 
     andThen(function () {
-      click('.ko-identities__create-dropdown .ember-basic-dropdown-content li:contains("Phone")');
+      click('.' + _frontendCpComponentsKoIdentitiesStyles['default'].createDropdown + ' .ember-basic-dropdown-content li:contains("Phone")');
       fillIn('.ko-identities_form input', '+44 (7746) 123-456');
       click('.ko-identities_form button:contains("Save")');
     });
 
     andThen(function () {
-      assert.equal(find('.ko-identities__list--phones li:contains("+447746123456")').length, 1, 'The new phone is in the list, with all chars but number and `+` removed');
+      assert.equal(find('.qa-identities__list--phones li:contains("+447746123456")').length, 1, 'The new phone is in the list, with all chars but number and `+` removed');
     });
   });
 });
@@ -17008,7 +17008,7 @@ define('frontend-cp/tests/integration/components/ko-admin/sidebar-test', ['expor
     assert.ok(!this.$(':contains("admin.navigation.account")').length, 'expected *not* to see the account section');
   });
 });
-define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/component-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'ember', 'sinon', 'frontend-cp/components/ko-form/buttons/styles', 'frontend-cp/components/ko-agent-dropdown/layout/styles'], function (exports, _frontendCpTestsHelpersQunit, _ember, _sinon, _frontendCpComponentsKoFormButtonsStyles, _frontendCpComponentsKoAgentDropdownLayoutStyles) {
+define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/component-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'ember', 'sinon', 'frontend-cp/components/ko-form/buttons/styles', 'frontend-cp/components/ko-agent-dropdown/layout/styles', 'frontend-cp/components/ko-agent-dropdown/create-user/styles'], function (exports, _frontendCpTestsHelpersQunit, _ember, _sinon, _frontendCpComponentsKoFormButtonsStyles, _frontendCpComponentsKoAgentDropdownLayoutStyles, _frontendCpComponentsKoAgentDropdownCreateUserStyles) {
   var getOwner = _ember['default'].getOwner;
 
   (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-agent-dropdown/create-user', 'Integration | Component | ko agent dropdown/create user', {
@@ -17191,6 +17191,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
     _ember['default'].run(function () {
       fillIn($emailInputElement, 'tim.kendrick@kayako');
       $emailInputElement[0].dispatchEvent(new Event('input'));
+      $emailInputElement.blur();
     });
     emailErrors = getFieldErrors($formElement, 'email');
     assert.deepEqual(emailErrors, ['email_invalid']);
@@ -17438,7 +17439,7 @@ define('frontend-cp/tests/integration/components/ko-agent-dropdown/create-user/c
   }
 
   function getFieldErrors(formElement, inputName) {
-    var $errorElements = _ember['default'].$(formElement).find('.qa-agent-dropdown_create-user__' + inputName + ' + .ko-form_field__error');
+    var $errorElements = _ember['default'].$(formElement).find('.qa-agent-dropdown_create-user__' + inputName + ' + .' + _frontendCpComponentsKoAgentDropdownCreateUserStyles['default'].error);
     return $errorElements.map(function (index, element) {
       return _ember['default'].$(element).text().trim();
     }).get();
@@ -17650,6 +17651,165 @@ define('frontend-cp/tests/integration/components/ko-bulk-invitation/component-te
     $(inputElement).val(value);
     $(inputElement).trigger('input');
   }
+});
+define('frontend-cp/tests/integration/components/ko-editable-text/component-test', ['exports', 'ember', 'ember-qunit', 'frontend-cp/components/ko-editable-text/styles'], function (exports, _ember, _emberQunit, _frontendCpComponentsKoEditableTextStyles) {
+
+  (0, _emberQunit.moduleForComponent)('ko-editable-text', 'Integration | Component | ko-editable-text', {
+    integration: true
+  });
+
+  (0, _emberQunit.test)('is not editing by default', function (assert) {
+    this.render(_ember['default'].HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@2.7.0',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 7,
+              'column': 2
+            }
+          }
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode('\n    ');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode('\n  ');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [['inline', 'ko-editable-text', [], ['isEdited', false, 'isErrored', false, 'isDisabled', false, 'value', 'test'], ['loc', [null, [2, 4], [6, 20]]], 0, 0]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    assert.ok(this.$().find('.' + _frontendCpComponentsKoEditableTextStyles['default'].text).length, 'text element should be visible');
+
+    assert.ok(!this.$().find('.' + _frontendCpComponentsKoEditableTextStyles['default'].inputField).length, 'input field element should be hidden');
+  });
+
+  (0, _emberQunit.test)('when clicked/on focus it becomes editable', function (assert) {
+    var _this = this;
+
+    this.render(_ember['default'].HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@2.7.0',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 7,
+              'column': 2
+            }
+          }
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode('\n    ');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode('\n  ');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [['inline', 'ko-editable-text', [], ['isEdited', false, 'isErrored', false, 'isDisabled', false, 'value', 'test'], ['loc', [null, [2, 4], [6, 20]]], 0, 0]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    _ember['default'].run(function () {
+      _this.$().find('.' + _frontendCpComponentsKoEditableTextStyles['default'].text).click();
+    });
+
+    assert.ok(!this.$().find('.' + _frontendCpComponentsKoEditableTextStyles['default'].text).length, 'text element should be hidden');
+
+    assert.ok(this.$().find('.' + _frontendCpComponentsKoEditableTextStyles['default'].inputField).length, 'input field element should be visible');
+  });
+
+  (0, _emberQunit.test)('when focused out it becomes not editable', function (assert) {
+    var _this2 = this;
+
+    this.render(_ember['default'].HTMLBars.template((function () {
+      return {
+        meta: {
+          'revision': 'Ember@2.7.0',
+          'loc': {
+            'source': null,
+            'start': {
+              'line': 1,
+              'column': 0
+            },
+            'end': {
+              'line': 7,
+              'column': 2
+            }
+          }
+        },
+        isEmpty: false,
+        arity: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        buildFragment: function buildFragment(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode('\n    ');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment('');
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode('\n  ');
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        buildRenderNodes: function buildRenderNodes(dom, fragment, contextualElement) {
+          var morphs = new Array(1);
+          morphs[0] = dom.createMorphAt(fragment, 1, 1, contextualElement);
+          return morphs;
+        },
+        statements: [['inline', 'ko-editable-text', [], ['isEdited', false, 'isErrored', false, 'isDisabled', false, 'value', 'test'], ['loc', [null, [2, 4], [6, 20]]], 0, 0]],
+        locals: [],
+        templates: []
+      };
+    })()));
+
+    _ember['default'].run(function () {
+      _this2.$().find('.' + _frontendCpComponentsKoEditableTextStyles['default'].input).trigger('focusout');
+    });
+
+    assert.ok(this.$().find('.' + _frontendCpComponentsKoEditableTextStyles['default'].text).length, 'text element should be visible');
+
+    assert.ok(!this.$().find('.' + _frontendCpComponentsKoEditableTextStyles['default'].inputField).length, 'input field element should be hidden');
+  });
 });
 define('frontend-cp/tests/integration/components/ko-info-bar/component-test', ['exports', 'ember', 'ember-qunit'], function (exports, _ember, _emberQunit) {
   var getOwner = _ember['default'].getOwner;
@@ -19543,58 +19703,6 @@ define('frontend-cp/tests/unit/components/ko-checkbox/component-test', ['exports
   //    this.$(checkbox).click();
   //  });
   //});
-});
-define('frontend-cp/tests/unit/components/ko-editable-text/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit'], function (exports, _ember, _frontendCpTestsHelpersQunit) {
-
-  var component = undefined;
-  var edit = 'div:first';
-
-  (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-editable-text', {
-    unit: true,
-    setup: function setup() {
-      component = this.subject();
-      component.set('value', 'I am a hunky munky');
-    },
-    needs: ['helper:not']
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('is not editing by default', function (assert) {
-    assert.expect(1);
-
-    assert.equal(component.isEditing, false, 'is not editing by default');
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('when clicked/on focus it becomes editable', function (assert) {
-    var _this = this;
-
-    assert.expect(1);
-
-    this.render();
-
-    _ember['default'].run(function () {
-      _this.$(edit).click();
-    });
-
-    assert.equal(component.isEditing, true, 'is editable');
-  });
-
-  (0, _frontendCpTestsHelpersQunit.test)('when focused out it becomes not editable', function (assert) {
-    var _this2 = this;
-
-    assert.expect(1);
-
-    this.render();
-
-    _ember['default'].run(function () {
-      _this2.$(edit).click();
-    });
-
-    _ember['default'].run(function () {
-      component.focusOut();
-    });
-
-    assert.equal(component.isEditing, false, 'is not editable');
-  });
 });
 define('frontend-cp/tests/unit/components/ko-people-popover/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-people-popover/styles'], function (exports, _ember, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoPeoplePopoverStyles) {
   var getOwner = _ember['default'].getOwner;
