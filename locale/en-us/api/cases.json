@@ -118,6 +118,7 @@
 
   "list.casesnotfound": "There are no cases here.",
   "list.bulkupdate.updatecases": "Update cases",
+  "list.bulkupdate.update_cases_title": "Update Cases",
 
   "field_title.requester": "Requester",
   "notes": "Notes",
