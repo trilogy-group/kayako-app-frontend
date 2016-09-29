@@ -2925,7 +2925,10 @@ img {
 .session__nav-secondary__content_1xlirl {
   -webkit-box-flex: 1;
       -ms-flex: 1;
-          flex: 1; }
+          flex: 1;
+  width: 100%;
+  -ms-flex-negative: 1;
+      flex-shrink: 1; }
 
 .session__searchIcon_1xlirl {
   display: inline-block;
@@ -9054,7 +9057,7 @@ span#HW_badge.HW_softHidden {
 
 .ko-universal-search_preview__title_1h08nk {
   margin-left: 9px;
-  max-width: 80%;
+  max-width: 100%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis; }
@@ -9068,6 +9071,13 @@ span#HW_badge.HW_softHidden {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex; }
+
+.ko-universal-search_preview__headerLink_1h08nk {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  max-width: 100%;
+  padding-right: 40px; }
 
 .ko-universal-search_preview__section_1h08nk {
   margin-bottom: 18px; }
@@ -9250,7 +9260,6 @@ span#HW_badge.HW_softHidden {
   display: -ms-flexbox;
   display: flex;
   min-width: 500px;
-  max-width: 1230px;
   position: relative;
   top: 1px;
   background: #FFFFFF;
