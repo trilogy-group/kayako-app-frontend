@@ -14548,7 +14548,7 @@ define('frontend-cp/tests/acceptance/agent/organizations/edit-test', ['exports',
   });
 });
 /* eslint-disable camelcase, new-cap */
-define('frontend-cp/tests/acceptance/agent/search/search-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/lib/keycodes', 'frontend-cp/session/styles', 'frontend-cp/components/ko-search-sidebar/item/styles', 'frontend-cp/components/ko-universal-search/input/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpLibKeycodes, _frontendCpSessionStyles, _frontendCpComponentsKoSearchSidebarItemStyles, _frontendCpComponentsKoUniversalSearchInputStyles) {
+define('frontend-cp/tests/acceptance/agent/search/search-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/lib/keycodes', 'frontend-cp/session/styles', 'frontend-cp/components/ko-search-sidebar/item/styles', 'frontend-cp/components/ko-universal-search/input/styles', 'frontend-cp/components/ko-table/row/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpLibKeycodes, _frontendCpSessionStyles, _frontendCpComponentsKoSearchSidebarItemStyles, _frontendCpComponentsKoUniversalSearchInputStyles, _frontendCpComponentsKoTableRowStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Case | Search', {
     beforeEach: function beforeEach() {
@@ -14565,7 +14565,7 @@ define('frontend-cp/tests/acceptance/agent/search/search-test', ['exports', 'fro
     visit('/agent/search/ERS%20Audit%207');
 
     andThen(function () {
-      assert.equal(find('.ko-table_row').length, 1);
+      assert.equal(find('.' + _frontendCpComponentsKoTableRowStyles['default'].container).length, 1);
     });
   });
 
@@ -14605,12 +14605,12 @@ define('frontend-cp/tests/acceptance/agent/search/search-test', ['exports', 'fro
     visit('/agent/search/' + term1);
 
     andThen(function () {
-      assert.equal(find('.ko-table_row').length, 0);
+      assert.equal(find('.' + _frontendCpComponentsKoTableRowStyles['default'].container).length, 0);
       click('.' + _frontendCpComponentsKoSearchSidebarItemStyles['default'].item + ':eq(1)');
     });
 
     andThen(function () {
-      assert.equal(find('.ko-table_row').length, 20);
+      assert.equal(find('.' + _frontendCpComponentsKoTableRowStyles['default'].container).length, 20);
     });
   });
 
