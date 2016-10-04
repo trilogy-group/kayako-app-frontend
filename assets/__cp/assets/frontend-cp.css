@@ -2424,9 +2424,6 @@ img {
   .ko-table:nth-of-type(even) {
     margin-top: 36px; }
 
-.ko-table--unselectable .ko-table_cell:first-of-type {
-  padding-left: 0; }
-
 /* styles for frontend-cp/components/ko-admin/forms/group/styles.css */
 .ko-admin_forms_group__group_9ysg3g {
   padding: 18px 0 27px 0;
@@ -4808,7 +4805,9 @@ img {
 
 /* styles for frontend-cp/components/ko-advanced-search/styles.css */
 .ko-advanced-search__container_muk1w4 {
-  padding: 18px; }
+  padding: 18px;
+  -ms-flex-negative: 1;
+      flex-shrink: 1; }
 
 .ko-advanced-search__avatar_muk1w4 {
   margin-right: 9px; }
@@ -4830,11 +4829,6 @@ img {
 
 .ko-advanced-search__heading_muk1w4 {
   margin: 0; }
-
-.ko-advanced-search__tableCellEllipsis_muk1w4 {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap; }
 
 /* styles for frontend-cp/components/ko-agent-dropdown/create-case/styles.css */
 .ko-agent-dropdown_create-case__dropdownUser_1serve {
@@ -8128,7 +8122,7 @@ span#HW_badge.HW_softHidden {
 .ko-table_cell__container_16vitb {
   padding: 5px 17px 5px 0; }
 
-.ko-table_cell__container_16vitb:first-of-type {
+.ko-table_cell__container_16vitb.ko-table_cell__selectable_16vitb:first-of-type {
   padding-left: 18px; }
 
 .ko-table_cell__ellipsis_16vitb {
@@ -9605,8 +9599,8 @@ span#HW_badge.HW_softHidden {
   transition: transform 0.3s ease-in-out, -webkit-transform 0.3s ease-in-out; }
 
 .login__form-content-down_1u7q5o {
-  -webkit-transform: translate(0, -fieldHeight);
-          transform: translate(0, -fieldHeight); }
+  -webkit-transform: translate(0, -74px);
+          transform: translate(0, -74px); }
 
 .login__form-content-down_1u7q5o .login__fields-container-bottom_1u7q5o {
   display: block; }
@@ -10032,8 +10026,18 @@ span#HW_badge.HW_softHidden {
   min-height: 500px; }
 
 .session_agent_search-loading__loader_p94ixd {
-  width: 100%;
-  margin-top: 100px; }
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 0;
+          flex: 1 1 0; }
 
 /* styles for frontend-cp/session/agent/search/styles.css */
 .session_agent_search__index_2b3a56 {
