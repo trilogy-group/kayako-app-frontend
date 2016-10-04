@@ -16,7 +16,6 @@
   "logout": "Logout",
   "need_help": "Need some help?",
   "view_your_profile": "View your profile",
-  "view_keyboard_shortcuts": "View keyboard shortcuts",
   "paginatorof": "of {number, number}",
   "popover.next": "next",
   "popover.previous": "previous",
@@ -193,30 +192,5 @@
 
   "times": "times",
 
-  "unsaved_tab_changes": "Wait! You have unsaved changes on this tab. Continuing will result in you losing these changes.",
-
-  "keyboard_shortcuts.title": "Keyboard shortcuts",
-  "keyboard_shortcuts.then": "then",
-  "keyboard_shortcuts.or": "or",
-  "keyboard_shortcuts.enter": "enter",
-  "keyboard_shortcuts.ctrl": "ctrl",
-  "keyboard_shortcuts.navigation": "Navigation",
-  "keyboard_shortcuts.cases_users_and_orgs": "Cases, users and organizations",
-  "keyboard_shortcuts.general": "General",
-
-  "keyboard_shortcuts.go_cases": "Go to cases",
-  "keyboard_shortcuts.go_insights": "Go to insights",
-  "keyboard_shortcuts.go_admin": "Go to admin",
-  "keyboard_shortcuts.previous_tab": "Previous tab",
-  "keyboard_shortcuts.next_tab": "Next tab",
-  "keyboard_shortcuts.close_tab": "Close tab",
-  "keyboard_shortcuts.search": "Search",
-
-  "keyboard_shortcuts.reply": "Switch to reply",
-  "keyboard_shortcuts.note": "Switch to note",
-  "keyboard_shortcuts.macro": "Select macro",
-  "keyboard_shortcuts.assignee": "Select assignee",
-  "keyboard_shortcuts.save": "Save/send",
-
-  "keyboard_shortcuts.help": "Show this help"
+  "unsaved_tab_changes": "Wait! You have unsaved changes on this tab. Continuing will result in you losing these changes."
 }
