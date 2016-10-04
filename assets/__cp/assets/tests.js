@@ -181,7 +181,7 @@ define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports'
 
     andThen(function () {
       assert.equal(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].cell + ':eq(2)').hasClass(_frontendCpComponentsKoAdminRateplansItemStyles['default'].selected), true);
-      assert.equal(find('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].cancel).length, 1);
+      assert.equal(find('.ko-admin_plans_index__cancel').length, 1);
     });
   });
 
@@ -215,7 +215,7 @@ define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports'
     });
     andThen(function () {
       assert.equal(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].cell + ':eq(2)').hasClass(_frontendCpComponentsKoAdminRateplansItemStyles['default'].selected), true);
-      click('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].cancel);
+      click('.ko-admin_plans_index__cancel');
     });
     andThen(function () {
       assert.equal(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].cell + ':eq(2)').hasClass(_frontendCpComponentsKoAdminRateplansItemStyles['default'].selected), false);
@@ -232,7 +232,7 @@ define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports'
     });
     andThen(function () {
       assert.notEqual(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].selected + ' .' + _frontendCpComponentsKoAdminRateplansPriceStyles['default']['plan-price-amount']).text().trim(), selectedPlanAmount);
-      click('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].cancel);
+      click('.ko-admin_plans_index__cancel');
     });
     andThen(function () {
       assert.equal(find('.' + _frontendCpComponentsKoAdminRateplansItemStyles['default'].selected + ' .' + _frontendCpComponentsKoAdminRateplansPriceStyles['default']['plan-price-amount']).text().trim(), selectedPlanAmount);
@@ -255,7 +255,7 @@ define('frontend-cp/tests/acceptance/admin/account/plans/index-test', ['exports'
     });
     andThen(function () {
       assert.notEqual(find('.agents-count').val(), selectedSeats);
-      click('.' + _frontendCpComponentsKoAdminPlansIndexStyles['default'].cancel);
+      click('.ko-admin_plans_index__cancel');
     });
     andThen(function () {
       assert.equal(find('.agents-count').val(), selectedSeats);
