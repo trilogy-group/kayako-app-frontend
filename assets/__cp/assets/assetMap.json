@@ -1,8 +1,8 @@
 {
   "assets": {
     "assets/frontend-cp.css": "assets/frontend-cp-85656682c7ccd3da063d0d523cde2de4.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-77329328e2236ae55b5150db1f7f3b53.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-b64730294ac0b19ecbfbb0718ecbd58f.map",
+    "assets/frontend-cp.js": "assets/frontend-cp-d8b56c4987c5af8898bb99f4793716d7.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-0fcfc9d89b8eeedbc7e5b679b2faf424.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-b4b949624aee7e9988cfdd5c09db2869.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-9c8aae2a1e0960b383fa24e4efc2919a.map",
     "assets/intl/intl.js": "assets/intl/intl-582977465f5d07c8cb9dcbc049eed0c9.js",
@@ -14,7 +14,7 @@
     "assets/intl/locales/en-us.js": "assets/intl/locales/en-us-c9b52d1f25dd359bcd97ba311f2f1bc1.js",
     "assets/intl/locales/en-us.map": "assets/intl/locales/en-us-28b217c68a69376462f4284f5e29fe80.map",
     "assets/vendor.css": "assets/vendor-39a8c688c3efd0d6e0bdb666e1f70541.css",
-    "assets/vendor.js": "assets/vendor-007c5c21bac0c15d6e076a478752d485.js",
+    "assets/vendor.js": "assets/vendor-91a3de6c7c81f534cc6627b7bae559b6.js",
     "assets/vendor.map": "assets/vendor-b39ce374cba0574753f11ff36a3d2ce2.map",
     "fonts/fontawesome-webfont.eot": "fonts/fontawesome-webfont-25a32416abee198dd821b0b17a198a8f.eot",
     "fonts/fontawesome-webfont.svg": "fonts/fontawesome-webfont-d7c639084f684d66a1bc66855d193ed8.svg",
