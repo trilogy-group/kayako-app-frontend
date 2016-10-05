@@ -21,9 +21,10 @@
   "team": "Team",
   "brand": "Brand",
   "source": "Source",
-  "created": "Created",
+  "created_at_via": "Created <strong>{at}</strong> via <strong>{via}</strong>",
   "channeltype": "Channel type",
   "last_completed_at": "Last completed at",
+  "article_created_at_by": "Created at {at} by {by}",
 
   "case.created": "Case Created",
   "case.updated": "Case Updated",
@@ -149,6 +150,7 @@
   "posts.load_more": "Load more",
   "suspendedMessages.title": "Suspended messages",
   "suspendedMessages.confirmDeleteAll": "Are you sure that you want to delete these messages. This action can't be undone.",
+  "suspendedMessages.permanently_delete": "Permanently delete",
   "suspendedMessages.table.from": "From",
   "suspendedMessages.table.subject": "Subject",
   "suspendedMessages.table.createdAt": "Received",
@@ -187,6 +189,7 @@
   "viewers.updating": "updating this case",
   "viewers.viewing": "viewing this case",
   "agent": "AGENT",
+  "also_viewing": "Also viewing",
 
   "more_info.from": "From:",
   "more_info.to": "To:",

@@ -4446,13 +4446,7 @@ img {
 .ko-admin_rateplans_list__term_savings_17hjw1 {
   color: #89a83b;
   font-weight: 600;
-  margin-left: 5px;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between; }
+  margin-left: 5px; }
 
 /* styles for frontend-cp/components/ko-admin/rateplans/price/styles.css */
 .ko-admin_rateplans_price__plan-price-amount_1ye002 {
@@ -4842,6 +4836,11 @@ img {
 .ko-agent-dropdown_create-case__dropdownUser_1serve {
   line-height: initial;
   padding: 4.5px 0; }
+
+.ko-agent-dropdown_create-case__userInfo_1serve {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
 
 .ko-agent-dropdown_create-case__dropdownUserImage_1serve {
   width: 30px;
@@ -5262,7 +5261,10 @@ img {
   font-size: 12px;
   color: #5F6C73;
   line-height: 12px;
-  font-weight: 600; }
+  font-weight: 600;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
 
 .ko-case_sla-sidebar_metric__metric-good_888p34 {
   background-color: rgba(137, 168, 59, 0.1); }
