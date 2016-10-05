@@ -585,6 +585,7 @@
   "monitors.disabled.success_message": "Monitor disabled successfully",
   "monitors.delete.success_message": "Monitor deleted successfully",
 
+  "roles.system": "(System)",
   "roles.type.admin": "Administrator",
   "roles.type.agent": "Agent",
   "roles.type.collaborator": "Collaborator",
