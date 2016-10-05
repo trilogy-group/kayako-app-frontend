@@ -15877,6 +15877,3993 @@ define('frontend-cp/tests/fixtures/services/mock-local-store', ['exports', 'embe
     }
   });
 });
+define('frontend-cp/tests/frontend-cp/application/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/application/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/application/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/key-value-collection-builder/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/key-value-collection-builder/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/key-value-collection-builder/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-action-menu/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-action-menu/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-action-menu/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin-card-team/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin-card-team/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin-card-team/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin-card-user/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin-card-user/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin-card-user/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin-selectable-card/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin-selectable-card/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin-selectable-card/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/add-new-card/footer/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/add-new-card/footer/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/add-new-card/footer/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/add-new-card/form/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/add-new-card/form/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/add-new-card/form/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/add-new-card/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/add-new-card/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/add-new-card/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/apps/endpoints/form/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/apps/endpoints/form/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/apps/endpoints/form/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/apps/endpoints/list-row/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/apps/endpoints/list-row/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/apps/endpoints/list-row/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/apps/endpoints/select-type/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/apps/endpoints/select-type/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/apps/endpoints/select-type/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/apps/webhooks/form/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/apps/webhooks/form/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/apps/webhooks/form/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/apps/webhooks/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/apps/webhooks/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/apps/webhooks/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/automation-actions-builder/autocomplete-agent/before-options/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/automation-actions-builder/autocomplete-agent/before-options/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/automation-actions-builder/autocomplete-agent/before-options/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/automation-actions-builder/autocomplete-agent/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/automation-actions-builder/autocomplete-agent/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/automation-actions-builder/autocomplete-agent/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/automation-actions-builder/boolean/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/automation-actions-builder/boolean/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/automation-actions-builder/boolean/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/automation-actions-builder/date-absolute/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/automation-actions-builder/date-absolute/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/automation-actions-builder/date-absolute/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/automation-actions-builder/drill-down/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/automation-actions-builder/drill-down/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/automation-actions-builder/drill-down/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/automation-actions-builder/drill-down/trigger/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/automation-actions-builder/drill-down/trigger/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/automation-actions-builder/drill-down/trigger/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/automation-actions-builder/endpoint-basic/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/automation-actions-builder/endpoint-basic/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/automation-actions-builder/endpoint-basic/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/automation-actions-builder/endpoint-http-post/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/automation-actions-builder/endpoint-http-post/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/automation-actions-builder/endpoint-http-post/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/automation-actions-builder/endpoint-http/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/automation-actions-builder/endpoint-http/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/automation-actions-builder/endpoint-http/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/automation-actions-builder/input/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/automation-actions-builder/input/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/automation-actions-builder/input/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/automation-actions-builder/multiple/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/automation-actions-builder/multiple/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/automation-actions-builder/multiple/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/automation-actions-builder/notification/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/automation-actions-builder/notification/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/automation-actions-builder/notification/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/automation-actions-builder/options/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/automation-actions-builder/options/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/automation-actions-builder/options/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/automation-actions-builder/plain-text/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/automation-actions-builder/plain-text/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/automation-actions-builder/plain-text/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/automation-actions-builder/tags/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/automation-actions-builder/tags/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/automation-actions-builder/tags/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/automation-actions-builder/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/automation-actions-builder/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/automation-actions-builder/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/billing-form/form-input/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/billing-form/form-input/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/billing-form/form-input/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/billing-form/form/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/billing-form/form/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/billing-form/form/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/billing-form/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/billing-form/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/billing-form/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/billing/card/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/billing/card/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/billing/card/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/billing/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/billing/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/billing/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/brands/form/domain-input/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/brands/form/domain-input/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/brands/form/domain-input/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/brands/form/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/brands/form/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/brands/form/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/brands/list-row/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/brands/list-row/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/brands/list-row/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/businesshours/edit/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/businesshours/edit/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/businesshours/edit/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/case-forms/edit/fields/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/case-forms/edit/fields/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/case-forms/edit/fields/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/case-forms/edit/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/case-forms/edit/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/case-forms/edit/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/email/edit/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/email/edit/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/email/edit/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/facebook/edit/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/facebook/edit/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/facebook/edit/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/facebook/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/facebook/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/facebook/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/fields/form/option/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/fields/form/option/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/fields/form/option/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/fields/form/priorities/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/fields/form/priorities/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/fields/form/priorities/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/fields/form/regex/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/fields/form/regex/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/fields/form/regex/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/fields/form/statuses/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/fields/form/statuses/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/fields/form/statuses/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/fields/form/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/fields/form/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/fields/form/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/fields/form/types/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/fields/form/types/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/fields/form/types/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/fields/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/fields/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/fields/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/fields/select-type/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/fields/select-type/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/fields/select-type/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/fields/type-icon/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/fields/type-icon/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/fields/type-icon/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/forms/description/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/forms/description/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/forms/description/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/forms/group/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/forms/group/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/forms/group/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/holidays/edit/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/holidays/edit/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/holidays/edit/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/holidays/row/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/holidays/row/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/holidays/row/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/inline-locale-edit/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/inline-locale-edit/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/inline-locale-edit/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/localization/list-row/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/localization/list-row/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/localization/list-row/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/macros/edit/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/macros/edit/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/macros/edit/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/messenger/code/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/messenger/code/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/messenger/code/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/messenger/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/messenger/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/messenger/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/monitors/form/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/monitors/form/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/monitors/form/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/monitors/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/monitors/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/monitors/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/overview/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/overview/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/overview/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/overview/subscription/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/overview/subscription/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/overview/subscription/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/page/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/page/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/page/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/plans/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/plans/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/plans/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/plans/notification/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/plans/notification/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/plans/notification/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/predicate-builder/proposition/before-options/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/predicate-builder/proposition/before-options/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/predicate-builder/proposition/before-options/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/predicate-builder/proposition/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/predicate-builder/proposition/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/predicate-builder/proposition/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/predicate-builder/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/predicate-builder/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/predicate-builder/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/rateplans/currency/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/rateplans/currency/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/rateplans/currency/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/rateplans/item/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/rateplans/item/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/rateplans/item/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/rateplans/list/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/rateplans/list/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/rateplans/list/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/rateplans/price/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/rateplans/price/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/rateplans/price/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/rateplans/summary/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/rateplans/summary/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/rateplans/summary/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/rateplans/units/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/rateplans/units/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/rateplans/units/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/roles/form/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/roles/form/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/roles/form/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/roles/list-item/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/roles/list-item/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/roles/list-item/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/sidebar/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/sidebar/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/sidebar/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/sla/edit/operational-hours/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/sla/edit/operational-hours/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/sla/edit/operational-hours/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/sla/edit/target/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/sla/edit/target/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/sla/edit/target/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/sla/edit/targets/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/sla/edit/targets/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/sla/edit/targets/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/sla/edit/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/sla/edit/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/sla/edit/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/sla/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/sla/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/sla/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/staff/list-row/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/staff/list-row/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/staff/list-row/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/team/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/team/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/team/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/trial/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/trial/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/trial/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/triggers/form/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/triggers/form/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/triggers/form/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/triggers/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/triggers/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/triggers/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/twitter/edit/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/twitter/edit/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/twitter/edit/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/twitter/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/twitter/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/twitter/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/views/edit/columns/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/views/edit/columns/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/views/edit/columns/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/views/edit/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/views/edit/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/views/edit/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-advanced-search/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-advanced-search/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-advanced-search/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-agent-dropdown/create-case/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-agent-dropdown/create-case/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-agent-dropdown/create-case/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-agent-dropdown/create-organization/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-agent-dropdown/create-organization/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-agent-dropdown/create-organization/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-agent-dropdown/create-user/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-agent-dropdown/create-user/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-agent-dropdown/create-user/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-agent-dropdown/layout/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-agent-dropdown/layout/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-agent-dropdown/layout/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-agent-dropdown/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-agent-dropdown/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-agent-dropdown/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-avatar/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-avatar/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-avatar/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-bulk-invitation/recipient/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-bulk-invitation/recipient/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-bulk-invitation/recipient/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-bulk-invitation/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-bulk-invitation/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-bulk-invitation/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-bulk-sidebar/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-bulk-sidebar/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-bulk-sidebar/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-case-content/action-menu/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-case-content/action-menu/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-case-content/action-menu/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-case-content/field/assignee/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-case-content/field/assignee/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-case-content/field/assignee/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-case-content/field/forms/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-case-content/field/forms/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-case-content/field/forms/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-case-content/field/post/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-case-content/field/post/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-case-content/field/post/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-case-content/field/priority/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-case-content/field/priority/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-case-content/field/priority/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-case-content/field/requester/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-case-content/field/requester/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-case-content/field/requester/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-case-content/field/status/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-case-content/field/status/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-case-content/field/status/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-case-content/field/type/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-case-content/field/type/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-case-content/field/type/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-case-content/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-case-content/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-case-content/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-case/macro-selector/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-case/macro-selector/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-case/macro-selector/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-case/macro-selector/trigger/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-case/macro-selector/trigger/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-case/macro-selector/trigger/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-case/sla-sidebar/metric/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-case/sla-sidebar/metric/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-case/sla-sidebar/metric/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-case/sla-sidebar/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-case/sla-sidebar/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-case/sla-sidebar/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-cases-list/column/avatar/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-cases-list/column/avatar/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-cases-list/column/avatar/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-cases-list/column/channel/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-cases-list/column/channel/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-cases-list/column/channel/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-cases-list/column/custom-field/date/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-cases-list/column/custom-field/date/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-cases-list/column/custom-field/date/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-cases-list/column/custom-field/multi-choice/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-cases-list/column/custom-field/multi-choice/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-cases-list/column/custom-field/multi-choice/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-cases-list/column/custom-field/single-choice/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-cases-list/column/custom-field/single-choice/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-cases-list/column/custom-field/single-choice/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-cases-list/column/custom-field/string/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-cases-list/column/custom-field/string/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-cases-list/column/custom-field/string/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-cases-list/column/custom-field/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-cases-list/column/custom-field/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-cases-list/column/custom-field/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-cases-list/column/generic-date/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-cases-list/column/generic-date/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-cases-list/column/generic-date/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-cases-list/column/generic-string/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-cases-list/column/generic-string/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-cases-list/column/generic-string/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-cases-list/column/slafirstreplytime/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-cases-list/column/slafirstreplytime/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-cases-list/column/slafirstreplytime/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-cases-list/column/slanextbreach/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-cases-list/column/slanextbreach/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-cases-list/column/slanextbreach/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-cases-list/column/slanextreplytime/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-cases-list/column/slanextreplytime/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-cases-list/column/slanextreplytime/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-cases-list/column/slaresolutiontime/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-cases-list/column/slaresolutiontime/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-cases-list/column/slaresolutiontime/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-cases-list/header/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-cases-list/header/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-cases-list/header/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-cases-list/sidebar/item/reload-icon/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-cases-list/sidebar/item/reload-icon/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-cases-list/sidebar/item/reload-icon/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-cases-list/sidebar/item/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-cases-list/sidebar/item/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-cases-list/sidebar/item/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-cases-list/sidebar/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-cases-list/sidebar/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-cases-list/sidebar/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-cases-list/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-cases-list/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-cases-list/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-center/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-center/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-center/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-channel-selector/selected-channel/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-channel-selector/selected-channel/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-channel-selector/selected-channel/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-channel-selector/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-channel-selector/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-channel-selector/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-checkbox/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-checkbox/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-checkbox/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-confirm-modal/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-confirm-modal/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-confirm-modal/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-creditcard-icon/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-creditcard-icon/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-creditcard-icon/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-date-select/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-date-select/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-date-select/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-datepicker/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-datepicker/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-datepicker/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-dropdown/drill-down/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-dropdown/drill-down/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-dropdown/drill-down/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-editable-text/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-editable-text/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-editable-text/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-feedback/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-feedback/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-feedback/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-file-field/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-file-field/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-file-field/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-file-size/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-file-size/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-file-size/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-flag/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-flag/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-flag/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-form/buttons/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-form/buttons/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-form/buttons/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-form/field/errors/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-form/field/errors/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-form/field/errors/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-form/field/help/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-form/field/help/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-form/field/help/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-form/field/label/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-form/field/label/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-form/field/label/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-form/field/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-form/field/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-form/field/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-form/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-form/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-form/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-from-now-tooltip/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-from-now-tooltip/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-from-now-tooltip/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-grid-picker/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-grid-picker/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-grid-picker/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-icon/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-icon/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-icon/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-identities/form/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-identities/form/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-identities/form/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-identities/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-identities/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-identities/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-info-bar/field/cascadingselect/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-info-bar/field/cascadingselect/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-info-bar/field/cascadingselect/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-info-bar/field/checkbox/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-info-bar/field/checkbox/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-info-bar/field/checkbox/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-info-bar/field/date/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-info-bar/field/date/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-info-bar/field/date/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-info-bar/field/decimal/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-info-bar/field/decimal/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-info-bar/field/decimal/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-info-bar/field/drill-down/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-info-bar/field/drill-down/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-info-bar/field/drill-down/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-info-bar/field/multiline-text/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-info-bar/field/multiline-text/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-info-bar/field/multiline-text/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-info-bar/field/numeric/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-info-bar/field/numeric/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-info-bar/field/numeric/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-info-bar/field/radio/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-info-bar/field/radio/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-info-bar/field/radio/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-info-bar/field/regex/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-info-bar/field/regex/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-info-bar/field/regex/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-info-bar/field/select-multiple/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-info-bar/field/select-multiple/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-info-bar/field/select-multiple/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-info-bar/field/select-multiple/trigger/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-info-bar/field/select-multiple/trigger/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-info-bar/field/select-multiple/trigger/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-info-bar/field/select/arrow/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-info-bar/field/select/arrow/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-info-bar/field/select/arrow/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-info-bar/field/select/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-info-bar/field/select/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-info-bar/field/select/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-info-bar/field/select/trigger/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-info-bar/field/select/trigger/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-info-bar/field/select/trigger/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-info-bar/field/text/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-info-bar/field/text/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-info-bar/field/text/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-info-bar/field/yesno/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-info-bar/field/yesno/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-info-bar/field/yesno/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-info-bar/item/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-info-bar/item/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-info-bar/item/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-info-bar/metadata/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-info-bar/metadata/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-info-bar/metadata/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-info-bar/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-info-bar/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-info-bar/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-info-bar/update-log/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-info-bar/update-log/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-info-bar/update-log/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-info-bar/viewing-users/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-info-bar/viewing-users/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-info-bar/viewing-users/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-input-date-range/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-input-date-range/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-input-date-range/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-input/search/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-input/search/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-input/search/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-input/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-input/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-input/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/actor/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/actor/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/actor/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/articles-list/column/comment-count/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/articles-list/column/comment-count/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/articles-list/column/comment-count/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/articles-list/column/title/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/articles-list/column/title/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/articles-list/column/title/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/articles-list/column/upvote-count/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/articles-list/column/upvote-count/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/articles-list/column/upvote-count/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/articles-list/column/view-count/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/articles-list/column/view-count/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/articles-list/column/view-count/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/articles-list/header/comment-count/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/articles-list/header/comment-count/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/articles-list/header/comment-count/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/articles-list/header/title/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/articles-list/header/title/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/articles-list/header/title/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/articles-list/header/upvote-count/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/articles-list/header/upvote-count/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/articles-list/header/upvote-count/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/articles-list/header/view-count/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/articles-list/header/view-count/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/articles-list/header/view-count/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/articles-list/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/articles-list/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/articles-list/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/charts/avg-resolution-time/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/charts/avg-resolution-time/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/charts/avg-resolution-time/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/charts/case-completion/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/charts/case-completion/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/charts/case-completion/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/charts/case-response/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/charts/case-response/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/charts/case-response/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/charts/csat/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/charts/csat/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/charts/csat/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/charts/messages-received-by-channel/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/charts/messages-received-by-channel/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/charts/messages-received-by-channel/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/charts/sla-resolution-target/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/charts/sla-resolution-target/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/charts/sla-resolution-target/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/interval-toggle/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/interval-toggle/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/interval-toggle/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/loader/actor/agent/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/loader/actor/agent/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/loader/actor/agent/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/loader/actor/team/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/loader/actor/team/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/loader/actor/team/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/loader/cases/case-resolution/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/loader/cases/case-resolution/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/loader/cases/case-resolution/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/loader/cases/case-response/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/loader/cases/case-response/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/loader/cases/case-response/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/loader/cases/cases-completed/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/loader/cases/cases-completed/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/loader/cases/cases-completed/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/loader/cases/channel/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/loader/cases/channel/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/loader/cases/channel/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/loader/cases/csat/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/loader/cases/csat/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/loader/cases/csat/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/loader/cases/metrics/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/loader/cases/metrics/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/loader/cases/metrics/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/loader/help-center/articles/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/loader/help-center/articles/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/loader/help-center/articles/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/loader/help-center/search/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/loader/help-center/search/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/loader/help-center/search/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/loader/sla/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/loader/sla/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/loader/sla/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/metric/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/metric/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/metric/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/searches-list/column/count/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/searches-list/column/count/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/searches-list/column/count/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/searches-list/column/query/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/searches-list/column/query/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/searches-list/column/query/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/searches-list/header/count/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/searches-list/header/count/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/searches-list/header/count/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/searches-list/header/query/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/searches-list/header/query/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/searches-list/header/query/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/searches-list/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/searches-list/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/searches-list/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/section/agents-teams/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/section/agents-teams/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/section/agents-teams/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/section/articles/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/section/articles/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/section/articles/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/section/cases/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/section/cases/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/section/cases/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/section/searches/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/section/searches/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/section/searches/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/section/sla-overview/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/section/sla-overview/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/section/sla-overview/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/sidebar/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/sidebar/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/sidebar/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-insights/sla-resolution-target/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-insights/sla-resolution-target/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-insights/sla-resolution-target/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-keyboard-help-modal/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-keyboard-help-modal/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-keyboard-help-modal/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-layout/admin/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-layout/admin/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-layout/admin/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-layout/advanced/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-layout/advanced/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-layout/advanced/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-layout/container/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-layout/container/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-layout/container/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-layout/popup-with-arrow/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-layout/popup-with-arrow/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-layout/popup-with-arrow/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-layout/two-columns/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-layout/two-columns/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-layout/two-columns/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-loader/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-loader/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-loader/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-login/otp/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-login/otp/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-login/otp/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-login/password/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-login/password/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-login/password/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-login/reset/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-login/reset/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-login/reset/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-modal/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-modal/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-modal/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-notification-badge/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-notification-badge/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-notification-badge/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-organization-content/action-menu/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-organization-content/action-menu/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-organization-content/action-menu/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-organization-content/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-organization-content/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-organization-content/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-pagination/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-pagination/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-pagination/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-people-popover/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-people-popover/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-people-popover/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-radio/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-radio/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-radio/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-recent-cases/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-recent-cases/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-recent-cases/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-reorderable-crud-list/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-reorderable-crud-list/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-reorderable-crud-list/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-reorderable-list/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-reorderable-list/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-reorderable-list/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-role-pill/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-role-pill/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-role-pill/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-search-sidebar/item/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-search-sidebar/item/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-search-sidebar/item/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-search-sidebar/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-search-sidebar/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-search-sidebar/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-select/drill-down/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-select/drill-down/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-select/drill-down/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-select/drill-down/trigger/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-select/drill-down/trigger/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-select/drill-down/trigger/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-select/multiple/internal/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-select/multiple/internal/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-select/multiple/internal/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-select/multiple/pill/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-select/multiple/pill/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-select/multiple/pill/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-select/multiple/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-select/multiple/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-select/multiple/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-select/multiple/trigger/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-select/multiple/trigger/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-select/multiple/trigger/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-select/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-select/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-select/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-select/trigger/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-select/trigger/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-select/trigger/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-select/typeahead-trigger/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-select/typeahead-trigger/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-select/typeahead-trigger/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-session-widgets/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-session-widgets/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-session-widgets/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-sidebar/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-sidebar/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-sidebar/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-simple-list/actions/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-simple-list/actions/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-simple-list/actions/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-simple-list/cell/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-simple-list/cell/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-simple-list/cell/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-simple-list/row/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-simple-list/row/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-simple-list/row/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-simple-list/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-simple-list/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-simple-list/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-sla/remaining/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-sla/remaining/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-sla/remaining/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-sla/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-sla/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-sla/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-sla/tooltip/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-sla/tooltip/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-sla/tooltip/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-stateful-button/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-stateful-button/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-stateful-button/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-table/body/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-table/body/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-table/body/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-table/cell/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-table/cell/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-table/cell/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-table/column/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-table/column/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-table/column/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-table/header/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-table/header/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-table/header/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-table/row/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-table/row/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-table/row/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-table/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-table/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-table/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-tabs/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-tabs/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-tabs/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-text-editor/draggable-dropzone/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-text-editor/draggable-dropzone/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-text-editor/draggable-dropzone/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-text-editor/file-upload/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-text-editor/file-upload/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-text-editor/file-upload/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-text-editor/file-upload/upload-item/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-text-editor/file-upload/upload-item/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-text-editor/file-upload/upload-item/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-text-editor/link-manager/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-text-editor/link-manager/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-text-editor/link-manager/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-text-editor/mode-selector/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-text-editor/mode-selector/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-text-editor/mode-selector/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-text-editor/note-reminder/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-text-editor/note-reminder/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-text-editor/note-reminder/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-text-editor/secondary-controls/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-text-editor/secondary-controls/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-text-editor/secondary-controls/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-text-editor/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-text-editor/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-text-editor/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-timeline/activity/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-timeline/activity/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-timeline/activity/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-timeline/item/attachment/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-timeline/item/attachment/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-timeline/item/attachment/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-timeline/item/link-to/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-timeline/item/link-to/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-timeline/item/link-to/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-timeline/item/menu/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-timeline/item/menu/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-timeline/item/menu/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-timeline/item/more-info/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-timeline/item/more-info/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-timeline/item/more-info/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-timeline/item/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-timeline/item/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-timeline/item/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-timeline/load-more/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-timeline/load-more/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-timeline/load-more/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-timeline/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-timeline/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-timeline/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-toast/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-toast/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-toast/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-toggle/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-toggle/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-toggle/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-tooltip/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-tooltip/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-tooltip/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-trial-notification/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-trial-notification/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-trial-notification/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-universal-search/input/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-universal-search/input/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-universal-search/input/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-universal-search/preview/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-universal-search/preview/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-universal-search/preview/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-universal-search/result-see-more/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-universal-search/result-see-more/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-universal-search/result-see-more/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-universal-search/result/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-universal-search/result/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-universal-search/result/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-universal-search/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-universal-search/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-universal-search/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-user-content/action-menu/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-user-content/action-menu/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-user-content/action-menu/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-user-content/field/locale-select/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-user-content/field/locale-select/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-user-content/field/locale-select/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-user-content/field/timezone-select/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-user-content/field/timezone-select/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-user-content/field/timezone-select/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-user-content/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-user-content/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-user-content/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/loading/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/loading/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/loading/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/login/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/login/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/login/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/account/billing/loading/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/account/billing/loading/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/account/billing/loading/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/account/billing/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/account/billing/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/account/billing/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/account/overview/loading/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/account/overview/loading/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/account/overview/loading/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/account/overview/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/account/overview/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/account/overview/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/account/plans/loading/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/account/plans/loading/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/account/plans/loading/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/account/plans/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/account/plans/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/account/plans/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/account/trial/loading/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/account/trial/loading/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/account/trial/loading/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/account/trial/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/account/trial/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/account/trial/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/apps/api/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/apps/api/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/apps/api/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/apps/endpoints/edit/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/apps/endpoints/edit/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/apps/endpoints/edit/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/apps/endpoints/index/details/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/apps/endpoints/index/details/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/apps/endpoints/index/details/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/apps/endpoints/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/apps/endpoints/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/apps/endpoints/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/apps/endpoints/loading/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/apps/endpoints/loading/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/apps/endpoints/loading/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/apps/endpoints/new/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/apps/endpoints/new/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/apps/endpoints/new/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/apps/endpoints/select-type/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/apps/endpoints/select-type/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/apps/endpoints/select-type/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/apps/webhooks/edit/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/apps/webhooks/edit/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/apps/webhooks/edit/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/apps/webhooks/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/apps/webhooks/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/apps/webhooks/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/apps/webhooks/loading/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/apps/webhooks/loading/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/apps/webhooks/loading/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/apps/webhooks/new/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/apps/webhooks/new/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/apps/webhooks/new/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/apps/zapier/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/apps/zapier/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/apps/zapier/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/automation/businesshours/edit/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/automation/businesshours/edit/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/automation/businesshours/edit/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/automation/businesshours/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/automation/businesshours/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/automation/businesshours/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/automation/businesshours/loading/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/automation/businesshours/loading/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/automation/businesshours/loading/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/automation/businesshours/new/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/automation/businesshours/new/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/automation/businesshours/new/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/automation/monitors/edit/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/automation/monitors/edit/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/automation/monitors/edit/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/automation/monitors/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/automation/monitors/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/automation/monitors/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/automation/monitors/loading/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/automation/monitors/loading/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/automation/monitors/loading/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/automation/monitors/new/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/automation/monitors/new/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/automation/monitors/new/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/automation/monitors/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/automation/monitors/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/automation/monitors/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/automation/sla/edit/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/automation/sla/edit/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/automation/sla/edit/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/automation/sla/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/automation/sla/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/automation/sla/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/automation/sla/loading/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/automation/sla/loading/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/automation/sla/loading/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/automation/sla/new/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/automation/sla/new/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/automation/sla/new/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/automation/triggers/edit/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/automation/triggers/edit/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/automation/triggers/edit/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/automation/triggers/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/automation/triggers/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/automation/triggers/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/automation/triggers/loading/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/automation/triggers/loading/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/automation/triggers/loading/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/automation/triggers/new/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/automation/triggers/new/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/automation/triggers/new/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/automation/triggers/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/automation/triggers/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/automation/triggers/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/channels/email/edit/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/channels/email/edit/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/channels/email/edit/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/channels/email/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/channels/email/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/channels/email/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/channels/email/loading/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/channels/email/loading/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/channels/email/loading/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/channels/email/new/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/channels/email/new/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/channels/email/new/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/channels/email/settings/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/channels/email/settings/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/channels/email/settings/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/channels/facebook/edit/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/channels/facebook/edit/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/channels/facebook/edit/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/channels/facebook/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/channels/facebook/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/channels/facebook/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/channels/facebook/loading/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/channels/facebook/loading/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/channels/facebook/loading/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/channels/messenger/code/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/channels/messenger/code/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/channels/messenger/code/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/channels/messenger/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/channels/messenger/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/channels/messenger/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/channels/twitter/edit/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/channels/twitter/edit/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/channels/twitter/edit/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/channels/twitter/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/channels/twitter/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/channels/twitter/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/channels/twitter/loading/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/channels/twitter/loading/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/channels/twitter/loading/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/loading/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/loading/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/loading/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/manage/brands/edit/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/manage/brands/edit/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/manage/brands/edit/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/manage/brands/edit/templates/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/manage/brands/edit/templates/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/manage/brands/edit/templates/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/manage/brands/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/manage/brands/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/manage/brands/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/manage/brands/loading/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/manage/brands/loading/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/manage/brands/loading/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/manage/brands/new/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/manage/brands/new/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/manage/brands/new/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/manage/case-fields/edit/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/manage/case-fields/edit/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/manage/case-fields/edit/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/manage/case-fields/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/manage/case-fields/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/manage/case-fields/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/manage/case-fields/loading/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/manage/case-fields/loading/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/manage/case-fields/loading/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/manage/case-fields/new/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/manage/case-fields/new/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/manage/case-fields/new/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/manage/case-fields/select-type/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/manage/case-fields/select-type/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/manage/case-fields/select-type/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/manage/case-forms/edit/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/manage/case-forms/edit/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/manage/case-forms/edit/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/manage/case-forms/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/manage/case-forms/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/manage/case-forms/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/manage/case-forms/loading/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/manage/case-forms/loading/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/manage/case-forms/loading/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/manage/case-forms/new/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/manage/case-forms/new/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/manage/case-forms/new/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/manage/localization/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/manage/localization/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/manage/localization/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/manage/localization/loading/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/manage/localization/loading/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/manage/localization/loading/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/manage/localization/settings/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/manage/localization/settings/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/manage/localization/settings/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/manage/macros/edit/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/manage/macros/edit/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/manage/macros/edit/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/manage/macros/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/manage/macros/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/manage/macros/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/manage/macros/loading/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/manage/macros/loading/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/manage/macros/loading/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/manage/macros/new/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/manage/macros/new/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/manage/macros/new/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/manage/views/edit/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/manage/views/edit/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/manage/views/edit/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/manage/views/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/manage/views/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/manage/views/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/manage/views/loading/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/manage/views/loading/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/manage/views/loading/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/manage/views/new/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/manage/views/new/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/manage/views/new/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/people/loading/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/people/loading/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/people/loading/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/people/organization-fields/edit/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/people/organization-fields/edit/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/people/organization-fields/edit/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/people/organization-fields/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/people/organization-fields/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/people/organization-fields/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/people/organization-fields/loading/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/people/organization-fields/loading/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/people/organization-fields/loading/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/people/organization-fields/new/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/people/organization-fields/new/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/people/organization-fields/new/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/people/organization-fields/select-type/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/people/organization-fields/select-type/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/people/organization-fields/select-type/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/people/roles/edit/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/people/roles/edit/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/people/roles/edit/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/people/roles/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/people/roles/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/people/roles/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/people/roles/loading/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/people/roles/loading/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/people/roles/loading/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/people/roles/new/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/people/roles/new/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/people/roles/new/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/people/staff-loading/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/people/staff-loading/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/people/staff-loading/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/people/staff/add/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/people/staff/add/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/people/staff/add/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/people/staff/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/people/staff/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/people/staff/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/people/teams/edit/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/people/teams/edit/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/people/teams/edit/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/people/teams/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/people/teams/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/people/teams/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/people/teams/loading/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/people/teams/loading/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/people/teams/loading/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/people/teams/new/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/people/teams/new/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/people/teams/new/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/people/user-fields/edit/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/people/user-fields/edit/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/people/user-fields/edit/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/people/user-fields/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/people/user-fields/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/people/user-fields/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/people/user-fields/loading/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/people/user-fields/loading/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/people/user-fields/loading/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/people/user-fields/new/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/people/user-fields/new/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/people/user-fields/new/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/people/user-fields/select-type/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/people/user-fields/select-type/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/people/user-fields/select-type/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/settings/security/customers/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/settings/security/customers/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/settings/security/customers/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/settings/security/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/settings/security/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/settings/security/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/settings/users/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/settings/users/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/settings/users/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/admin/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/admin/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/admin/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/agent/cases/case/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/agent/cases/case/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/agent/cases/case/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/agent/cases/case/organization/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/agent/cases/case/organization/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/agent/cases/case/organization/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/agent/cases/case/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/agent/cases/case/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/agent/cases/case/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/agent/cases/case/user/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/agent/cases/case/user/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/agent/cases/case/user/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/agent/cases/index/suspended-messages/show/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/agent/cases/index/suspended-messages/show/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/agent/cases/index/suspended-messages/show/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/agent/cases/index/suspended-messages/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/agent/cases/index/suspended-messages/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/agent/cases/index/suspended-messages/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/agent/cases/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/agent/cases/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/agent/cases/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/agent/cases/index/view-loading/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/agent/cases/index/view-loading/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/agent/cases/index/view-loading/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/agent/cases/index/view/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/agent/cases/index/view/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/agent/cases/index/view/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/agent/cases/new/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/agent/cases/new/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/agent/cases/new/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/agent/cases/new/organization/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/agent/cases/new/organization/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/agent/cases/new/organization/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/agent/cases/new/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/agent/cases/new/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/agent/cases/new/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/agent/cases/new/user/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/agent/cases/new/user/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/agent/cases/new/user/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/agent/insights/general/agents/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/agent/insights/general/agents/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/agent/insights/general/agents/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/agent/insights/general/cases/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/agent/insights/general/cases/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/agent/insights/general/cases/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/agent/insights/general/loading/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/agent/insights/general/loading/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/agent/insights/general/loading/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/agent/insights/general/teams/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/agent/insights/general/teams/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/agent/insights/general/teams/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/agent/insights/help-center/articles/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/agent/insights/help-center/articles/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/agent/insights/help-center/articles/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/agent/insights/help-center/loading/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/agent/insights/help-center/loading/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/agent/insights/help-center/loading/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/agent/insights/help-center/searches/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/agent/insights/help-center/searches/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/agent/insights/help-center/searches/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/agent/insights/sla/loading/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/agent/insights/sla/loading/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/agent/insights/sla/loading/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/agent/insights/sla/overview/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/agent/insights/sla/overview/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/agent/insights/sla/overview/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/agent/insights/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/agent/insights/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/agent/insights/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/agent/organizations/organization/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/agent/organizations/organization/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/agent/organizations/organization/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/agent/organizations/organization/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/agent/organizations/organization/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/agent/organizations/organization/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/agent/search-loading/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/agent/search-loading/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/agent/search-loading/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/agent/search/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/agent/search/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/agent/search/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/agent/users/user/index/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/agent/users/user/index/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/agent/users/user/index/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/agent/users/user/organization/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/agent/users/user/organization/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/agent/users/user/organization/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/agent/users/user/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/agent/users/user/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/agent/users/user/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/agent/welcome/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/agent/welcome/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/agent/welcome/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/errors/not-found/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/errors/not-found/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/errors/not-found/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/session/test/entry/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/session/test/entry/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/session/test/entry/template.hbs should pass TemplateLint.\n');
+  });
+});
 define('frontend-cp/tests/helpers/destroy-app', ['exports', 'ember'], function (exports, _ember) {
   exports['default'] = destroyApp;
 
@@ -19183,6 +23170,9 @@ define('frontend-cp/tests/integration/components/ko-radio/component-test', ['exp
       _this2.$('div:first').click();
     });
   });
+});
+define("frontend-cp/tests/template-deprecations-test", ["exports"], function (exports) {
+  "use strict";
 });
 define('frontend-cp/tests/test-helper', ['exports', 'frontend-cp/tests/helpers/resolver', 'ember-qunit'], function (exports, _frontendCpTestsHelpersResolver, _emberQunit) {
 
