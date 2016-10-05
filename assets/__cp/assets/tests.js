@@ -20179,11 +20179,15 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'jquery', 'em
   // Helpers for acceptance tests
 
   exports['default'] = function () {
-    _emberTest['default'].registerAsyncHelper('selectChoose', function (app, cssPath, value) {
+    _emberTest['default'].registerAsyncHelper('selectChoose', function (app, cssPath, valueOrSelector) {
       var $trigger = find(cssPath + ' .ember-power-select-trigger');
 
       if ($trigger === undefined || $trigger.length === 0) {
         $trigger = find(cssPath);
+      }
+
+      if ($trigger.length === 0) {
+        throw new Error('You called "selectChoose(\'' + cssPath + '\', \'' + valueOrSelector + '\')" but no select was found using selector "' + cssPath + '"');
       }
 
       var contentId = '' + $trigger.attr('aria-controls');
@@ -20196,14 +20200,21 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'jquery', 'em
 
       // Select the option with the given text
       andThen(function () {
-        var potentialTargets = (0, _jquery['default'])('#' + contentId + ' .ember-power-select-option:contains("' + value + '")').toArray();
+        var potentialTargets = (0, _jquery['default'])('#' + contentId + ' .ember-power-select-option:contains("' + valueOrSelector + '")').toArray();
         var target = undefined;
+        if (potentialTargets.length === 0) {
+          // If treating the value as text doesn't gave use any result, let's try if it's a css selector
+          potentialTargets = (0, _jquery['default'])('#' + contentId + ' ' + valueOrSelector).toArray();
+        }
         if (potentialTargets.length > 1) {
           target = potentialTargets.filter(function (t) {
-            return t.textContent.trim() === value;
+            return t.textContent.trim() === valueOrSelector;
           })[0] || potentialTargets[0];
         } else {
           target = potentialTargets[0];
+        }
+        if (!target) {
+          throw new Error('You called "selectChoose(\'' + cssPath + '\', \'' + valueOrSelector + '\')" but "' + valueOrSelector + '" didn\'t match any option');
         }
         nativeMouseUp(target);
       });
@@ -20215,6 +20226,10 @@ define('frontend-cp/tests/helpers/ember-power-select', ['exports', 'jquery', 'em
       if ($trigger === undefined || $trigger.length === 0) {
         triggerPath = cssPath;
         $trigger = find(triggerPath);
+      }
+
+      if ($trigger.length === 0) {
+        throw new Error('You called "selectSearch(\'' + cssPath + '\', \'' + value + '\')" but no select was found using selector "' + cssPath + '"');
       }
 
       var contentId = '' + $trigger.attr('aria-controls');
