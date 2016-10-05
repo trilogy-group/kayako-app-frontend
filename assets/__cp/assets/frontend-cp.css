@@ -1574,7 +1574,10 @@ textarea {
 
 .ember-power-select-trigger {
   position: relative;
-  border: 1px solid #D1D5D7;
+  border-top: 1px solid #D1D5D7;
+  border-bottom: 1px solid #D1D5D7;
+  border-right: 1px solid #D1D5D7;
+  border-left: 1px solid #D1D5D7;
   border-radius: 2px;
   background-color: transparent;
   line-height: 2;
@@ -1594,7 +1597,10 @@ textarea {
 
 .ember-power-select-trigger:focus,
 .ember-power-select-trigger--active {
-  border: 1px solid #D1D5D7;
+  border-top: 1px solid #D1D5D7;
+  border-bottom: 1px solid #D1D5D7;
+  border-right: 1px solid #D1D5D7;
+  border-left: 1px solid #D1D5D7;
   box-shadow: none; }
 
 .ember-basic-dropdown-trigger--below.ember-power-select-trigger[aria-expanded="true"],
