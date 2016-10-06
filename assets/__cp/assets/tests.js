@@ -12008,7 +12008,7 @@ define('frontend-cp/tests/acceptance/admin/settings/users-test', ['exports', 'fr
     });
   });
 });
-define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-tabs/styles', 'frontend-cp/session/styles', 'frontend-cp/components/ko-agent-dropdown/styles', 'frontend-cp/components/ko-editable-text/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoTabsStyles, _frontendCpSessionStyles, _frontendCpComponentsKoAgentDropdownStyles, _frontendCpComponentsKoEditableTextStyles) {
+define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-tabs/styles', 'frontend-cp/session/styles', 'frontend-cp/components/ko-agent-dropdown/styles', 'frontend-cp/components/ko-editable-text/styles', 'frontend-cp/components/ko-info-bar/item/styles', 'frontend-cp/components/ko-info-bar/field/select/trigger/styles', 'frontend-cp/components/ko-case-content/styles', 'frontend-cp/components/ko-layout/advanced/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoTabsStyles, _frontendCpSessionStyles, _frontendCpComponentsKoAgentDropdownStyles, _frontendCpComponentsKoEditableTextStyles, _frontendCpComponentsKoInfoBarItemStyles, _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles, _frontendCpComponentsKoCaseContentStyles, _frontendCpComponentsKoLayoutAdvancedStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Case | Create case', {
     beforeEach: function beforeEach() {
@@ -12073,26 +12073,26 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
 
       assert.equal(find('.' + _frontendCpComponentsKoAgentDropdownStyles['default'].drop).is(':visible'), false, '"+" Dropdown content should be hidden');
 
-      assert.equal(find('.ko-layout_advanced__sidebar .ko-info-bar_item:eq(1) input').val(), 'Barney Stinson', 'The recipient of the new case is Barney');
+      assert.equal(find('.' + _frontendCpComponentsKoLayoutAdvancedStyles['default'].sidebar + ' .' + _frontendCpComponentsKoInfoBarItemStyles['default'].container + ':eq(0) input').val(), 'Barney Stinson', 'The recipient of the new case is Barney');
       assert.ok(find('.' + _frontendCpComponentsKoTabsStyles['default'].item + ':eq(0)').text().trim() === 'Barney Stinson' && find('.' + _frontendCpComponentsKoTabsStyles['default'].item + ':eq(1)').text().trim() === 'New case', 'Breadcrums are correct');
       assert.equal(find('.' + _frontendCpSessionStyles['default'].tab).length, 1, 'There is only one tab');
       assert.equal(find('.' + _frontendCpSessionStyles['default'].tab + '.active').length, 1, 'That tab is active');
       assert.equal(find('.' + _frontendCpSessionStyles['default'].tab).text().trim(), 'New case', 'That tab belongs to the case being created');
-      click('.ko-layout_advanced_section__subject .' + _frontendCpComponentsKoEditableTextStyles['default'].text);
-      fillIn('.ko-layout_advanced_section__subject input', 'No internet');
-      triggerEvent('.ko-layout_advanced_section__subject input', 'input');
+      click('.' + _frontendCpComponentsKoCaseContentStyles['default'].subject + ' .' + _frontendCpComponentsKoEditableTextStyles['default'].text);
+      fillIn('.' + _frontendCpComponentsKoCaseContentStyles['default'].subject + ' input', 'No internet');
+      triggerEvent('.' + _frontendCpComponentsKoCaseContentStyles['default'].subject + ' input', 'input');
     });
 
     andThen(function () {
-      find('.ko-layout_advanced_section__subject input').trigger($.Event('keydown', { which: 13, keyCode: 13 }));
+      find('.' + _frontendCpComponentsKoCaseContentStyles['default'].subject + ' input').trigger($.Event('keydown', { which: 13, keyCode: 13 }));
       fillInRichTextEditor('I press the button and the bomb explodes');
     });
 
     andThen(function () {
       // click('.ko-info-bar_item:contains("Case form")');
       // click('.ko-info-bar_item:contains("Case form") .dropdown-menu__item:contains("Internet Related Issue")');
-      click('.ko-layout_advanced__sidebar .button--primary');
-      var status = find('.ko-info-bar_item__header:contains("Status")').next().val();
+      click('.' + _frontendCpComponentsKoLayoutAdvancedStyles['default'].sidebar + ' .button--primary');
+      var status = find('.' + _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles['default'].header + ':contains("Status")').next().val();
       assert.equal(status, 'New', 'Status defaults to NEW');
     });
 
@@ -12131,7 +12131,7 @@ define('frontend-cp/tests/acceptance/agent/cases/create-test', ['exports', 'fron
   }
 });
 /* eslint-disable new-cap */
-define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'ember', 'frontend-cp/session/styles', 'frontend-cp/components/ko-checkbox/styles', 'frontend-cp/components/ko-info-bar/field/select/trigger/styles', 'frontend-cp/components/ko-pagination/styles', 'frontend-cp/components/ko-cases-list/sidebar/styles', 'frontend-cp/components/ko-cases-list/sidebar/item/styles', 'frontend-cp/components/ko-modal/styles', 'frontend-cp/components/ko-bulk-sidebar/styles', 'frontend-cp/components/ko-cases-list/styles'], function (exports, _frontendCpTestsHelpersQunit, _ember, _frontendCpSessionStyles, _frontendCpComponentsKoCheckboxStyles, _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles, _frontendCpComponentsKoPaginationStyles, _frontendCpComponentsKoCasesListSidebarStyles, _frontendCpComponentsKoCasesListSidebarItemStyles, _frontendCpComponentsKoModalStyles, _frontendCpComponentsKoBulkSidebarStyles, _frontendCpComponentsKoCasesListStyles) {
+define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'ember', 'frontend-cp/session/styles', 'frontend-cp/components/ko-checkbox/styles', 'frontend-cp/components/ko-info-bar/field/select/trigger/styles', 'frontend-cp/components/ko-pagination/styles', 'frontend-cp/components/ko-cases-list/sidebar/styles', 'frontend-cp/components/ko-cases-list/sidebar/item/styles', 'frontend-cp/components/ko-modal/styles', 'frontend-cp/components/ko-bulk-sidebar/styles', 'frontend-cp/components/ko-cases-list/styles', 'frontend-cp/components/ko-info-bar/item/styles'], function (exports, _frontendCpTestsHelpersQunit, _ember, _frontendCpSessionStyles, _frontendCpComponentsKoCheckboxStyles, _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles, _frontendCpComponentsKoPaginationStyles, _frontendCpComponentsKoCasesListSidebarStyles, _frontendCpComponentsKoCasesListSidebarItemStyles, _frontendCpComponentsKoModalStyles, _frontendCpComponentsKoBulkSidebarStyles, _frontendCpComponentsKoCasesListStyles, _frontendCpComponentsKoInfoBarItemStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Case | List', {
     beforeEach: function beforeEach() {
@@ -12622,12 +12622,12 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
     visit('/agent/cases/' + unassignedCase.id);
 
     andThen(function () {
-      assert.ok(!/Assignee/i.test($('.ko-info-bar_item--edited .ko-info-bar_item__header').text()));
+      assert.ok(!/Assignee/i.test($('.' + _frontendCpComponentsKoInfoBarItemStyles['default'].containerEdited + ' .' + _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles['default'].header).text()));
     });
   });
 });
 /* eslint-disable camelcase */
-define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/helpers/dom-helpers'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsHelpersDomHelpers) {
+define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/helpers/dom-helpers', 'frontend-cp/components/ko-reply-init/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsHelpersDomHelpers, _frontendCpComponentsKoReplyInitStyles) {
 
   var targetCase = undefined;
 
@@ -12808,7 +12808,7 @@ define('frontend-cp/tests/acceptance/agent/cases/organization-timeline-test', ['
 
     andThen(function () {
       selectChoose('.qa-timeline__filter', 'Notes');
-      click('.ko-layout_advanced_editor__placeholder');
+      click('.' + _frontendCpComponentsKoReplyInitStyles['default'].placeholder);
       fillInRichTextEditor('Testing notes');
     });
 
@@ -13279,7 +13279,7 @@ define('frontend-cp/tests/acceptance/agent/cases/subject-created-at-test', ['exp
   });
 });
 /* eslint-disable new-cap */
-define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'qunit', 'sinon', 'frontend-cp/components/ko-text-editor/mode-selector/styles'], function (exports, _frontendCpTestsHelpersQunit, _qunit, _sinon, _frontendCpComponentsKoTextEditorModeSelectorStyles) {
+define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'qunit', 'sinon', 'frontend-cp/components/ko-text-editor/mode-selector/styles', 'frontend-cp/components/ko-reply-init/styles'], function (exports, _frontendCpTestsHelpersQunit, _qunit, _sinon, _frontendCpComponentsKoTextEditorModeSelectorStyles, _frontendCpComponentsKoReplyInitStyles) {
 
   var targetCase = undefined,
       identityEmail = undefined,
@@ -13426,7 +13426,7 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
 
     andThen(function () {
       assert.equal(find('.qa-feed_item--post').length, 3, 'There is three posts');
-      click('.ko-layout_advanced_editor__placeholder');
+      click('.' + _frontendCpComponentsKoReplyInitStyles['default'].placeholder);
     });
 
     andThen(function () {
@@ -13451,7 +13451,7 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
     andThen(function () {
       assert.equal(find('.qa-feed_item--post').length, 3, 'There is three posts');
       assert.equal(find('.ko-feed_item').length, 5, 'There are five items');
-      click('.ko-layout_advanced_editor__placeholder');
+      click('.' + _frontendCpComponentsKoReplyInitStyles['default'].placeholder);
     });
 
     andThen(function () {
@@ -13630,7 +13630,7 @@ define('frontend-cp/tests/acceptance/agent/cases/update-test', ['exports', 'fron
     return object;
   }
 });
-define('frontend-cp/tests/acceptance/agent/cases/user-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-tabs/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoTabsStyles) {
+define('frontend-cp/tests/acceptance/agent/cases/user-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-tabs/styles', 'frontend-cp/components/ko-info-bar/item/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoTabsStyles, _frontendCpComponentsKoInfoBarItemStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | Case | User', {
     beforeEach: function beforeEach() {
@@ -13699,11 +13699,11 @@ define('frontend-cp/tests/acceptance/agent/cases/user-test', ['exports', 'fronte
     });
 
     andThen(function () {
-      assert.equal(find('.user-team-ids-field .ko-info-bar_item--error').length, 1, 'The teams field contains errors');
+      assert.equal(find('.user-team-ids-field .' + _frontendCpComponentsKoInfoBarItemStyles['default'].containerError).length, 1, 'The teams field contains errors');
     });
   });
 });
-define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/helpers/dom-helpers'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsHelpersDomHelpers) {
+define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/tests/helpers/dom-helpers', 'frontend-cp/components/ko-reply-init/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpTestsHelpersDomHelpers, _frontendCpComponentsKoReplyInitStyles) {
 
   var targetCase = undefined;
 
@@ -13877,7 +13877,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
 
     andThen(function () {
       selectChoose('.qa-timeline__filter', 'Notes');
-      click('.ko-layout_advanced_editor__placeholder');
+      click('.' + _frontendCpComponentsKoReplyInitStyles['default'].placeholder);
       fillInRichTextEditor('Testing notes');
     });
 
@@ -13903,7 +13903,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-timeline-test', ['exports'
     });
 
     andThen(function () {
-      click('.ko-layout_advanced_editor__placeholder');
+      click('.' + _frontendCpComponentsKoReplyInitStyles['default'].placeholder);
       fillInRichTextEditor('Testing notes');
     });
 
@@ -14441,7 +14441,7 @@ define('frontend-cp/tests/acceptance/agent/organizations/create-test', ['exports
   //});
 });
 /* eslint-disable camelcase, new-cap */
-define('frontend-cp/tests/acceptance/agent/organizations/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit'], function (exports, _frontendCpTestsHelpersQunit) {
+define('frontend-cp/tests/acceptance/agent/organizations/edit-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-info-bar/item/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoInfoBarItemStyles) {
 
   var theCase = undefined;
 
@@ -14543,7 +14543,7 @@ define('frontend-cp/tests/acceptance/agent/organizations/edit-test', ['exports',
     });
 
     andThen(function () {
-      assert.equal(find('.organization-domains-field .ko-info-bar_item--error').length, 1, 'The domains field is marked as errored');
+      assert.equal(find('.organization-domains-field .' + _frontendCpComponentsKoInfoBarItemStyles['default'].containerError).length, 1, 'The domains field is marked as errored');
     });
   });
 });
@@ -15055,7 +15055,7 @@ define('frontend-cp/tests/acceptance/agent/users/change-role-test', ['exports', 
     });
   });
 });
-define('frontend-cp/tests/acceptance/agent/users/create-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/session/styles', 'frontend-cp/components/ko-tabs/styles', 'frontend-cp/components/ko-agent-dropdown/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpSessionStyles, _frontendCpComponentsKoTabsStyles, _frontendCpComponentsKoAgentDropdownStyles) {
+define('frontend-cp/tests/acceptance/agent/users/create-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/session/styles', 'frontend-cp/components/ko-tabs/styles', 'frontend-cp/components/ko-agent-dropdown/styles', 'frontend-cp/components/ko-user-content/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpSessionStyles, _frontendCpComponentsKoTabsStyles, _frontendCpComponentsKoAgentDropdownStyles, _frontendCpComponentsKoUserContentStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | User | Create user', {
     beforeEach: function beforeEach() {
@@ -15106,7 +15106,7 @@ define('frontend-cp/tests/acceptance/agent/users/create-test', ['exports', 'fron
 
       assert.equal(find('.' + _frontendCpComponentsKoAgentDropdownStyles['default'].container + ' .ember-basic-dropdown-trigger').attr('aria-expanded'), undefined, '"+" Dropdown content should be hidden');
 
-      assert.equal(find('.ko-layout_advanced_section__subject').text().trim(), 'Barney Stinson', 'The name of the user is vissible in the header');
+      assert.equal(find('.' + _frontendCpComponentsKoUserContentStyles['default'].subject).text().trim(), 'Barney Stinson', 'The name of the user is vissible in the header');
       assert.equal(find('.' + _frontendCpComponentsKoTabsStyles['default'].item + ':eq(0)').text().trim(), 'Barney Stinson', 'Tabs are correct');
       assert.equal(find('.' + _frontendCpSessionStyles['default'].tab).length, 1, 'There is only one tab');
       assert.equal(find('.' + _frontendCpSessionStyles['default'].tab + '.active').length, 1, 'That tab is active');
@@ -15489,18 +15489,18 @@ define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'fron
     visit('/agent/cases/suspended-messages');
 
     andThen(function () {
-      assert.equal($('.suspended-messages-section__table tbody tr').length, 20, 'There is 20 mails in the first page');
+      assert.equal($('.qa-suspended-messages-section__table tbody tr').length, 20, 'There is 20 mails in the first page');
       assert.equal($('.' + _frontendCpComponentsKoPaginationStyles['default'].paginationPageNumber).text().trim(), '1', 'This is page 1... ');
       assert.equal($('.' + _frontendCpComponentsKoPaginationStyles['default'].paginationPageCount).text().trim(), 'of 2', '... of 2');
 
-      assert.equal($('.suspended-messages-section__table tbody tr:eq(0) td:eq(1)').text().trim(), 'client0@example.com');
+      assert.equal($('.qa-suspended-messages-section__table tbody tr:eq(0) td:eq(1)').text().trim(), 'client0@example.com');
       click('.' + _frontendCpComponentsKoPaginationStyles['default'].paginationNext + ' a');
     });
 
     andThen(function () {
       assert.equal(currentURL(), '/agent/cases/suspended-messages?page=2');
-      assert.equal($('.suspended-messages-section__table tbody tr').length, 2, 'There is 2 mails in the second page');
-      assert.equal($('.suspended-messages-section__table tbody tr:eq(0) td:eq(1)').text().trim(), 'client20@example.com');
+      assert.equal($('.qa-suspended-messages-section__table tbody tr').length, 2, 'There is 2 mails in the second page');
+      assert.equal($('.qa-suspended-messages-section__table tbody tr:eq(0) td:eq(1)').text().trim(), 'client20@example.com');
       assert.equal($('.' + _frontendCpComponentsKoPaginationStyles['default'].paginationPageNumber).text().trim(), '2', 'This is page 2... ');
       assert.equal($('.' + _frontendCpComponentsKoPaginationStyles['default'].paginationPageCount).text().trim(), 'of 2', '... of 2');
     });
@@ -15510,7 +15510,7 @@ define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'fron
     visit('/agent/cases/suspended-messages');
 
     andThen(function () {
-      click($('.suspended-messages-section__table tbody tr:eq(2)'));
+      click($('.qa-suspended-messages-section__table tbody tr:eq(2)'));
     });
 
     andThen(function () {
@@ -15530,7 +15530,7 @@ define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'fron
     visit('/agent/cases/suspended-messages');
 
     andThen(function () {
-      click($('.suspended-messages-section__table tbody tr:eq(2)'));
+      click($('.qa-suspended-messages-section__table tbody tr:eq(2)'));
     });
 
     andThen(function () {
@@ -15543,7 +15543,7 @@ define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'fron
     andThen(function () {
       assert.equal(currentURL(), '/agent/cases/suspended-messages');
       assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 0, 'The modal is gone');
-      assert.equal($('.suspended-messages-section__table tbody tr').length, 19, 'Message was deleted');
+      assert.equal($('.qa-suspended-messages-section__table tbody tr').length, 19, 'Message was deleted');
     });
   });
 
@@ -15551,7 +15551,7 @@ define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'fron
     visit('/agent/cases/suspended-messages');
 
     andThen(function () {
-      click($('.suspended-messages-section__table tbody tr:eq(2)'));
+      click($('.qa-suspended-messages-section__table tbody tr:eq(2)'));
     });
 
     andThen(function () {
@@ -15564,7 +15564,7 @@ define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'fron
     andThen(function () {
       assert.equal(currentURL(), '/agent/cases/suspended-messages');
       assert.equal($('.' + _frontendCpComponentsKoModalStyles['default'].content).length, 0, 'The modal is gone');
-      assert.equal($('.suspended-messages-section__table tbody tr').length, 19, 'Message was deleted');
+      assert.equal($('.qa-suspended-messages-section__table tbody tr').length, 19, 'Message was deleted');
     });
   });
 
@@ -15573,8 +15573,8 @@ define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'fron
 
     andThen(function () {
       assert.equal($('.suspended-messages-section__delete-all').length, 0, 'There is no button to delete ni batch visible');
-      click('.suspended-messages-section__table tbody tr .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + ':eq(0)');
-      click('.suspended-messages-section__table tbody tr .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + ':eq(1)');
+      click('.qa-suspended-messages-section__table tbody tr .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + ':eq(0)');
+      click('.qa-suspended-messages-section__table tbody tr .' + _frontendCpComponentsKoCheckboxStyles['default'].checkbox + ':eq(1)');
     });
 
     andThen(function () {
@@ -15589,7 +15589,7 @@ define('frontend-cp/tests/acceptance/suspended-messages-test', ['exports', 'fron
 
     andThen(function () {
       assert.equal(currentURL(), '/agent/cases/suspended-messages');
-      assert.equal($('.suspended-messages-section__table tbody tr').length, 20, 'Message was deleted');
+      assert.equal($('.qa-suspended-messages-section__table tbody tr').length, 20, 'Message was deleted');
       assert.equal($('.suspended-messages-section__delete-all').length, 0, 'The button to delete in batch is gone again');
     });
   });
@@ -17929,6 +17929,33 @@ define('frontend-cp/tests/frontend-cp/components/ko-layout/admin/template.templa
     assert.ok(true, 'frontend-cp/components/ko-layout/admin/template.hbs should pass TemplateLint.\n');
   });
 });
+define('frontend-cp/tests/frontend-cp/components/ko-layout/advanced/block/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-layout/advanced/block/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-layout/advanced/block/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-layout/advanced/heading/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-layout/advanced/heading/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-layout/advanced/heading/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-layout/advanced/section/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-layout/advanced/section/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-layout/advanced/section/template.hbs should pass TemplateLint.\n');
+  });
+});
 define('frontend-cp/tests/frontend-cp/components/ko-layout/advanced/template.template-lint-test', ['exports'], function (exports) {
   'use strict';
 
@@ -18089,6 +18116,15 @@ define('frontend-cp/tests/frontend-cp/components/ko-reorderable-list/template.te
   QUnit.test('should pass TemplateLint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'frontend-cp/components/ko-reorderable-list/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-reply-init/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-reply-init/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-reply-init/template.hbs should pass TemplateLint.\n');
   });
 });
 define('frontend-cp/tests/frontend-cp/components/ko-role-pill/template.template-lint-test', ['exports'], function (exports) {
@@ -21872,7 +21908,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/component-test', ['
     assert.equal(this.$().text().trim(), '');
   });
 });
-define('frontend-cp/tests/integration/components/ko-info-bar/field/checkbox/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit'], function (exports, _ember, _frontendCpTestsHelpersQunit) {
+define('frontend-cp/tests/integration/components/ko-info-bar/field/checkbox/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-info-bar/field/checkbox/styles'], function (exports, _ember, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoInfoBarFieldCheckboxStyles) {
 
   (0, _frontendCpTestsHelpersQunit.moduleForComponent)('ko-info-bar/field/checkbox', {
     integration: true
@@ -21935,7 +21971,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/checkbox/comp
       _this.set('title', title);
     });
 
-    assert.equal($.trim(this.$('.ko-info-bar_item__header').text()), title);
+    assert.equal($.trim(this.$('.' + _frontendCpComponentsKoInfoBarFieldCheckboxStyles['default'].header).text()), title);
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('it has checkboxes', function (assert) {
