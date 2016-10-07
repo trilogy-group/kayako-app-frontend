@@ -1209,7 +1209,7 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/edit-test', ['exp
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/automation/monitors/index-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-modal/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoModalStyles) {
+define('frontend-cp/tests/acceptance/admin/automation/monitors/index-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-modal/styles', 'frontend-cp/components/ko-admin/monitors/index/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoModalStyles, _frontendCpComponentsKoAdminMonitorsIndexStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/automation/monitors - Index of monitors', {
     beforeEach: function beforeEach() {
@@ -1335,11 +1335,11 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/index-test', ['ex
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
-      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(1) .t-bold').text().trim(), 'test monitor 2');
-      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(2) .t-bold').text().trim(), 'test monitor 3');
-      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(3) .t-bold').text().trim(), 'test monitor 4');
-      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':eq(0) .t-bold').text().trim(), 'test monitor 1');
-      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':eq(1) .t-bold').text().trim(), 'test monitor 5');
+      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(1) .' + _frontendCpComponentsKoAdminMonitorsIndexStyles['default'].title).text().trim(), 'test monitor 2');
+      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(2) .' + _frontendCpComponentsKoAdminMonitorsIndexStyles['default'].title).text().trim(), 'test monitor 3');
+      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(3) .' + _frontendCpComponentsKoAdminMonitorsIndexStyles['default'].title).text().trim(), 'test monitor 4');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':eq(0) .' + _frontendCpComponentsKoAdminMonitorsIndexStyles['default'].title).text().trim(), 'test monitor 1');
+      assert.equal(find('.qa-admin_monitors--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':eq(1) .' + _frontendCpComponentsKoAdminMonitorsIndexStyles['default'].title).text().trim(), 'test monitor 5');
     });
   });
 
@@ -1358,21 +1358,21 @@ define('frontend-cp/tests/acceptance/admin/automation/monitors/index-test', ['ex
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/monitors');
-      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(1) .t-bold').text().trim(), 'test monitor 1');
-      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(2) .t-bold').text().trim(), 'test monitor 2');
-      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(3) .t-bold').text().trim(), 'test monitor 3');
-      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(4) .t-bold').text().trim(), 'test monitor 4');
-      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(5) .t-bold').text().trim(), 'test monitor 5');
+      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(1) .' + _frontendCpComponentsKoAdminMonitorsIndexStyles['default'].title).text().trim(), 'test monitor 1');
+      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(2) .' + _frontendCpComponentsKoAdminMonitorsIndexStyles['default'].title).text().trim(), 'test monitor 2');
+      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(3) .' + _frontendCpComponentsKoAdminMonitorsIndexStyles['default'].title).text().trim(), 'test monitor 3');
+      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(4) .' + _frontendCpComponentsKoAdminMonitorsIndexStyles['default'].title).text().trim(), 'test monitor 4');
+      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(5) .' + _frontendCpComponentsKoAdminMonitorsIndexStyles['default'].title).text().trim(), 'test monitor 5');
     });
 
-    reorderListItems('.i-dragstrip', '.t-bold', 'test monitor 5', 'test monitor 4', 'test monitor 3', 'test monitor 2', 'test monitor 1');
+    reorderListItems('.i-dragstrip', '.' + _frontendCpComponentsKoAdminMonitorsIndexStyles['default'].title, 'test monitor 5', 'test monitor 4', 'test monitor 3', 'test monitor 2', 'test monitor 1');
 
     andThen(function () {
-      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(1) .t-bold').text().trim(), 'test monitor 5');
-      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(2) .t-bold').text().trim(), 'test monitor 4');
-      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(3) .t-bold').text().trim(), 'test monitor 3');
-      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(4) .t-bold').text().trim(), 'test monitor 2');
-      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(5) .t-bold').text().trim(), 'test monitor 1');
+      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(1) .' + _frontendCpComponentsKoAdminMonitorsIndexStyles['default'].title).text().trim(), 'test monitor 5');
+      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(2) .' + _frontendCpComponentsKoAdminMonitorsIndexStyles['default'].title).text().trim(), 'test monitor 4');
+      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(3) .' + _frontendCpComponentsKoAdminMonitorsIndexStyles['default'].title).text().trim(), 'test monitor 3');
+      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(4) .' + _frontendCpComponentsKoAdminMonitorsIndexStyles['default'].title).text().trim(), 'test monitor 2');
+      assert.equal(find('.qa-admin_monitors--enabled li:nth-of-type(5) .' + _frontendCpComponentsKoAdminMonitorsIndexStyles['default'].title).text().trim(), 'test monitor 1');
     });
   });
 });
@@ -2981,7 +2981,7 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/edit-test', ['exp
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/automation/triggers/index-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-modal/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoModalStyles) {
+define('frontend-cp/tests/acceptance/admin/automation/triggers/index-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-modal/styles', 'frontend-cp/components/ko-admin/triggers/index/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoModalStyles, _frontendCpComponentsKoAdminTriggersIndexStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/automation/triggers/index', {
     beforeEach: function beforeEach() {
@@ -3084,11 +3084,11 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/index-test', ['ex
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/triggers');
-      assert.equal(find('.qa-admin_triggers--enabled li:nth-of-type(1) .t-bold').text().trim(), 'test trigger 2');
-      assert.equal(find('.qa-admin_triggers--enabled li:nth-of-type(2) .t-bold').text().trim(), 'test trigger 3');
-      assert.equal(find('.qa-admin_triggers--enabled li:nth-of-type(3) .t-bold').text().trim(), 'test trigger 4');
-      assert.equal(find('.qa-admin_triggers--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':eq(0) .t-bold').text().trim(), 'test trigger 1');
-      assert.equal(find('.qa-admin_triggers--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':eq(1) .t-bold').text().trim(), 'test trigger 5');
+      assert.equal(find('.qa-admin_triggers--enabled li:nth-of-type(1) .' + _frontendCpComponentsKoAdminTriggersIndexStyles['default'].title).text().trim(), 'test trigger 2');
+      assert.equal(find('.qa-admin_triggers--enabled li:nth-of-type(2) .' + _frontendCpComponentsKoAdminTriggersIndexStyles['default'].title).text().trim(), 'test trigger 3');
+      assert.equal(find('.qa-admin_triggers--enabled li:nth-of-type(3) .' + _frontendCpComponentsKoAdminTriggersIndexStyles['default'].title).text().trim(), 'test trigger 4');
+      assert.equal(find('.qa-admin_triggers--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':eq(0) .' + _frontendCpComponentsKoAdminTriggersIndexStyles['default'].title).text().trim(), 'test trigger 1');
+      assert.equal(find('.qa-admin_triggers--disabled .' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':eq(1) .' + _frontendCpComponentsKoAdminTriggersIndexStyles['default'].title).text().trim(), 'test trigger 5');
     });
   });
 
@@ -3107,21 +3107,21 @@ define('frontend-cp/tests/acceptance/admin/automation/triggers/index-test', ['ex
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/automation/triggers');
-      assert.equal(find('.qa-admin_triggers--enabled li:nth-of-type(1) .t-bold').text().trim(), 'test trigger 1');
-      assert.equal(find('.qa-admin_triggers--enabled li:nth-of-type(2) .t-bold').text().trim(), 'test trigger 2');
-      assert.equal(find('.qa-admin_triggers--enabled li:nth-of-type(3) .t-bold').text().trim(), 'test trigger 3');
-      assert.equal(find('.qa-admin_triggers--enabled li:nth-of-type(4) .t-bold').text().trim(), 'test trigger 4');
-      assert.equal(find('.qa-admin_triggers--enabled li:nth-of-type(5) .t-bold').text().trim(), 'test trigger 5');
+      assert.equal(find('.qa-admin_triggers--enabled li:nth-of-type(1) .' + _frontendCpComponentsKoAdminTriggersIndexStyles['default'].title).text().trim(), 'test trigger 1');
+      assert.equal(find('.qa-admin_triggers--enabled li:nth-of-type(2) .' + _frontendCpComponentsKoAdminTriggersIndexStyles['default'].title).text().trim(), 'test trigger 2');
+      assert.equal(find('.qa-admin_triggers--enabled li:nth-of-type(3) .' + _frontendCpComponentsKoAdminTriggersIndexStyles['default'].title).text().trim(), 'test trigger 3');
+      assert.equal(find('.qa-admin_triggers--enabled li:nth-of-type(4) .' + _frontendCpComponentsKoAdminTriggersIndexStyles['default'].title).text().trim(), 'test trigger 4');
+      assert.equal(find('.qa-admin_triggers--enabled li:nth-of-type(5) .' + _frontendCpComponentsKoAdminTriggersIndexStyles['default'].title).text().trim(), 'test trigger 5');
     });
 
-    reorderListItems('.i-dragstrip', '.t-bold', 'test trigger 5', 'test trigger 4', 'test trigger 3', 'test trigger 2', 'test trigger 1');
+    reorderListItems('.i-dragstrip', '.' + _frontendCpComponentsKoAdminTriggersIndexStyles['default'].title, 'test trigger 5', 'test trigger 4', 'test trigger 3', 'test trigger 2', 'test trigger 1');
 
     andThen(function () {
-      assert.equal(find('.qa-admin_triggers--enabled li:nth-of-type(1) .t-bold').text().trim(), 'test trigger 5');
-      assert.equal(find('.qa-admin_triggers--enabled li:nth-of-type(2) .t-bold').text().trim(), 'test trigger 4');
-      assert.equal(find('.qa-admin_triggers--enabled li:nth-of-type(3) .t-bold').text().trim(), 'test trigger 3');
-      assert.equal(find('.qa-admin_triggers--enabled li:nth-of-type(4) .t-bold').text().trim(), 'test trigger 2');
-      assert.equal(find('.qa-admin_triggers--enabled li:nth-of-type(5) .t-bold').text().trim(), 'test trigger 1');
+      assert.equal(find('.qa-admin_triggers--enabled li:nth-of-type(1) .' + _frontendCpComponentsKoAdminTriggersIndexStyles['default'].title).text().trim(), 'test trigger 5');
+      assert.equal(find('.qa-admin_triggers--enabled li:nth-of-type(2) .' + _frontendCpComponentsKoAdminTriggersIndexStyles['default'].title).text().trim(), 'test trigger 4');
+      assert.equal(find('.qa-admin_triggers--enabled li:nth-of-type(3) .' + _frontendCpComponentsKoAdminTriggersIndexStyles['default'].title).text().trim(), 'test trigger 3');
+      assert.equal(find('.qa-admin_triggers--enabled li:nth-of-type(4) .' + _frontendCpComponentsKoAdminTriggersIndexStyles['default'].title).text().trim(), 'test trigger 2');
+      assert.equal(find('.qa-admin_triggers--enabled li:nth-of-type(5) .' + _frontendCpComponentsKoAdminTriggersIndexStyles['default'].title).text().trim(), 'test trigger 1');
     });
   });
 });
@@ -6715,7 +6715,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/reorder-test', ['e
     });
   });
 });
-define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'npm:lodash', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-simple-list/cell/styles', 'frontend-cp/components/ko-simple-list/actions/styles', 'frontend-cp/components/ko-toggle/styles'], function (exports, _frontendCpTestsHelpersQunit, _npmLodash, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoSimpleListCellStyles, _frontendCpComponentsKoSimpleListActionsStyles, _frontendCpComponentsKoToggleStyles) {
+define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'npm:lodash', 'frontend-cp/components/ko-simple-list/row/styles', 'frontend-cp/components/ko-simple-list/cell/styles', 'frontend-cp/components/ko-simple-list/actions/styles', 'frontend-cp/components/ko-toggle/styles', 'frontend-cp/session/admin/manage/case-forms/index/styles'], function (exports, _frontendCpTestsHelpersQunit, _npmLodash, _frontendCpComponentsKoSimpleListRowStyles, _frontendCpComponentsKoSimpleListCellStyles, _frontendCpComponentsKoSimpleListActionsStyles, _frontendCpComponentsKoToggleStyles, _frontendCpSessionAdminManageCaseFormsIndexStyles) {
 
   var brand = undefined,
       locale = undefined;
@@ -6877,7 +6877,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
 
     andThen(function () {
       assert.equal(currentURL(), '/admin/manage/case-forms');
-      assert.equal(find('.t-bold:contains("QA: Case Form Title")').length, 1);
+      assert.equal(find('.' + _frontendCpSessionAdminManageCaseFormsIndexStyles['default'].title + ':contains("QA: Case Form Title")').length, 1);
     });
   });
 
@@ -6987,14 +6987,14 @@ define('frontend-cp/tests/acceptance/admin/manage/case-forms-test', ['exports', 
 
     andThen(function () {
       assert.equal(find('.qa-admin_case-forms__enabled-list .qa-admin_case-forms__list-row').length, 2);
-      assert.equal(find('.qa-admin_case-forms__enabled-list .qa-admin_case-forms__list-row:contains("Form 1") .t-caption:contains("(Default)")').length, 0);
-      assert.equal(find('.qa-admin_case-forms__enabled-list .qa-admin_case-forms__list-row:contains("Form 2") .t-caption:contains("(Default)")').length, 1);
+      assert.equal(find('.qa-admin_case-forms__enabled-list .qa-admin_case-forms__list-row:contains("Form 1") .' + _frontendCpSessionAdminManageCaseFormsIndexStyles['default'].caption + ':contains("(Default)")').length, 0);
+      assert.equal(find('.qa-admin_case-forms__enabled-list .qa-admin_case-forms__list-row:contains("Form 2") .' + _frontendCpSessionAdminManageCaseFormsIndexStyles['default'].caption + ':contains("(Default)")').length, 1);
       click('.qa-admin_case-forms__enabled-list .qa-admin_case-forms__list-row:contains("Form 1") a:contains("Make default")');
     });
 
     andThen(function () {
-      assert.equal(find('.qa-admin_case-forms__enabled-list .qa-admin_case-forms__list-row:contains("Form 1") .t-caption:contains("(Default)")').length, 1);
-      assert.equal(find('.qa-admin_case-forms__enabled-list .qa-admin_case-forms__list-row:contains("Form 2") .t-caption:contains("(Default)")').length, 0);
+      assert.equal(find('.qa-admin_case-forms__enabled-list .qa-admin_case-forms__list-row:contains("Form 1") .' + _frontendCpSessionAdminManageCaseFormsIndexStyles['default'].caption + ':contains("(Default)")').length, 1);
+      assert.equal(find('.qa-admin_case-forms__enabled-list .qa-admin_case-forms__list-row:contains("Form 2") .' + _frontendCpSessionAdminManageCaseFormsIndexStyles['default'].caption + ':contains("(Default)")').length, 0);
     });
   });
 
@@ -7073,7 +7073,7 @@ define('frontend-cp/tests/acceptance/admin/manage/facebook/manage-pages-test', [
     });
 
     andThen(function () {
-      assert.equal(find('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':first .t-bold').text(), 'HelpDesk Management System');
+      assert.equal(find('.' + _frontendCpComponentsKoSimpleListRowStyles['default'].row + ':first .' + _frontendCpComponentsKoAdminFacebookIndexStyles['default'].title).text(), 'HelpDesk Management System');
     });
   });
 
@@ -13682,7 +13682,7 @@ define('frontend-cp/tests/acceptance/agent/cases/user-test', ['exports', 'fronte
     });
 
     andThen(function () {
-      assert.equal(find('.qa-action-menu__dropdown .ko-dropdown_list__item').length, 1);
+      assert.equal(find('.qa-action-menu__dropdown .qa-action-menu-item').length, 1);
     });
   });
 
@@ -15893,6 +15893,15 @@ define('frontend-cp/tests/frontend-cp/components/key-value-collection-builder/te
   QUnit.test('should pass TemplateLint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'frontend-cp/components/key-value-collection-builder/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-action-menu/item/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-action-menu/item/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-action-menu/item/template.hbs should pass TemplateLint.\n');
   });
 });
 define('frontend-cp/tests/frontend-cp/components/ko-action-menu/template.template-lint-test', ['exports'], function (exports) {
