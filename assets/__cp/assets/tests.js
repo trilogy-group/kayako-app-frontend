@@ -13454,14 +13454,9 @@ define('frontend-cp/tests/acceptance/agent/cases/timeline-test', ['exports', 'fr
       click('.' + _frontendCpComponentsKoReplyInitStyles['default'].placeholder);
     });
 
-    andThen(function () {
-      click('.' + _frontendCpComponentsKoTextEditorModeSelectorStyles['default'].root);
-      fillInRichTextEditor('Testing notes');
-    });
-
-    andThen(function () {
-      click('.button--primary');
-    });
+    click('.' + _frontendCpComponentsKoTextEditorModeSelectorStyles['default'].root);
+    fillInRichTextEditor('Testing notes');
+    click('.button--primary');
 
     andThen(function () {
       assert.equal(find('.qa-feed_item--post').length, 3, 'There is still 3 posts');
@@ -18001,6 +17996,15 @@ define('frontend-cp/tests/frontend-cp/components/ko-layout/two-columns/template.
     assert.ok(true, 'frontend-cp/components/ko-layout/two-columns/template.hbs should pass TemplateLint.\n');
   });
 });
+define('frontend-cp/tests/frontend-cp/components/ko-lightbox/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-lightbox/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-lightbox/template.hbs should pass TemplateLint.\n');
+  });
+});
 define('frontend-cp/tests/frontend-cp/components/ko-loader/template.template-lint-test', ['exports'], function (exports) {
   'use strict';
 
@@ -18071,6 +18075,15 @@ define('frontend-cp/tests/frontend-cp/components/ko-organization-content/templat
   QUnit.test('should pass TemplateLint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'frontend-cp/components/ko-organization-content/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-overlay/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-overlay/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-overlay/template.hbs should pass TemplateLint.\n');
   });
 });
 define('frontend-cp/tests/frontend-cp/components/ko-pagination/template.template-lint-test', ['exports'], function (exports) {
@@ -20492,6 +20505,7 @@ define('frontend-cp/tests/helpers/fill-in-rich-text-editor', ['exports', 'ember'
     editor.froalaEditor('html.set', html);
 
     // This is a special hack in tests to make Froala to respond and trigger event for update
+    editor.find('[contenteditable]').focus();
     editor.find('[contenteditable]').trigger($.Event('keyup', { which: 32, keyCode: 32 }));
     editor.find('[contenteditable]').trigger($.Event('keyup', { which: 8, keyCode: 8 }));
   });
