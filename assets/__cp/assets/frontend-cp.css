@@ -7407,6 +7407,41 @@ img {
   border-left: 1px solid #BEC4C7;
   background: #FFFFFF; }
 
+/* styles for frontend-cp/components/ko-lightbox/styles.css */
+.ko-lightbox__modal_2ubbcy {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  overflow: hidden;
+  position: absolute;
+  padding: 40px;
+  cursor: zoom-out; }
+
+.ko-lightbox__lightbox-image_2ubbcy {
+  max-height: 100%;
+  max-width: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center; }
+
+.ko-lightbox__loading-image_2ubbcy {
+  visibility: hidden;
+  width: 0px;
+  height: 0px; }
+
+.ko-lightbox__hidden-image_2ubbcy {
+  visibility: hidden; }
+
 /* styles for frontend-cp/components/ko-loader/styles.css */
 .ko-loader__container_2f7byw {
   display: block;
@@ -7558,16 +7593,6 @@ img {
   margin-bottom: 9px; }
 
 /* styles for frontend-cp/components/ko-modal/styles.css */
-.ko-modal__overlay_9qp2si {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: rgba(0, 0, 0, 0.4);
-  z-index: 1050;
-  overflow-y: auto; }
-
 .ko-modal__content_9qp2si {
   position: absolute;
   top: 140px;
@@ -7657,6 +7682,17 @@ span#HW_badge.HW_softHidden {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex; }
+
+/* styles for frontend-cp/components/ko-overlay/styles.css */
+.ko-overlay__overlay_1e1pyg {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 1050;
+  overflow-y: auto; }
 
 /* styles for frontend-cp/components/ko-people-popover/styles.css */
 .ko-people-popover__header_1m4o08 {
@@ -8935,7 +8971,8 @@ span#HW_badge.HW_softHidden {
 .ko-timeline_item_attachment__image-wrapper_1wjbza {
   margin-bottom: 6px;
   border-radius: 4px;
-  overflow: hidden; }
+  overflow: hidden;
+  cursor: zoom-in; }
 
 .ko-timeline_item_attachment__details_1wjbza {
   display: -webkit-box;
