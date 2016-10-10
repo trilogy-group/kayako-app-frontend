@@ -6022,7 +6022,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
       fillIn('.qa-sortable-item:first input:first', option1Title);
 
-      click('.i-add-circle');
+      click('.qa-ko-reorderable-crud-list__add');
       fillIn('.qa-sortable-item:last input:first', option2Title);
       click('.button--primary:first');
     });
@@ -6062,7 +6062,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
       fillIn('.qa-sortable-item:first input:first', option1Title);
 
-      click('.i-add-circle');
+      click('.qa-ko-reorderable-crud-list__add');
       fillIn('.qa-sortable-item:last input:first', option2Title);
       click('.button--primary:first');
     });
@@ -6102,7 +6102,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
       fillIn('.qa-sortable-item:first input:first', option1Title);
 
-      click('.i-add-circle');
+      click('.qa-ko-reorderable-crud-list__add');
       fillIn('.qa-sortable-item:last input:first', option2Title);
       click('.button--primary:first');
     });
@@ -6235,7 +6235,7 @@ define('frontend-cp/tests/acceptance/admin/manage/case-fields/new-test', ['expor
 
       fillIn('.qa-sortable-item:first input:first', option1Title);
 
-      click('.i-add-circle');
+      click('.qa-ko-reorderable-crud-list__add');
       fillIn('.qa-sortable-item:last input:first', option2Title);
       click('.button--primary:first');
     });
@@ -9007,7 +9007,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
       fillIn('.qa-sortable-item:first input:first', option1Title);
 
-      click('.i-add-circle');
+      click('.qa-ko-reorderable-crud-list__add');
       fillIn('.qa-sortable-item:last input:first', option2Title);
       click('.button--primary:first');
     });
@@ -9037,7 +9037,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
 
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
       fillIn('.qa-sortable-item:first input:first', option1Title);
-      click('.i-add-circle');
+      click('.qa-ko-reorderable-crud-list__add');
       fillIn('.qa-sortable-item:last input:first', option2Title);
       click('.button--primary:first');
     });
@@ -9068,7 +9068,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       fillIn('.qa-sortable-item:first input:first', option1Title);
-      click('.i-add-circle');
+      click('.qa-ko-reorderable-crud-list__add');
       fillIn('.qa-sortable-item:last input:first', option2Title);
       click('.button--primary:first');
     });
@@ -9167,7 +9167,7 @@ define('frontend-cp/tests/acceptance/admin/people/organization-fields/new-test',
       fillIn('input.ko-admin_case-fields_edit__title', fieldTitle);
 
       fillIn('.qa-sortable-item:first input:first', option1Title);
-      click('.i-add-circle');
+      click('.qa-ko-reorderable-crud-list__add');
       fillIn('.qa-sortable-item:last input:first', option2Title);
       click('.button--primary:first');
     });
@@ -11119,7 +11119,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
       fillIn('.qa-sortable-item:first input:first', option1Title);
 
-      click('.i-add-circle');
+      click('.qa-ko-reorderable-crud-list__add');
       fillIn('.qa-sortable-item:last input:first', option2Title);
       click('.button--primary:first');
     });
@@ -11159,7 +11159,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
       fillIn('.qa-sortable-item:first input:first', option1Title);
 
-      click('.i-add-circle');
+      click('.qa-ko-reorderable-crud-list__add');
       fillIn('.qa-sortable-item:last input:first', option2Title);
       click('.button--primary:first');
     });
@@ -11199,7 +11199,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
       fillIn('.qa-sortable-item:first input:first', option1Title);
 
-      click('.i-add-circle');
+      click('.qa-ko-reorderable-crud-list__add');
       fillIn('.qa-sortable-item:last input:first', option2Title);
       click('.button--primary:first');
     });
@@ -11332,7 +11332,7 @@ define('frontend-cp/tests/acceptance/admin/people/user-fields/new-test', ['expor
 
       fillIn('.qa-sortable-item:first input:first', option1Title);
 
-      click('.i-add-circle');
+      click('.qa-ko-reorderable-crud-list__add');
       fillIn('.qa-sortable-item:last input:first', option2Title);
       click('.button--primary:first');
     });
