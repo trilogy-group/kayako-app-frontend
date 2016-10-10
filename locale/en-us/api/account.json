@@ -111,5 +111,6 @@
   "plans.subscription.key": "per {term, select, MONTH {month} ANNUAL {year}}",
   "plans.term.savings.title": "save",
   "plans.term.savings.term": "/year",
-  "plans.upgrade_to_create_new_roles": "Upgrade to create new roles"
+  "plans.upgrade_to_create_new_roles": "Upgrade to create new roles",
+  "plans.custom_plan": "Lucky you, you’re on a custom plan! To update or make changes to your plan, please contact <a href=\"mailto:sales@kayako.com\">sales@kayako.com</a>."
 }
