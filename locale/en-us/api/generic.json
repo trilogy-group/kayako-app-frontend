@@ -187,6 +187,8 @@
   "copied_to_clipboard": "Copied to clipboard",
 
   "errors.not_found.heading": "Sorry{name}, we couldn't find that.",
+  "errors.not_found.description1": "If you got here because you clicked on something in the product, please email us: <a href=\"mailto:support@kayako.com\">support@kayako.com</a>",
+  "errors.not_found.description2": "Otherwise, please check the url is correct and try again!",
 
   "settings.12hour": "12 hours",
   "settings.24hour": "24 hours",
