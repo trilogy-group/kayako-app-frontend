@@ -13155,7 +13155,7 @@ define('frontend-cp/tests/acceptance/agent/cases/replying-to-a-facebook-message-
     return response;
   }
 });
-define('frontend-cp/tests/acceptance/agent/cases/subject-created-at-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit', 'qunit'], function (exports, _ember, _frontendCpTestsHelpersQunit, _qunit) {
+define('frontend-cp/tests/acceptance/agent/cases/subject-created-at-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit', 'moment', 'qunit'], function (exports, _ember, _frontendCpTestsHelpersQunit, _moment, _qunit) {
 
   var customer = undefined,
       caseStatus = undefined,
@@ -13222,7 +13222,7 @@ define('frontend-cp/tests/acceptance/agent/cases/subject-created-at-test', ['exp
     visit('/agent/cases/' + targetCase.id);
 
     andThen(function () {
-      assert.equal(find('.qa-ko-case-content__subject-subtitle').text().trim(), 'Jul 4, 2016 – 1:22 PM created via email', 'No offset from UTC has been applied');
+      assert.equal(find('.qa-ko-case-content__subject-subtitle').text().trim(), 'Jul 4, 2016, 1:22 PM created via email', 'No offset from UTC has been applied');
     });
   });
 
@@ -13248,7 +13248,7 @@ define('frontend-cp/tests/acceptance/agent/cases/subject-created-at-test', ['exp
     visit('/agent/cases/' + targetCase.id);
 
     andThen(function () {
-      assert.equal(find('.qa-ko-case-content__subject-subtitle').text().trim(), 'Jul 4, 2016 – 6:22 PM created via email', 'An offset of 5 hours from UTC has been applied');
+      assert.equal(find('.qa-ko-case-content__subject-subtitle').text().trim(), 'Jul 4, 2016, 6:22 PM created via email', 'An offset of 5 hours from UTC has been applied');
     });
   });
 
@@ -13258,6 +13258,7 @@ define('frontend-cp/tests/acceptance/agent/cases/subject-created-at-test', ['exp
     agent = server.create('user', { role: agentRole, locale: locale, time_zone: '' });
     var session = server.create('session', { user: agent });
     login(session.id);
+    var time = '2016-07-04T13:22:33+00:00';
 
     var targetCase = server.create('case', {
       source_channel: sourceChannel,
@@ -13265,7 +13266,7 @@ define('frontend-cp/tests/acceptance/agent/cases/subject-created-at-test', ['exp
       creator: agent,
       identity: identityEmail,
       status: caseStatus,
-      created_at: '2016-07-04T13:22:33+00:00',
+      created_at: time,
       assignee: {
         agent: agent
       }
@@ -13274,7 +13275,7 @@ define('frontend-cp/tests/acceptance/agent/cases/subject-created-at-test', ['exp
     visit('/agent/cases/' + targetCase.id);
 
     andThen(function () {
-      assert.equal(find('.qa-ko-case-content__subject-subtitle').text().trim(), 'Jul 4, 2016 – 1:22 PM created via email', 'No offset from UTC has been applied as stubbed date has been used');
+      assert.equal(find('.qa-ko-case-content__subject-subtitle').text().trim(), (0, _moment['default'])(time).format('MMM D, Y, LT') + ' created via email', 'No offset from UTC has been applied as stubbed date has been used');
     });
   });
 });
@@ -22926,44 +22927,37 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/text/componen
     this.$('input').trigger(new $.Event('input'));
   });
 });
-define('frontend-cp/tests/integration/components/ko-info-bar/update-log/component-test', ['exports', 'ember-service', 'ember-computed', 'ember-object', 'moment', 'ember-qunit'], function (exports, _emberService, _emberComputed, _emberObject, _moment, _emberQunit) {
+define('frontend-cp/tests/integration/components/ko-info-bar/update-log/component-test', ['exports', 'ember-computed', 'ember-object', 'ember-owner/get', 'moment', 'ember-qunit', 'frontend-cp/services/server-clock'], function (exports, _emberComputed, _emberObject, _emberOwnerGet, _moment, _emberQunit, _frontendCpServicesServerClock) {
 
   var testDateTime = (0, _moment['default'])('2016-07-01 09:33:55');
-  var serverClockStub = _emberService['default'].extend({
-    applySkew: function applySkew(dateTime) {
-      //No Skew
-      return (0, _moment['default'])(dateTime);
-    }
-  });
-  var dateStub = _emberService['default'].extend({
-    getCurrentDate: function getCurrentDate(dateTime) {
-      return testDateTime;
-    }
-  });
-
-  var intlStub = _emberService['default'].extend({
-    on: function on() {},
-    off: function off() {},
-    t: function t(key) {
-      switch (key) {
-        case 'cases.log.title':
-          return 'This case has been updated';
-        case 'generic.times':
-          return 'times';
-      }
-    }
+  var serverClockStub = _frontendCpServicesServerClock['default'].extend({
+    lastKnownServerTime: testDateTime
   });
 
   (0, _emberQunit.moduleForComponent)('ko-info-bar/update-log', 'Integration | Component | ko-info-bar/update-log', {
     integration: true,
 
     beforeEach: function beforeEach() {
-      this.register('service:i18n', intlStub);
+      var intlService = (0, _emberOwnerGet['default'])(this).lookup('service:intl');
+      intlService.setLocale('en-us');
+      intlService.addTranslations('en-us', {
+        frontend: {
+          api: {
+            cases: {
+              log: {
+                title: 'This case has been updated'
+              }
+            },
+            generic: {
+              times: 'times'
+            }
+          }
+        }
+      });
+
+      this.registry.unregister('service:server-clock');
       this.register('service:server-clock', serverClockStub);
-      this.register('service:date', dateStub);
-      this.inject.service('i18n', { as: 'i18n' });
       this.inject.service('server-clock', { as: 'serverClock' });
-      this.inject.service('date', { as: 'date' });
     }
   });
 
