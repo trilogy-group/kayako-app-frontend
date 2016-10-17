@@ -74,7 +74,7 @@
   "requester": "Requester",
   "satisfaction-status": "Satisfaction status",
   "status": "Status",
-  "subheader": "{date, date, medium} – {time} {hasChannel, select,\n    true {created via {channel}}\n    false {}\n  } {hasBrand, select,\n    true {, {brand}}\n    false {}\n  }",
+  "subheader": "{time} {hasChannel, select,\n    true {created via {channel}}\n    false {}\n  } {hasBrand, select,\n    true {, {brand}}\n    false {}\n  }",
   "avatar": "Avatar",
   "subject": "Subject",
   "submit": "Submit",
