@@ -12,7 +12,7 @@
   "nosnippet": "Sorry, we don’t have a preview for this result.",
 
   "searchresults": "Search results for \"{term}\"",
-  "seemore": "Open more results",
+  "seemore": "See more in advanced search",
 
   "CASES.id": "Case ID",
   "CASES.subject": "Subject",
@@ -32,5 +32,26 @@
   "ORGANIZATIONS.id": "Organization ID",
   "ORGANIZATIONS.name": "Name",
   "ORGANIZATIONS.updatedAt": "Last updated",
-  "ORGANIZATIONS.notfound": "There are no organizations here."
+  "ORGANIZATIONS.notfound": "There are no organizations here.",
+
+  "help.narrow_your_search": "Narrow your search",
+  "help.in": "in:",
+  "help.cases_users_orgs_articles": "cases, users, organizations, articles",
+  "help.created": "created:",
+  "help.created_date": "2016-03-24",
+  "help.updated": "updated>",
+  "help.updated_date": "2016-01-22",
+  "help.completed": "completed<",
+  "help.completed_date": "2016-01-22",
+  "help.tag": "tag:",
+  "help.tag_value": "feedback",
+  "help.team": "team:",
+  "help.team_value": "name",
+  "help.assignee": "assignee:",
+  "help.assignee_value": "a name",
+  "help.subject": "subject:",
+  "help.subject_value": "a subject",
+  "help.status": "status:",
+  "help.status_value": "open",
+  "and_more_domains": "and {count, plural, =1 {1 domain} other {# domains}} more "
 }
