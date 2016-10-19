@@ -10725,8 +10725,8 @@ span#HW_badge.HW_softHidden {
 
 .session_agent_welcome__text_25zlqm {
   -webkit-box-flex: 1;
-      -ms-flex: 1 1 0;
-          flex: 1 1 0;
+      -ms-flex: 1 1 0px;
+          flex: 1 1 0px;
   padding: 0 30px 0 35px; }
 
 .session_agent_welcome__header_25zlqm {
