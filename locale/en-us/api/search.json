@@ -53,5 +53,7 @@
   "help.subject_value": "a subject",
   "help.status": "status:",
   "help.status_value": "open",
+  "help.channel": "channel:",
+  "help.channel_value": "twitter",
   "and_more_domains": "and {count, plural, =1 {1 domain} other {# domains}} more "
 }
