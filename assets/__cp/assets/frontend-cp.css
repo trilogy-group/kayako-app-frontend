@@ -2002,6 +2002,129 @@ img {
   .button-naked[disabled] {
     cursor: default; }
 
+/* styles for frontend-cp/components/ko-select/shared.css */
+._statusIcon_jvqwfg .ember-power-select-status-icon {
+  -webkit-transform: none !important;
+          transform: none !important;
+  right: 6px;
+  border: 0;
+  font-family: 'icomoon';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  width: 13px;
+  height: 13px;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
+
+._statusIcon_jvqwfg .ember-power-select-status-icon:before {
+  color: #A1AAAF;
+  content: "\E61C"; }
+
+._trigger_jvqwfg {
+  font-size: 14px;
+  height: 28px;
+  box-sizing: content-box;
+  background: #FFFFFF;
+  border: 1px solid #D1D5D7;
+  border-radius: 2px !important;
+  cursor: pointer;
+  padding-right: 0;
+  -webkit-transition: border-color 0.1s, box-shadow 0.1s;
+  transition: border-color 0.1s, box-shadow 0.1s;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+
+._trigger_jvqwfg:focus, ._trigger--focused_jvqwfg, ._trigger_jvqwfg[aria-expanded="true"] {
+  outline: none !important;
+  border-color: #4EAFCB !important;
+  box-shadow: 0 0 4px 0 rgba(78, 174, 203, 0.65), inset 0 1px 1px 0 rgba(0, 0, 0, 0.08) !important; }
+
+._dropdown_jvqwfg {
+  border: 1px solid #d1d5d7 !important;
+  border-radius: 2px !important;
+  background-color: #fff;
+  padding: 6px 0;
+  margin-top: 3px;
+  z-index: 1100; }
+
+/* making sure to show it on top of modal */
+._dropdown_jvqwfg .ember-power-select-options {
+  overflow-x: hidden; }
+
+._dropdown_jvqwfg .ember-power-select-option {
+  font-size: 14px;
+  line-height: 22px;
+  box-sizing: border-box;
+  padding: 0 8px;
+  border: 1px solid transparent;
+  color: #3B4048; }
+
+._dropdown_jvqwfg .ember-power-select-group-name {
+  margin-top: 6px;
+  display: block; }
+
+._dropdown_jvqwfg .ember-power-select-group[aria-disabled="true"] {
+  color: #838D94;
+  font-style: italic; }
+
+._dropdown_jvqwfg .ember-power-select-group .ember-power-select-option {
+  padding-left: 18px; }
+
+._dropdown_jvqwfg .ember-power-select-option[aria-current="true"] {
+  background: #4EAFCB;
+  border: 1px solid #3496b2;
+  color: #FFFFFF; }
+
+._dropdown_jvqwfg .ember-power-select-option[aria-current="true"] > * {
+  color: #FFFFFF; }
+
+._dropdown_jvqwfg .ember-power-select-option[aria-disabled="true"] {
+  color: #838D94;
+  font-style: italic; }
+
+@-webkit-keyframes _rotating_jvqwfg {
+  from {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg); }
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg); } }
+
+@keyframes _rotating_jvqwfg {
+  from {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg); }
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg); } }
+
+/* .loading-icon is also used on its own elsewhere without positioning */
+._loading-icon_jvqwfg, ._loading_jvqwfg {
+  height: 20px;
+  width: 20px;
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0,0,100,100'%3E%3Cpath fill='none' stroke='%23D1D5D7' stroke-width='7' stroke-miterlimit='10' d='M12.6,77.6C7,70,3.6,60.3,3.6,50,3.6,24.3,24.2,3.5,50,3.5S96.5,24.3,96.5,50c0,5.4-1,10.5-2.6,15.3'/%3E%3C/svg%3E");
+  -webkit-animation: _rotating_jvqwfg 0.7s linear infinite;
+          animation: _rotating_jvqwfg 0.7s linear infinite; }
+
+._loading_jvqwfg {
+  position: absolute;
+  top: 4px;
+  right: 5px;
+  bottom: 0;
+  margin: 0; }
+
+/* styles for frontend-cp/components/ko-admin/automation-actions-builder/cascading-select/styles.css */
+.ko-admin_automation-actions-builder_cascading-select__trigger_jiv8n {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1; }
+
 /* styles for frontend-cp/components/ko-admin/forms/group/styles.css */
 .ko-admin_forms_group__group_9ysg3g {
   padding: 18px 0 27px;
@@ -2210,123 +2333,6 @@ img {
 .ko-admin_rateplans_summary__summary-content_paqoi0 {
   line-height: 20px;
   max-height: 20px; }
-
-/* styles for frontend-cp/components/ko-select/shared.css */
-._statusIcon_jvqwfg .ember-power-select-status-icon {
-  -webkit-transform: none !important;
-          transform: none !important;
-  right: 6px;
-  border: 0;
-  font-family: 'icomoon';
-  speak: none;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
-  width: 13px;
-  height: 13px;
-  /* Better Font Rendering =========== */
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale; }
-
-._statusIcon_jvqwfg .ember-power-select-status-icon:before {
-  color: #A1AAAF;
-  content: "\E61C"; }
-
-._trigger_jvqwfg {
-  font-size: 14px;
-  height: 28px;
-  box-sizing: content-box;
-  background: #FFFFFF;
-  border: 1px solid #D1D5D7;
-  border-radius: 2px !important;
-  cursor: pointer;
-  padding-right: 0;
-  -webkit-transition: border-color 0.1s, box-shadow 0.1s;
-  transition: border-color 0.1s, box-shadow 0.1s;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex; }
-
-._trigger_jvqwfg:focus, ._trigger--focused_jvqwfg, ._trigger_jvqwfg[aria-expanded="true"] {
-  outline: none !important;
-  border-color: #4EAFCB !important;
-  box-shadow: 0 0 4px 0 rgba(78, 174, 203, 0.65), inset 0 1px 1px 0 rgba(0, 0, 0, 0.08) !important; }
-
-._dropdown_jvqwfg {
-  border: 1px solid #d1d5d7 !important;
-  border-radius: 2px !important;
-  background-color: #fff;
-  padding: 6px 0;
-  margin-top: 3px;
-  z-index: 1100; }
-
-/* making sure to show it on top of modal */
-._dropdown_jvqwfg .ember-power-select-options {
-  overflow-x: hidden; }
-
-._dropdown_jvqwfg .ember-power-select-option {
-  font-size: 14px;
-  line-height: 22px;
-  box-sizing: border-box;
-  padding: 0 8px;
-  border: 1px solid transparent;
-  color: #3B4048; }
-
-._dropdown_jvqwfg .ember-power-select-group-name {
-  margin-top: 6px;
-  display: block; }
-
-._dropdown_jvqwfg .ember-power-select-group[aria-disabled="true"] {
-  color: #838D94;
-  font-style: italic; }
-
-._dropdown_jvqwfg .ember-power-select-group .ember-power-select-option {
-  padding-left: 18px; }
-
-._dropdown_jvqwfg .ember-power-select-option[aria-current="true"] {
-  background: #4EAFCB;
-  border: 1px solid #3496b2;
-  color: #FFFFFF; }
-
-._dropdown_jvqwfg .ember-power-select-option[aria-current="true"] > * {
-  color: #FFFFFF; }
-
-._dropdown_jvqwfg .ember-power-select-option[aria-disabled="true"] {
-  color: #838D94;
-  font-style: italic; }
-
-@-webkit-keyframes _rotating_jvqwfg {
-  from {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg); }
-  to {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg); } }
-
-@keyframes _rotating_jvqwfg {
-  from {
-    -webkit-transform: rotate(0deg);
-            transform: rotate(0deg); }
-  to {
-    -webkit-transform: rotate(360deg);
-            transform: rotate(360deg); } }
-
-/* .loading-icon is also used on its own elsewhere without positioning */
-._loading-icon_jvqwfg, ._loading_jvqwfg {
-  height: 20px;
-  width: 20px;
-  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0,0,100,100'%3E%3Cpath fill='none' stroke='%23D1D5D7' stroke-width='7' stroke-miterlimit='10' d='M12.6,77.6C7,70,3.6,60.3,3.6,50,3.6,24.3,24.2,3.5,50,3.5S96.5,24.3,96.5,50c0,5.4-1,10.5-2.6,15.3'/%3E%3C/svg%3E");
-  -webkit-animation: _rotating_jvqwfg 0.7s linear infinite;
-          animation: _rotating_jvqwfg 0.7s linear infinite; }
-
-._loading_jvqwfg {
-  position: absolute;
-  top: 0;
-  right: 5px;
-  bottom: 0;
-  margin: auto; }
 
 /* styles for frontend-cp/components/ko-info-bar/field/select-multiple/trigger/styles.css */
 .ko-info-bar_field_select-multiple_trigger__trigger_1xeoxb {
@@ -2804,40 +2810,6 @@ img {
 
 .ko-pagination__paginationLast_1tc5m8 {
   border-bottom-width: 1px; }
-
-/* styles for frontend-cp/components/ko-select/drill-down/styles.css */
-/* styles for frontend-cp/components/ko-select/drill-down/trigger/styles.css */
-.ko-select_drill-down_trigger__trigger_1q2fqd {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-flex: 1;
-      -ms-flex: 1;
-          flex: 1;
-  overflow: hidden; }
-
-.ko-select_drill-down_trigger__trigger_1q2fqd .ember-power-select-selected-item {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-left: 9px;
-  margin-right: 20px;
-  -webkit-box-flex: 1;
-      -ms-flex: 1 1 0;
-          flex: 1 1 0; }
-
-.ko-select_drill-down_trigger__trigger_1q2fqd .ember-power-select-placeholder {
-  margin-left: 9px;
-  margin-right: 20px; }
-
-.ko-select_drill-down_trigger__input_1q2fqd {
-  outline: none;
-  border: none;
-  width: 100%;
-  padding: 0 0 0 9px;
-  margin-right: 20px;
-  line-height: 28px;
-  height: 28px; }
 
 /* styles for frontend-cp/components/ko-select/multiple/styles.css */
 .ko-select_multiple__trigger_gi7hdq {
@@ -3348,8 +3320,8 @@ img {
   color: #838D94;
   font-style: italic; }
 
-/* styles for frontend-cp/components/ko-admin/automation-actions-builder/drill-down/trigger/styles.css */
-.ko-admin_automation-actions-builder_drill-down_trigger__trigger_1ffm1o {
+/* styles for frontend-cp/components/ko-admin/automation-actions-builder/cascading-select/trigger/styles.css */
+.ko-admin_automation-actions-builder_cascading-select_trigger__trigger_l3ojjk {
   min-height: 50px;
   position: relative;
   border-bottom: 1px solid #D1D5D7;
@@ -3361,7 +3333,7 @@ img {
           flex: 1;
   overflow: hidden; }
 
-.ko-admin_automation-actions-builder_drill-down_trigger__trigger_1ffm1o .ember-power-select-selected-item {
+.ko-admin_automation-actions-builder_cascading-select_trigger__trigger_l3ojjk .ember-power-select-selected-item {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -3371,7 +3343,7 @@ img {
       -ms-flex: 1 1 0;
           flex: 1 1 0; }
 
-.ko-admin_automation-actions-builder_drill-down_trigger__trigger_1ffm1o .ember-power-select-placeholder {
+.ko-admin_automation-actions-builder_cascading-select_trigger__trigger_l3ojjk .ember-power-select-placeholder {
   margin-left: 9px;
   margin-right: 20px; }
 
@@ -5164,6 +5136,35 @@ img {
 .ko-case_macro-selector__dropdown_ltxhiw {
   background-color: #fff; }
 
+.ko-case_macro-selector__dropdown_ltxhiw .ember-power-select-dropdown {
+  border: none;
+  border-radius: 0;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+  border-top: 1px dotted #EBEEF0; }
+
+.ko-case_macro-selector__dropdown_ltxhiw .ember-power-select-option {
+  padding: 4.5px 18px;
+  border: 1px solid transparent;
+  line-height: 17px;
+  color: #3B4048;
+  overflow: hidden; }
+
+.ko-case_macro-selector__dropdown_ltxhiw .ember-power-select-option[aria-current="true"] {
+  background: #4EAFCB;
+  border: 1px solid #3496b2;
+  color: #FFFFFF; }
+
+.ko-case_macro-selector__dropdown_ltxhiw .ember-power-select-option[aria-current="true"] > * {
+  color: #FFFFFF; }
+
+.ko-case_macro-selector__trigger_ltxhiw {
+  outline: none;
+  background-color: transparent;
+  border-radius: 0;
+  border: none !important;
+  /* don't show border in focused/active state */
+  padding: 0; }
+
 /* styles for frontend-cp/components/ko-case/macro-selector/trigger/styles.css */
 .ko-case_macro-selector_trigger__trigger_7wpnlb {
   max-width: 100%;
@@ -5742,44 +5743,6 @@ img {
 .ko-datepicker__icon--close_dbk0gr {
   color: #BFC5D1; }
 
-/* styles for frontend-cp/components/ko-dropdown/drill-down/styles.css */
-.ko-dropdown_drill-down__container_ikimyl .ember-power-select-trigger {
-  outline: none;
-  background-color: transparent;
-  border-radius: 0;
-  border: none;
-  padding: 0; }
-
-.ko-dropdown_drill-down__container_ikimyl .ember-power-select-dropdown {
-  border: none;
-  border-radius: 0;
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
-  border-top: 1px dotted #EBEEF0; }
-
-.ko-dropdown_drill-down__container_ikimyl .ember-power-select-option {
-  padding: 4.5px 18px;
-  border: 1px solid transparent;
-  line-height: 17px;
-  color: #3B4048;
-  overflow: hidden; }
-
-.ko-dropdown_drill-down__container_ikimyl .ember-power-select-option[aria-current="true"] {
-  background: #4EAFCB;
-  border: 1px solid #3496b2;
-  color: #FFFFFF; }
-
-.ko-dropdown_drill-down__container_ikimyl .ember-power-select-option[aria-current="true"] > * {
-  color: #FFFFFF; }
-
-.ko-dropdown_drill-down__container_ikimyl .ember-power-select-option[aria-selected="true"]:not(.ember-power-select-option[aria-current="true"]) {
-  background-color: #fff; }
-
-.ko-dropdown_drill-down__chevronLeft_ikimyl {
-  padding-right: 5px; }
-
-.ko-dropdown_drill-down__chevronRight_ikimyl {
-  float: right; }
-
 /* styles for frontend-cp/components/ko-editable-text/styles.css */
 .ko-editable-text__container_149mbn {
   position: relative; }
@@ -6136,7 +6099,34 @@ img {
 /* styles for frontend-cp/components/ko-info-bar/field/drill-down/styles.css */
 .ko-info-bar_field_drill-down__dropdown_1ipjjv {
   margin-top: -1px;
-  background-color: #fff; }
+  background-color: #fff;
+  border: none;
+  border-radius: 0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  border-top: 1px dotted #EBEEF0 !important;
+  border-bottom: none !important; }
+
+.ko-info-bar_field_drill-down__dropdown_1ipjjv .ember-power-select-option {
+  padding: 4.5px 18px;
+  border: 1px solid transparent;
+  line-height: 17px;
+  overflow: hidden; }
+
+.ko-info-bar_field_drill-down__dropdown_1ipjjv .ember-power-select-option[aria-current="true"] {
+  background: #4EAFCB;
+  border: 1px solid #3496b2;
+  color: #FFFFFF; }
+
+.ko-info-bar_field_drill-down__dropdown_1ipjjv .ember-power-select-option[aria-current="true"] .i-chevron-large-left, .ko-info-bar_field_drill-down__dropdown_1ipjjv .ember-power-select-option[aria-current="true"] .i-chevron-large-right {
+  color: #FFFFFF; }
+
+.ko-info-bar_field_drill-down__trigger_1ipjjv {
+  outline: none;
+  background-color: transparent;
+  border-radius: 0;
+  border: none !important;
+  /* don't show border in focused/active state */
+  padding: 0; }
 
 /* styles for frontend-cp/components/ko-info-bar/field/multiline-text/styles.css */
 .ko-info-bar_field_multiline-text__multiline-text_hba5q {
