@@ -16035,6 +16035,24 @@ define('frontend-cp/tests/frontend-cp/components/ko-admin/automation-actions-bui
     assert.ok(true, 'frontend-cp/components/ko-admin/automation-actions-builder/boolean/template.hbs should pass TemplateLint.\n');
   });
 });
+define('frontend-cp/tests/frontend-cp/components/ko-admin/automation-actions-builder/cascading-select/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/automation-actions-builder/cascading-select/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/automation-actions-builder/cascading-select/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-admin/automation-actions-builder/cascading-select/trigger/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/automation-actions-builder/cascading-select/trigger/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-admin/automation-actions-builder/cascading-select/trigger/template.hbs should pass TemplateLint.\n');
+  });
+});
 define('frontend-cp/tests/frontend-cp/components/ko-admin/automation-actions-builder/date-absolute/template.template-lint-test', ['exports'], function (exports) {
   'use strict';
 
@@ -16042,24 +16060,6 @@ define('frontend-cp/tests/frontend-cp/components/ko-admin/automation-actions-bui
   QUnit.test('should pass TemplateLint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'frontend-cp/components/ko-admin/automation-actions-builder/date-absolute/template.hbs should pass TemplateLint.\n');
-  });
-});
-define('frontend-cp/tests/frontend-cp/components/ko-admin/automation-actions-builder/drill-down/template.template-lint-test', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/automation-actions-builder/drill-down/template.hbs');
-  QUnit.test('should pass TemplateLint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'frontend-cp/components/ko-admin/automation-actions-builder/drill-down/template.hbs should pass TemplateLint.\n');
-  });
-});
-define('frontend-cp/tests/frontend-cp/components/ko-admin/automation-actions-builder/drill-down/trigger/template.template-lint-test', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/automation-actions-builder/drill-down/trigger/template.hbs');
-  QUnit.test('should pass TemplateLint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'frontend-cp/components/ko-admin/automation-actions-builder/drill-down/trigger/template.hbs should pass TemplateLint.\n');
   });
 });
 define('frontend-cp/tests/frontend-cp/components/ko-admin/automation-actions-builder/endpoint-basic/template.template-lint-test', ['exports'], function (exports) {
@@ -17169,15 +17169,6 @@ define('frontend-cp/tests/frontend-cp/components/ko-datepicker/template.template
     assert.ok(true, 'frontend-cp/components/ko-datepicker/template.hbs should pass TemplateLint.\n');
   });
 });
-define('frontend-cp/tests/frontend-cp/components/ko-dropdown/drill-down/template.template-lint-test', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('TemplateLint - frontend-cp/components/ko-dropdown/drill-down/template.hbs');
-  QUnit.test('should pass TemplateLint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'frontend-cp/components/ko-dropdown/drill-down/template.hbs should pass TemplateLint.\n');
-  });
-});
 define('frontend-cp/tests/frontend-cp/components/ko-editable-text/template.template-lint-test', ['exports'], function (exports) {
   'use strict';
 
@@ -18175,15 +18166,6 @@ define('frontend-cp/tests/frontend-cp/components/ko-select/drill-down/template.t
   QUnit.test('should pass TemplateLint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'frontend-cp/components/ko-select/drill-down/template.hbs should pass TemplateLint.\n');
-  });
-});
-define('frontend-cp/tests/frontend-cp/components/ko-select/drill-down/trigger/template.template-lint-test', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('TemplateLint - frontend-cp/components/ko-select/drill-down/trigger/template.hbs');
-  QUnit.test('should pass TemplateLint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'frontend-cp/components/ko-select/drill-down/trigger/template.hbs should pass TemplateLint.\n');
   });
 });
 define('frontend-cp/tests/frontend-cp/components/ko-select/multiple/internal/template.template-lint-test', ['exports'], function (exports) {
