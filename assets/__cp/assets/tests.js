@@ -16152,15 +16152,6 @@ define('frontend-cp/tests/frontend-cp/components/ko-admin/automation-actions-bui
     assert.ok(true, 'frontend-cp/components/ko-admin/automation-actions-builder/template.hbs should pass TemplateLint.\n');
   });
 });
-define('frontend-cp/tests/frontend-cp/components/ko-admin/billing-form/form-input/template.template-lint-test', ['exports'], function (exports) {
-  'use strict';
-
-  QUnit.module('TemplateLint - frontend-cp/components/ko-admin/billing-form/form-input/template.hbs');
-  QUnit.test('should pass TemplateLint', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'frontend-cp/components/ko-admin/billing-form/form-input/template.hbs should pass TemplateLint.\n');
-  });
-});
 define('frontend-cp/tests/frontend-cp/components/ko-admin/billing-form/form/template.template-lint-test', ['exports'], function (exports) {
   'use strict';
 
