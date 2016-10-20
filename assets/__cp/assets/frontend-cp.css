@@ -8746,6 +8746,10 @@ span#HW_badge.HW_softHidden {
   width: 100%;
   cursor: pointer; }
 
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .ko-text-editor__fileField_1p5g6r {
+    top: 12px; } }
+
 .ko-text-editor__icon-text_1p5g6r {
   font-size: 12px;
   line-height: 1.5;
