@@ -4870,6 +4870,17 @@ img {
   -webkit-animation: ko-agent-dropdown__slide-in-big_15uh4p 0.2s reverse;
           animation: ko-agent-dropdown__slide-in-big_15uh4p 0.2s reverse; }
 
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+  .ko-agent-dropdown__drop_15uh4p.ember-basic-dropdown--transitioning-in {
+    -webkit-animation: none;
+            animation: none; }
+  .ko-agent-dropdown__drop_15uh4p.ember-basic-dropdown--transitioning-out:not(.full-grown) {
+    -webkit-animation: none;
+            animation: none; }
+  .ko-agent-dropdown__drop_15uh4p.ember-basic-dropdown--transitioning-out.full-grown {
+    -webkit-animation: none;
+            animation: none; } }
+
 .ko-agent-dropdown__drop--1_15uh4p {
   width: 105px; }
 
