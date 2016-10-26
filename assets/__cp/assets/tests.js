@@ -1,3 +1,5 @@
+'use strict';
+
 define('frontend-cp/tests/acceptance/admin/account/billing/index-test', ['exports', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/components/ko-admin/billing/index/styles', 'frontend-cp/components/ko-admin/billing/card/styles'], function (exports, _frontendCpTestsHelpersQunit, _frontendCpComponentsKoAdminBillingIndexStyles, _frontendCpComponentsKoAdminBillingCardStyles) {
 
   (0, _frontendCpTestsHelpersQunit.app)('Acceptance | admin/account/billing Index', {
@@ -12503,10 +12505,8 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
     });
 
     andThen(function () {
-      var _this = this;
-
       find('.' + _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles['default'].placeholder).each(function (index, placeholder) {
-        assert.equal(_this.$(placeholder).text(), 'No Changes');
+        assert.equal(find(placeholder).text(), 'No Changes');
       });
       assert.ok(find('button[name=update-cases]').hasClass('disabled'));
     });
@@ -12597,10 +12597,8 @@ define('frontend-cp/tests/acceptance/agent/cases/list-test', ['exports', 'fronte
     });
 
     andThen(function () {
-      var _this2 = this;
-
       find('.' + _frontendCpComponentsKoInfoBarFieldSelectTriggerStyles['default'].placeholder).each(function (index, placeholder) {
-        assert.equal(_this2.$(placeholder).text(), 'No Changes');
+        assert.equal(find(placeholder).text(), 'No Changes');
       });
       assert.equal(find('.' + _frontendCpComponentsKoBulkSidebarStyles['default'].fields + ' div:nth-child(5) ul').text().trim(), '');
     });
@@ -22277,7 +22275,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
 
     return (0, _emberTestHelpersWait['default'])().then(function () {
       var expectedList = ['Team A / Jesse Bennett-Chamberlain', 'Team A / Jamie Edwards', 'Team B / Jesse Bennett-Chamberlain'];
-      var actualList = this.$(optionListItem).map(function (i, el) {
+      var actualList = _this.$(optionListItem).map(function (i, el) {
         return $(el).text().trim();
       }).get();
       assert.deepEqual(actualList, expectedList, 'suggestions list');
@@ -22338,10 +22336,10 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
     });
 
     return (0, _emberTestHelpersWait['default'])().then(function () {
-      (0, _frontendCpTestsHelpersEmberPowerSelect.triggerKeydown)(this.$(searchField)[0], _frontendCpLibKeycodes.down);
-      (0, _frontendCpTestsHelpersEmberPowerSelect.triggerKeydown)(this.$(searchField)[0], _frontendCpLibKeycodes.enter);
+      (0, _frontendCpTestsHelpersEmberPowerSelect.triggerKeydown)(_this2.$(searchField)[0], _frontendCpLibKeycodes.down);
+      (0, _frontendCpTestsHelpersEmberPowerSelect.triggerKeydown)(_this2.$(searchField)[0], _frontendCpLibKeycodes.enter);
 
-      assert.equal(this.$(searchField).val(), 'Team B / Jesse Bennett-Chamberlain', 'empty text');
+      assert.equal(_this2.$(searchField).val(), 'Team B / Jesse Bennett-Chamberlain', 'empty text');
     });
   });
 
@@ -22400,7 +22398,7 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/drill-down/co
     var expectedList = ['-', 'Team A', 'Team B', 'Team C', 'Team D'];
 
     return (0, _emberTestHelpersWait['default'])().then(function () {
-      var actualList = this.$(optionListItem).map(function (i, el) {
+      var actualList = _this3.$(optionListItem).map(function (i, el) {
         return $(el).text().trim();
       }).get();
       assert.deepEqual(actualList, expectedList, '1st level list');
