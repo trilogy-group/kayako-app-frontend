@@ -668,6 +668,46 @@ textarea {
   border-color: #4EAFCB;
   box-shadow: 0 0 4px 0 rgba(78, 174, 203, 0.65), inset 0 1px 1px 0 rgba(0, 0, 0, 0.08); }
 
+.dropdown {
+  width: 100%;
+  position: relative;
+  display: block;
+  padding-right: 9px;
+  color: #3B4048; }
+
+.dropdown-menu {
+  list-style-type: none;
+  z-index: 30;
+  position: absolute;
+  top: 100%;
+  right: -1px;
+  left: -1px;
+  cursor: pointer;
+  background: #FFFFFF;
+  border: 1px solid #D1D5D7;
+  border-top: none; }
+  .dropdown-menu:focus {
+    outline: none; }
+  .dropdown-menu--popover {
+    right: -1px;
+    left: -1px;
+    padding-top: 0;
+    background: #F8F8F8;
+    border-left: 1px solid #D1D5D7;
+    border-right: 1px solid #D1D5D7;
+    border-bottom-right-radius: 2px;
+    border-bottom-left-radius: 2px; }
+
+.dropdown-menu__item {
+  padding: 4.5px 18px;
+  border: 1px solid transparent; }
+  .dropdown-menu__item--selected {
+    background: #4EAFCB;
+    border: 1px solid #3496b2;
+    color: #FFFFFF; }
+    .dropdown-menu__item--selected > * {
+      color: #FFFFFF; }
+
 /* ==========================================================================
    	Positioning
    ========================================================================= */
