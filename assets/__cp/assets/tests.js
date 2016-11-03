@@ -23545,6 +23545,55 @@ define('frontend-cp/tests/unit/components/ko-admin/triggers/form/component-test'
     });
   });
 });
+define('frontend-cp/tests/unit/components/ko-case-content/field/assignee-test', ['exports', 'ember-qunit', 'ember-object'], function (exports, _emberQunit, _emberObject) {
+
+  var emberObjects = function emberObjects() {
+    for (var _len = arguments.length, objects = Array(_len), _key = 0; _key < _len; _key++) {
+      objects[_key] = arguments[_key];
+    }
+
+    return objects.map(function (o) {
+      return _emberObject['default'].create(o);
+    });
+  };
+
+  (0, _emberQunit.moduleForComponent)('ko-case-content/field/assignee', 'Unit | Component | ko case content/field/assignee', {
+    unit: true
+  });
+
+  (0, _emberQunit.test)('assigneeValues only contains enabled agents ', function (assert) {
+    var i18n = { t: function t(k) {
+        return k;
+      } };
+    var teams = emberObjects({
+      id: 'support',
+      title: 'Support'
+    });
+    var agents = emberObjects({
+      id: 'alice',
+      fullName: 'Alice',
+      isEnabled: true,
+      teams: teams
+    }, {
+      id: 'bob',
+      fullName: 'Bob',
+      isEnabled: false,
+      teams: teams
+    });
+    var component = this.subject({ i18n: i18n, teams: teams, agents: agents });
+    var actual = component.get('assigneeValues');
+    var expected = [{
+      id: 'support',
+      value: 'Support',
+      children: [{
+        id: 'support-alice',
+        value: 'Alice'
+      }]
+    }];
+
+    assert.deepEqual(actual, expected);
+  });
+});
 define('frontend-cp/tests/unit/components/ko-checkbox/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit', 'frontend-cp/lib/keycodes'], function (exports, _ember, _frontendCpTestsHelpersQunit, _frontendCpLibKeycodes) {
 
   var component = undefined;
