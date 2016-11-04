@@ -34,6 +34,22 @@
   "ORGANIZATIONS.updatedAt": "Last updated",
   "ORGANIZATIONS.notfound": "There are no organizations here.",
 
+  "recent_searches": "Recent searches",
+
+  "search_suggestions": "Search Suggestions",
+  "suggestions.cases_from_requester": "Find other cases from requester",
+  "suggestions.cases_from_user": "Find cases from this user",
+  "suggestions.open_cases_from_requester": "Open cases from requester",
+  "suggestions.similarly_tagged_cases": "Similarly tagged cases",
+  "suggestions.similarly_tagged_users": "Similarly tagged users",
+  "suggestions.similarly_tagged_organizations": "Similarly tagged organizations",
+  "suggestions.similar_created_at": "Cases created around the same time as this one",
+  "suggestions.open_cases_from_user": "Open cases from this user",
+  "suggestions.users_from_organization": "Find users from this organization",
+  "suggestions.cases_from_organization": "Find cases from this organization",
+  "suggestions.my_open_cases": "Open cases assigned to me",
+
+
   "help.narrow_your_search": "Narrow your search",
   "help.in": "in:",
   "help.cases_users_orgs_articles": "cases, users, organizations, articles",
@@ -55,5 +71,6 @@
   "help.status_value": "open",
   "help.channel": "channel:",
   "help.channel_value": "twitter",
-  "and_more_domains": "and {count, plural, =1 {1 domain} other {# domains}} more "
+  "and_more_domains": "and {count, plural, =1 {1 domain} other {# domains}} more ",
+  "help.more_help": "More search modifiers"
 }
