@@ -14642,7 +14642,7 @@ define('frontend-cp/tests/acceptance/agent/tabs/tabs-test', ['exports', 'fronten
   });
 
   (0, _frontendCpTestsHelpersQunit.test)('cases open in their own tabs', function (assert) {
-    assert.expect(26);
+    assert.expect(23);
 
     setupBasicScenario();
     login();
@@ -14725,17 +14725,6 @@ define('frontend-cp/tests/acceptance/agent/tabs/tabs-test', ['exports', 'fronten
       assert.ok(!getIsActiveTabElement($secondTabElement));
     });
 
-    visit('/agent/cases/2');
-
-    andThen(function () {
-      var $tabElements = getTabElements();
-      assert.equal($tabElements.length, 2);
-      var $firstTabElement = getTabElements().eq(0);
-      var $secondTabElement = getTabElements().eq(1);
-      assert.ok(!getIsActiveTabElement($firstTabElement));
-      assert.ok(getIsActiveTabElement($secondTabElement));
-    });
-
     visit('/agent/cases/2/user');
 
     andThen(function () {
@@ -14747,7 +14736,7 @@ define('frontend-cp/tests/acceptance/agent/tabs/tabs-test', ['exports', 'fronten
       assert.ok(getIsActiveTabElement($secondTabElement));
     });
 
-    visit('/');
+    visit('/agent');
 
     andThen(function () {
       var $tabElements = getTabElements();
@@ -18157,6 +18146,15 @@ define('frontend-cp/tests/frontend-cp/components/ko-search-sidebar/template.temp
     assert.ok(true, 'frontend-cp/components/ko-search-sidebar/template.hbs should pass TemplateLint.\n');
   });
 });
+define('frontend-cp/tests/frontend-cp/components/ko-search-suggestions/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-search-suggestions/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-search-suggestions/template.hbs should pass TemplateLint.\n');
+  });
+});
 define('frontend-cp/tests/frontend-cp/components/ko-select/drill-down/template.template-lint-test', ['exports'], function (exports) {
   'use strict';
 
@@ -18661,6 +18659,15 @@ define('frontend-cp/tests/frontend-cp/components/ko-universal-search/result/user
     assert.ok(true, 'frontend-cp/components/ko-universal-search/result/user/template.hbs should pass TemplateLint.\n');
   });
 });
+define('frontend-cp/tests/frontend-cp/components/ko-universal-search/search-hints/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-universal-search/search-hints/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-universal-search/search-hints/template.hbs should pass TemplateLint.\n');
+  });
+});
 define('frontend-cp/tests/frontend-cp/components/ko-universal-search/template.template-lint-test', ['exports'], function (exports) {
   'use strict';
 
@@ -18668,6 +18675,15 @@ define('frontend-cp/tests/frontend-cp/components/ko-universal-search/template.te
   QUnit.test('should pass TemplateLint', function (assert) {
     assert.expect(1);
     assert.ok(true, 'frontend-cp/components/ko-universal-search/template.hbs should pass TemplateLint.\n');
+  });
+});
+define('frontend-cp/tests/frontend-cp/components/ko-universal-search/title/template.template-lint-test', ['exports'], function (exports) {
+  'use strict';
+
+  QUnit.module('TemplateLint - frontend-cp/components/ko-universal-search/title/template.hbs');
+  QUnit.test('should pass TemplateLint', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'frontend-cp/components/ko-universal-search/title/template.hbs should pass TemplateLint.\n');
   });
 });
 define('frontend-cp/tests/frontend-cp/components/ko-user-content/action-menu/template.template-lint-test', ['exports'], function (exports) {
