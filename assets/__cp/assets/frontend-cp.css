@@ -531,7 +531,7 @@ textarea {
 .i-cross-bold:before {
   content: "\e632"; }
 
-.i-pause:before {
+.i-paused:before {
   content: "\e62c"; }
 
 .i-reply:before {

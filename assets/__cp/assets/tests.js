@@ -22977,11 +22977,23 @@ define('frontend-cp/tests/integration/components/ko-info-bar/field/text/componen
     this.$('input').trigger(new $.Event('input'));
   });
 });
-define('frontend-cp/tests/integration/components/ko-info-bar/update-log/component-test', ['exports', 'ember-computed', 'ember-object', 'ember-owner/get', 'moment', 'ember-qunit', 'frontend-cp/services/server-clock'], function (exports, _emberComputed, _emberObject, _emberOwnerGet, _moment, _emberQunit, _frontendCpServicesServerClock) {
+define('frontend-cp/tests/integration/components/ko-info-bar/update-log/component-test', ['exports', 'ember-service', 'ember-computed', 'ember-object', 'ember-owner/get', 'moment', 'ember-qunit'], function (exports, _emberService, _emberComputed, _emberObject, _emberOwnerGet, _moment, _emberQunit) {
 
   var testDateTime = (0, _moment['default'])('2016-07-01 09:33:55');
-  var serverClockStub = _frontendCpServicesServerClock['default'].extend({
-    lastKnownServerTime: testDateTime
+
+  //Make sure no skew is applied, it's not what this test is interested in testing
+  var serverClockStub = _emberService['default'].extend({
+    applySkewIfDateWouldBeInTheFuture: function applySkewIfDateWouldBeInTheFuture(dateTime) {
+      return (0, _moment['default'])(dateTime);
+    }
+  });
+
+  //Make sure the current date and time is fixed and not fetched from the system
+  //This should stop any time related brittleness in the test
+  var dateStub = _emberService['default'].extend({
+    getCurrentDate: function getCurrentDate(dateTime) {
+      return testDateTime;
+    }
   });
 
   (0, _emberQunit.moduleForComponent)('ko-info-bar/update-log', 'Integration | Component | ko-info-bar/update-log', {
@@ -23005,9 +23017,10 @@ define('frontend-cp/tests/integration/components/ko-info-bar/update-log/componen
         }
       });
 
-      this.registry.unregister('service:server-clock');
       this.register('service:server-clock', serverClockStub);
+      this.register('service:date', dateStub);
       this.inject.service('server-clock', { as: 'serverClock' });
+      this.inject.service('date', { as: 'date' });
     }
   });
 
