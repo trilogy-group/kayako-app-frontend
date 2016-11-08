@@ -23296,6 +23296,18 @@ define('frontend-cp/tests/test-helper', ['exports', 'frontend-cp/tests/helpers/r
 
   (0, _emberQunit.setResolver)(_frontendCpTestsHelpersResolver['default']);
 });
+define('frontend-cp/tests/unit/adapters/product-test', ['exports', 'ember-qunit'], function (exports, _emberQunit) {
+
+  (0, _emberQunit.moduleFor)('adapter:product', 'Unit | Adapter | product');
+
+  (0, _emberQunit.test)('urlForFindAll', function (assert) {
+    assert.equal(this.subject().urlForFindAll('product'), '/api/v1/account/products', 'it includes the account namespace');
+  });
+
+  (0, _emberQunit.test)('urlForFindRecord', function (assert) {
+    assert.equal(this.subject().urlForFindRecord('1', 'product'), '/api/v1/account/products/1', 'it includes the account namespace');
+  });
+});
 define('frontend-cp/tests/unit/components/ko-admin/triggers/form/component-test', ['exports', 'ember', 'frontend-cp/tests/helpers/qunit'], function (exports, _ember, _frontendCpTestsHelpersQunit) {
 
   var component = undefined;
