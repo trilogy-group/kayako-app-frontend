@@ -1,8 +1,8 @@
 {
   "assets": {
-    "assets/frontend-cp.css": "assets/frontend-cp-0611b4de31165f3d1a798ca056612a70.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-a59bcc4628f15b9db44ff7cedce1b875.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-8e2d6965f208466758fbf0b9a152f451.map",
+    "assets/frontend-cp.css": "assets/frontend-cp-1e6586ca87ae4f1e0718f5520b5e0539.css",
+    "assets/frontend-cp.js": "assets/frontend-cp-b528eda252a7961c81af615ec231c544.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-5cef45813a6db9e28d8d6036e3a4e4ab.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-b4b949624aee7e9988cfdd5c09db2869.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-9c8aae2a1e0960b383fa24e4efc2919a.map",
     "assets/intl/intl.js": "assets/intl/intl-582977465f5d07c8cb9dcbc049eed0c9.js",
@@ -16,6 +16,11 @@
     "assets/vendor.css": "assets/vendor-69f1b7b610eebe5b47810e71f17dffc8.css",
     "assets/vendor.js": "assets/vendor-8bc361dde117e12fe83f06b6dfef021f.js",
     "assets/vendor.map": "assets/vendor-744afed0e44c3a57e6fd5b95bf766d3f.map",
+    "fonts/fontawesome-webfont.eot": "fonts/fontawesome-webfont-674f50d287a8c48dc19ba404d20fe713.eot",
+    "fonts/fontawesome-webfont.svg": "fonts/fontawesome-webfont-912ec66d7572ff821749319396470bde.svg",
+    "fonts/fontawesome-webfont.ttf": "fonts/fontawesome-webfont-b06871f281fee6b241d60582ae9369b9.ttf",
+    "fonts/fontawesome-webfont.woff": "fonts/fontawesome-webfont-fee66e712a8a08eef5805a46892932ad.woff",
+    "fonts/fontawesome-webfont.woff2": "fonts/fontawesome-webfont-af7ae505a9eed503f8b8e6982036873e.woff2",
     "fonts/icomoon.eot": "fonts/icomoon-c2e765230a36dcd89435ec399d35dda4.eot",
     "fonts/icomoon.svg": "fonts/icomoon-17d19fa5f1c107ec56c26c3a4eea3898.svg",
     "fonts/icomoon.ttf": "fonts/icomoon-55e35b33bb124a88feb9f39e2d12f83f.ttf",
