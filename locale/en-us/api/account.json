@@ -71,7 +71,7 @@
   "billing.card.cancel": "Cancel",
   "billing.defaultCard": "Default",
   "billing.card.added": "Your card has been saved successfully",
-  "billing.card.notAdded": "There was an error processing your card. Try after sometime",
+  "billing.card.notAdded": "There was an error processing your card.",
   "billing.zuora.renderError": "Unable to initiate transaction",
 
   "overview.subscription.title" : "Subscription",
