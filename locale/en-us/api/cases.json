@@ -1,4 +1,5 @@
 {
+  "conversation": "Conversation",
   "activity": "Activity",
   "addparticipant": "Add participant",
   "copy-someone-in.title": "Copy someone in",
@@ -11,7 +12,7 @@
   "copy-someone-in.email-error": "Please enter a valid email address",
   "contents.placeholder": "Enter your reply here...",
   "notes.placeholder": "Type a note...",
-  "linkedCasesInline": "Link a case",
+  "linkedCasesInline": "Link a conversation",
   "assignee.agent": "Assigned agent",
   "assignee.team": "Assigned team",
   "rating": "Rating",
@@ -25,10 +26,11 @@
   "channeltype": "Channel type",
   "last_completed_at": "Last completed at",
   "article_created_at_by": "Created at {at} by {by}",
+  "last_reply_by_at": "Last reply by {by} at {at}",
 
-  "case.created": "Case Created",
-  "case.updated": "Case Updated",
-  "cases.updated": "Cases Updated",
+  "case.created": "Conversation Created",
+  "case.updated": "Conversation Updated",
+  "cases.updated": "Conversations Updated",
 
   "columns.channel.title": "Source channel",
   "columns.channel.channels.MAIL": "Email",
@@ -61,7 +63,7 @@
   "tweet.public-invite-dm-description": "Your reply will be public. @{handle} will receive a button to start a DM conversation",
   "tweet.dm": "Direct Message",
   "resolution-at": "Resolution at",
-  "title": "Cases",
+  "title": "Conversations",
   "due": "Due",
   "lastreplier": "Last replier",
   "lastupdated": "Last updated {time}",
@@ -79,7 +81,7 @@
   "subject": "Subject",
   "submit": "Submit",
   "updating": "Updating…",
-  "ticketid": "Case ID",
+  "ticketid": "Conversation ID",
   "type": "Type",
   "macro": "Macro",
   "applymacro": "Apply Macro",
@@ -98,40 +100,39 @@
   "channel.confirm.sanitize_text": "Switching to this channel will clear any text formatting you’ve applied to your reply. Do you want to continue?",
   "note_sanitize_text_header": "Clear formatting",
   "note_sanitize_text": "Switching to a note will clear any text formatting you’ve applied to your reply. Do you want to continue?",
-  "new_case": "New case",
+  "new_case": "New conversation",
   "new_case_subject_placeholder": "Click to set a subject...",
-  "new_case_tab_placeholder": "New Case",
+  "new_case_tab_placeholder": "New Conversation",
   "currentlyassignedto": "Currently assigned to",
   "assignedtoagentteam": "{agent} in {team}",
   "assignedtonobody": "nobody",
 
-  "trash.title": "Trash case",
-  "trashcases": "Trash cases",
-  "untrash": "Untrash",
-  "trashed": "Trashed",
-  "confirm.trash_case_header": "Trash case",
-  "confirm.trash_case": "Are you sure you want to trash this case?",
+  "trash.title": "Trash conversation",
+  "trashcases": "Trash",
+  "trashed": "(Trashed)",
+  "restore": "Restore from trash",
+  "confirm.trash_case_header": "Trash conversation",
+  "confirm.trash_case": "Are you sure you want to trash this conversation?",
   "confirm.trash_case_button": "Trash",
-  "trash.success_message": "Case trashed successfully",
-  "trash.restore.success_message": "Case restored successfully",
+  "trash.success_message": "Conversation trashed successfully",
+  "trash.restore.success_message": "Conversation restored successfully",
+
+  "closed": "(Closed)",
 
   "search.request.result_meta": "Showing {numDisplayResults} of {totalResults} users",
 
-  "list.casesnotfound": "There are no cases here.",
-  "list.bulkupdate.updatecases": "Update cases",
-  "list.bulkupdate.update_cases_title": "Update Cases",
+  "list.casesnotfound": "This view doesn't have any conversations yet.",
+  "list.bulkupdate.updatecases": "Update conversations",
+  "list.bulkupdate.update_cases_title": "Update Conversations",
 
   "field_title.requester": "Requester",
   "notes": "Notes",
-  "form-select": "Case form",
+  "form-select": "Form",
 
   "sort": "Sort",
   "filter": "Filter",
 
   "unassigned": "(Unassigned)",
-
-  "sort_options.newest_first": "Newest first",
-  "sort_options.oldest_first": "Oldest first",
 
   "timeline.item.via.help_center": "via Help Center",
   "timeline.item.via.mail": "via email",
@@ -139,14 +140,14 @@
   "timeline.item.via.twitter_dm": "via Twitter (Direct Message)",
   "timeline.item.via.twitter": "via Twitter",
   "timeline.item.via.facebook": "via Facebook",
-  "timeline.item.via.note": "left a private note",
   "timeline.item.via.none": "NONE",
 
-  "filter_options.all": "All",
-  "filter_options.posts": "Posts",
-  "filter_options.notes": "Notes",
-  "filter_options.activities": "Activities",
-  "filter_options.posts_activities": "Posts and activities",
+  "columns.conversation": "Conversation",
+
+  "filter_options.posts": "Hide activities",
+  "filter_options.notes": "Show notes",
+  "filter_options.activities": "Show activities",
+  "filter_options.posts_activities": "Show activities",
   "posts.load_more": "Load more",
   "suspendedMessages.title": "Suspended messages",
   "suspendedMessages.confirmDeleteAll": "Are you sure that you want to delete these messages. This action can't be undone.",
@@ -181,20 +182,15 @@
   "sla.tooltip.operational_hours.CALENDAR_HOURS": "calendar hours",
   "sla.tooltip.sentence": "{metric} {made_due} at <strong>{due_time}</strong>.<br/>Due time calculated according to <strong>{operational_hours}</strong>.",
 
-  "reply.click_to_start": "Click to start a",
-  "reply.or_leave_a": "or leave a",
-  "reply.note": "Note",
-  "reply.reply": "Reply",
-
-  "viewers.updating": "updating this case",
-  "viewers.viewing": "viewing this case",
+  "viewers.updating": "updating this conversation",
+  "viewers.viewing": "viewing this conversation",
   "agent": "AGENT",
   "also_viewing": "Also viewing",
 
   "more_info.from": "From:",
   "more_info.to": "To:",
   "more_info.cc": "CC:",
-  "log.title": "The case has been updated",
+  "log.title": "The conversation has been updated",
 
   "text_editor.bold": "Bold",
   "text_editor.bold_shortcut": "Bold ({shortcutPrefix}B)",
@@ -216,5 +212,7 @@
   "text_editor.link_manager.shown_text": "Shown text",
   "text_editor.link_manager.text": "Text",
   "text_editor.link_manager.quote.increase": "Increase",
-  "text_editor.link_manager.quote.decrease": "Decrease"
+  "text_editor.link_manager.quote.decrease": "Decrease",
+
+  "timezone.currently": "Currently {time}"
 }
