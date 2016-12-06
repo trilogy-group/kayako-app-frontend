@@ -1,8 +1,8 @@
 {
   "assets": {
-    "assets/frontend-cp.css": "assets/frontend-cp-088ca254c607f4a0c7f5b41de7e6bbdf.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-3a88abfc7b87576444e9a6721e623ea4.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-213740ad1e5f563c809970f6bb2a803f.map",
+    "assets/frontend-cp.css": "assets/frontend-cp-cbbba167f75a5a0d6e8d5cedcb4cd1a9.css",
+    "assets/frontend-cp.js": "assets/frontend-cp-b961c26d72c1bfb41f84b7fd5c70945b.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-36c9f9089d32937255f34b0e0e0bb362.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-b4b949624aee7e9988cfdd5c09db2869.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-9c8aae2a1e0960b383fa24e4efc2919a.map",
     "assets/intl/intl.js": "assets/intl/intl-582977465f5d07c8cb9dcbc049eed0c9.js",
@@ -25,8 +25,8 @@
     "assets/trial/insights/sla/target.json": "assets/trial/insights/sla/target-98e5fe95473b7cdd1526cda445f30a35.json",
     "assets/trial/insights/slas.json": "assets/trial/insights/slas-ddca8b459f5f00e7e22cb60a9247eed8.json",
     "assets/vendor.css": "assets/vendor-69f1b7b610eebe5b47810e71f17dffc8.css",
-    "assets/vendor.js": "assets/vendor-8bc361dde117e12fe83f06b6dfef021f.js",
-    "assets/vendor.map": "assets/vendor-744afed0e44c3a57e6fd5b95bf766d3f.map",
+    "assets/vendor.js": "assets/vendor-dde781715827e352a273c56000e26a33.js",
+    "assets/vendor.map": "assets/vendor-d4cf5d8d6dc7408e3c6464bdb580208f.map",
     "fonts/fontawesome-webfont.eot": "fonts/fontawesome-webfont-674f50d287a8c48dc19ba404d20fe713.eot",
     "fonts/fontawesome-webfont.svg": "fonts/fontawesome-webfont-912ec66d7572ff821749319396470bde.svg",
     "fonts/fontawesome-webfont.ttf": "fonts/fontawesome-webfont-b06871f281fee6b241d60582ae9369b9.ttf",
@@ -71,8 +71,8 @@
     "images/apps/messenger.png": "images/apps/messenger-40782c904cd64e1d80bfbe5a84f600d9.png",
     "images/apps/zapier/integrations.png": "images/apps/zapier/integrations-3a4234ed34c07e59e6c2fd60636b1b3d.png",
     "images/brand/kayako-logo.svg": "images/brand/kayako-logo-5f881629a817f7767782ff50c704bc5d.svg",
+    "images/cases/no-cases.png": "images/cases/no-cases-74e790d6d5b9a39e7d006ac6f6f837d4.png",
     "images/errors/sleeping-cat.png": "images/errors/sleeping-cat-5044e2f1eab6e8dbafce693569be978c.png",
-    "images/icons/activity_icon.svg": "images/icons/activity_icon-c276c275d1e54981688cc6c0160b1d5d.svg",
     "images/icons/cards/cards-sprite.png": "images/icons/cards/cards-sprite-5b0735ea420fe810e9693e1ea68b705b.png",
     "images/icons/case.svg": "images/icons/case-0cd412322be36b306375753115e846e2.svg",
     "images/icons/endpoints/email.png": "images/icons/endpoints/email-2359200c51f822bd4f64e0c1965995df.png",
@@ -338,14 +338,15 @@
     "images/icons/flags/za.png": "images/icons/flags/za-517f58d809d1125872674a8e8d6cda81.png",
     "images/icons/flags/zm.png": "images/icons/flags/zm-3c31861a3397e822d8acb13c78b1eeb9.png",
     "images/icons/flags/zw.png": "images/icons/flags/zw-58cb72ba7778db8c493e8b518908e39b.png",
-    "images/icons/organization.svg": "images/icons/organization-8539914744096a2c43aa421dc96b4d1a.svg",
     "images/icons/user.svg": "images/icons/user-5c76a9feab0c5cebd8e9dc1a9caa4b0d.svg",
+    "images/search/no-results.png": "images/search/no-results-827d7f3f1d9adcafc048af38b13e5e9e.png",
+    "images/ui2.svg": "images/ui2-a03f1133a95ea4d258cd845b13f633c3.svg",
     "images/user/avatar.png": "images/user/avatar-92b0c30c1c52334b322ad5857e6b8f0d.png",
     "images/welcome/bar.svg": "images/welcome/bar-0ee76f204c60f299fa93bdfeb996f962.svg",
-    "images/welcome/channels.png": "images/welcome/channels-e16d30d43c4b96b2fe7435e8a00060b8.png",
+    "images/welcome/channels.png": "images/welcome/channels-76dc3108115277a4ab2b9bc54fa094da.png",
     "images/welcome/hc-edit.mp4": "images/welcome/hc-edit-00957d115f198cd8c993c8866440fa69.mp4",
     "images/welcome/squiggle.png": "images/welcome/squiggle-a9d6649dd60c48bd0c2f57a95a48a979.png",
-    "images/welcome/views.png": "images/welcome/views-499e5738daf57382cc86b7b201f3b25b.png"
+    "images/welcome/views.png": "images/welcome/views-41e6ef034928b4257548559e6ebcd3eb.png"
   },
   "prepend": "https://assets.kayako.com/"
 }
