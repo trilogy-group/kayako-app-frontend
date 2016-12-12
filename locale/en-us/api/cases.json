@@ -156,7 +156,7 @@
   "suspendedMessages.table.subject": "Subject",
   "suspendedMessages.table.createdAt": "Received",
   "suspendedMessages.table.suspensionCode": "Suspension reason",
-  "suspendedMessages.emptyList": "No suspended messages",
+  "suspendedMessages.emptyList": "No suspended messages.",
   "suspendedMessage.title": "Suspended message",
   "suspendedMessage.table.from": "From",
   "suspendedMessage.table.subject": "Subject",
