@@ -74,6 +74,8 @@
   "sort.ASC": "Ascending",
   "sort.DESC": "Descending",
 
+  "update_properties": "Update properties",
+
   "uploads.dropzone": "Drag and drop files to upload",
   "uploads.toolarge": "is too large.",
   "uploads.unknown": "upload failed. Please contact support",
