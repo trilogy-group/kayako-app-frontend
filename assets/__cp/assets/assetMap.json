@@ -1,8 +1,8 @@
 {
   "assets": {
-    "assets/frontend-cp.css": "assets/frontend-cp-836d79ff89cc20f793900bd17efb87e8.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-305790ba3176206ddb82e1c55a696f25.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-8b1ac75c8bec1adca752f2f8e0452078.map",
+    "assets/frontend-cp.css": "assets/frontend-cp-50152ad9f176704008b1bb1de082f61c.css",
+    "assets/frontend-cp.js": "assets/frontend-cp-b6330e3e2f3240c4fac291db44240a41.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-daf15ffc1a21bfe765725fcd5f2aaa58.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-b4b949624aee7e9988cfdd5c09db2869.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-9c8aae2a1e0960b383fa24e4efc2919a.map",
     "assets/intl/intl.js": "assets/intl/intl-582977465f5d07c8cb9dcbc049eed0c9.js",
@@ -340,7 +340,6 @@
     "images/icons/flags/zw.png": "images/icons/flags/zw-58cb72ba7778db8c493e8b518908e39b.png",
     "images/icons/user.svg": "images/icons/user-5c76a9feab0c5cebd8e9dc1a9caa4b0d.svg",
     "images/search/no-results.png": "images/search/no-results-827d7f3f1d9adcafc048af38b13e5e9e.png",
-    "images/ui2.svg": "images/ui2-a03f1133a95ea4d258cd845b13f633c3.svg",
     "images/user/avatar.png": "images/user/avatar-92b0c30c1c52334b322ad5857e6b8f0d.png",
     "images/welcome/bar.svg": "images/welcome/bar-0ee76f204c60f299fa93bdfeb996f962.svg",
     "images/welcome/channels.png": "images/welcome/channels-76dc3108115277a4ab2b9bc54fa094da.png",
