@@ -109,7 +109,8 @@
   "assignedtoagentteam": "{agent} in {team}",
   "assignedtonobody": "nobody",
 
-  "trash.title": "Trash conversation",
+  "mark_as_completed_and_close": "Complete",
+  "trash.title": "Trash",
   "trashcases": "Trash",
   "trashed": "(Trashed)",
   "restore": "Restore from trash",
