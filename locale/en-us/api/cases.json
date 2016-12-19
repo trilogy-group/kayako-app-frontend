@@ -85,6 +85,7 @@
   "macro": "Macro",
   "applymacro": "Apply Macro",
   "applymacroplaceholder": "Type to search macros",
+  "loadingmacro": "Loading macros...",
   "channelType.MAILBOX": "email",
   "channelType.MAIL": "email",
   "channelType.TWITTER": "Twitter",
