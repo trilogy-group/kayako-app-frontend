@@ -10,6 +10,7 @@
   "matchingsnippet": "Matching text",
   "nosnippet": "Sorry, we don’t have a preview for this result.",
   "seemore": "See more in advanced search",
+  "clear_search": "Clear search",
   "CASES.caseid": "Conversation ID",
   "CASES.conversation": "Conversation",
   "CASES.casepriorityid": "Priority",
@@ -64,5 +65,6 @@
   "help.channel": "channel:",
   "help.channel_value": "twitter",
   "help.more_help": "More search modifiers",
-  "and_more_domains": "and {count, plural, =1 {1 domain} other {# domains}} more "
+  "and_more_domains": "and {count, plural, =1 {1 domain} other {# domains}} more ",
+  "merge.placeholder": "Search for conversations..."
 }

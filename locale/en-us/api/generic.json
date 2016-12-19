@@ -4,8 +4,11 @@
   "validation_errors": "Please check you’ve filled everything in correctly",
   "next": "Next",
   "close": "Close",
+  "clear": "Clear",
   "remove": "Remove",
   "add": "Add",
+  "back": "Back",
+  "primary": "Primary",
   "create_link": "Create Link",
   "datepicker.clear": "Clear",
   "datepicker.close": "Close",
@@ -203,5 +206,6 @@
   "draft": "Draft",
   "pendingapproval": "Pending approval",
   "pagination.first": "First",
-  "pagination.last": "Last"
+  "pagination.last": "Last",
+  "selected": "Selected"
 }
