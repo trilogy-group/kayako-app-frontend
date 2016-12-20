@@ -11,7 +11,6 @@
   "copy-someone-in.help-text": "These people will be copied in on your reply.",
   "copy-someone-in.email-error": "Please enter a valid email address",
   "contents.placeholder": "Enter your reply here...",
-  "notes.placeholder": "Type a note...",
   "linkedCasesInline": "Link a conversation",
   "assignee.agent": "Assigned agent",
   "assignee.team": "Assigned team",
@@ -27,11 +26,9 @@
   "last_completed_at": "Last completed at",
   "article_created_at_by": "Created at {at} by {by}",
   "last_reply_by_at": "Last reply by {by} at {at}",
-
   "case.created": "Conversation Created",
   "case.updated": "Conversation Updated",
   "cases.updated": "Conversations Updated",
-
   "columns.channel.title": "Source channel",
   "columns.channel.channels.MAIL": "Email",
   "columns.channel.channels.TWITTER": "Twitter",
@@ -45,7 +42,7 @@
   "columns.slanextbreach": "Next breach",
   "columns.slanextreply": "Next reply",
   "columns.slaresolution": "Resolution",
-
+  "columns.conversation": "Conversation",
   "requester-language": "Requester Language",
   "organization": "Organization",
   "last-update": "Last update",
@@ -88,6 +85,7 @@
   "macro": "Macro",
   "applymacro": "Apply Macro",
   "applymacroplaceholder": "Type to search macros",
+  "loadingmacro": "Loading macros...",
   "channelType.MAILBOX": "email",
   "channelType.MAIL": "email",
   "channelType.TWITTER": "Twitter",
@@ -108,35 +106,27 @@
   "currentlyassignedto": "Currently assigned to",
   "assignedtoagentteam": "{agent} in {team}",
   "assignedtonobody": "nobody",
-
   "mark_as_completed_and_close": "Complete",
   "trash.title": "Trash",
+  "trash.success_message": "Conversation trashed successfully",
+  "trash.restore.success_message": "Conversation restored successfully",
   "trashcases": "Trash",
   "trashed": "(Trashed)",
   "restore": "Restore from trash",
   "confirm.trash_case_header": "Trash conversation",
   "confirm.trash_case": "Are you sure you want to trash this conversation?",
   "confirm.trash_case_button": "Trash",
-  "trash.success_message": "Conversation trashed successfully",
-  "trash.restore.success_message": "Conversation restored successfully",
-
   "closed": "(Closed)",
-
   "search.request.result_meta": "Showing {numDisplayResults} of {totalResults} users",
-
   "list.casesnotfound": "This view doesn't have any conversations yet.",
   "list.bulkupdate.updatecases": "Update conversations",
   "list.bulkupdate.update_cases_title": "Update Conversations",
-
   "field_title.requester": "Requester",
   "notes": "Notes",
   "form-select": "Form",
-
   "sort": "Sort",
   "filter": "Filter",
-
   "unassigned": "(Unassigned)",
-
   "timeline.item.via.help_center": "via Help Center",
   "timeline.item.via.mail": "via email",
   "timeline.item.via.messenger": "via Messenger",
@@ -144,9 +134,6 @@
   "timeline.item.via.twitter": "via Twitter",
   "timeline.item.via.facebook": "via Facebook",
   "timeline.item.via.none": "NONE",
-
-  "columns.conversation": "Conversation",
-
   "filter_options.posts": "Hide activities",
   "filter_options.notes": "Show notes",
   "filter_options.activities": "Show activities",
@@ -174,7 +161,6 @@
   "sla.title.RESOLUTION_TIME": "Resolution",
   "sla.title.FIRST_REPLY_TIME": "First reply",
   "sla.title.NEXT_REPLY_TIME": "Next reply",
-
   "sla.in": "in",
   "sla.tooltip.metric.RESOLUTION_TIME": "Resolution",
   "sla.tooltip.metric.FIRST_REPLY_TIME": "First reply",
@@ -184,17 +170,14 @@
   "sla.tooltip.operational_hours.BUSINESS_HOURS": "business hours",
   "sla.tooltip.operational_hours.CALENDAR_HOURS": "calendar hours",
   "sla.tooltip.sentence": "{metric} {made_due} at <strong>{due_time}</strong>.<br/>Due time calculated according to <strong>{operational_hours}</strong>.",
-
   "viewers.updating": "updating this conversation",
   "viewers.viewing": "viewing this conversation",
   "agent": "AGENT",
   "also_viewing": "Also viewing",
-
   "more_info.from": "From:",
   "more_info.to": "To:",
   "more_info.cc": "CC:",
   "log.title": "The conversation has been updated",
-
   "text_editor.bold": "Bold",
   "text_editor.bold_shortcut": "Bold ({shortcutPrefix}B)",
   "text_editor.italic": "Italic",
@@ -216,6 +199,14 @@
   "text_editor.link_manager.text": "Text",
   "text_editor.link_manager.quote.increase": "Increase",
   "text_editor.link_manager.quote.decrease": "Decrease",
-
-  "timezone.currently": "Currently {time}"
+  "timezone.currently": "Currently {time}",
+  "merge_conversation.title": "Merge conversation",
+  "merge_conversation.success_message": "Conversation has been merged.",
+  "merge_conversation.modal.header": "Select conversations to merge",
+  "merge_conversation.modal.merge_confirmation_header": "Merge conversations",
+  "merge_conversation.modal.button": "Merge",
+  "merge_conversation.modal.recent_conversations_from": "Recent conversations from",
+  "merge_conversation.modal.conversations_selected": "Conversations selected",
+  "merge_conversation.modal.primary_conversation_message_bold": "selected conversations",
+  "merge_conversation.modal.primary_conversation_message_end": "will be merged into:"
 }

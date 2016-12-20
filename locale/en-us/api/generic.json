@@ -4,8 +4,11 @@
   "validation_errors": "Please check you’ve filled everything in correctly",
   "next": "Next",
   "close": "Close",
+  "clear": "Clear",
   "remove": "Remove",
   "add": "Add",
+  "back": "Back",
+  "primary": "Primary",
   "create_link": "Create Link",
   "datepicker.clear": "Clear",
   "datepicker.close": "Close",
@@ -68,21 +71,16 @@
   "shared_with": "Shared with",
   "find_out_more": "Find out more",
   "loading_agents": "Loading agents…",
-
   "esc": "Esc",
-
   "sort.ASC": "Ascending",
   "sort.DESC": "Descending",
-
   "update_properties": "Update properties",
-
   "uploads.dropzone": "Drag and drop files to upload",
   "uploads.toolarge": "is too large.",
   "uploads.unknown": "upload failed. Please contact support",
   "uploads.wrongtype": "is not allowed. Allowed file types: ",
   "uploads.failed": "There was a problem uploading file(s)",
   "uploads.twitter_validation_failed": "For Twitter reply you may attach up to 4 photos less than 3MB each, 1 animated GIF less than 3MB or 1 MP4 less than 15MB.",
-
   "confirm.delete": "Are you sure you want to delete this?",
   "confirm.trashcases": "Are you sure you want to trash these?",
   "confirm.lose_changes": "You have unsaved changes on this page. Are you sure you want to discard these changes?",
@@ -92,7 +90,6 @@
   "changes_saved": "Changes saved",
   "casestrashed": "Conversations trashed",
   "no_changes": "No Changes",
-
   "create_user_panel.title": "Create a new user",
   "create_user_panel.name_label": "First and last name",
   "create_user_panel.email_label": "Email address",
@@ -103,7 +100,6 @@
   "create_user_panel.cancel": "cancel",
   "create_user_panel.user_exists": "This email already in use.",
   "create_user_panel.user_exists_toast": "This email already belongs to someone",
-
   "create_organization_panel.title": "Create a new organization",
   "create_organization_panel.name_label": "Organization Name",
   "create_organization_panel.domain_label": "Domain(s):",
@@ -112,7 +108,6 @@
   "create_organization_panel.domain_invalid": "Invalid email address",
   "create_organization_panel.submit": "Add Organization",
   "create_organization_panel.info": "You can add additional details and contact information once you've created the organization.",
-
   "user_logged_out": "You have been logged out",
   "session_expired": "Your session has expired",
   "license_expired": "Your request wasn't saved because your subscription has expired.",
@@ -121,7 +116,6 @@
   "user_credential_expired": "The credential (e.g. password) is valid but has expired",
   "resource_not_found": "Resource does not exist or has been removed",
   "generic_error": "Oops, something went wrong",
-
   "create_case_panel.title": "Create a new conversation",
   "create_case_panel.requester_label": "Requester/Recipient",
   "create_case_panel.requester_required": "Required",
@@ -130,7 +124,6 @@
   "create_case_panel.info": "You can add more detail to this conversation after you've created it.",
   "create_case_panel.submit": "Create conversation",
   "create_case_panel.cancel": "cancel",
-
   "identities.component_title": "IDENTITIES",
   "identities.add_new": "Add new",
   "identities.add_email_identity": "Email",
@@ -155,27 +148,21 @@
   "identities.removed.success_message": "Identity removed successfully",
   "identities.see_profile": "See profile",
   "identities.unverified": "This identity has not been verified",
-
   "error.field_required": "This action requires the field to be specified",
   "error.field_duplicate": "The value of the field is already used for another resource",
   "error.field_empty": "The value of the field cannot be empty",
   "error.field_invalid": "The value of the field is invalid",
-
   "addtagname": "Add tag “{tag}”",
-
   "units.kB": "kB",
   "units.MB": "MB",
   "units.GB": "GB",
   "units.B": "B",
   "units.hours": "hours",
   "units.days": "days",
-
   "at_time": "at {time}",
   "on_date": "on {date}",
-
   "confirm_delete.header": "Delete",
   "confirm_delete.body": "Delete this item?",
-
   "input_date_range.custom_range": "Custom Range",
   "input_date_range.today": "Today",
   "input_date_range.yesterday": "Yesterday",
@@ -183,23 +170,16 @@
   "input_date_range.last30days": "Last 30 Days",
   "input_date_range.this_month": "This Month",
   "input_date_range.last_month": "Last Month",
-
   "select.select_or_type_to_search": "Select an option or type to search",
-
   "copy_to_clipboard": "Copy to clipboard",
   "copied_to_clipboard": "Copied to clipboard",
-
   "errors.not_found.heading": "Sorry{name}, we couldn't find that.",
   "errors.not_found.description1": "If you got here because you clicked on something in the product, please email us: <a href=\"mailto:support@kayako.com\">support@kayako.com</a>",
   "errors.not_found.description2": "Otherwise, please check the url is correct and try again!",
-
   "settings.12hour": "12 hours",
   "settings.24hour": "24 hours",
-
   "times": "times",
-
   "unsaved_tab_changes": "Wait! You have unsaved changes on this tab. Continuing will result in you losing these changes.",
-
   "keyboard_shortcuts.title": "Keyboard shortcuts",
   "keyboard_shortcuts.then": "then",
   "keyboard_shortcuts.or": "or",
@@ -208,7 +188,6 @@
   "keyboard_shortcuts.navigation": "Navigation",
   "keyboard_shortcuts.cases_users_and_orgs": "Conversations, users and organizations",
   "keyboard_shortcuts.general": "General",
-
   "keyboard_shortcuts.go_cases": "Go to conversations",
   "keyboard_shortcuts.go_insights": "Go to insights",
   "keyboard_shortcuts.go_admin": "Go to admin",
@@ -216,19 +195,17 @@
   "keyboard_shortcuts.next_tab": "Next tab",
   "keyboard_shortcuts.close_tab": "Close tab",
   "keyboard_shortcuts.search": "Search",
-
   "keyboard_shortcuts.reply": "Switch to reply",
   "keyboard_shortcuts.note": "Switch to note",
   "keyboard_shortcuts.macro": "Select macro",
   "keyboard_shortcuts.assignee": "Select assignee",
   "keyboard_shortcuts.save": "Save/send",
-
   "keyboard_shortcuts.help": "Show this help",
   "updated": "Updated",
   "published": "Published",
   "draft": "Draft",
   "pendingapproval": "Pending approval",
-
   "pagination.first": "First",
-  "pagination.last": "Last"
+  "pagination.last": "Last",
+  "selected": "Selected"
 }
