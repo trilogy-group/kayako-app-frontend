@@ -1,8 +1,8 @@
 {
   "assets": {
-    "assets/frontend-cp.css": "assets/frontend-cp-f4c471ee55d08f0ab472cd09ce2f0dbc.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-cb31c5498b43050b8e336e7cc6a96c99.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-18b9b192d5718d9389b1044b1bc6f7be.map",
+    "assets/frontend-cp.css": "assets/frontend-cp-cc345573a0672478074dd7ccb3bf48d6.css",
+    "assets/frontend-cp.js": "assets/frontend-cp-541906124114819aa04ecd727e37d204.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-4e82efae39db7e00e81763e9d2bd3e15.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-b4b949624aee7e9988cfdd5c09db2869.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-9c8aae2a1e0960b383fa24e4efc2919a.map",
     "assets/intl/intl.js": "assets/intl/intl-582977465f5d07c8cb9dcbc049eed0c9.js",
@@ -339,6 +339,9 @@
     "images/icons/flags/zm.png": "images/icons/flags/zm-3c31861a3397e822d8acb13c78b1eeb9.png",
     "images/icons/flags/zw.png": "images/icons/flags/zw-58cb72ba7778db8c493e8b518908e39b.png",
     "images/icons/user.svg": "images/icons/user-5c76a9feab0c5cebd8e9dc1a9caa4b0d.svg",
+    "images/login/avatar.png": "images/login/avatar-b24ca4f53e0e8a035e0c31d96682459a.png",
+    "images/login/illustration-1.png": "images/login/illustration-1-4678fdba8c669862282790f5eb1ec1d1.png",
+    "images/login/illustration-2.png": "images/login/illustration-2-2ac3b8ac4250cc87c4969041c81e1434.png",
     "images/search/no-results.png": "images/search/no-results-827d7f3f1d9adcafc048af38b13e5e9e.png",
     "images/user/avatar.png": "images/user/avatar-92b0c30c1c52334b322ad5857e6b8f0d.png",
     "images/welcome/bar.svg": "images/welcome/bar-0ee76f204c60f299fa93bdfeb996f962.svg",
