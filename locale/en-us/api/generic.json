@@ -105,7 +105,7 @@
   "create_user_panel.user_exists_toast": "This email already belongs to someone",
   "create_organization_panel.title": "Create a new organization",
   "create_organization_panel.name_label": "Organization Name",
-  "create_organization_panel.domain_label": "Domain(s):",
+  "create_organization_panel.domain_label": "Email Domain(s):",
   "create_organization_panel.name_required": "Name is required",
   "create_organization_panel.domain_required": "Email address is required",
   "create_organization_panel.domain_invalid": "Invalid email address",
