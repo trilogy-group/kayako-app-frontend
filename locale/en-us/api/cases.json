@@ -61,6 +61,7 @@
   "tweet.dm": "Direct Message",
   "resolution-at": "Resolution at",
   "title": "Conversations",
+  "inbox-button-title": "{inboxCount, plural, =0 {Conversations} =1 {# conversation in your inbox} other {# conversations in your inbox}}",
   "due": "Due",
   "lastreplier": "Last replier",
   "lastupdated": "Last updated {time}",
