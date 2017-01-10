@@ -1,8 +1,8 @@
 {
   "assets": {
-    "assets/frontend-cp.css": "assets/frontend-cp-8a4c042d1238929dc0a276c748d19e6b.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-ba4cc741e6aec637cb37e846bf298f82.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-3fb4c31b0b221de447de611c8f02e95d.map",
+    "assets/frontend-cp.css": "assets/frontend-cp-1e5b5a5e0cb9f64b4f7ff303be374ff3.css",
+    "assets/frontend-cp.js": "assets/frontend-cp-ecdfec7593b45f912cc67fce5400b8d6.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-caa97d2ca1896023e9e73805fd4d139b.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-b4b949624aee7e9988cfdd5c09db2869.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-9c8aae2a1e0960b383fa24e4efc2919a.map",
     "assets/intl/intl.js": "assets/intl/intl-582977465f5d07c8cb9dcbc049eed0c9.js",
@@ -69,6 +69,7 @@
     "images/apps/api/platform-to-grow.png": "images/apps/api/platform-to-grow-3b8036ab8a29aeab37f6df85f25c5836.png",
     "images/apps/header.png": "images/apps/header-c8e2bb64a8cbe599db8a2f6c98ca0e03.png",
     "images/apps/messenger.png": "images/apps/messenger-40782c904cd64e1d80bfbe5a84f600d9.png",
+    "images/apps/salesforce.png": "images/apps/salesforce-9ee4d58edf9a35f77406391edd34ae74.png",
     "images/apps/zapier/integrations.png": "images/apps/zapier/integrations-3a4234ed34c07e59e6c2fd60636b1b3d.png",
     "images/brand/kayako-logo.svg": "images/brand/kayako-logo-5f881629a817f7767782ff50c704bc5d.svg",
     "images/cases/no-cases.png": "images/cases/no-cases-74e790d6d5b9a39e7d006ac6f6f837d4.png",
