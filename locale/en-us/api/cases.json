@@ -140,6 +140,8 @@
   "filter_options.activities": "Show activities",
   "filter_options.posts_activities": "Show activities",
   "posts.load_more": "Load more",
+  "posts.unread_posts": "You have new unread messages",
+  "posts.view_unread_posts": "View messages",
   "suspendedMessages.title": "Suspended messages",
   "suspendedMessages.confirmDeleteAll": "Are you sure that you want to delete these messages. This action can't be undone.",
   "suspendedMessages.permanently_delete": "Permanently delete",
