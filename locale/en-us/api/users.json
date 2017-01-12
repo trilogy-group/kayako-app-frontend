@@ -48,5 +48,6 @@
   "change_role.to_customer_confirm_button": "Yes, downgrade",
   "userid": "User ID",
   "last_seen": "Last seen {time}",
-  "timeline.preamble": "<p>Hello! This is the beginning of your {name} timeline. Here you can see a log of every action they will take within Kayako. You can also display their activity from other programs, by pushing notifications to this timeline using Zapier or the Kayako API.</p><p>Oh, and you can add private notes to this timeline, which your team can see, but the customer cannot. 👇</p>"
+  "timeline.preamble": "<p>Hello! This is the beginning of your {name} timeline. Here you can see a log of every action they will take within Kayako. You can also display their activity from other programs, by pushing notifications to this timeline using Zapier or the Kayako API.</p><p>Oh, and you can add private notes to this timeline, which your team can see, but the customer cannot. 👇</p>",
+  "new_conversation": "New Conversation"
 }
