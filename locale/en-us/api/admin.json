@@ -9,7 +9,7 @@
   "administration": "Administration",
   "apps.title": "Apps",
   "apps.endpoints.title": "Endpoints",
-  "apps.endpoints.description": "Put Kayako at the heart of your existing organization's workflow. Endpoints enable you to notify external apps and systems about your conversations. Each endpoint defines a specific destination outside of Kayako, such as a Slack channel. Once you've created an endpoint, you can send case data to it using case automations.",
+  "apps.endpoints.description": "Put Kayako at the heart of your existing organization's workflow. Endpoints enable you to notify external apps and systems about your conversations. Each endpoint defines a specific destination outside of Kayako, such as a Slack channel. Once you've created an endpoint, you can send conversation data to it using conversation automations.",
   "apps.endpoints.description2": "{link}.",
   "apps.endpoints.description_link": "Learn more about endpoints",
   "apps.endpoints.title-singular": "Endpoint",
