@@ -1,0 +1,17 @@
+{
+  "back": "« Voltar",
+  "email": "E-mail",
+  "forgot": "Esqueceu a senha?",
+  "login": "Login",
+  "newpassword": "Nova Senha",
+  "verificationcode": "Código de Verificação",
+  "password": "Senha",
+  "repeatpassword": "Senha (repetir)",
+  "resetpassword": "Redefinir sua senha",
+  "updatepassword": "Modificar senha",
+  "welcome": "Bem-vindo ao Kayako",
+
+  "error.invalid_email": "Digite um endereço de e-mail válido",
+  "error.email_not_found": "Esse e-mail não existe",
+  "error.login_failed": "A combinação e-mail e senha está incorreta"
+}
