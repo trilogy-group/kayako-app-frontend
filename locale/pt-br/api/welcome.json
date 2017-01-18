@@ -1,0 +1,14 @@
+{
+  "button_title": "Bem-vindo",
+  "title": "Olá {nome}. Bem-vindo ao Kayako!",
+  "subtitle": "Aqui vão alguns passos para que você possa começar.",
+  "sections.channels.header": "Conectando canais",
+  "sections.channels.contents": "Para começar a receber e responder a conversas, você precisará conectar alguns canais. Você pode fazer isso em suas configurações.",
+  "sections.channels.button": "Leve-me para lá!",
+  "sections.help_center.header": "Modificando a Central de Ajuda ",
+  "sections.help_center.contents": "Você pode personalizar a aparência de sua central de ajuda e gerenciar os artigos aqui mesmo.",
+  "sections.help_center.button": "Leve-me para minha central de ajuda",
+  "sections.views.header": "Encontrando casos",
+  "sections.views.contents": "Óbvio, é importante que você encontre suas conversas quando seus clientes estão falando com você. Você os encontrará em exibição dos casos.",
+  "sections.views.button": "Para a exibição de casos!"
+}
