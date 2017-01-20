@@ -1,0 +1,14 @@
+{
+  "button_title": "Welcome",
+  "title": "Hello {name}. Welcome to Kayako!",
+  "subtitle": "Here are some steps to get started.",
+  "sections.channels.header": "Connecting channels",
+  "sections.channels.contents": "In order to start receiving and replying to conversations, you need to connect some channels. You can do this in your settings.",
+  "sections.channels.button": "Take me there!",
+  "sections.help_center.header": "Modifying Help Center",
+  "sections.help_center.contents": "You can customize how your help center looks and manage articles right there.",
+  "sections.help_center.button": "Take me to my help center",
+  "sections.views.header": "Finding conversations",
+  "sections.views.contents": "Of course, it's important to find your conversations when your customers are talking to you. You'll find them over in views.",
+  "sections.views.button": "Over to views!"
+}

@@ -1,0 +1,14 @@
+{
+  "title": "Organization",
+  "domains": "Email domains",
+  "organizations": "Organizations",
+  "new_organization_placeholder": "Click to add a name",
+  "delete_organization": "Delete organization",
+  "created": "Organization created",
+  "updated": "Organization updated",
+  "infobar.cases.shared.true": "Can see each others' conversations",
+  "infobar.cases.shared.false": "Cannot see each others' conversations",
+  "infobar.accesslevel": "Conversation access",
+  "organizationid": "Organization ID",
+  "timeline.preamble": "<p>Howdy! This is the beginning of the timeline for <strong>{name}</strong>. Kayako pulls together all of the activities of people who belong to this organization. <a href={searchURL}>Click to find members of this organization in a search</a>.</p><p>By the way, you can also add private notes to this timeline, which can only be seen by you and other agents. 👇</p>"
+}
