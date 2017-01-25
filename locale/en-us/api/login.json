@@ -9,14 +9,14 @@
   "password": "Password",
   "repeatpassword": "Password (repeat)",
   "resetpassword": "Reset password",
-  "resetinstruction": "Don't worry - it happens to the best of us. To reset your password, enter the email address your normally use to login to Kayako.",
+  "resetinstruction": "Don’t worry - it happens to the best of us. To reset your password, enter the email address your normally use to login to Kayako.",
   "resetbuttontext": "Send reset instructions",
   "updatepassword": "Change password",
   "welcome": "Welcome back to Kayako",
-  "promotionlabel": "What's new",
+  "promotionlabel": "What’s new",
   "promotiontitle": "The Ultimate Guide to Communicating Product Feedback →",
   "promotiondescription": "A handy ebook for product driven support teams",
   "error.invalid_email": "Please enter a valid email address",
-  "error.email_not_found": "This email doesn't exist",
+  "error.email_not_found": "This email doesn’t exist",
   "error.login_failed": "Email and password combination is incorrect"
 }
