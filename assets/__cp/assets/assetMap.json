@@ -1,8 +1,8 @@
 {
   "assets": {
-    "assets/frontend-cp.css": "assets/frontend-cp-dcb04bf17bfd20525fdce06d87a71a1a.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-6f8130507fbf4a1afc2e85866aa74203.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-475a67c8d1f1145d1b54d2a3d3abdda7.map",
+    "assets/frontend-cp.css": "assets/frontend-cp-65b275a3f46265db8c713e8c864f3af2.css",
+    "assets/frontend-cp.js": "assets/frontend-cp-e41605d6b4faa583848644c910ecd25d.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-fde06582238b300676c6830fe6fbec02.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-6f1f1bb984a00897ac5aab589a3a3764.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-0cc3bc279cf662edf0acd75c46fa9cea.map",
     "assets/intl/intl.js": "assets/intl/intl-d2ba17691f2a1748f36a07cbea1450d4.js",
@@ -364,11 +364,26 @@
     "images/login/illustration-1.png": "images/login/illustration-1-4678fdba8c669862282790f5eb1ec1d1.png",
     "images/login/illustration-2.png": "images/login/illustration-2-2ac3b8ac4250cc87c4969041c81e1434.png",
     "images/user/avatar.png": "images/user/avatar-92b0c30c1c52334b322ad5857e6b8f0d.png",
+    "images/welcome/1.svg": "images/welcome/1-61b3cc60bc6697935667913884c43b83.svg",
+    "images/welcome/2.svg": "images/welcome/2-27607f107a2b58e1b92f80d1fcd4f690.svg",
+    "images/welcome/3.svg": "images/welcome/3-fb8241c025fa981c84155aa6708da919.svg",
+    "images/welcome/4.svg": "images/welcome/4-004f79574d945ecfd8681c397b13cc85.svg",
+    "images/welcome/agents.svg": "images/welcome/agents-99be75c0a89aed0e7f4824afb3993664.svg",
     "images/welcome/bar.svg": "images/welcome/bar-0ee76f204c60f299fa93bdfeb996f962.svg",
     "images/welcome/channels.png": "images/welcome/channels-76dc3108115277a4ab2b9bc54fa094da.png",
+    "images/welcome/emails.svg": "images/welcome/emails-b317faea7810afc8d16dd9d804c8f69d.svg",
+    "images/welcome/facebook.svg": "images/welcome/facebook-490cda40d70dd5ce7e977143ae23e40b.svg",
     "images/welcome/hc-edit.mp4": "images/welcome/hc-edit-00957d115f198cd8c993c8866440fa69.mp4",
+    "images/welcome/mac.svg": "images/welcome/mac-8a4230d0b995fb2ae4471cc1e2319e42.svg",
+    "images/welcome/messenger-window.png": "images/welcome/messenger-window-38641734a6edc1bdb9a94127d887a281.png",
+    "images/welcome/messenger.svg": "images/welcome/messenger-88283bf6e063a3e5eeb13c5a63e78e00.svg",
+    "images/welcome/social.svg": "images/welcome/social-82d8f99b3d32288ca6b453dc5d705fdd.svg",
     "images/welcome/squiggle.png": "images/welcome/squiggle-a9d6649dd60c48bd0c2f57a95a48a979.png",
-    "images/welcome/views.png": "images/welcome/views-41e6ef034928b4257548559e6ebcd3eb.png"
+    "images/welcome/tick-icon.svg": "images/welcome/tick-icon-0cd5f79c760d2a9e4da8654016bcfa73.svg",
+    "images/welcome/tick.svg": "images/welcome/tick-ac59ed6f410723e1780da47c960f19ed.svg",
+    "images/welcome/twitter.svg": "images/welcome/twitter-bafc88a31d262e18e730bbde03b27069.svg",
+    "images/welcome/views.png": "images/welcome/views-41e6ef034928b4257548559e6ebcd3eb.png",
+    "images/welcome/windows.svg": "images/welcome/windows-34bd436b4014a4ac3b94c3d379d43666.svg"
   },
   "prepend": ""
 }
