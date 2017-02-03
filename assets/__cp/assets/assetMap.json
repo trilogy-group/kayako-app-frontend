@@ -1,8 +1,8 @@
 {
   "assets": {
-    "assets/frontend-cp.css": "assets/frontend-cp-03cf467564eb05a25edba5896bca0273.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-3d9b9f3eb50f25b95ddf31014a337540.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-3ce66299006be9afbf90a85279e06390.map",
+    "assets/frontend-cp.css": "assets/frontend-cp-37449c5ad8f48ea61df406751b1348b4.css",
+    "assets/frontend-cp.js": "assets/frontend-cp-39065e66407e1bc8fad7a6ac4d44a773.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-21a3baef2145f9a9e44a9e2fa43ced7e.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-6f1f1bb984a00897ac5aab589a3a3764.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-0cc3bc279cf662edf0acd75c46fa9cea.map",
     "assets/intl/intl.js": "assets/intl/intl-d2ba17691f2a1748f36a07cbea1450d4.js",
@@ -92,6 +92,7 @@
     "images/empty-states/twitter.svg": "images/empty-states/twitter-dc74a49bfecaaeea7ec8ec93ba80987e.svg",
     "images/empty-states/user-fields.svg": "images/empty-states/user-fields-33e3187160d345d84c3c416d8ebd7d81.svg",
     "images/empty-states/webhooks.svg": "images/empty-states/webhooks-621139fc250c75ea7f35467f69b01662.svg",
+    "images/errors/awakened-cat.png": "images/errors/awakened-cat-b9ab16d21a02effa2c6f3f3d28977d92.png",
     "images/errors/sleeping-cat.png": "images/errors/sleeping-cat-5044e2f1eab6e8dbafce693569be978c.png",
     "images/icons/cards/cards-sprite.png": "images/icons/cards/cards-sprite-5b0735ea420fe810e9693e1ea68b705b.png",
     "images/icons/conversation.svg": "images/icons/conversation-66109b3309eca2561c2c504be9727d82.svg",
