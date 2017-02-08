@@ -119,6 +119,7 @@
   "confirm.trash_case": "Are you sure you want to trash this conversation?",
   "confirm.trash_case_button": "Trash",
   "closed": "(Closed)",
+  "search.label": "Search",
   "search.request.result_meta": "Showing {numDisplayResults} of {totalResults} users",
   "list.casesnotfound": "This view doesn’t have any conversations yet.",
   "list.bulkupdate.updatecases": "Update conversations",
