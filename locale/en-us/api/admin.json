@@ -387,6 +387,8 @@
   "casefields.edit.help.customer_field_description": "This will be displayed to your customers",
   "casefields.edit.help.is_editable_by_customers": "Enable this setting to allow your customers to change the value of this field from the Help Center or through the API.",
   "casefields.edit.help.is_required_for_customers": "Enable this setting to require your customers to complete this field when creating or updating a conversation from the Help Center or through the API.",
+  "casefields.edit.help.is_required_for_customers_user_profile": "Enable this setting to require your customers to complete this field when creating or updating a user profile from the Help Center or through the API.",
+  "casefields.edit.help.is_required_for_customers_conversation": "Enable this setting to require your customers to complete this field when creating or updating a conversation from the Help Center or through the API.",
   "casefields.edit.help.api_key": "The field key is unique to this field and is used to reference fields using the Kayako API and in search.",
   "casefields.edit.help.is_enabled": "Disabled conversation fields will not be available on conversations or forms, but any existing data will still be searchable and can be referenced in reporting.",
   "casefields.edit.help.statuses.1": "Conversation statuses typically map to your workflow and how you handle customer requests and conversations. Throughout its life, a conversation will move through various statuses. On the Enterprise plan, you can customize the list of conversation statuses.",
