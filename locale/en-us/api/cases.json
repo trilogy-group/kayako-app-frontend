@@ -121,6 +121,7 @@
   "closed": "(Closed)",
   "search.label": "Search",
   "search.request.result_meta": "Showing {numDisplayResults} of {totalResults} users",
+  "search.open_in_background": "Opened {title} in the background",
   "list.casesnotfound": "This view doesn’t have any conversations yet.",
   "list.bulkupdate.updatecases": "Update conversations",
   "list.bulkupdate.update_cases_title": "Update Conversations",
