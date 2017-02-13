@@ -1,8 +1,8 @@
 {
   "assets": {
-    "assets/frontend-cp.css": "assets/frontend-cp-7b24f8632230d57734469bd0b18e0d5c.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-82a6a3d3f494549260d4d4316ac4c0f9.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-c221a81b16825a6978efbf380e97e144.map",
+    "assets/frontend-cp.css": "assets/frontend-cp-fa25583fb74178bcd5f2d31ddf356894.css",
+    "assets/frontend-cp.js": "assets/frontend-cp-2cc54ba3f612f815dafb020cb592a0a6.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-9a648319998ed7fa6a33ba6f0b0d2044.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-6f1f1bb984a00897ac5aab589a3a3764.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-0cc3bc279cf662edf0acd75c46fa9cea.map",
     "assets/intl/intl.js": "assets/intl/intl-d2ba17691f2a1748f36a07cbea1450d4.js",
@@ -94,6 +94,8 @@
     "images/empty-states/webhooks.svg": "images/empty-states/webhooks-621139fc250c75ea7f35467f69b01662.svg",
     "images/errors/awakened-cat.png": "images/errors/awakened-cat-b9ab16d21a02effa2c6f3f3d28977d92.png",
     "images/errors/sleeping-cat.png": "images/errors/sleeping-cat-5044e2f1eab6e8dbafce693569be978c.png",
+    "images/icon-plus.svg": "images/icon-plus-d47c5886dc3eb97c4e6f0f1b3a17fbd2.svg",
+    "images/icon-search.svg": "images/icon-search-1a39bf5e2906cbf6a4aa9e3a37787faa.svg",
     "images/icons/cards/cards-sprite.png": "images/icons/cards/cards-sprite-5b0735ea420fe810e9693e1ea68b705b.png",
     "images/icons/conversation.svg": "images/icons/conversation-66db5f0f32db0d93786966902f0ccab6.svg",
     "images/icons/endpoints/email.png": "images/icons/endpoints/email-2359200c51f822bd4f64e0c1965995df.png",
@@ -362,6 +364,7 @@
     "images/icons/organization.svg": "images/icons/organization-fd21821e07abed3e5b0911460555b902.svg",
     "images/icons/search.svg": "images/icons/search-7abba3773782a9e78297a6207a2e96d7.svg",
     "images/icons/user.svg": "images/icons/user-8887826fa44e3b182a2902099213e458.svg",
+    "images/illu-bad.svg": "images/illu-bad-aeb048afa93427b67da79cb3837763d2.svg",
     "images/login/avatar.png": "images/login/avatar-b24ca4f53e0e8a035e0c31d96682459a.png",
     "images/login/illustration-1.png": "images/login/illustration-1-4678fdba8c669862282790f5eb1ec1d1.png",
     "images/login/illustration-2.png": "images/login/illustration-2-2ac3b8ac4250cc87c4969041c81e1434.png",
