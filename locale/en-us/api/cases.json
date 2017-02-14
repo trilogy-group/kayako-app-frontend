@@ -222,5 +222,10 @@
   "merge_conversation.modal.primary_conversation_message_end": "will be merged into:",
   "assign_to_me": "Assign to me",
   "send_and": "Send and",
-  "see_more_cases": "View all {count} conversations"
+  "see_more_cases": "View all {count} conversations",
+  "post.status.NOT_SENT": "Not Sent",
+  "post.status.SENT": "Sent",
+  "post.status.DELIVERED": "Delivered",
+  "post.status.SEEN": "Seen",
+  "post.status.REJECTED": "Bounced"
 }
