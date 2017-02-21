@@ -1,8 +1,8 @@
 {
   "assets": {
-    "assets/frontend-cp.css": "assets/frontend-cp-b243618a5c726a52e6f94416199f6cd0.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-87510db1de0b7e0b9b9d0fbf18f0da55.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-760261043239c4a47d4b207ba21d6ea5.map",
+    "assets/frontend-cp.css": "assets/frontend-cp-17f39381c845a2abc56113d3ce1bd30a.css",
+    "assets/frontend-cp.js": "assets/frontend-cp-fcad519ee249f9dfd7c65bee71527df2.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-24e07e24acc092f295cd241ba7c6d3f5.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-6f1f1bb984a00897ac5aab589a3a3764.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-0cc3bc279cf662edf0acd75c46fa9cea.map",
     "assets/intl/intl.js": "assets/intl/intl-d2ba17691f2a1748f36a07cbea1450d4.js",
@@ -96,6 +96,7 @@
     "images/errors/sleeping-cat.png": "images/errors/sleeping-cat-5044e2f1eab6e8dbafce693569be978c.png",
     "images/icon-plus.svg": "images/icon-plus-d47c5886dc3eb97c4e6f0f1b3a17fbd2.svg",
     "images/icon-search.svg": "images/icon-search-1a39bf5e2906cbf6a4aa9e3a37787faa.svg",
+    "images/icons/camera.svg": "images/icons/camera-91ad8771bcfbdfa91ef0a792c3b32198.svg",
     "images/icons/cards/cards-sprite.png": "images/icons/cards/cards-sprite-5b0735ea420fe810e9693e1ea68b705b.png",
     "images/icons/conversation.svg": "images/icons/conversation-66db5f0f32db0d93786966902f0ccab6.svg",
     "images/icons/endpoints/email.png": "images/icons/endpoints/email-2359200c51f822bd4f64e0c1965995df.png",
