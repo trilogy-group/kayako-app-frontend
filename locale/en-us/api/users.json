@@ -49,5 +49,14 @@
   "userid": "User ID",
   "last_seen": "Last seen {time}",
   "timeline.preamble": "<p>Hello! This is the beginning of your {name} timeline. Here you can see a log of every action they will take within Kayako. You can also display their activity from other programs, by pushing notifications to this timeline using Zapier or the Kayako API.</p><p>Oh, and you can add private notes to this timeline, which your team can see, but the customer cannot. 👇</p>",
-  "new_conversation": "New Conversation"
+  "new_conversation": "New Conversation",
+  "change_avatar": "Change or remove your avatar",
+  "upload_photo": "Upload your avatar",
+  "remove_photo": "Remove your avatar",
+  "avatar_removal_success": "Your avatar was removed successfully.",
+  "avatar_removal_failure": "Failed to remove your avatar. Please try again later or contact support.",
+  "confirm.delete_avatar.header": "Are you sure you want to remove your avatar?",
+  "confirm.delete_avatar.body": "We'll replace it with a default Kayako avatar.",
+  "confirm.delete_avatar.confirm": "Yes, remove my avatar.",
+  "incorrect_file_type": "<strong>{filename}</strong> isn't allowed, please try again with a JPG, GIF, or PNG file."
 }
