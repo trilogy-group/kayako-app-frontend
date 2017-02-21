@@ -2,6 +2,8 @@
   "button_title": "Welcome",
   "title": "let's set up your Kayako!",
   "subtitle": "Start creating better customer experiences with these four quick steps...",
+  "start": "Start here",
+  "continue": "Continue",
   "cards.emails.title": "Start receiving emails",
   "cards.emails.description": "Create your default Kayako email address, and forward your existing support emails here too.",
   "cards.social.title": "Link your social accounts",
