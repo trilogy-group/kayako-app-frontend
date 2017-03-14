@@ -858,7 +858,7 @@
   "email.dns.info": "Se não tiver certeza do que fazer com essa informação, sugerimos que mostre a tabela acima à pessoa que gerencia seu DNS.",
 
   "localization.title": "Localização",
-  "localization.description": "Habilite idiomas para poder atender a visitantes do mundo inteiro que acessarem sua central de ajuda. Uma vez habilitado, você poderá começar a traduzir artigos e conteúdo visível aos clientes. Em configurações, você também pode definir o idioma, o fuso horário e o formato de hora padrão para quando novos usuários forem criados. {link}.",
+  "localization.description": "Habilite idiomas para poder atender a visitantes do mundo inteiro que acessarem sua central de ajuda. Uma vez habilitado, você poderá começar a traduzir artigos e conteúdo visível aos clientes. Em configurações, você também pode definir o idioma, o fuso horário e o formato de hora padrão para quando novos usuários forem criados.",
   "localization.description_link": "Saiba mais sobre localização",
   "localization.headings.index": "Localização",
   "localization.localized": "(Suporte oficial)",
