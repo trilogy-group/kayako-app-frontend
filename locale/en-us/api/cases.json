@@ -191,6 +191,7 @@
   "more_info.others": "others",
   "more_info.time_preposition": "at",
   "log.title": "The conversation has been updated",
+  "channel_selector.trigger_fallback": "Reply",
   "text_editor.bold": "Bold",
   "text_editor.bold_shortcut": "Bold ({shortcutPrefix}B)",
   "text_editor.italic": "Italic",
