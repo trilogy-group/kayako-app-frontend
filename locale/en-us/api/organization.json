@@ -1,8 +1,16 @@
 {
   "title": "Organization",
+  "new": "New Organization",
   "domains": "Email domains",
   "organizations": "Organizations",
   "new_organization_placeholder": "Click to add a name",
+  "createnew": "Create new organization",
+  "set_organization": "Set Organization",
+  "unset_org": "Unset Organization",
+  "assignment_passed": "{name} was added to {org}",
+  "assignment_failed": "An error was encountered while adding the user to the organization.",
+  "removal_passed": "{name} was removed from {org}",
+  "removal_failed": "An error was encountered while removing the user from the organization.",
   "delete_organization": "Delete organization",
   "created": "Organization created",
   "updated": "Organization updated",
@@ -10,7 +18,7 @@
   "infobar.cases.shared.false": "Cannot see each others’ conversations",
   "infobar.accesslevel": "Conversation access",
   "organizationid": "Organization ID",
-  "timeline.preamble": "<p>Howdy! This is the beginning of the timeline for <strong>{name}</strong>. Kayako pulls together all of the activities of people who belong to this organization. <a href={searchURL}>Click to find members of this organization in a search</a>.</p><p>By the way, you can also add private notes to this timeline, which can only be seen by you and other agents. 👇</p>",
+  "timeline.preamble": "<p>Howdy! This is the beginning of the journey for <strong>{name}</strong>. Kayako pulls together all of the activities of people who belong to this organization.",
   "member_title": "Members",
   "hide_members": "Hide user list",
   "member_count": "View all {memberCount} users",
@@ -28,5 +36,11 @@
   "cancel": "Cancel",
   "add_user_text": "Add new user",
   "new_user_email": "new user email",
-  "add": "Add"
+  "add": "Add",
+  "redirection_message": "Taking you to {name}'s journey...",
+  "no_members": "There are no members in this organization.",
+  "confirm.remove_header": "Remove organization",
+  "confirm.remove_body": "Are you sure you want to remove {name} from the organization {org}?",
+  "confirm.remove_confirm": "Remove",
+  "removing": "Removing organization..."
 }
