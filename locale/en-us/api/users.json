@@ -2,6 +2,9 @@
   "new_user_label": "User",
   "users": "Users",
   "addnewuser": "Add New User",
+  "new_user": "New User",
+  "createnewuser": "Create New User",
+  "redirection_message": "Taking you to {name}'s journey...",
   "disabled": "(Disabled)",
   "disable": "Disable User",
   "enable": "Enable User",
@@ -49,7 +52,8 @@
   "change_role.to_customer_confirm_button": "Yes, downgrade",
   "userid": "User ID",
   "last_seen": "Last seen {time}",
-  "timeline.preamble": "<p>Hello! This is the beginning of your {name} timeline. Here you can see a log of every action they will take within Kayako. You can also display their activity from other programs, by pushing notifications to this timeline using Zapier or the Kayako API.</p><p>Oh, and you can add private notes to this timeline, which your team can see, but the customer cannot. 👇</p>",
+  "never_seen": "Not seen before",
+  "timeline.preamble": "<p>Hello! This is the beginning of your {name} journey. Here you can see a log of every action they will take within Kayako. You can also display their activity from other programs, by pushing notifications to this timeline using Zapier or the Kayako API.</p><p>Oh, and you can add private notes to this journey, which your team can see, but the customer cannot. 👇</p>",
   "new_conversation": "New Conversation",
   "grant.you_have_not_authorized_apps": "You have not authorized any apps to use your Kayako account.",
   "grant.authorized": "Authorized on {date}",
@@ -63,5 +67,7 @@
   "confirm.delete_avatar.header": "Are you sure you want to remove your avatar?",
   "confirm.delete_avatar.body": "We'll replace it with a default Kayako avatar.",
   "confirm.delete_avatar.confirm": "Yes, remove my avatar.",
-  "incorrect_file_type": "<strong>{filename}</strong> isn't allowed, please try again with a JPG, GIF, or PNG file."
+  "incorrect_file_type": "<strong>{filename}</strong> isn't allowed, please try again with a JPG, GIF, or PNG file.",
+  "sign_update_success": "Your signature was successfully updated",
+  "sign_update_failure": "Your signature couldn't be updated."
 }
