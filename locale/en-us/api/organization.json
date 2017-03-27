@@ -6,7 +6,7 @@
   "new_organization_placeholder": "Click to add a name",
   "createnew": "Create new organization",
   "set_organization": "Set Organization",
-  "unset_org": "Unset Organization",
+  "unset_org": "Remove {name} from organization",
   "assignment_passed": "{name} was added to {org}",
   "assignment_failed": "An error was encountered while adding the user to the organization.",
   "removal_passed": "{name} was removed from {org}",
