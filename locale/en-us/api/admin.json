@@ -433,7 +433,7 @@
   "casefields.type.message.name": "Message",
   "casefields.type.select.name": "Select",
   "casefields.type.cascadingselect.name": "Cascading select",
-  "casefields.type.cascadingselect.description": "The cascading select field will display tiered groups of options, which you can specify below. Separate each tier using a <kbd>\\\\</kbd>. For example, <code>Group 1\\\\Option 1</code>, <code>Group 1\\\\Option 2</code>.<br>See <a href='{link}'>our support article</a> for details.",
+  "casefields.type.cascadingselect.description": "Allow users to drill down through categories to organize a lot of select options.",
   "casefields.buttons.add_new_casefield": "New field",
   "casefields.buttons.complete_locale_edit": "Done",
   "casefields.description": "Give your team the gift of customer context with custom conversation fields. By enriching your customers’ profiles, you set your agents up to tailor a great customer experience - every time. Build better triggers and automation with custom fields, too!",
