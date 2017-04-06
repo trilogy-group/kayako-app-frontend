@@ -43,7 +43,7 @@
   "no_feedback_available": "No feedback is available from this user",
   "no_recent_cases": "No recent conversations from this user",
   "update_signature": "Save",
-  "signaturemessage": "Save your changes on the next page by clicking \"Update properties\".",
+  "signaturemessage": "",
   "change_role.from_customer": "You are about to upgrade this user’s role. The user may receive greater access to conversations, private conversation notes, user information and some configuration areas, depending on how your permissions are configured.",
   "change_role.from_customer_header": "Upgrade role",
   "change_role.from_customer_confirm_button": "Yes, upgrade",
