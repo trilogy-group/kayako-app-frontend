@@ -15,6 +15,8 @@
   "datepicker.clear": "Clear",
   "datepicker.close": "Close",
   "datepicker.today": "Today",
+  "dates.relative_terms.today": "Today",
+  "dates.relative_terms.yesterday": "Yesterday",
   "dateselect.placeholder": "Select a date",
   "filesize": "{size} {unit}",
   "drilldown.back": "Back",
@@ -213,5 +215,10 @@
   "pendingapproval": "Pending approval",
   "pagination.first": "First",
   "pagination.last": "Last",
-  "selected": "Selected"
+  "selected": "Selected",
+  "timeline.item.copy_link": "Share a link to this post",
+  "you_are_online": "You are online",
+  "user_is_online": "{name} is online now",
+  "open_quotes": "“",
+  "close_quotes": "”"
 }
