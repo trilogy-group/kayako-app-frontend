@@ -42,7 +42,7 @@
   "sandbox.days.left": "{days} more days left.",
   "sandbox.limitations.first": "No emails will be sent.",
   "sandbox.limitations.second": "Changes made here don’t affect your existing help desk.",
-  "sandbox.ondemand.upgrade.message": "Ready to upgrade? Navigate to <a href={anchor} target=_blank>{title}</a> to upgrade your Kayako 4 production desk.",
+  "sandbox.ondemand.upgrade.message": "Ready to upgrade? Navigate to <a href={anchor} target='_blank' rel='noopener noreferrer'>{title}</a> to upgrade your Kayako 4 production desk.",
   "overview.title": "Overview",
   "overview.list.title": "Billing Overview",
   "overview.invoices.title": "Invoices",
@@ -105,5 +105,5 @@
   "plans.upgrade_to_create_new_roles": "Upgrade to create new roles",
   "plans.custom_plan": "Lucky you, you’re on a custom plan! To update or make changes to your plan, please contact <a href=\"mailto:sales@kayako.com\">sales@kayako.com</a>.",
   "plans.update_message.title": "Update your price plan",
-  "plans.update_message.body": "<p><a href=\"https://www.kayako.com/pricing\" rel=\"noopener\" target=\"_blank\">Compare plans</a> and find the best one for you. <a href=\"https://support.kayako.com/conversation/new\" rel=\"noopener\" target=\"_blank\">Contact Sales</a> for more information.</p>"
+  "plans.update_message.body": "<p><a href=\"https://www.kayako.com/pricing\" rel=\"noopener noreferrer\" target=\"_blank\">Compare plans</a> and find the best one for you. <a href=\"https://support.kayako.com/conversation/new\" rel=\"noopener noreferrer\" target=\"_blank\">Contact Sales</a> for more information.</p>"
 }

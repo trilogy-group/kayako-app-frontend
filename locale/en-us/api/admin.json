@@ -31,7 +31,7 @@
   "apps.endpoints.form.email.subject": "Email subject",
   "apps.endpoints.form.slack.title": "Slack Webhook URL",
   "apps.endpoints.form.slack.channel": "Slack Webhook Channel",
-  "apps.endpoints.form.slack.description": "Don’t have one? Create one here: <a target=\"_blank\" href=\"https://my.slack.com/services/new/incoming-webhook/\">my.slack.com/services/new/incoming-webhook</a>",
+  "apps.endpoints.form.slack.description": "Don’t have one? Create one here: <a target=\"_blank\" rel=\"noopener noreferrer\" href=\"https://my.slack.com/services/new/incoming-webhook/\">my.slack.com/services/new/incoming-webhook</a>",
   "apps.endpoints.form.webhook.title": "HTTP Request",
   "apps.endpoints.form.webhook.payload_url.title": "Request URL",
   "apps.endpoints.form.webhook.payload_url.description": "Specify the URL that Kayako will perform the HTTP request to.",
