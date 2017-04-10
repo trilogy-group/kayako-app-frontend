@@ -939,7 +939,7 @@
   "brands.edit.locale.description": "This is the default language that will be used for this Brand, if a user has not specified their own.",
   "brands.edit.domain.description": "Each one of your Brands has its own unique domain name and its Help Center. To start with, every Brand has a .kayako.com domain. After you’ve got a .kayako.com name for your Brand, you can set up a custom domain for the Brand too.",
   "brands.edit.domain.description2": "You can configure a custom domain name and custom SSL certificate for this new Brand after you have created it.",
-  "brands.edit.domain.invalid_characters": "A domain shoud contain letters and/or numbers and can contain dashes",
+  "brands.edit.domain.invalid_characters": "A domain should contain letters and/or numbers and can contain dashes",
   "brands.edit.domain.too_short": "Choose a name that has 4 or more characters",
   "brands.edit.domain.available": ":-) this domain name is available!",
   "brands.edit.domain.not_available": ":-( this domain is not available, try another one",
