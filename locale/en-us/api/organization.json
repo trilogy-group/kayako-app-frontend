@@ -42,5 +42,7 @@
   "confirm.remove_header": "Remove organization",
   "confirm.remove_body": "Are you sure you want to remove {name} from the organization {org}?",
   "confirm.remove_confirm": "Remove",
-  "removing": "Removing organization..."
+  "removing": "Removing organization...",
+  "name_update_success": "Name was successfully updated.",
+  "name_update_failure": "An error was encountered while trying to update the name."
 }

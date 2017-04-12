@@ -69,5 +69,7 @@
   "confirm.delete_avatar.confirm": "Yes, remove my avatar.",
   "incorrect_file_type": "<strong>{filename}</strong> isn't allowed, please try again with a JPG, GIF, or PNG file.",
   "sign_update_success": "Your signature was successfully updated",
-  "sign_update_failure": "Your signature couldn't be updated."
+  "sign_update_failure": "Your signature couldn't be updated.",
+  "name_update_success": "Name was successfully updated.",
+  "name_update_failure": "An error was encountered while trying to update the name."
 }
