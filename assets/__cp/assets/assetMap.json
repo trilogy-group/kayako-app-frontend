@@ -1,8 +1,8 @@
 {
   "assets": {
-    "assets/frontend-cp.css": "assets/frontend-cp-88682caacdc6199e5f6a14b4d4267cdf.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-b257873a2f1c46b485f0fc14575b6b9c.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-b0fad81d5509bfd9b8d5213676cc2a5e.map",
+    "assets/frontend-cp.css": "assets/frontend-cp-03d6d2c3aa845e41f4c2604cee0de129.css",
+    "assets/frontend-cp.js": "assets/frontend-cp-a8ebd21f045126e8bcbe5b8a1bb45baf.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-3bccf8d6bd4c0ed5c3db1a534d1a9d12.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-6f1f1bb984a00897ac5aab589a3a3764.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-0cc3bc279cf662edf0acd75c46fa9cea.map",
     "assets/intl/intl.js": "assets/intl/intl-d2ba17691f2a1748f36a07cbea1450d4.js",
@@ -374,7 +374,7 @@
     "images/inline-icons/icon--convo--32.svg": "images/inline-icons/icon--convo--32-6277542e324ea4ffbf4826063b6e11ea.svg",
     "images/inline-icons/icon--org--32--focused.svg": "images/inline-icons/icon--org--32--focused-60046241f43500c3c7cafc7dbb1223b3.svg",
     "images/inline-icons/icon--org--32.svg": "images/inline-icons/icon--org--32-101792b074199f6def452a086de5d984.svg",
-    "images/inline-icons/icon--org.svg": "images/inline-icons/icon--org-2a631e5f77302621bd36fa1b52bc2592.svg",
+    "images/inline-icons/icon--org.svg": "images/inline-icons/icon--org-400b6279578b9d83ee3f851a762cb204.svg",
     "images/inline-icons/icon--search--32--focused.svg": "images/inline-icons/icon--search--32--focused-da5c84215975777cb6b7b05573155c68.svg",
     "images/inline-icons/icon--search--32.svg": "images/inline-icons/icon--search--32-83dffc4751230acda3a11425619d8d98.svg",
     "images/inline-icons/icon--search.svg": "images/inline-icons/icon--search-cbc9a458366b65bdeba7aabba59665c2.svg",
