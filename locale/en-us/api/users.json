@@ -53,6 +53,7 @@
   "userid": "User ID",
   "last_seen": "Last seen {time}",
   "never_seen": "Not seen before",
+  "online_now": "Online now",
   "timeline.preamble": "<p>Hello! This is the beginning of your {name} journey. Here you can see a log of every action they will take within Kayako. You can also display their activity from other programs, by pushing notifications to this timeline using Zapier or the Kayako API.</p><p>Oh, and you can add private notes to this journey, which your team can see, but the customer cannot. 👇</p>",
   "new_conversation": "New Conversation",
   "grant.you_have_not_authorized_apps": "You have not authorized any apps to use your Kayako account.",
