@@ -3,7 +3,7 @@
   "users": "Users",
   "addnewuser": "Add New User",
   "new_user": "New User",
-  "createnewuser": "Create New User",
+  "create_new": "Create new user",
   "redirection_message": "Taking you to {name}'s journey...",
   "disabled": "(Disabled)",
   "disable": "Disable User",

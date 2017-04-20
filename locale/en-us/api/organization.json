@@ -4,7 +4,7 @@
   "domains": "Domains",
   "organizations": "Organizations",
   "new_organization_placeholder": "Click to add a name",
-  "createnew": "Create new organization",
+  "create_new": "Create new organization",
   "set_organization": "Set Organization",
   "unset_org": "Remove {name} from organization",
   "assignment_passed": "{name} was added to {org}",
