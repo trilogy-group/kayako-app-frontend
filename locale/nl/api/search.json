@@ -11,7 +11,7 @@
   "matchingsnippet": "Overeenkomende tekst",
   "nosnippet": "Sorry, we hebben geen preview voor dit resultaat",
 
-  "searchresults": "Zoekresultaten voor \"{trefwoord}\"",
+  "searchresults": "Zoekresultaten voor \"{term}\"",
   "seemore": "Open meer resultaten",
 
   "CASES.id": "Zaak-ID",

@@ -84,7 +84,7 @@
   "metric.tooltip.team.average_first_response_time": "De gemiddelde eerste reactietijd van zaken die gedurende de periode werden voltooid. ",
   "metric.tooltip.team.average_response_time": "De gemiddelde reactietijd (de tijd tussen elk antwoord van de aanvrager en het antwoord van de volgende agent) van zaken die gedurende de periode werden voltooid.",
   "metric.tooltip.team.average_resolution_time": "De gemiddelde hoeveelheid tijd die het kostte om zaken te voltooien die gedurende de periode werden voltooid.",
-  "metric.tooltip.team.average_replies_to_resolution": "Het gemiddelde van het aantal reacties die werden uitgewisseld in zaken die gedurende de periode werden voltooid.",
+  "metric.tooltip.team.average_replies_to_resolution": "Het gemiddelde aantal reacties die werden uitgewisseld in zaken die gedurende de periode werden voltooid.",
   "metric.tooltip.team.percentage_first_contact_resolved": "Het percentage zaken dat werd voltooid in de periode na slechts één reactie.",
   "metric.tooltip.team.average_first_assignment_time": "De gemiddelde hoeveelheid tijd die het kostte om zaken toe te wijzen die gedurende de periode voor het eerst werden toegewezen.",
   "metric.tooltip.team.average_team_changes": "Het gemiddelde aantal wijzigingen in het team die gedurende de periode werden toegewezen.",
@@ -102,9 +102,9 @@
   "agents.subtitle": "met gebruik van data van zaken die werden toegewezen aan {naam}",
   "teams.subtitle": "met gebruik van data van zaken die werden toegewezen aan team {team}",
   "agents.cases_completed": "Voltooide zaken",
-  "agents.cases_completed_explanation": "<b>{waarde}</b> voltooide zaken",
+  "agents.cases_completed_explanation": "<b>{value}</b> voltooide zaken",
   "agents.csat": "Score voor klanttevredenheid",
-  "agents.csat_explanation": "<b>{csatWaarde}</b> CSAT gedurende de huidige periode versus <b>{csatVorigeWaarde}</b> CSAT gedurende de vorige periode",
+  "agents.csat_explanation": "<b>{csatValue}</b> CSAT gedurende de huidige periode versus <b>{csatPreviousValue}</b> CSAT gedurende de vorige periode",
 
   "searches.popular_searches": "Populaire zoekopdrachten",
   "searches.failed_searches": "Mislukte zoekopdrachten",
@@ -120,7 +120,7 @@
   "cases.average_response_time_by_interval": "Gemiddelde reactietijd",
   "cases.average_resolution_time_by_interval": "Gemiddelde tijd tot besluit",
   "cases.messages_received_by_channel": "Ontvangen berichten",
-  "cases.messages_received_by_channel_explanation": "Ontving <b>{waarde}</b> berichten gedurende de huidige periode",
+  "cases.messages_received_by_channel_explanation": "Ontving <b>{value}</b> berichten gedurende de huidige periode",
 
   "chart.completion_vs_csat.completed_cases": "Voltooide zaken",
   "chart.completion_vs_csat.completed_cases_current": "Huidige periode",
@@ -156,7 +156,7 @@
   "sla.sla_target_performance_for": "SLA doelprestatie voor",
   "sla.overall_performance_for": "Algehele prestaties van",
 
-  "trial.notification.title": "Wij tonen u demo-data zodat u kunt proeven van de Inzichten in Kayako tijdens uw proefperiode.",
+  "trial.notification.title": "Wij tonen u demo-data zodat u een indruk kunt krijgen van de Inzichten in Kayako tijdens uw proefperiode.",
   "trial.notification.link": "Laat mijn daadwerkelijke Kayako-data zien",
 
   "helpcenter.popular_searches.description": "Gebruik het rapport met populaire zoekopdrachten om te zien waarnaar uw klanten op zoek zijn en ontdek waar uw klanten het meest in zijn geïnteresseerd of het meeste moeite mee hebben. U kunt deze Inzichten gebruiken om het uiterlijk, het gebruiksgemak en de inhoud van uw Helpcentrum op maat te maken, zodat de dingen die mensen zoeken meer prominent naar voren komen, of om extra inhoud te ontwikkelen zodat mensen zichzelf kunnen helpen.",

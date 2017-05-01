@@ -10,12 +10,12 @@
   "datepicker.close": "Fermer",
   "datepicker.today": "Aujourd'hui",
   "dateselect.placeholder": "Sélectionnez une date",
-  "filesize": "{taille} {unité}",
+  "filesize": "{size} {unit}",
   "drilldown.back": "Retour",
   "logout": "Déconnexion",
-  "need_help": "Besoin d'aide&#160;?",
+  "need_help": "Besoin d'aide?",
   "view_your_profile": "Voir votre profil",
-  "paginatorof": "sur {nombre, nombre}",
+  "paginatorof": "sur {number, number}",
   "popover.next": "suivant",
   "popover.previous": "précédent",
   "texteditor.attachment": "Pièce-jointe",
@@ -40,8 +40,8 @@
   "system": "Système",
   "profile.position": "{position}",
   "profile.place": "{place}",
-  "profile.openCases": "{nombre} dossiers ouverts",
-  "profile.time": "Actuellement, {heure}",
+  "profile.openCases": "{number} dossiers ouverts",
+  "profile.time": "Actuellement, {time}",
   "profile.follow": "S'abonner",
   "profile.unfollow": "Se désabonner",
   "profile.viewProfile": "Voir le profil",
@@ -72,15 +72,15 @@
 
   "uploads.toolarge": "est trop volumineux.",
   "uploads.unknown": "le téléchargement a échoué. Veuillez contacter l'assistance",
-  "uploads.wrongtype": "n'est pas autorisé. Types de fichiers autorisés&#160;: ",
+  "uploads.wrongtype": "n'est pas autorisé. Types de fichiers autorisés: ",
   "uploads.failed": "Un problème est survenu lors du téléchargement du(des) fichier(s)",
-  "uploads.twitter_validation_failed": "Pour une réponse Twitter, vous pouvez joindre jusqu'à 4 photos de moins de 3&#160;Mo, 1 GIF animé de moins de 3&#160;Mo ou 1 MP4 de moins de 15 Mo.",
+  "uploads.twitter_validation_failed": "Pour une réponse Twitter, vous pouvez joindre jusqu'à 4 photos de moins de 3Mo, 1 GIF animé de moins de 3Mo ou 1 MP4 de moins de 15 Mo.",
 
   "confirm.delete": "Êtes-vous sûr de vouloir supprimer cela ?",
-  "confirm.trashcases": "Êtes-vous sûr de vouloir les supprimer&#160;?",
-  "confirm.lose_changes": "Vous avez des modifications non enregistrées sur cette page. Êtes-vous sûr de vouloir supprimer ces modifications&#160;?",
+  "confirm.trashcases": "Êtes-vous sûr de vouloir les supprimer?",
+  "confirm.lose_changes": "Vous avez des modifications non enregistrées sur cette page. Êtes-vous sûr de vouloir supprimer ces modifications?",
   "confirm.lose_changes_button": "Annuler les modifications",
-  "confirm.lose_changes_header": "Annuler les modifications&#160;?",
+  "confirm.lose_changes_header": "Annuler les modifications?",
   "confirm.delete_button": "Oui, supprimer",
   "changes_saved": "Modifications enregistrées",
   "casestrashed": "Dossiers supprimés",
@@ -100,7 +100,7 @@
 
   "create_organization_panel.title": "Créer une nouvelle organisation",
   "create_organization_panel.name_label": "Nom de l'organisation",
-  "create_organization_panel.domain_label": "Domaine(s)&#160;:",
+  "create_organization_panel.domain_label": "Domaine(s):",
   "create_organization_panel.name_required": "Le nom est requis",
   "create_organization_panel.domain_required": "L'adresse e-mail est requise",
   "create_organization_panel.domain_invalid": "Adresse e-mail invalide",
@@ -120,7 +120,7 @@
   "create_case_panel.requester_label": "Demandeur/Destinataire",
   "create_case_panel.requester_required": "Requis",
   "create_case_panel.loading_label": "Chargement des utilisateurs...",
-  "create_case_panel.filter_label": "Affichage de {numFilteredUsers, nombre} sur {numUsers, nombre}",
+  "create_case_panel.filter_label": "Affichage de {numFilteredUsers, number} sur {numUsers, number}",
   "create_case_panel.info": "Vous pouvez ajouter plus d'informations à ce dossier après l'avoir créé.",
   "create_case_panel.submit": "Créer un dossier",
   "create_case_panel.cancel": "annuler",
@@ -144,7 +144,7 @@
   "identities.placeholders.phone": "Ajouter un numéro de téléphone",
   "identities.errors.invalid_email_format": "Format d'e-mail invalide",
   "identities.errors.invalid_twitter_handle_format": "Format de pseudo Twitter invalide",
-  "identities.confirm_remove": "Êtes-vous sûr de vouloir supprimer cette identité&#160;?",
+  "identities.confirm_remove": "Êtes-vous sûr de vouloir supprimer cette identité?",
   "identities.added.success_message": "Identité ajoutée avec succès",
   "identities.removed.success_message": "Identité supprimée avec succès",
 
@@ -156,7 +156,7 @@
   "reply.click_to_leave_a": "Cliquez pour laisser un",
   "reply.note": "Note",
 
-  "addtagname": "Ajouter l’étiquette “{étiquette}”",
+  "addtagname": "Ajouter l’étiquette “{tag}”",
 
   "units.kB": "ko",
   "units.MB": "Mo",
@@ -165,7 +165,7 @@
   "units.hours": "heures",
   "units.days": "jours",
 
-  "at_time": "à {heure}",
+  "at_time": "à {time}",
   "on_date": "le {date}",
 
   "confirm_delete.header": "Supprimer",
@@ -184,12 +184,12 @@
   "copy_to_clipboard": "Copier dans le presse-papiers",
   "copied_to_clipboard": "Copié dans le presse-papiers",
 
-  "errors.not_found.heading": "Désolés {nom}, nous n'avons rien trouvé.",
+  "errors.not_found.heading": "Désolés {name}, nous n'avons rien trouvé.",
 
   "settings.12hour": "12 heures",
   "settings.24hour": "24 heures",
 
   "times": "fois",
 
-  "unsaved_tab_changes": "Attendez&#160;! Vous avez des modifications non enregistrées sur cet onglet. En continuant, vous perdrez ces modifications."
+  "unsaved_tab_changes": "Attendez! Vous avez des modifications non enregistrées sur cet onglet. En continuant, vous perdrez ces modifications."
 }

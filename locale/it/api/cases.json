@@ -5,7 +5,7 @@
   "copy-someone-in.description": "Queste persone verranno aggiunte in copia alla tua risposta.",
   "copy-someone-in.input-placeholder": "Trova utente o digita indirizzo email",
   "copy-someone-in.fing-out-more": "Per saperne di più sui destinatari in CC.\n",
-  "copy-someone-in.showing": "Visualizzazione di {filtrati} utenti su {totale}\n",
+  "copy-someone-in.showing": "Visualizzazione di {filtered} utenti su {total}\n",
   "copy-someone-in.not-found": "Nessun utente trovato.<br/>Puoi provare a digitare un indirizzo email per aggiungerlo.",
   "copy-someone-in.help-text": "Queste persone verranno aggiunte in copia alla tua risposta.",
   "copy-someone-in.email-error": "Inserisci un indirizzo email valido.",
@@ -73,7 +73,7 @@
   "requester": "Richiedente",
   "satisfaction-status": "Stato soddisfazione",
   "status": "Stato",
-  "subheader": "{data, data, mezzo} – {tempo} {haCanale, selezionato, vero {creato via {canale}} falso {} } {haMarca, seleziona, vero {, {marca}} falso {} }",
+  "subheader": "{date, date, medium} – {time} {hasChannel, select,\n true {created via {channel}}\n false {}\n } {hasBrand, select,\n true {, {brand}}\n false {}\n }",
   "avatar": "Avatar",
   "subject": "Oggetto",
   "submit": "Invia",
@@ -101,7 +101,7 @@
   "new_case_subject_placeholder": "Clicca per impostare l’oggetto...",
   "new_case_tab_placeholder": "Nuovo Caso",
   "currentlyassignedto": "Attualmente assegnato a",
-  "assignedtoagentteam": "{agente} in {team}",
+  "assignedtoagentteam": "{agent} in {team}",
   "assignedtonobody": "nessuno",
 
   "trash.title": "Elimina caso",
@@ -114,7 +114,7 @@
   "trash.success_message": "Caso eliminato con successo",
   "trash.restore.success_message": "Caso ripristinato correttamente",
 
-  "search.request.result_meta": "Mostrando {numeroRisultatiMostrati} di {risultatiTotali} utenti",
+  "search.request.result_meta": "Mostrando {numDisplayResults} di {totalResults} utenti",
 
   "list.casesnotfound": "Non c’è alcun caso qui.",
   "list.bulkupdate.updatecases": "Aggiorna casi",
@@ -176,7 +176,7 @@
   "sla.tooltip.due": "entro",
   "sla.tooltip.operational_hours.BUSINESS_HOURS": "orario lavorativo",
   "sla.tooltip.operational_hours.CALENDAR_HOURS": "orario da calendario",
-  "sla.tooltip.sentence": "{metrica} {resa_in_scadenza} at <strong>{orario_scadenza}</strong>.<br/>Tempo necessario calcolato secondo <strong>{ore_operative}</strong>.",
+  "sla.tooltip.sentence": "{metric} {made_due} at <strong>{due_time}</strong>.<br/>Tempo necessario calcolato secondo <strong>{operational_hours}</strong>.",
 
   "reply.click_to_start": "Clicca per iniziare un",
   "reply.or_leave_a": "o abbandonare un",

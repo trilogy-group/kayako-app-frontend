@@ -1,6 +1,6 @@
 {
   "button_title": "Bienvenido",
-  "title": "Hola, {nombre}. ¡Bienvenido a Kayako!",
+  "title": "Hola, {name}. ¡Bienvenido a Kayako!",
   "subtitle": "He aquí algunos pasos para empezar.",
   "sections.channels.header": "Conectando canales",
   "sections.channels.contents": "Para comenzar a recibir y responder conversaciones, necesitas conectar algunos canales. Puedes hacerlo en tu configuración.",

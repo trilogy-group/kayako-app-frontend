@@ -102,9 +102,9 @@
   "agents.subtitle": "unter Verwendung von Daten von Fällen, die {Name} zugewiesen wurden",
   "teams.subtitle": "unter Verwendung von Daten von Fällen, die dem Team {Team} zugewiesen wurden",
   "agents.cases_completed": "Abgeschlossene Fälle",
-  "agents.cases_completed_explanation": "<b>{Wert}</b> Fälle abgeschlossen",
+  "agents.cases_completed_explanation": "<b>{value}</b> Fälle abgeschlossen",
   "agents.csat": "Kundenzufriedenheitswert",
-  "agents.csat_explanation": "<b>{csatWert}</b> CSAT im aktuellen Zeitraum vs <b>{csatVorigerWert}</b> CSAT im vorigen Zeitraum",
+  "agents.csat_explanation": "<b>{csatValue}</b> CSAT im aktuellen Zeitraum vs <b>{csatPreviousValue}</b> CSAT im vorigen Zeitraum",
 
   "searches.popular_searches": "Beliebte Suchen",
   "searches.failed_searches": "Fehlgeschlagene Suchen",
@@ -120,7 +120,7 @@
   "cases.average_response_time_by_interval": "Durchschnittliche Antwortszeit",
   "cases.average_resolution_time_by_interval": "Durchschnittliche Lösungszeit",
   "cases.messages_received_by_channel": "Nachrichten erhalten",
-  "cases.messages_received_by_channel_explanation": "<b>{Wert}</b> Nachrichten im aktuellen Zeitraum erhalten",
+  "cases.messages_received_by_channel_explanation": "<b>{value}</b> Nachrichten im aktuellen Zeitraum erhalten",
 
   "chart.completion_vs_csat.completed_cases": "Abgeschlossene Fälle",
   "chart.completion_vs_csat.completed_cases_current": "Aktueller Zeitraum",
