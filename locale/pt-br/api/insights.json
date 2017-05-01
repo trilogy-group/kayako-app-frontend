@@ -99,12 +99,12 @@
   "metric.tooltip.sla.average_time_to_target": "O tempo médio necessário para atingir o objetivo.",
   "metric.tooltip.sla.average_time_overdue_to_breach": "O tempo médio gasto em um objetivo, em casos que não atingiram seu objetivo.",
 
-  "agents.subtitle": "usando dados de casos designados a {nome}",
-  "teams.subtitle": "usando dados de casos designados à equipe {equipe}",
+  "agents.subtitle": "usando dados de casos designados a {name}",
+  "teams.subtitle": "usando dados de casos designados à equipe {team}",
   "agents.cases_completed": "Casos concluídos",
-  "agents.cases_completed_explanation": "<b>{valor}</b> casos concluídos",
+  "agents.cases_completed_explanation": "<b>{value}</b> casos concluídos",
   "agents.csat": "Nota de satisfação do cliente",
-  "agents.csat_explanation": "<b>{Valorcsat}</b> CSAT no período atual vs <b>{ValorAnteriorcsat}</b> CSAT no período anterior",
+  "agents.csat_explanation": "<b>{csatValue}</b> CSAT no período atual vs <b>{csatPreviousValue}</b> CSAT no período anterior",
 
   "searches.popular_searches": "Pesquisas populares",
   "searches.failed_searches": "Pesquisas com falhas",
@@ -120,7 +120,7 @@
   "cases.average_response_time_by_interval": "Tempo médio de resposta",
   "cases.average_resolution_time_by_interval": "Tempo médio de resolução",
   "cases.messages_received_by_channel": "Mensagens recebidas",
-  "cases.messages_received_by_channel_explanation": "<b>{valor}</b> mensagens recebidas no período atual",
+  "cases.messages_received_by_channel_explanation": "<b>{value}</b> mensagens recebidas no período atual",
 
   "chart.completion_vs_csat.completed_cases": "Casos concluídos",
   "chart.completion_vs_csat.completed_cases_current": "Período atual",

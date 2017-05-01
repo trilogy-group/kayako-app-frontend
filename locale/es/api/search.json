@@ -11,7 +11,7 @@
   "matchingsnippet": "Texto coincidente",
   "nosnippet": "Lo sentimos, no tenemos una vista previa para este resultado.",
 
-  "searchresults": "Buscar resultados para \"{término}\"",
+  "searchresults": "Buscar resultados para \"{term}\"",
   "seemore": "Abrir más resultados",
 
   "CASES.id": "ID del caso",

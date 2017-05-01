@@ -99,10 +99,10 @@
   "metric.tooltip.sla.average_time_to_target": "Le temps moyen nécessaire pour atteindre l'objectif.",
   "metric.tooltip.sla.average_time_overdue_to_breach": "Le délai moyen après dépassement de l'objectif, pour les dossiers où l'objectif n'a pas été atteint.",
 
-  "agents.subtitle": "utilisation des données des dossiers assignés à {nom}",
-  "teams.subtitle": "utilisation des données des dossiers assignés à l'équipe {équipe}",
+  "agents.subtitle": "utilisation des données des dossiers assignés à {name}",
+  "teams.subtitle": "utilisation des données des dossiers assignés à l'équipe {team}",
   "agents.cases_completed": "Dossiers traités",
-  "agents.cases_completed_explanation": "<b>{valeur}</b> dossiers traités",
+  "agents.cases_completed_explanation": "<b>{value}</b> dossiers traités",
   "agents.csat": "Score de satisfaction client",
   "agents.csat_explanation": "<b>{csatValue}</b> CSAT dans la période actuelle vs <b>{csatPreviousValue}</b> CSAT dans la période précédente",
 
@@ -120,7 +120,7 @@
   "cases.average_response_time_by_interval": "Temps de réponse moyen",
   "cases.average_resolution_time_by_interval": "Temps de résolution moyen",
   "cases.messages_received_by_channel": "Messages reçus",
-  "cases.messages_received_by_channel_explanation": "<b>{valeur}</b> messages reçus dans la période actuelle",
+  "cases.messages_received_by_channel_explanation": "<b>{value}</b> messages reçus dans la période actuelle",
 
   "chart.completion_vs_csat.completed_cases": "Dossiers traités",
   "chart.completion_vs_csat.completed_cases_current": "Période actuelle",
