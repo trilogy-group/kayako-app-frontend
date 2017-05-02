@@ -5,7 +5,7 @@
   "forgot": "Forgot password?",
   "login": "Login",
   "newpassword": "New Password",
-  "verificationcode": "Verification Code",
+  "verifycodelabel": "Enter verification code",
   "password": "Password",
   "repeatpassword": "Password (repeat)",
   "resetpassword": "Reset password",
