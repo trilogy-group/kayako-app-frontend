@@ -1,8 +1,8 @@
 {
   "assets": {
-    "assets/frontend-cp.css": "assets/frontend-cp-addf34e60bd74f489d74f6bb2b32c0ca.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-979677416477c6b9803b84634f6361db.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-69beae008550c7449a8ef8a23199bde4.map",
+    "assets/frontend-cp.css": "assets/frontend-cp-d9623925d6333c71da1fb5e54f7dcba2.css",
+    "assets/frontend-cp.js": "assets/frontend-cp-429c1e304ea9f02173f6e4bd0cf12085.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-39ee57a887e6102ae01a0e06027a9093.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-6f1f1bb984a00897ac5aab589a3a3764.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-0cc3bc279cf662edf0acd75c46fa9cea.map",
     "assets/intl/intl.js": "assets/intl/intl-d2ba17691f2a1748f36a07cbea1450d4.js",
@@ -417,7 +417,10 @@
     "images/timeline/update-case.svg": "images/timeline/update-case-ec951d0e62206f37b702ae780f2e1058.svg",
     "images/timeline/view.svg": "images/timeline/view-fc45f6936a30e7fecbbd75cfcb07345c.svg",
     "images/user/avatar.png": "images/user/avatar-92b0c30c1c52334b322ad5857e6b8f0d.png",
+    "images/user/devices.png": "images/user/devices-72b4f513e310051c5b4f8da4cc0de538.png",
     "images/user/icon-user.svg": "images/user/icon-user-9ff68e3d397d7a01fd43c1a2393aa0f6.svg",
+    "images/user/lock.svg": "images/user/lock-ba46961cb6872ccf683c4dd6432ffb9e.svg",
+    "images/user/window.png": "images/user/window-f1a9d68d5a7b5a290bc025e9e95a82d9.png",
     "images/welcome/1.svg": "images/welcome/1-61b3cc60bc6697935667913884c43b83.svg",
     "images/welcome/2.svg": "images/welcome/2-27607f107a2b58e1b92f80d1fcd4f690.svg",
     "images/welcome/3.svg": "images/welcome/3-fb8241c025fa981c84155aa6708da919.svg",
