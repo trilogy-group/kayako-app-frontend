@@ -237,7 +237,7 @@
   "merge_conversation.modal.button": "Merge",
   "merge_conversation.modal.recent_conversations_from": "Recent conversations from",
   "merge_conversation.modal.conversations_selected": "Conversations selected",
-  "merge_conversation.modal.primary_conversation_message_bold": "selected conversations",
+  "merge_conversation.modal.primary_conversation_message_bold": "conversations",
   "merge_conversation.modal.primary_conversation_message_end": "will be merged into:",
   "assign_to_me": "Assign to me",
   "new_conversation.header": "Create a new user",
