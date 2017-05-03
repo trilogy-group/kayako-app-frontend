@@ -149,6 +149,7 @@
   "timeline.item.via.twitter": "via Twitter",
   "timeline.item.via.facebook": "via Facebook",
   "timeline.item.via.none": "NONE",
+  "timeline.metadata.page_url.prefix": "on",
   "filter_options.posts": "Show messages only",
   "filter_options.notes": "Show notes",
   "filter_options.activities": "Show activities",
