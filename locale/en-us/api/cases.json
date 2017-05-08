@@ -83,6 +83,7 @@
   "note": "Note",
   "priority": "Priority",
   "requester": "Requester",
+  "caseformid": "Conversation form",
   "satisfaction-status": "Satisfaction status",
   "status": "Status",
   "subheader": "This is the beginning of the conversation started over {channel} by {name} on {date}",
