@@ -12,6 +12,7 @@
   "requester_assignment_failed": "Requester couldn't be updated.",
   "change_requester": "Change requester",
   "enter_subject": "Enter a subject...",
+  "has_attachments": "This conversation has attachments",
   "copy-someone-in.title": "Copy someone in",
   "copy-someone-in.description": "These people will be copied in on your reply.",
   "copy-someone-in.input-placeholder": "Find user or type email address",
