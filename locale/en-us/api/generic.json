@@ -85,7 +85,7 @@
   "sort.DESC": "Descending",
   "update_properties": "Update properties",
   "uploads.dropzone": "Drag and drop files to upload",
-  "uploads.toolarge": "is too large.",
+  "uploads.toolarge": "is too large. Attachments must be under {filesizeLimit, number}MB.",
   "uploads.unknown": "upload failed. Please contact support",
   "uploads.wrongtype": "is not allowed. Allowed file types: ",
   "uploads.failed": "There was a problem uploading file(s)",
