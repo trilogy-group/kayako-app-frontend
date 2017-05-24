@@ -148,6 +148,8 @@
   "identities.email_not_validated": "email not validated",
   "identities.copy_identity": "Copy",
   "identities.make_primary": "Make primary",
+  "identities.mark_email_as_validated.text": "Mark as verified",
+  "identities.mark_email_as_validated.success_message": "{email} has been verified successfully",
   "identities.add.email": "Add another email address",
   "identities.add.twitter": "Add another twitter handle",
   "identities.add.phone": "Add another phone number",
