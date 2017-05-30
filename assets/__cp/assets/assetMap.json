@@ -1,8 +1,8 @@
 {
   "assets": {
     "assets/frontend-cp.css": "assets/frontend-cp-c072955b04c092f571ba2d50611cbdd0.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-4b6bcd7c3fab2da95949367b8e58b269.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-81e98698bc1930c086cbd620914be4d9.map",
+    "assets/frontend-cp.js": "assets/frontend-cp-c93d9d0d7eec93c5302ea9d2d566d813.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-469d93d5e6f9b1a6337009f7f792bb4f.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-6f1f1bb984a00897ac5aab589a3a3764.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-0cc3bc279cf662edf0acd75c46fa9cea.map",
     "assets/intl/intl.js": "assets/intl/intl-d2ba17691f2a1748f36a07cbea1450d4.js",
@@ -25,8 +25,8 @@
     "assets/trial/insights/sla/target.json": "assets/trial/insights/sla/target-98e5fe95473b7cdd1526cda445f30a35.json",
     "assets/trial/insights/slas.json": "assets/trial/insights/slas-ddca8b459f5f00e7e22cb60a9247eed8.json",
     "assets/vendor.css": "assets/vendor-94f9e450278c07761dba479ad1444a0a.css",
-    "assets/vendor.js": "assets/vendor-09761eb4ff6282d22b84ec5aa4d6aad9.js",
-    "assets/vendor.map": "assets/vendor-2b95b5d119e5dd4f594bb70374740d6f.map",
+    "assets/vendor.js": "assets/vendor-407c7a94aa694f1faa5f0aab04c3dca1.js",
+    "assets/vendor.map": "assets/vendor-78592a68cceac5ddd71f0828954f011c.map",
     "fonts/fontawesome-webfont.eot": "fonts/fontawesome-webfont-674f50d287a8c48dc19ba404d20fe713.eot",
     "fonts/fontawesome-webfont.ttf": "fonts/fontawesome-webfont-b06871f281fee6b241d60582ae9369b9.ttf",
     "fonts/fontawesome-webfont.woff": "fonts/fontawesome-webfont-fee66e712a8a08eef5805a46892932ad.woff",
