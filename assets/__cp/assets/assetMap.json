@@ -1,8 +1,8 @@
 {
   "assets": {
     "assets/frontend-cp.css": "assets/frontend-cp-c072955b04c092f571ba2d50611cbdd0.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-563ec7e4436fc6120d2d72e16b765a4f.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-b44730e3e7b8d3dd8da4f775be99564d.map",
+    "assets/frontend-cp.js": "assets/frontend-cp-7b8dd9d6d668169f46fc61e27e7349dd.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-38b05fda6d40af1a7750c7152f472d3c.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-6f1f1bb984a00897ac5aab589a3a3764.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-0cc3bc279cf662edf0acd75c46fa9cea.map",
     "assets/intl/intl.js": "assets/intl/intl-d2ba17691f2a1748f36a07cbea1450d4.js",
@@ -402,6 +402,7 @@
     "images/inline-icons/post-status/Seen.svg": "images/inline-icons/post-status/Seen-3e280f7eb66c1251004eb2684050735f.svg",
     "images/inline-icons/post-status/Sent.svg": "images/inline-icons/post-status/Sent-81469c42b4e9151949161e576c870a91.svg",
     "images/inline-icons/twitter.svg": "images/inline-icons/twitter-945a5900cd5ebd095c09a32e1d0f21b9.svg",
+    "images/inline-icons/users.svg": "images/inline-icons/users-4eaae5a7b9507affa8c87dc4d38c3a81.svg",
     "images/loading-bars@2x.gif": "images/loading-bars@2x-ac34a31d2efcc9498449f38d9f9973e3.gif",
     "images/login/avatar.png": "images/login/avatar-b24ca4f53e0e8a035e0c31d96682459a.png",
     "images/login/illustration-1.png": "images/login/illustration-1-4678fdba8c669862282790f5eb1ec1d1.png",
