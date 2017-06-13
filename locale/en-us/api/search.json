@@ -25,6 +25,7 @@
   "USERS.fullname": "Name",
   "USERS.email": "Primary email",
   "USERS.organizationName": "Organization",
+  "USERS.createdat": "First seen",
   "USERS.lastActivityAt": "Last seen",
   "USERS.notfound": "There are no users here.",
   "USERS.userAvatar": "",
