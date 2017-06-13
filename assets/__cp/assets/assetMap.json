@@ -1,8 +1,8 @@
 {
   "assets": {
-    "assets/frontend-cp.css": "assets/frontend-cp-7e825bb5274ab01ed38e0d98dea91316.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-41764984b02aebf4fd7e15f01dec274b.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-9e7aff80a34f7134d87bfea7d4f2ff0c.map",
+    "assets/frontend-cp.css": "assets/frontend-cp-4573a0794a8ca9557d7ccf5c8af266b0.css",
+    "assets/frontend-cp.js": "assets/frontend-cp-f51fd18d739e8e2a733593cfe8d99946.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-310fcfb1189471e803094b1dbc8d7208.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-6f1f1bb984a00897ac5aab589a3a3764.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-0cc3bc279cf662edf0acd75c46fa9cea.map",
     "assets/intl/intl.js": "assets/intl/intl-d2ba17691f2a1748f36a07cbea1450d4.js",
@@ -377,6 +377,7 @@
     "images/inline-icons/attachment/icon--file_XLS.svg": "images/inline-icons/attachment/icon--file_XLS-13174d743845fbd7ce19f8633ca4bde4.svg",
     "images/inline-icons/attachment/icon--file_ZIP.svg": "images/inline-icons/attachment/icon--file_ZIP-92c31221202aacabec8d891f39fc71db.svg",
     "images/inline-icons/avatar.svg": "images/inline-icons/avatar-b58aa41d6bfcad446812c2e8cf4863b3.svg",
+    "images/inline-icons/chevron-down-circle.svg": "images/inline-icons/chevron-down-circle-a48b315ac1784e3f6943ead41aef490c.svg",
     "images/inline-icons/day.svg": "images/inline-icons/day-88b8a86ec5d0f837c8f1f2b66154611e.svg",
     "images/inline-icons/email.svg": "images/inline-icons/email-9391be730afb416668a2d69c6363c2ee.svg",
     "images/inline-icons/facebook.svg": "images/inline-icons/facebook-72f7cb132380fe1d16a23b2d3de5f805.svg",
