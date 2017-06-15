@@ -875,7 +875,7 @@
   "messenger.tabs.widgets.articles_description": "Display the three most recent articles from the Help Center section you select.",
   "messenger.tabs.widgets.twitter_title": "Recent Tweets",
   "messenger.tabs.widgets.twitter_description": "Share recent tweets from one of your connected Twitter accounts.",
-  "messenger.tabs.widgets.twitter_not_connected": "No Twitter accounts conntected",
+  "messenger.tabs.widgets.twitter_not_connected": "No Twitter accounts connected",
   "messenger.tabs.widgets.next_step": "Next — Get embed code",
   "messenger.tabs.embed.number": "3.",
   "messenger.tabs.embed.title": "Embed code",
