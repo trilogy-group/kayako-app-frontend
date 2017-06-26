@@ -1,6 +1,7 @@
 {
   "new_user_label": "User",
   "users": "Users",
+  "total_users": "total users",
   "addnewuser": "Add New User",
   "new_user": "New User",
   "create_new": "Create new user",
