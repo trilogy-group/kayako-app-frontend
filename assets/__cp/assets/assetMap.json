@@ -1,8 +1,8 @@
 {
   "assets": {
-    "assets/frontend-cp.css": "assets/frontend-cp-f49c8494e1045e625eb2fbe3196f452f.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-72c300296004a4e91f70363b2863901b.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-7e946e5a36123b2b10b4c8d37a0630e5.map",
+    "assets/frontend-cp.css": "assets/frontend-cp-372c6bf9e2cf40c37168f385785b68e5.css",
+    "assets/frontend-cp.js": "assets/frontend-cp-217b8d458968283dc4290407da4d305f.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-ac7849d41b3f081eae31c344789d603c.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-6f1f1bb984a00897ac5aab589a3a3764.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-0cc3bc279cf662edf0acd75c46fa9cea.map",
     "assets/intl/intl.js": "assets/intl/intl-d2ba17691f2a1748f36a07cbea1450d4.js",
@@ -406,6 +406,9 @@
     "images/inline-icons/post-status/Rejected.svg": "images/inline-icons/post-status/Rejected-a8f12f2d563cf74efc89ddec1b8ccc00.svg",
     "images/inline-icons/post-status/Seen.svg": "images/inline-icons/post-status/Seen-3e280f7eb66c1251004eb2684050735f.svg",
     "images/inline-icons/post-status/Sent.svg": "images/inline-icons/post-status/Sent-81469c42b4e9151949161e576c870a91.svg",
+    "images/inline-icons/timeline/link.svg": "images/inline-icons/timeline/link-64434d02849d3cdbecd0f085ddd1f950.svg",
+    "images/inline-icons/timeline/quote.svg": "images/inline-icons/timeline/quote-4fc0516b265de9a16465243e5b5c455b.svg",
+    "images/inline-icons/timeline/reply.svg": "images/inline-icons/timeline/reply-560fd183f71930aec9b048c97e29fb20.svg",
     "images/inline-icons/twitter.svg": "images/inline-icons/twitter-945a5900cd5ebd095c09a32e1d0f21b9.svg",
     "images/inline-icons/users.svg": "images/inline-icons/users-4eaae5a7b9507affa8c87dc4d38c3a81.svg",
     "images/loading-bars@2x.gif": "images/loading-bars@2x-ac34a31d2efcc9498449f38d9f9973e3.gif",
