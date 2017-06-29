@@ -10,6 +10,7 @@
   "back": "Back",
   "done": "Done",
   "new": "New",
+  "on": "on",
   "primary": "Primary",
   "create_link": "Create link",
   "helpcenter": "Helpcenter",
@@ -236,5 +237,11 @@
   "pinned_notes": "{count} pinned {count, plural, one {note} other {notes}}",
   "pin_failed": "Failed to pin note",
   "unpin_failed": "Failed to unpin note",
-  "pinned_by": "Pinned by {name}"
+  "pinned_by": "Pinned by {name}",
+  "unpin.case": "Unpin from case",
+  "unpin.user": "Unpin from user",
+  "unpin.org": "Unpin from organization",
+  "pin.case": "Pin to case",
+  "pin.user": "Pin to user",
+  "pin.org": "Pin to organization"
 }
