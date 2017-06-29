@@ -233,6 +233,7 @@
   "kie.invalid_format": "No results were found, please enter a valid email address to add a user",
   "no_user_matching_term": "Uh oh! No one matching \"{term}\" was found",
   "app_icon": "App Icon",
+  "pinned_notes": "{count} pinned {count, plural, one {note} other {notes}}",
   "pin_failed": "Failed to pin note",
   "unpin_failed": "Failed to unpin note",
   "pinned_by": "Pinned by {name}"
