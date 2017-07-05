@@ -1,4 +1,5 @@
 {
+  "new_tab_title": "New Search",
   "noresults": "No results found",
   "no_results_found.line1": "Sorry, no results found for <strong>{searchQuery}</strong>",
   "no_results_found.line2": "Try a different search",
@@ -25,6 +26,7 @@
   "USERS.fullname": "Name",
   "USERS.email": "Primary email",
   "USERS.organizationName": "Organization",
+  "USERS.createdat": "First seen",
   "USERS.lastActivityAt": "Last seen",
   "USERS.notfound": "There are no users here.",
   "USERS.userAvatar": "",
