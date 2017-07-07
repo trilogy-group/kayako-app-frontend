@@ -75,6 +75,7 @@
   "day_abbreviation": "d",
   "hour_abbreviation": "h",
   "minute_abbreviation": "m",
+  "second_abbreviation": "s",
   "SLA": "SLA",
   "select_placeholder": "Select...",
   "search_result_select_instruction": "Press enter",
