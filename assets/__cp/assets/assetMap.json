@@ -1,8 +1,8 @@
 {
   "assets": {
-    "assets/frontend-cp.css": "assets/frontend-cp-b41cd8ef2646d49517b9d791d9e0e5bb.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-0a22667c3e48ec420af9563d6541015b.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-3a6a8ccfa9165d700157c3ecd695dea2.map",
+    "assets/frontend-cp.css": "assets/frontend-cp-648874bc2d0274f029b2f39da6d949df.css",
+    "assets/frontend-cp.js": "assets/frontend-cp-c253f8ce98b7c3d6f5fe70040e7c2aa6.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-9efdfc4e7e97b46952d2f4fbc0382d63.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-6f1f1bb984a00897ac5aab589a3a3764.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-0cc3bc279cf662edf0acd75c46fa9cea.map",
     "assets/intl/intl.js": "assets/intl/intl-d2ba17691f2a1748f36a07cbea1450d4.js",
@@ -401,6 +401,7 @@
     "images/inline-icons/lastSeen.svg": "images/inline-icons/lastSeen-0b66c9751b2e35581d9b71b5096b96cb.svg",
     "images/inline-icons/mobilePhone.svg": "images/inline-icons/mobilePhone-1ed678728b2b6c59f42284a14de578a5.svg",
     "images/inline-icons/night.svg": "images/inline-icons/night-4a929957003b7cf5f6d79f8cd68e9f18.svg",
+    "images/inline-icons/organizations.svg": "images/inline-icons/organizations-021d19a27e5ef93be4ef25efedb21a9c.svg",
     "images/inline-icons/pin-default.svg": "images/inline-icons/pin-default-0e682177ef63aa56969bb0a99d04adca.svg",
     "images/inline-icons/post-status/Delivered.svg": "images/inline-icons/post-status/Delivered-76a894ab317960f2c2fb285846aa8091.svg",
     "images/inline-icons/post-status/Failed.svg": "images/inline-icons/post-status/Failed-d668df7c35692070859dc2cfa57bf8eb.svg",
