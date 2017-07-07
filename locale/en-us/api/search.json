@@ -73,5 +73,11 @@
   "help.channel_value": "twitter",
   "help.more_help": "More search modifiers",
   "and_more_domains": "and {count, plural, =1 {1 domain} other {# domains}} more ",
-  "merge.placeholder": "Search for conversations..."
+  "merge.placeholder": "Search for conversations...",
+  "add_condition": "Add condition",
+  "remove_condition": "Remove condition",
+  "AND_logic_operator": "AND",
+  "OR_logic_operator": "OR",
+  "match": "Match:",
+  "user_list.user_attributes": "user attributes"
 }
