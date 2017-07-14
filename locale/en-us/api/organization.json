@@ -2,6 +2,7 @@
   "title": "Organization",
   "new": "New Organization",
   "domains": "Domains",
+  "total_organizations": "total organizations",
   "organizations": "Organizations",
   "new_organization_placeholder": "Click to add a name",
   "create_new": "Create new organization",
@@ -44,5 +45,6 @@
   "confirm.remove_confirm": "Remove",
   "removing": "Removing organization...",
   "name_update_success": "Name was successfully updated.",
-  "name_update_failure": "An error was encountered while trying to update the name."
+  "name_update_failure": "An error was encountered while trying to update the name.",
+  "organization_list.no_results": "No suitable organizations found"
 }
