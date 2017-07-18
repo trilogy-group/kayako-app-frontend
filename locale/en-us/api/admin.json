@@ -701,7 +701,7 @@
   "settings.security.agents.authentication.google.description": "Allow users to log in to the agent area using their Google account.",
   "settings.security.agents.google.allowed_domains.title": "Google domains allowed for login",
   "settings.security.agents.google.allowed_domains.description": "Only users with addresses at the domain(s) above will be able to log into Kayako with their Google account. Separate multiple domains with a comma, for example: @kayako.com, @brewfictus.com.",
-  "settings.security.agents.google.allowed_domains.placeholder": "@kayako.com, @kayako.in",
+  "settings.security.agents.google.allowed_domains.placeholder": "@kayako.com @kayako.in",
   "settings.security.agents.sso.heading": "Single sign-on (JWT)",
   "settings.security.agents.sso.description": "Single sign-on in Kayako works by sending your users to a remote system to be authenticated. This system then sends the user back to Kayako with instructions to automatically log them in. JWT (JSON Web Tokens) is the protocol used to securely communicate that authentication information between Kayako and your remote system.",
   "settings.security.agents.sso.login_url.title": "Remote login URL",
