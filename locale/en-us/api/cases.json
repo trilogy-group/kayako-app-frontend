@@ -280,5 +280,19 @@
   "post.status.tooltip_without_time.SENT": "Sent",
   "post.status.tooltip_without_time.DELIVERED": "Delivered",
   "post.status.tooltip_without_time.SEEN": "Seen",
-  "post.status.tooltip_without_time.REJECTED": "This message was rejected by the recipient’s mail server"
+  "post.status.tooltip_without_time.REJECTED": "This message was rejected by the recipient’s mail server",
+  "timetracking.title": "Time tracking",
+  "timetracking.input.hours": "HH",
+  "timetracking.input.minutes": "MM",
+  "timetracking.input.seconds": "SS",
+  "timetracking.input.placeholder": "00",
+  "timetracking.billable": "Record as billable time",
+  "timetracking.tracked_label": "Tracked time",
+  "timetracking.tracked_placeholder": "Time tracked by your teammates will appear here.",
+  "timetracking.activity_label": "Activity tracking",
+  "timetracking.activity_placeholder": "Kayako automatically tracks the amount of time your teammates spend on conversations, which will start to appear here.",
+  "timetracking.total": "Total",
+  "timetracking.messages.add": "New entry was added",
+  "timetracking.messages.update": "Tracking entry updated",
+  "timetracking.messages.delete": "Tracking entry deleted"
 }
