@@ -33,6 +33,8 @@
   "USERS.userComposite": "User",
   "ORGANIZATIONS.id": "Organization ID",
   "ORGANIZATIONS.name": "Name",
+  "ORGANIZATIONS.createdat": "First seen",
+  "ORGANIZATIONS.lastActivityAt": "Last seen",
   "ORGANIZATIONS.updatedat": "Last updated",
   "ORGANIZATIONS.organizationAvatar": "",
   "ORGANIZATIONS.notfound": "There are no organizations here.",
@@ -74,10 +76,13 @@
   "help.more_help": "More search modifiers",
   "and_more_domains": "and {count, plural, =1 {1 domain} other {# domains}} more ",
   "merge.placeholder": "Search for conversations...",
-  "add_condition": "Add condition",
-  "remove_condition": "Remove condition",
-  "AND_logic_operator": "AND",
-  "OR_logic_operator": "OR",
-  "match": "Match:",
-  "user_list.user_attributes": "user attributes"
+  "list.match": "Match:",
+  "list.add_condition": "Add condition",
+  "list.remove_condition": "Remove condition",
+  "list.collection_AND_logic_operator": "ALL",
+  "list.collection_OR_logic_operator": "ANY",
+  "list.AND_logic_operator": "And",
+  "list.OR_logic_operator": "Or",
+  "user_list.user_attributes": "user attributes",
+  "organization_list.organization_attributes": "organization attributes"
 }

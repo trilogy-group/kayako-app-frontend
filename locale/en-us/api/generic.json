@@ -239,10 +239,10 @@
   "pin_failed": "Failed to pin note",
   "unpin_failed": "Failed to unpin note",
   "pinned_by": "Pinned by {name}",
-  "unpin.case": "Unpin from case",
+  "unpin.case": "Unpin from conversation",
   "unpin.user": "Unpin from user",
   "unpin.org": "Unpin from organization",
-  "pin.case": "Pin to case",
+  "pin.case": "Pin to conversation",
   "pin.user": "Pin to user",
   "pin.org": "Pin to organization"
 }
