@@ -1,36 +1,17 @@
 {
-  "noresults": "No se encontraron resultados",
-  "placeholder": "Buscar...",
-  "search": "Buscar",
-  "query_validation_error": "Introduce al menos 3 caracteres para buscar",
-
-  "nopreview": "Pasa el ratón sobre el resultado de la búsqueda para ver una vista previa.",
-  "start_typing_to_search": "Empieza a escribir para buscar",
-  "searching": "Buscando...",
-
-  "matchingsnippet": "Texto coincidente",
-  "nosnippet": "Lo sentimos, no tenemos una vista previa para este resultado.",
-
-  "searchresults": "Buscar resultados para \"{term}\"",
-  "seemore": "Abrir más resultados",
-
-  "CASES.id": "ID del caso",
-  "CASES.subject": "Tema",
-  "CASES.priority.label": "Prioridad",
-  "CASES.status.label": "Estado",
-  "CASES.assignedAgent.fullName": "Agente asignado",
-  "CASES.notfound": "Aquí no hay ningún caso.",
-  "CASES.updatedAt": "Última actualización",
-
-  "USERS.id": "ID del usuario",
-  "USERS.fullName": "Nombre",
-  "USERS.primaryEmail.email": "Correo electrónico principal",
-  "USERS.organization.name": "Organizaciones",
-  "USERS.lastActivityAt": "Visto por última vez",
-  "USERS.notfound": "Aquí no hay ningún usuario.",
-
-  "ORGANIZATIONS.id": "ID de la organización",
-  "ORGANIZATIONS.name": "Nombre",
-  "ORGANIZATIONS.updatedAt": "Última actualización",
-  "ORGANIZATIONS.notfound": "Aquí no hay ninguna organización."
+    "noresults": "No se encontraron resultados",
+    "placeholder": "Buscar...",
+    "query_validation_error": "Introduce al menos 3 caracteres para buscar",
+    "nopreview": "Pasa el ratón sobre el resultado de la búsqueda para ver una vista previa.",
+    "start_typing_to_search": "Empieza a escribir para buscar",
+    "matchingsnippet": "Texto coincidente",
+    "nosnippet": "Lo sentimos, no tenemos una vista previa para este resultado.",
+    "seemore": "Abrir más resultados",
+    "CASES.notfound": "Aquí no hay ningún caso.",
+    "USERS.id": "ID del usuario",
+    "USERS.lastActivityAt": "Visto por última vez",
+    "USERS.notfound": "Aquí no hay ningún usuario.",
+    "ORGANIZATIONS.id": "ID de la organización",
+    "ORGANIZATIONS.name": "Nombre",
+    "ORGANIZATIONS.notfound": "Aquí no hay ninguna organización."
 }

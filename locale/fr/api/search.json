@@ -1,36 +1,17 @@
 {
-  "noresults": "Aucun résultat trouvé",
-  "placeholder": "Recherche...",
-  "search": "Rechercher",
-  "query_validation_error": "Veuillez entrer au moins 3 caractères pour rechercher",
-
-  "nopreview": "Pointez votre curseur sur un résultat de recherche pour voir un aperçu.",
-  "start_typing_to_search": "Commencez à taper pour rechercher",
-  "searching": "Recherche...",
-
-  "matchingsnippet": "Texte correspondant",
-  "nosnippet": "Désolés, nous n'avons pas d'aperçu pour ce résultat.",
-
-  "searchresults": "Rechercher \"{term}\" dans les résultats",
-  "seemore": "Ouvrir plus de résultats.",
-
-  "CASES.id": "ID du dossier",
-  "CASES.subject": "Sujet",
-  "CASES.priority.label": "Priorité",
-  "CASES.status.label": "Statut",
-  "CASES.assignedAgent.fullName": "Agent assigné",
-  "CASES.notfound": "Il n'y a aucun dossier ici.",
-  "CASES.updatedAt": "Dernière mise à jour",
-
-  "USERS.id": "ID de l'utilisateur",
-  "USERS.fullName": "Nom",
-  "USERS.primaryEmail.email": "E-mail principal",
-  "USERS.organization.name": "Organisation",
-  "USERS.lastActivityAt": "Vu pour la dernière fois",
-  "USERS.notfound": "Il n'y a aucun utilisateur ici.",
-
-  "ORGANIZATIONS.id": "ID de l'organisation",
-  "ORGANIZATIONS.name": "Nom",
-  "ORGANIZATIONS.updatedAt": "Dernière mise à jour",
-  "ORGANIZATIONS.notfound": "Il n'y a aucune organisation ici."
+    "noresults": "Aucun résultat trouvé",
+    "placeholder": "Recherche...",
+    "query_validation_error": "Veuillez entrer au moins 3 caractères pour rechercher",
+    "nopreview": "Pointez votre curseur sur un résultat de recherche pour voir un aperçu.",
+    "start_typing_to_search": "Commencez à taper pour rechercher",
+    "matchingsnippet": "Texte correspondant",
+    "nosnippet": "Désolés, nous n'avons pas d'aperçu pour ce résultat.",
+    "seemore": "Ouvrir plus de résultats.",
+    "CASES.notfound": "Il n'y a aucun dossier ici.",
+    "USERS.id": "ID de l'utilisateur",
+    "USERS.lastActivityAt": "Vu pour la dernière fois",
+    "USERS.notfound": "Il n'y a aucun utilisateur ici.",
+    "ORGANIZATIONS.id": "ID de l'organisation",
+    "ORGANIZATIONS.name": "Nom",
+    "ORGANIZATIONS.notfound": "Il n'y a aucune organisation ici."
 }

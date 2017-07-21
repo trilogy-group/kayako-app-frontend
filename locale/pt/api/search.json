@@ -1,36 +1,17 @@
 {
-  "noresults": "Não foram encontrados resultados",
-  "placeholder": "Pesquisar...",
-  "search": "Pesquisar",
-  "query_validation_error": "Por favor, insira pelo menos 3 caracteres para pesquisar",
-
-  "nopreview": "Para ter uma antevisão, passe o rato sobre o resultado da pesquisa.",
-  "start_typing_to_search": "Para pesquisar, comece a escrever",
-  "searching": "A pesquisar...",
-
-  "matchingsnippet": "Correspondência de texto",
-  "nosnippet": "Lamentamos mas não temos uma antevisão para este resultado.",
-
-  "searchresults": "Pesquisar resultados para \"{term}\"",
-  "seemore": "Abrir mais resultados",
-
-  "CASES.id": "ID do caso",
-  "CASES.subject": "Assunto",
-  "CASES.priority.label": "Prioridade",
-  "CASES.status.label": "Estado",
-  "CASES.assignedAgent.fullName": "Agente atribuído",
-  "CASES.notfound": "Não há casos aqui.",
-  "CASES.updatedAt": "Última atualização",
-
-  "USERS.id": "ID de utilizador",
-  "USERS.fullName": "Nome",
-  "USERS.primaryEmail.email": "Email principal",
-  "USERS.organization.name": "Organização",
-  "USERS.lastActivityAt": "Última visualização",
-  "USERS.notfound": "Não existem utilizadores aqui.",
-
-  "ORGANIZATIONS.id": "ID da organização",
-  "ORGANIZATIONS.name": "Nome",
-  "ORGANIZATIONS.updatedAt": "Última atualização",
-  "ORGANIZATIONS.notfound": "Não existem organizações aqui."
+    "noresults": "Não foram encontrados resultados",
+    "placeholder": "Pesquisar...",
+    "query_validation_error": "Por favor, insira pelo menos 3 caracteres para pesquisar",
+    "nopreview": "Para ter uma antevisão, passe o rato sobre o resultado da pesquisa.",
+    "start_typing_to_search": "Para pesquisar, comece a escrever",
+    "matchingsnippet": "Correspondência de texto",
+    "nosnippet": "Lamentamos mas não temos uma antevisão para este resultado.",
+    "seemore": "Abrir mais resultados",
+    "CASES.notfound": "Não há casos aqui.",
+    "USERS.id": "ID de utilizador",
+    "USERS.lastActivityAt": "Última visualização",
+    "USERS.notfound": "Não existem utilizadores aqui.",
+    "ORGANIZATIONS.id": "ID da organização",
+    "ORGANIZATIONS.name": "Nome",
+    "ORGANIZATIONS.notfound": "Não existem organizações aqui."
 }
