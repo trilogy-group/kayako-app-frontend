@@ -81,8 +81,8 @@
   "list.remove_condition": "Remove condition",
   "list.collection_AND_logic_operator": "ALL",
   "list.collection_OR_logic_operator": "ANY",
-  "list.AND_logic_operator": "And",
-  "list.OR_logic_operator": "Or",
+  "list.AND_logic_operator": "AND",
+  "list.OR_logic_operator": "OR",
   "user_list.user_attributes": "user attributes",
   "organization_list.organization_attributes": "organization attributes"
 }
