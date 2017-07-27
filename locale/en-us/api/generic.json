@@ -244,5 +244,6 @@
   "unpin.org": "Unpin from organization",
   "pin.case": "Pin to conversation",
   "pin.user": "Pin to user",
-  "pin.org": "Pin to organization"
+  "pin.org": "Pin to organization",
+  "uploading_files": "Uploading files"
 }
