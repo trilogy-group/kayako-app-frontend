@@ -25,7 +25,7 @@
   "team_member_search.no_results": "No suitable agents found",
   "team_member_search.too_short": "Please enter at least {count} letters",
   "team_member_search.already_included": "This person is already in the team",
-  "user_list.no_results": "No suitable users found",
+  "user_list.no_results": "No matching users found",
   "addtag": "Add a tag...",
   "tags": "Tags",
   "manage_app_access": "Manage app access",
