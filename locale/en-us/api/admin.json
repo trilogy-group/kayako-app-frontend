@@ -929,7 +929,7 @@
   "messenger.preview.label": "Preview",
   "messenger.identity_verification.title": "Identity verification",
   "messenger.identity_verification.title_breadcrumbs": "Identity verification",
-  "messenger.identity_verification.buttons.copy": "Copy code",
+  "messenger.identity_verification.buttons.copy": "Copy token",
   "messenger.identity_verification.tabs.web": "Web",
   "messenger.identity_verification.tabs.android": "Android",
   "messenger.identity_verification.tabs.ios": "iOS",
