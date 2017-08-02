@@ -30,7 +30,7 @@
   "activity.monitor_update_case": "A Monitor updated {count, plural, =0 {{count} properties} =1 {a property} other {{count} properties}}",
   "activity.trigger_update_case": "A Trigger updated {count, plural, =0 {{count} properties} =1 {a property} other {{count} properties}}",
   "activity.update_case": "{name} updated {count, plural, =0 {{count} properties} =1 {a property} other {{count} properties}}",
-  "activity.engagement_rule": "engaged user {name}",
+  "activity.engagement_rule": "engaged user {name}{separator}",
   "activity.other_items": "and {count, plural, =0 {<b>{count}</b> other items} =1 {<b>{count}</b> other item} other {<b>{count}</b> other items}}",
   "activity.event": "<b><a class='timeline-link' href='{userAnchor}'>{name}</a></b> triggered event {event}",
   "activity.trash_case": "Conversation trashed by",
