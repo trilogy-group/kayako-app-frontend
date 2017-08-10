@@ -1,8 +1,8 @@
 {
   "assets": {
-    "assets/frontend-cp.css": "assets/frontend-cp-300aa6b8d4935a17f4e75134128b9f15.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-94ec35de962a3a081a5a857bc3d1b850.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-2da8cae8322cce0dc5242de6ce22e5e5.map",
+    "assets/frontend-cp.css": "assets/frontend-cp-c15720265c13b3dccca7b4805389b879.css",
+    "assets/frontend-cp.js": "assets/frontend-cp-4f0116c3d215d3f0d5e63d7043827acb.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-d277367f0e43243a935f422fa419f89c.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-6f1f1bb984a00897ac5aab589a3a3764.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-0cc3bc279cf662edf0acd75c46fa9cea.map",
     "assets/intl/intl.js": "assets/intl/intl-d2ba17691f2a1748f36a07cbea1450d4.js",
@@ -72,6 +72,7 @@
     "images/apps/messenger/send-icon.svg": "images/apps/messenger/send-icon-28b96d4ccd9db791584837c22f0d03d5.svg",
     "images/apps/messenger/white-tick.svg": "images/apps/messenger/white-tick-150fe13136f4a963747b2ee874d68fee.svg",
     "images/apps/salesforce.png": "images/apps/salesforce-9ee4d58edf9a35f77406391edd34ae74.png",
+    "images/apps/time-tracking.png": "images/apps/time-tracking-0eff40076b34de577d29ad6a36728567.png",
     "images/apps/zapier/integrations.png": "images/apps/zapier/integrations-f26669727887e34a90a62d7555bb7b23.png",
     "images/brand/kayako-logo.png": "images/brand/kayako-logo-4c6eab91ce810124958daa31df6fb340.png",
     "images/brand/kayako-logo.svg": "images/brand/kayako-logo-5f881629a817f7767782ff50c704bc5d.svg",
