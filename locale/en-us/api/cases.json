@@ -305,5 +305,17 @@
   "timetracking.messages.update": "Tracking entry updated",
   "timetracking.messages.delete": "Tracking entry deleted",
   "post-failed.label": "This message failed to send. Would you like to",
-  "post-failed.resend": "Resend?"
+  "post-failed.resend": "Resend?",
+  "email_original_display.subject": "Subject:",
+  "email_original_display.from": "From:",
+  "email_original_display.to": "To:",
+  "email_original_display.received_at": "Received at:",
+  "email_original_display.html_content": "HTML",
+  "email_original_display.source_content": "Source",
+  "email_original_display.errors.404.header": "Uh oh...404!",
+  "email_original_display.errors.404.description1": "We couldn't find the original email for the post you selected.",
+  "email_original_display.errors.404.description2": "If you think it should exist, please let us know at <a href=\"mailto:support@kayako.com\">support@kayako.com</a>",
+  "email_original_display.errors.500.header": "Uh oh...Something broke!",
+  "email_original_display.errors.500.description1": "Something went wrong on our end. Sorry about that!",
+  "email_original_display.errors.500.description2": "Give it a moment and then try again."
 }
