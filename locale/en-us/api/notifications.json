@@ -4,5 +4,19 @@
   "marked_all_as_read": "Marked",
   "load_more_action": "Load more",
   "load_more_action_inverse": "No more notifications to load",
-  "yesterday": "Yesterday"
+  "yesterday": "Yesterday",
+  "preferences.title": "Notifications",
+  "preferences.heading": "Get notified about conversations across all your apps...",
+  "preferences.desktop": "Desktop",
+  "preferences.desktop_description": "Sent to your desktop so you don't miss anything important",
+  "preferences.mobile": "Mobile",
+  "preferences.mobile_description": "Push notifications sent on your phone when app is closed",
+  "preferences.activities": "Activities",
+  "preferences.case_created": "A new conversation has been created",
+  "preferences.case_assigned_to_agent": "A teammate assigns a conversation to you",
+  "preferences.case_assigned_to_team": "A teammate assigns a conversation to your team",
+  "preferences.sla_breached": "SLA Breach in one of your assigned conversations",
+  "preferences.reply_on_case": "New reply in one of your assigned conversations",
+  "preferences.save": "Save changes",
+  "preferences.success": "Your notification preferences have been updated"
 }
