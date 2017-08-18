@@ -1,36 +1,17 @@
 {
-  "noresults": "Geen resultaten gevonden",
-  "placeholder": "Zoeken...",
-  "search": "Zoeken",
-  "query_validation_error": "Voer tenminste 3 karakters in om te zoeken",
-
-  "nopreview": "Hang met de muis boven een zoekresultaat om een preview te zien.",
-  "start_typing_to_search": "Begin met typen om te zoeken",
-  "searching": "Bezig met zoeken...",
-
-  "matchingsnippet": "Overeenkomende tekst",
-  "nosnippet": "Sorry, we hebben geen preview voor dit resultaat",
-
-  "searchresults": "Zoekresultaten voor \"{trefwoord}\"",
-  "seemore": "Open meer resultaten",
-
-  "CASES.id": "Zaak-ID",
-  "CASES.subject": "Onderwerp",
-  "CASES.priority.label": "Prioriteit",
-  "CASES.status.label": "Status",
-  "CASES.assignedAgent.fullName": "Aangewezen agent",
-  "CASES.notfound": "Er zijn hier geen zaken.",
-  "CASES.updatedAt": "Laatst bijgewerkt",
-
-  "USERS.id": "Gebruikers-ID",
-  "USERS.fullName": "Naam",
-  "USERS.primaryEmail.email": "Primaire e-mail",
-  "USERS.organization.name": "Organisatie",
-  "USERS.lastActivityAt": "Laatst gezien",
-  "USERS.notfound": "Er zijn hier geen gebruikers.",
-
-  "ORGANIZATIONS.id": "Organisatie-ID",
-  "ORGANIZATIONS.name": "Naam",
-  "ORGANIZATIONS.updatedAt": "Laatst bijgewerkt",
-  "ORGANIZATIONS.notfound": "Er zijn hier geen organisaties"
+    "noresults": "Geen resultaten gevonden",
+    "placeholder": "Zoeken...",
+    "query_validation_error": "Voer tenminste 3 karakters in om te zoeken",
+    "nopreview": "Hang met de muis boven een zoekresultaat om een preview te zien.",
+    "start_typing_to_search": "Begin met typen om te zoeken",
+    "matchingsnippet": "Overeenkomende tekst",
+    "nosnippet": "Sorry, we hebben geen preview voor dit resultaat",
+    "seemore": "Open meer resultaten",
+    "CASES.notfound": "Er zijn hier geen zaken.",
+    "USERS.id": "Gebruikers-ID",
+    "USERS.lastActivityAt": "Laatst gezien",
+    "USERS.notfound": "Er zijn hier geen gebruikers.",
+    "ORGANIZATIONS.id": "Organisatie-ID",
+    "ORGANIZATIONS.name": "Naam",
+    "ORGANIZATIONS.notfound": "Er zijn hier geen organisaties"
 }

@@ -1,0 +1,18 @@
+{
+    "title": "Kayako에 오신 것을 환영합니다",
+    "back": "« 로그인으로 돌아가기",
+    "email": "이메일 줏",
+    "forgot": "비밀번호를 잊어버렸나요?",
+    "login": "인",
+    "newpassword": "새 비밀번호",
+    "verifycodelabel": "인증 번호 입력",
+    "password": "비밀번호",
+    "repeatpassword": "비밀번호 (반복)",
+    "resetpassword": "비밀번호 초기호",
+    "resetbuttontext": "재설정 지침 보내기",
+    "updatepassword": "undefined",
+    "welcome": "Kayako에 돌아오신 것을 환영합니다",
+    "error.invalid_email": "올바른 이메일 주소를 입력하세요",
+    "error.email_not_found": "이 이메일은 존재하지 않습니다",
+    "error.login_failed": "이메일 주소와 비밀번호의 조합이 맞지 않습니다"
+}

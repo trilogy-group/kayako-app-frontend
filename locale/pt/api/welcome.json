@@ -1,14 +1,5 @@
 {
-  "button_title": "Bem-vindo",
-  "title": "Olá {nome}. Bem-vindo à Kayako!",
-  "subtitle": "Eis alguns passos para começar.",
-  "sections.channels.header": "Estabelecer a ligação com canais",
-  "sections.channels.contents": "Para começar a receber e responder a conversas, tem de ligar alguns canais. Pode fazê-lo nas suas definições.",
-  "sections.channels.button": "Levem-me para lá!",
-  "sections.help_center.header": "Modificar o Centro de ajuda",
-  "sections.help_center.contents": "Pode personalizar o aspeto do seu Centro de ajuda e gerir artigos a partir daí.",
-  "sections.help_center.button": "Levem-me para o meu Centro de ajuda",
-  "sections.views.header": "Encontrar casos",
-  "sections.views.contents": "É claro que, quando os seus clientes falam consigo, é importante encontrar as suas conversas. Vai encontrá-las na vista de casos.",
-  "sections.views.button": "Ir para vista de casos!"
+    "button_title": "Bem-vindo",
+    "title": "Olá {nome}. Bem-vindo à Kayako!",
+    "subtitle": "Eis alguns passos para começar."
 }

@@ -1,17 +1,15 @@
 {
-  "back": "« Retour",
-  "email": "E-mail",
-  "forgot": "Mot de passe oublié&#160;?",
-  "login": "Connexion",
-  "newpassword": "Nouveau mot de passe",
-  "verificationcode": "Code de vérification",
-  "password": "Mot de passe",
-  "repeatpassword": "Mot de passe (répétez)",
-  "resetpassword": "Réinitialisez votre mot de passe",
-  "updatepassword": "Modifier le mot de passe",
-  "welcome": "Bienvenue sur Kayako",
-
-  "error.invalid_email": "Veuillez saisir une adresse e-mail valide",
-  "error.email_not_found": "Cet e-mail n'existe pas",
-  "error.login_failed": "La combinaison e-mail/mot de passe est incorrecte"
+    "back": "« Retour",
+    "email": "E-mail",
+    "forgot": "Mot de passe oublié?",
+    "login": "Connexion",
+    "newpassword": "Nouveau mot de passe",
+    "password": "Mot de passe",
+    "repeatpassword": "Mot de passe (répétez)",
+    "resetpassword": "Réinitialisez votre mot de passe",
+    "updatepassword": "Modifier le mot de passe",
+    "welcome": "Bienvenue sur Kayako",
+    "error.invalid_email": "Veuillez saisir une adresse e-mail valide",
+    "error.email_not_found": "Cet e-mail n'existe pas",
+    "error.login_failed": "La combinaison e-mail/mot de passe est incorrecte"
 }
