@@ -1,14 +1,5 @@
 {
-  "button_title": "Bienvenue",
-  "title": "Bonjour {name}. Bienvenue sur Kayako!",
-  "subtitle": "Voici quelques étapes pour commencer.",
-  "sections.channels.header": "Connexion des canaux",
-  "sections.channels.contents": "Pour commencer à recevoir et à répondre à des conversations, il vous faut connecter des canaux. Vous pouvez le faire dans vos paramètres",
-  "sections.channels.button": "Emmenez-moi!",
-  "sections.help_center.header": "Modification du centre d'aide",
-  "sections.help_center.contents": "Vous pouvez personnaliser l'affichage du centre d'aide et gérer les articles à cet endroit.",
-  "sections.help_center.button": "Emmenez-moi vers mon centre d'aide",
-  "sections.views.header": "Retrouver des dossiers",
-  "sections.views.contents": "Bien sûr, il est important de retrouver vos conversations lorsque vos clients vous parlent. Vous les trouverez dans l'affichage des dossiers.",
-  "sections.views.button": "Vers l'affichage des dossiers!"
+    "button_title": "Bienvenue",
+    "title": "Bonjour {name}. Bienvenue sur Kayako!",
+    "subtitle": "Voici quelques étapes pour commencer."
 }

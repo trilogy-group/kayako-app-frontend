@@ -1,14 +1,5 @@
 {
-  "button_title": "Willkommen",
-  "title": "Hallo, {name}. Willkommen bei Kayako!",
-  "subtitle": "Hier sind ein paar Tipps zum Einstieg.",
-  "sections.channels.header": "Kanäle verknüpfen",
-  "sections.channels.contents": "Sie müssen mehrere Kanäle miteinander verknüpfen, damit Sie damit beginnen können, Gespräche zu empfangen und auf sie zu antworten. Das können Sie in Ihren Einstellungen erledigen.",
-  "sections.channels.button": "Dorthin wechseln!",
-  "sections.help_center.header": "Hilfecenter anpassen",
-  "sections.help_center.contents": "Dort können Sie das Aussehen Ihres Hilfecenters personalisieren und Artikel verwalten.",
-  "sections.help_center.button": "Zum Hilfecenter",
-  "sections.views.header": "Vorgänge finden",
-  "sections.views.contents": "Natürlich ist es wichtig, dass Sie Ihre Gespräche finden, wenn Ihre Kunden sich mit Ihnen unterhalten. Sie finden sie in der Vorgangsansicht.",
-  "sections.views.button": "Zur Vorgangsansicht!"
+    "button_title": "Willkommen",
+    "title": "Hallo, {name}. Willkommen bei Kayako!",
+    "subtitle": "Hier sind ein paar Tipps zum Einstieg."
 }

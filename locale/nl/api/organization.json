@@ -1,12 +1,10 @@
 {
-  "domains": "E-maildomeinen",
-  "organizations": "Organisaties",
-  "new_organization_placeholder": "Klik om een naam toe te voegen",
-  "delete_organization": "Verwijder organisatie",
-  "organization.created": "Organisatie aangemaakt",
-  "organization.updated": "Organisatie bijgewerkt",
-  "infobar.cases.shared.true": "Kan elkaars zaken zien",
-  "infobar.cases.shared.false": "Kan elkaars zaken niet zien",
-  "infobar.accesslevel": "Toegang tot zaak",
-  "organizationid": "Organisatie-ID"
+    "domains": "E-maildomeinen",
+    "organizations": "Organisaties",
+    "new_organization_placeholder": "Klik om een naam toe te voegen",
+    "delete_organization": "Verwijder organisatie",
+    "infobar.cases.shared.true": "Kan elkaars zaken zien",
+    "infobar.cases.shared.false": "Kan elkaars zaken niet zien",
+    "infobar.accesslevel": "Toegang tot zaak",
+    "organizationid": "Organisatie-ID"
 }

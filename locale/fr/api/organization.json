@@ -1,12 +1,10 @@
 {
-  "domains": "Domaines d'e-mail",
-  "organizations": "Organisations",
-  "new_organization_placeholder": "Cliquez pour ajouter un nom",
-  "delete_organization": "Supprimer l'organisation",
-  "organization.created": "Organisation créée",
-  "organization.updated": "Organisation mise à jour",
-  "infobar.cases.shared.true": "Peuvent voir les dossiers de chacun",
-  "infobar.cases.shared.false": "Ne peuvent pas voir les dossiers de chacun",
-  "infobar.accesslevel": "Accès au dossier",
-  "organizationid": "ID de l'organisation"
+    "domains": "Domaines d'e-mail",
+    "organizations": "Organisations",
+    "new_organization_placeholder": "Cliquez pour ajouter un nom",
+    "delete_organization": "Supprimer l'organisation",
+    "infobar.cases.shared.true": "Peuvent voir les dossiers de chacun",
+    "infobar.cases.shared.false": "Ne peuvent pas voir les dossiers de chacun",
+    "infobar.accesslevel": "Accès au dossier",
+    "organizationid": "ID de l'organisation"
 }

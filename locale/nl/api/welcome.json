@@ -1,14 +1,5 @@
 {
-  "button_title": "Welkom",
-  "title": "Hallo {name}. Welkom bij Kayako!",
-  "subtitle": "Hier zijn wat stappen om te beginnen.",
-  "sections.channels.header": "Kanalen verbinden",
-  "sections.channels.contents": "Om te beginnen met het ontvangen en antwoorden van gesprekken, moet je wat kanalen verbinden. Je kunt dit doen in je instellingen.",
-  "sections.channels.button": "Breng me daarnaartoe!",
-  "sections.help_center.header": "Het Helpcentrum aanpassen",
-  "sections.help_center.contents": "Je kunt het uiterlijk van je Helpcentrum aanpassen en vanuit hier je artikelen beheren.",
-  "sections.help_center.button": "Breng mij naar mijn Helpcentrum",
-  "sections.views.header": "Zaken vinden",
-  "sections.views.contents": "Natuurlijk is het belangrijk dat je je gesprekken kunt vinden wanneer je klanten met je praten. Je kunt ze vinden in de zakenweergaves.",
-  "sections.views.button": "Over naar de zakenweergave!"
+    "button_title": "Welkom",
+    "title": "Hallo {name}. Welkom bij Kayako!",
+    "subtitle": "Hier zijn wat stappen om te beginnen."
 }
