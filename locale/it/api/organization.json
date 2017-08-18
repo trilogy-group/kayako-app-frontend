@@ -1,12 +1,10 @@
 {
-  "domains": "Domini di posta elettronica",
-  "organizations": "Organizzazioni",
-  "new_organization_placeholder": "Fai clic per aggiungere un nome",
-  "delete_organization": "Elimina organizzazione",
-  "organization.created": "Organizzazione creata",
-  "organization.updated": "Organizzazione aggiornata",
-  "infobar.cases.shared.true": "È possibile visualizzare i rispettivi casi",
-  "infobar.cases.shared.false": "Non è possibile visualizzare i rispettivi casi",
-  "infobar.accesslevel": "Accesso al caso",
-  "organizationid": "ID organizzazione"
+    "domains": "Domini di posta elettronica",
+    "organizations": "Organizzazioni",
+    "new_organization_placeholder": "Fai clic per aggiungere un nome",
+    "delete_organization": "Elimina organizzazione",
+    "infobar.cases.shared.true": "È possibile visualizzare i rispettivi casi",
+    "infobar.cases.shared.false": "Non è possibile visualizzare i rispettivi casi",
+    "infobar.accesslevel": "Accesso al caso",
+    "organizationid": "ID organizzazione"
 }

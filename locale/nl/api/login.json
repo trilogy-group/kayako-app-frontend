@@ -1,17 +1,15 @@
 {
-  "back": "« Terug",
-  "email": "E-mail",
-  "forgot": "Wachtwoord vergeten?",
-  "login": "Inloggen",
-  "newpassword": "Nieuw wachtwoord",
-  "verificationcode": "Verificatie code",
-  "password": "Wachtwoord",
-  "repeatpassword": "Wachtwoord (opnieuw)",
-  "resetpassword": "Stel je wachtwoord opnieuw in",
-  "updatepassword": "Verander wachtwoord",
-  "welcome": "Welkom bij Kayako",
-
-  "error.invalid_email": "Voer een geldig e-mailadres in",
-  "error.email_not_found": "Dit e-mailadres bestaat niet",
-  "error.login_failed": "De combinatie van e-mailadres en wachtwoord is onjuist"
+    "back": "« Terug",
+    "email": "E-mail",
+    "forgot": "Wachtwoord vergeten?",
+    "login": "Inloggen",
+    "newpassword": "Nieuw wachtwoord",
+    "password": "Wachtwoord",
+    "repeatpassword": "Wachtwoord (opnieuw)",
+    "resetpassword": "Stel je wachtwoord opnieuw in",
+    "updatepassword": "Verander wachtwoord",
+    "welcome": "Welkom bij Kayako",
+    "error.invalid_email": "Voer een geldig e-mailadres in",
+    "error.email_not_found": "Dit e-mailadres bestaat niet",
+    "error.login_failed": "De combinatie van e-mailadres en wachtwoord is onjuist"
 }
