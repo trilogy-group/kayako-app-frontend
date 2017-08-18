@@ -1,14 +1,5 @@
 {
-  "button_title": "Benvenuto",
-  "title": "Salve {name}. Benvenuto su Kayako!",
-  "subtitle": "Ecco alcuni passaggi per iniziare.",
-  "sections.channels.header": "Collegamento dei canali",
-  "sections.channels.contents": "Per iniziare a ricevere e a rispondere alle conversazioni, devi collegare alcuni canali. Puoi farlo nelle impostazioni.",
-  "sections.channels.button": "Portami lì!",
-  "sections.help_center.header": "Modificare il Centro Assistenza",
-  "sections.help_center.contents": "Puoi personalizzare l'aspetto del tuo centro Assistenza e gestire gli articoli direttamente lì.",
-  "sections.help_center.button": "Portami al mio Centro Assistenza",
-  "sections.views.header": "Ricerca casi in corso",
-  "sections.views.contents": "Naturalmente, è importante trovare le conversazioni quando i tuoi clienti stanno parlando con te. Le troverai nelle viste casi.",
-  "sections.views.button": "Andiamo alle viste casi!"
+    "button_title": "Benvenuto",
+    "title": "Salve {name}. Benvenuto su Kayako!",
+    "subtitle": "Ecco alcuni passaggi per iniziare."
 }
