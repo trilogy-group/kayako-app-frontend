@@ -8,8 +8,6 @@ php:
 env:
   matrix:
     - TEST_ENV=quality
-    - TEST_ENV=tests
-    - TEST_ENV=upgrade
   global:
     - CI_HOME=`pwd`/../..
 
