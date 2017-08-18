@@ -1,12 +1,10 @@
 {
-  "domains": "Dominios de correo electrónico",
-  "organizations": "Organizaciones",
-  "new_organization_placeholder": "Haz clic para añadir un nombre",
-  "delete_organization": "Eliminar organización",
-  "organization.created": "Organización creada",
-  "organization.updated": "Organización actualizada",
-  "infobar.cases.shared.true": "Pueden ver los casos del otro",
-  "infobar.cases.shared.false": "No pueden ver los casos del otro",
-  "infobar.accesslevel": "Acceso al caso",
-  "organizationid": "ID de organización"
+    "domains": "Dominios de correo electrónico",
+    "organizations": "Organizaciones",
+    "new_organization_placeholder": "Haz clic para añadir un nombre",
+    "delete_organization": "Eliminar organización",
+    "infobar.cases.shared.true": "Pueden ver los casos del otro",
+    "infobar.cases.shared.false": "No pueden ver los casos del otro",
+    "infobar.accesslevel": "Acceso al caso",
+    "organizationid": "ID de organización"
 }
