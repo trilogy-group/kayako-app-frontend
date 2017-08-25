@@ -16,7 +16,7 @@
   "trial.billing.address1": "Address line 1",
   "trial.billing.address2": "Address line 2",
   "trial.billing.city": "City",
-  "trial.billing.state": "State",
+  "trial.billing.state": "State/Province",
   "trial.billing.postal_code": "Postal code",
   "trial.billing.country": "Country",
   "trial.billing.vatid": "VAT ID",
