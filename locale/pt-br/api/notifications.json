@@ -1,0 +1,22 @@
+{
+    "center_title": "Minhas Notificações",
+    "mark_all_as_read": "Marcar tudo como lido",
+    "marked_all_as_read": "Marcado",
+    "load_more_action": "Carregar mais",
+    "load_more_action_inverse": "Não há mais notificações para carregar",
+    "yesterday": "Ontem",
+    "preferences.title": "Notificações",
+    "preferences.heading": "Receba notificações sobre conversas em todos os seus aplicativos...",
+    "preferences.desktop": "Desktop",
+    "preferences.desktop_description": "Envie para a sua área de trabalho para que você não perca nada de importante.",
+    "preferences.mobile": "Mobile",
+    "preferences.mobile_description": "Notificações de push enviadas no seu telefone quando o aplicativo estiver fechado",
+    "preferences.activities": "Atividades",
+    "preferences.case_created": "Uma nova conversa foi criada",
+    "preferences.case_assigned_to_agent": "Um colega de equipe lhe atribuiu este caso",
+    "preferences.case_assigned_to_team": "Um colega de equipe atribuiu um caso a sua equipe",
+    "preferences.sla_breached": "SLA quebrado em uma das suas conversas atribuídas",
+    "preferences.reply_on_case": "Nova resposta em um dos seus casos",
+    "preferences.save": "Salvar modificações",
+    "preferences.success": "Suas preferências de notificação foram atualizadas"
+}

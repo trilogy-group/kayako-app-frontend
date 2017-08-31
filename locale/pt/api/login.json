@@ -1,17 +1,15 @@
 {
-  "back": "« Voltar",
-  "email": "Email",
-  "forgot": "Esqueceu-se da palavra-passe?",
-  "login": "Iniciar sessão",
-  "newpassword": "Nova palavra-asse",
-  "verificationcode": "Código de verificação",
-  "password": "Palavra-passe",
-  "repeatpassword": "Palavra-passe (repetir)",
-  "resetpassword": "Criar uma nova palavra-passe",
-  "updatepassword": "Mudar palavra-passe",
-  "welcome": "Bem-vindo à Kayako",
-
-  "error.invalid_email": "Por favor, introduza um endereço de email válido",
-  "error.email_not_found": "Este email não existe",
-  "error.login_failed": "A combinação de email e palavra-passe está incorreta"
+    "back": "« Voltar",
+    "email": "Email",
+    "forgot": "Esqueceu-se da palavra-passe?",
+    "login": "Iniciar sessão",
+    "newpassword": "Nova palavra-asse",
+    "password": "Palavra-passe",
+    "repeatpassword": "Palavra-passe (repetir)",
+    "resetpassword": "Criar uma nova palavra-passe",
+    "updatepassword": "Mudar palavra-passe",
+    "welcome": "Bem-vindo à Kayako",
+    "error.invalid_email": "Por favor, introduza um endereço de email válido",
+    "error.email_not_found": "Este email não existe",
+    "error.login_failed": "A combinação de email e palavra-passe está incorreta"
 }
