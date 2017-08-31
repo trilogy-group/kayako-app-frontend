@@ -1,8 +1,8 @@
 {
   "assets": {
-    "assets/frontend-cp.css": "assets/frontend-cp-937f41ad53f8500d7ad0657d64a08b3e.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-9ba589b6ab6503aa0e8a6d1a30d349e6.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-fe7371146e3fce5fa750f08ada96194e.map",
+    "assets/frontend-cp.css": "assets/frontend-cp-fbbcea1847fbc9e077a146c497171968.css",
+    "assets/frontend-cp.js": "assets/frontend-cp-ac630ccb33f0413942c8f658844813a8.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-8a4212bd69a5943f301f8c8495d8925b.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-6f1f1bb984a00897ac5aab589a3a3764.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-0cc3bc279cf662edf0acd75c46fa9cea.map",
     "assets/intl/intl.js": "assets/intl/intl-d2ba17691f2a1748f36a07cbea1450d4.js",
@@ -420,6 +420,7 @@
     "images/inline-icons/facebook.svg": "images/inline-icons/facebook-72f7cb132380fe1d16a23b2d3de5f805.svg",
     "images/inline-icons/gear.svg": "images/inline-icons/gear-7b4e556a885dcfbcef5af682f89a2c39.svg",
     "images/inline-icons/google.svg": "images/inline-icons/google-7c2f5da268df55111727515914606da4.svg",
+    "images/inline-icons/icon--conversation--active.svg": "images/inline-icons/icon--conversation--active-ffdcd2fc784fbafcb78096720debbfce.svg",
     "images/inline-icons/icon--conversation.svg": "images/inline-icons/icon--conversation-a16e1128ecd846f7d8e89cf6bec07306.svg",
     "images/inline-icons/icon--convo--32--focused.svg": "images/inline-icons/icon--convo--32--focused-326383c5c79e0187f7c55bc5a931f6f8.svg",
     "images/inline-icons/icon--convo--32.svg": "images/inline-icons/icon--convo--32-6277542e324ea4ffbf4826063b6e11ea.svg",
