@@ -129,7 +129,7 @@
   "trash.success_message": "Conversation trashed successfully",
   "trash.restore.success_message": "Conversation restored successfully",
   "trashcases": "Trash",
-  "trashallcases": "Trash All Cases",
+  "empty_trash": "Empty trash",
   "trashed": "(Trashed)",
   "restore": "Restore from trash",
   "confirm.trash_case_header": "Trash conversation",
