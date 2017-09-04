@@ -88,6 +88,7 @@
   "sort.ASC": "Ascending",
   "sort.DESC": "Descending",
   "update_properties": "Update properties",
+  "update_and_resend": "Update & resend",
   "uploads.dropzone": "Drag and drop files to upload",
   "uploads.toolarge": "is too large. Attachments must be under {filesizeLimit, number}MB.",
   "uploads.unknown": "upload failed. Please contact support",
