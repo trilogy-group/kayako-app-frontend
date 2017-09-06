@@ -6,7 +6,7 @@
   "instant_user_in_case": "Enter the email address of the requester",
   "instant_org_placeholder": "Enter the name of the organization",
   "active_cases_text": "{count} {mode, select, self {} other {other }}active {count, plural, one {conversation} other {conversations}}",
-  "recent_cases_text": "{count} {mode, select, self {} other {other }}recent {count, plural, one {conversation} other {conversations}}",
+  "other_cases_text": "Other conversations",
   "find_all_cases": "Find all <strong>{count}</strong> conversations",
   "realtimeTyping": "{sentence} {total, plural, one {is} other {and {lastUser} are}} typing...",
   "requester_needed_editor": "A case requester needs to be added before you can start sending replies...",
