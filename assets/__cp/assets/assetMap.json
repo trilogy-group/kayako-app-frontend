@@ -1,8 +1,8 @@
 {
   "assets": {
-    "assets/frontend-cp.css": "assets/frontend-cp-f1c8413b41374f86a1ad321d2ebeffd9.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-5be4734760f589ef57baa2c889aaebda.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-02dc8741d60014946ee55f7af5f55e03.map",
+    "assets/frontend-cp.css": "assets/frontend-cp-13a192a6da97dc88b26d96eef67e281d.css",
+    "assets/frontend-cp.js": "assets/frontend-cp-a48c5494be63d2def66da4a8a90cfb32.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-a8e676e1d2d774cf1b1dcd4499836ec0.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-6f1f1bb984a00897ac5aab589a3a3764.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-0cc3bc279cf662edf0acd75c46fa9cea.map",
     "assets/intl/intl.js": "assets/intl/intl-d2ba17691f2a1748f36a07cbea1450d4.js",
@@ -453,7 +453,7 @@
     "images/inline-icons/nav/menu-megaphone.svg": "images/inline-icons/nav/menu-megaphone-ac867e6e7453732eb77b3e0792053254.svg",
     "images/inline-icons/nav/menu-settings.svg": "images/inline-icons/nav/menu-settings-37b4fb4933073abad9f30b7087bbcb74.svg",
     "images/inline-icons/night.svg": "images/inline-icons/night-4a929957003b7cf5f6d79f8cd68e9f18.svg",
-    "images/inline-icons/notification-bell.svg": "images/inline-icons/notification-bell-198d62931ac6b4eec1bc8db148300167.svg",
+    "images/inline-icons/notification-center/bell.svg": "images/inline-icons/notification-center/bell-5c21dc5942fa33aaebc2c6df12dcf7a3.svg",
     "images/inline-icons/notification-center/desktop.svg": "images/inline-icons/notification-center/desktop-140076cd12b959fd90e978943d8ed25f.svg",
     "images/inline-icons/notification-center/mobile.svg": "images/inline-icons/notification-center/mobile-d91c5dca60db5b9b9f3c8213b9a98048.svg",
     "images/inline-icons/organizations.svg": "images/inline-icons/organizations-3b613fd6c0bf748bfbfb82428e1a4834.svg",
