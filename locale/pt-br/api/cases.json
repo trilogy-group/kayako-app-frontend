@@ -88,7 +88,7 @@
     "caseformid": "Formulário de conversa",
     "satisfaction-status": "Status da satisfação",
     "status": "Status",
-    "subheader": "{date, date, medium} – {time} {hasChannel, select,\n true {criado via {channel}}\n false {}\n } {hasBrand, select,\n true {, {brand}}\n false {}\n }",
+    "subheader": "Este é o início da conversa iniciada em {channel} por {name} em {date}",
     "avatar": "Avatar",
     "subject": "Assunto",
     "create": "Criar",
