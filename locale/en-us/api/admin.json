@@ -603,6 +603,8 @@
   "automation_actions_builder.group.FLOW_CONTROL": "Flow control",
   "automation_actions_builder.group.ENDPOINT": "Endpoint",
   "automation_actions_builder.group.CUSTOM_FIELD": "Custom field",
+  "automation_actions_builder.group.REQUESTER": "Requester",
+  "automation_actions_builder.group.ORGANIZATION": "Organization",
   "automation_actions_builder.operators.CHANGE": "change",
   "automation_actions_builder.operators.INCREASE": "increase",
   "automation_actions_builder.operators.DECREASE": "decrease",
