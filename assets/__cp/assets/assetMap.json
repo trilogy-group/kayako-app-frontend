@@ -1,8 +1,8 @@
 {
   "assets": {
-    "assets/frontend-cp.css": "assets/frontend-cp-e23b87d746e707fcad638d4782a438a1.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-ef97f629ac09e7ff8707b46e669a3808.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-fe828ca6b369a3bab220b96d1d9b1629.map",
+    "assets/frontend-cp.css": "assets/frontend-cp-348868dff5e16eede5eff9e1f4926c59.css",
+    "assets/frontend-cp.js": "assets/frontend-cp-6775f4ddeee25f562824162fce2da3a8.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-88394fa33ddb16709b2ef6a3f5308b37.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-6f1f1bb984a00897ac5aab589a3a3764.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-0cc3bc279cf662edf0acd75c46fa9cea.map",
     "assets/intl/intl.js": "assets/intl/intl-d2ba17691f2a1748f36a07cbea1450d4.js",
@@ -457,7 +457,9 @@
     "images/inline-icons/nav/menu-settings.svg": "images/inline-icons/nav/menu-settings-37b4fb4933073abad9f30b7087bbcb74.svg",
     "images/inline-icons/night.svg": "images/inline-icons/night-4a929957003b7cf5f6d79f8cd68e9f18.svg",
     "images/inline-icons/notification-center/bell.svg": "images/inline-icons/notification-center/bell-5c21dc5942fa33aaebc2c6df12dcf7a3.svg",
+    "images/inline-icons/notification-center/breach.svg": "images/inline-icons/notification-center/breach-aea7cb543011f1cbad7f5547557c50a7.svg",
     "images/inline-icons/notification-center/desktop.svg": "images/inline-icons/notification-center/desktop-140076cd12b959fd90e978943d8ed25f.svg",
+    "images/inline-icons/notification-center/events.svg": "images/inline-icons/notification-center/events-86c46923d5d29e12eb42ea53a14b7c5f.svg",
     "images/inline-icons/notification-center/mobile.svg": "images/inline-icons/notification-center/mobile-d91c5dca60db5b9b9f3c8213b9a98048.svg",
     "images/inline-icons/organizations.svg": "images/inline-icons/organizations-3b613fd6c0bf748bfbfb82428e1a4834.svg",
     "images/inline-icons/pause.svg": "images/inline-icons/pause-6666ffb66f4d2762650ba7ae67fc75ad.svg",
