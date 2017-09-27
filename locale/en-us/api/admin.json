@@ -569,6 +569,7 @@
   "predicate_builder.group.MAIL": "Mail",
   "predicate_builder.group.MESSENGER": "Messenger",
   "predicate_builder.group.ENGAGEMENT": "Engagement",
+  "predicate_builder.group.SATISFACTION": "Satisfaction",
   "predicate_builder.current_user": "(current user)",
   "predicate_builder.select_condition": "Select a condition",
   "predicate_builder.select_operator": "Select an operator",
