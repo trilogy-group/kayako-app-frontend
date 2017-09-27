@@ -1,8 +1,8 @@
 {
   "assets": {
-    "assets/frontend-cp.css": "assets/frontend-cp-1e872a2a0dd65e1b3bc55d4b6947aac8.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-93875e54244fd7bb1e2cc404e2920776.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-52dc9fd59d0356d665b052e6be69b5af.map",
+    "assets/frontend-cp.css": "assets/frontend-cp-95a0d7ad42fbaa7e4d1255f60a14202a.css",
+    "assets/frontend-cp.js": "assets/frontend-cp-54fa4b1b6c5fad9d95a34d728a838480.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-bd9d35fa7d669864c59cdcc625e183ae.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-6f1f1bb984a00897ac5aab589a3a3764.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-0cc3bc279cf662edf0acd75c46fa9cea.map",
     "assets/intl/intl.js": "assets/intl/intl-d2ba17691f2a1748f36a07cbea1450d4.js",
@@ -456,6 +456,7 @@
     "images/inline-icons/nav/menu-megaphone.svg": "images/inline-icons/nav/menu-megaphone-ac867e6e7453732eb77b3e0792053254.svg",
     "images/inline-icons/nav/menu-settings.svg": "images/inline-icons/nav/menu-settings-37b4fb4933073abad9f30b7087bbcb74.svg",
     "images/inline-icons/night.svg": "images/inline-icons/night-4a929957003b7cf5f6d79f8cd68e9f18.svg",
+    "images/inline-icons/no-recent-conversations.svg": "images/inline-icons/no-recent-conversations-5be94442cb36d6b89c7caa17ed32772e.svg",
     "images/inline-icons/notification-center/bell.svg": "images/inline-icons/notification-center/bell-5c21dc5942fa33aaebc2c6df12dcf7a3.svg",
     "images/inline-icons/notification-center/breach.svg": "images/inline-icons/notification-center/breach-aea7cb543011f1cbad7f5547557c50a7.svg",
     "images/inline-icons/notification-center/desktop.svg": "images/inline-icons/notification-center/desktop-140076cd12b959fd90e978943d8ed25f.svg",
