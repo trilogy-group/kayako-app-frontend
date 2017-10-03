@@ -1,8 +1,8 @@
 {
   "assets": {
-    "assets/frontend-cp.css": "assets/frontend-cp-8d2c8e87d43294592aaa71dd5c00df82.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-9bee6cf38066224a8cc49955dc68505e.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-59772b0f1b53393d025f31ea00548b6b.map",
+    "assets/frontend-cp.css": "assets/frontend-cp-a801dbfa7b9fc33bdfbac52e11c2b1ff.css",
+    "assets/frontend-cp.js": "assets/frontend-cp-efdcf13a164b62467c748746e0ea48d4.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-bb1882804348ad8b66d3d9f79ca76d58.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-6f1f1bb984a00897ac5aab589a3a3764.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-0cc3bc279cf662edf0acd75c46fa9cea.map",
     "assets/intl/intl.js": "assets/intl/intl-d2ba17691f2a1748f36a07cbea1450d4.js",
@@ -442,6 +442,8 @@
     "images/inline-icons/icon--sidebar_conversation--active.svg": "images/inline-icons/icon--sidebar_conversation--active-b3f3245d4329b2521afa5670d08e360d.svg",
     "images/inline-icons/icon--user--32--focused.svg": "images/inline-icons/icon--user--32--focused-e3b04a77724de921df805a0b0fddb7e2.svg",
     "images/inline-icons/icon--user--32.svg": "images/inline-icons/icon--user--32-ca75ce48beba49759db0ac59bf9105fd.svg",
+    "images/inline-icons/insights/cross.svg": "images/inline-icons/insights/cross-201a8ac1abbf75d0540d37d7c6e65cfb.svg",
+    "images/inline-icons/insights/tick.svg": "images/inline-icons/insights/tick-33fa46be6b352b95792c6093836eaea1.svg",
     "images/inline-icons/jump-bar-dismiss.svg": "images/inline-icons/jump-bar-dismiss-ee33c717ee82b5b3537ecc146d0f0110.svg",
     "images/inline-icons/jump-bar-down.svg": "images/inline-icons/jump-bar-down-8aded90d6f8c515f9d454421409507f7.svg",
     "images/inline-icons/jump-bar-up.svg": "images/inline-icons/jump-bar-up-cbd8a63af5737315e576c9c2117c72ab.svg",
