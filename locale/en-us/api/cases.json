@@ -317,7 +317,7 @@
   "timetracking.messages.delete": "Tracking entry deleted",
   "post-failed.label": "This message failed to send. Would you like to",
   "post-failed.resend": "Resend?",
-  "post-failed-validation.label": "Before Kayako can send this message, some of the conversation fields needs your attention, on the right. 👉<br>Please check for any required or invalid field values, and click <strong>Update & Send</strong> when you’re done.",
+  "post-failed-validation.label": "Before Kayako can send this message, some of the conversation fields need your attention, on the right. 👉<br>Please check for any required or invalid field values, and click <strong>Update & Send</strong> when you’re done.",
   "email_original_display.subject": "Subject:",
   "email_original_display.from": "From:",
   "email_original_display.to": "To:",
