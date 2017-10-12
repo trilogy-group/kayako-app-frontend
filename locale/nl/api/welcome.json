@@ -1,5 +1,7 @@
 {
     "button_title": "Welkom",
     "title": "Hallo {name}. Welkom bij Kayako!",
-    "subtitle": "Hier zijn wat stappen om te beginnen."
+    "subtitle": "Hier zijn wat stappen om te beginnen.",
+    "start": "Start hier",
+    "continue": "Doorgaan"
 }
