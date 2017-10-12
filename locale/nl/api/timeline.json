@@ -1,1 +1,18 @@
-{}
+{
+    "activity.search": "<b><a class='timeline-link' href='{userAnchor}'>{name}</a></b> heeft gezocht op <b>{term}</b> in het helpcentrum",
+    "activity.view": "<b><a class='timeline-link' href='{userAnchor}'>{name}</a></b> heeft <a class='timeline-link' href='{anchor}' target=_blank rel=\"noopener noreferrer\"><strong>{articleTitle}</strong></a> bekeken in het helpcentrum",
+    "activity.comment": "<b><a class='timeline-link' href='{userAnchor}'>{name}</a></b> heeft een reactie geplaatst op <a class='timeline-link' href='{articleAnchor}' target=_blank rel=\"noopener noreferrer\"><strong>{articleTitle}</strong></a> in het helpcentrum",
+    "activity.reply": "<b><a class='timeline-link' href='{userAnchor}'>{name}</a></b> heeft gereageerd op <a class='timeline-link' href='{caseAnchor}'><strong>{caseTitle}</strong></a>",
+    "activity.added_note": "{name} heeft een notitie toegevoegd",
+    "avatar_tooltips.system": "Het systeem heeft dit gesprek bijgewerkt",
+    "avatar_tooltips.engaged_user": "<strong>{name}</strong>",
+    "action.title": "Titel",
+    "action.name": "Naam",
+    "action.event": "Event",
+    "action.invalid_event_color": "Ongeldige kleur ontvangen",
+    "property_empty_value": "Leeg",
+    "assignee_empty_value": "Niet toegewezen",
+    "tags_empty_value": "Geen labels",
+    "new_messages": "nieuwe berichten",
+    "past_activities": "<b>{count}+</b> recente activiteiten"
+}

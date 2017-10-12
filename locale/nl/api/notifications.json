@@ -1,1 +1,22 @@
-{}
+{
+    "center_title": "Mijn meldingen",
+    "mark_all_as_read": "Markeer alles al gelezen",
+    "marked_all_as_read": "Gemarkeerd als gelezen",
+    "load_more": "Laad meer",
+    "loading_more": "Bezig met laden...",
+    "yesterday": "Gisteren",
+    "preferences.title": "Meldingen",
+    "preferences.heading": "Blijf up-to-date met real-time gesprekken, waar je ook bent",
+    "preferences.desktop": "Bureaublad",
+    "preferences.desktop_description": "Ontvang meldingen via uw browser wanneer u achter de computer zit",
+    "preferences.mobile": "Mobiel",
+    "preferences.mobile_description": "Wanneer u onderweg bent, meldt Kayako uw mobiel. Download Kayako voor <a href=\"https://itunes.apple.com/us/app/kayako/id1163593165?mt=8\" target=\"_blank\" rel=\"noopener noreferrer\">iOS</a> en <a href=\"https://play.google.com/store/apps/details?id=com.kayako.android.k5\" target=\"_blank\" rel=\"noopener noreferrer\">Android</a>",
+    "preferences.activities": "Activiteiten",
+    "preferences.case_created": "Een nieuw gesprek is aangemaakt",
+    "preferences.case_assigned_to_agent": "Een gesprek is aan u toegewezen",
+    "preferences.case_assigned_to_team": "Een gesprek is toegewezen aan één van uw teams",
+    "preferences.sla_breached": "Één aan uw toegewezen gesprekken verbreekt zijn SLA",
+    "preferences.reply_on_case": "Iemand heeft geantwoord op één aan u toegewezen gesprekken",
+    "preferences.save": "Wijzigingen opslaan",
+    "preferences.success": "Uw melding voorkeuren zijn bijgewerkt"
+}
