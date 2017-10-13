@@ -1045,7 +1045,7 @@
   "brands.edit.dns.check": "Check DNS configuration",
   "brands.edit.dns.valid": "Looks good from here!",
   "brands.edit.dns.invalid": "Unfortunately we couldn’t validate that {alias} name has been correctly mapped to {subDomain}.{domain}. If you’re sure it has, you can proceed. If not, please contact your system administrator or Kayako support for assistance.",
-  "brands.edit.ssl.description": "Your .kayako.com are secured by SSL (https) by default. However, because the Kayako SSL encryption certificate is not valid for your custom domain name, you’ll need to provide your own SSL certificate for your domain name. If you don’t, your customers may see ‘Invalid Certificate’ errors.",
+  "brands.edit.ssl.description": "All .kayako.com instances are secured by SSL (https) by default. However, the Kayako SSL certificate is not valid for custom subdomains, i.e. 'support.yourcompany.com'. If you want to use a custom subdomain for your Kayako Help Center, you are required to provide your own SSL certificate.",
   "brands.edit.ssl_certificate_not_set": "SSL certificate not set",
   "brands.edit.ssl_certificate_set": "SSL certificate set",
   "brands.edit.ssl_certificate_replace": "Replace certificate",
