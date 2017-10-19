@@ -1,0 +1,1 @@
+{"version":3,"sources":["moment/fastboot-moment-orig.js"],"names":["define","self","FastBoot","require"],"mappings":"CAAA,WACEA,OAAO,UAAW,WAAY,SAASC,GACrCA,EAAc,QAAIC,SAASC,QAAQ","file":"fastboot-moment.js","sourcesContent":["(function() {\n  define('moment', ['exports'], function(self) {\n    self['default'] = FastBoot.require('moment');\n  });\n})();\n"]}
