@@ -262,6 +262,6 @@
   "pin.user": "Pin to user",
   "pin.org": "Pin to organization",
   "uploading_files": "Uploading files",
-  "app_version_out_of_date": "We've released an update to Kayako! Refresh your browser to start using it",
-  "app_version_out_of_date_call_to_action": "Refresh browser"
+  "app_version_out_of_date": "Kayako has been updated. Reload to use the latest version.",
+  "app_version_out_of_date_call_to_action": "Reload"
 }
