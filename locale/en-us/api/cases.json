@@ -329,5 +329,7 @@
   "email_original_display.errors.404.description2": "If you think it should exist, please let us know at <a href=\"mailto:support@kayako.com\">support@kayako.com</a>",
   "email_original_display.errors.500.header": "Uh oh...Something broke!",
   "email_original_display.errors.500.description1": "Something went wrong on our end. Sorry about that!",
-  "email_original_display.errors.500.description2": "Give it a moment and then try again."
+  "email_original_display.errors.500.description2": "Give it a moment and then try again.",
+  "closed_pill_message_content": "+{count} more empty {count, plural, one {field} other {fields}}",
+  "open_pill_message_content": "hide empty fields"
 }
