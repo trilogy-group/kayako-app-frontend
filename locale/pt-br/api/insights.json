@@ -28,7 +28,7 @@
     "sla.metrics.FIRST_REPLY_TIME": "Tempo da primeira resposta",
     "sla.metrics.NEXT_REPLY_TIME": "Tempo da próxima resposta",
     "sla.metrics.RESOLUTION_TIME": "Tempo de resolução",
-    "sla.sla_target_performance_for": "Performance almejada em SLA para",
+    "sla.sla_target_performance_for": "Objetivo de SLA desejado para",
     "sla.overall_performance_for": "Desempenho geral para",
     "insights.vs": "vs",
     "sidebar.general.title": "Geral",
