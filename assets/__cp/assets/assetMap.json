@@ -1,8 +1,8 @@
 {
   "assets": {
     "assets/frontend-cp.css": "assets/frontend-cp-873bbb35f47cc7f99c87b2002fb639a3.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-01c59eca1ae1ec5f2b27a0bb8dce8f9b.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-23c94b4c1e70ec9f2b1389fa8ece285e.map",
+    "assets/frontend-cp.js": "assets/frontend-cp-9d1a3d318a56faa85edb38a47bfb9c57.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-97a3898de39494be9f2c5e17e3a07f11.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-857c7a958f950663f2037aec57b814bc.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-e10e57bcc6d38c34d459e6591b23c07a.map",
     "assets/intl/intl.js": "assets/intl/intl-a2fa41e2837cdb40744736db9d4caf23.js",
