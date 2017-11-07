@@ -34,7 +34,7 @@
   "paginatorof": "of {number, number}",
   "popover.next": "next",
   "popover.previous": "previous",
-  "add_a_note": "Add a note",
+  "add_a_note": "Add a note…",
   "attachments": "{count} {count, plural, one {attachment} other {attachments}}",
   "download_all": "Download all",
   "texteditor.attachment": "Attachment",
