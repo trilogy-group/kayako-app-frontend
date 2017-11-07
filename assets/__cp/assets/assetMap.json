@@ -1,8 +1,8 @@
 {
   "assets": {
-    "assets/frontend-cp.css": "assets/frontend-cp-ad3b3a62a9007f424e06d5fea0cc2aaa.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-227158c1b31f28782e38805a9962ea9f.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-5354044b002660f858655e6f62a8b849.map",
+    "assets/frontend-cp.css": "assets/frontend-cp-3ced92d93ce7994cf2df5abecad3798a.css",
+    "assets/frontend-cp.js": "assets/frontend-cp-b9c8426a2f4ccfd27cb821c7d67e9d8d.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-1eb61026751acf2f8dbc1c769a8242fb.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-71cea3a757fffd5ce5bdf79f6c32646a.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-4b666f6788cf7bbcb02e315d0c440058.map",
     "assets/intl/intl.js": "assets/intl/intl-08d9f7d3b3477799aec73c0f4ec438f1.js",
@@ -442,6 +442,7 @@
     "images/inline-icons/icon--sidebar_conversation--active.svg": "images/inline-icons/icon--sidebar_conversation--active-b3f3245d4329b2521afa5670d08e360d.svg",
     "images/inline-icons/icon--user--32--focused.svg": "images/inline-icons/icon--user--32--focused-e3b04a77724de921df805a0b0fddb7e2.svg",
     "images/inline-icons/icon--user--32.svg": "images/inline-icons/icon--user--32-ca75ce48beba49759db0ac59bf9105fd.svg",
+    "images/inline-icons/impersonate.svg": "images/inline-icons/impersonate-086ad41034aec4b532cf09e75dbad739.svg",
     "images/inline-icons/insights/cross.svg": "images/inline-icons/insights/cross-201a8ac1abbf75d0540d37d7c6e65cfb.svg",
     "images/inline-icons/insights/tick.svg": "images/inline-icons/insights/tick-33fa46be6b352b95792c6093836eaea1.svg",
     "images/inline-icons/jump-bar-dismiss.svg": "images/inline-icons/jump-bar-dismiss-ee33c717ee82b5b3537ecc146d0f0110.svg",
