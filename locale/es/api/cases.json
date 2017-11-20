@@ -68,7 +68,6 @@
     "requester": "Solicitante",
     "satisfaction-status": "Estado de satisfacción",
     "status": "Estado",
-    "subheader": "{date, date, medium} – {time} {hasChannel, select,\n true {creado mediante {channel}}\n false {}\n } {hasBrand, select,\n true {, {brand}}\n false {}\n }",
     "avatar": "Avatar",
     "subject": "Tema",
     "updating": "Actualizando...",
