@@ -39,7 +39,7 @@
     "trial.expired": "Teste expirado",
     "trial.agents.input.label": "{count, plural, =1 {agent} other {agents}}",
     "sandbox.title": "Modo Sandbox.",
-    "sandbox.days.left": "{days} mais dias restantes.",
+    "sandbox.days.left": "{days} dias restantes.",
     "sandbox.limitations.first": "Nenhum e-mail será enviado.",
     "sandbox.limitations.second": "As mudanças feitas aqui não afetam o seu serviço de ajuda existente.",
     "sandbox.ondemand.upgrade.message": "Pronto para atualizar? Navegue para <a href={anchor} target='_blank' rel='noopener noreferrer'>{title}</a> para atualizar se Kayako 4",

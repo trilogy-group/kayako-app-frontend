@@ -38,7 +38,7 @@
     "manage_app_access": "Gerenciar acesso a aplicativos",
     "editsignature": "Editar assinatura",
     "start_conversation": "Iniciar conversa",
-    "send_password_reset_email": "Enviar e-mail para redefinição de senha",
+    "send_password_reset_email": "Enviar e-mail para alterar senha",
     "deleteuser": "Excluir usuário",
     "confirmdelete": "Você quer mesmo excluir esse usuário?",
     "user.created": "Usuário criado",
