@@ -37,7 +37,7 @@
     "trial.upgrade.cta": "Atualize agora",
     "trial.days.left": "<strong>{days} dias</strong> restantes na versão de testes.",
     "trial.expired": "Teste expirado",
-    "trial.agents.input.label": "{count, plural, =1 {agent} outros {agents}}",
+    "trial.agents.input.label": "{count, plural, =1 {agent} other {agents}}",
     "sandbox.title": "Modo Sandbox.",
     "sandbox.days.left": "{days} mais dias restantes.",
     "sandbox.limitations.first": "Nenhum e-mail será enviado.",
