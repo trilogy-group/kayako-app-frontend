@@ -267,7 +267,6 @@
     "roles.form.users_and_organization_fields_manage_permission_label": "Benutzerdefinierte Benutzer- und Organisationsfelder verwalten",
     "roles.form.users_and_organization_fields_manage_permission_help": "Erlaubt diesem Administrator, benutzerdefinierte Benutzer- und Organisations-Profilfelder zu aktualisieren und zu löschen.",
     "roles.form.settings_manage_permission_label": "Systemkonfiguration verwalten",
-    "roles.form.settings_manage_permission_help": "Erlaubt dem Administrator, die Systemeinstellungen und die Konfiguration zu verwalten, wie z. B. die Sicherheitseinstellungen, Authentifizierungsoptionen und Blacklists.",
     "roles.form.localization_manage_permission_label": "Lokalisierung verwalten",
     "fields.type.field_options.add_option": "Eine Option hinzufügen",
     "fields.type.field_options.missing_options": "Bitte geben Sie mindestens eine Option an",
@@ -690,10 +689,6 @@
     "settings.users.registration.allow_requests_from_unregistered.description": "Wenn diese Option deaktiviert ist, werden alle eingehenden Fälle von unregistrierten Benutzern von Kayako gesperrt.",
     "settings.users.registration.require_captcha.title": "CAPTCHA bei neuen Registrierungen erforderlich machen",
     "settings.users.registration.require_captcha.description": "Kayako wird den registrierenden Benutzer im Hilfe-Center darum bitten, ein einfaches CAPTCHA von reCAPTCHA auszufüllen. Dadurch werden automatisierte Spam-Registrierungen verhindert.",
-    "settings.users.registration.email_whitelist.title": "E-Mail-Whitelist",
-    "settings.users.registration.email_whitelist.description": "Benutzer mit E-Mail-Adressen, die mit Adressen oder Domains in der Whitelist übereinstimmen, dürfen sich registrieren und Kayako wird eingehende E-Mails von ihnen akzeptieren, selbst wenn sie auf der Blacklist gesperrt sind. Geben Sie vollständige E-Mail-Adressen (z. B. hello@brewfictus.com) oder E-Mail-Domains (z. B. brewfictus.com) an, jeweils durch einen Zeilenvorschub getrennt.",
-    "settings.users.registration.email_blacklist.title": "E-Mail-Sperrliste",
-    "settings.users.registration.email_blacklist.description": "Benutzer mit E-Mail-Adressen, die mit E-Mails oder E-Mail-Domains auf der Sperrliste übereinstimmen, können sich nicht registrieren. Eingehende E-Mail-Nachrichten von diesen E-Mail-Adressen werden gesperrt. Sie können E-Mail-Adressen und -Domains durch Zeilenvorschub getrennt eingeben oder das Zeichen * als Joker einsetzen, um grundsätzlich alles auf die Sperrliste zu setzen und die Positivliste zu aktivieren.",
     "sla.title": "SLAs",
     "sla.description": "Mit SLAs („service level agreements”, Vereinbarungen über die Kundendienststufe) können Sie Zielzeiten für die Beantwortung und Lösung von Fällen festlegen und messen. Eine SLA kann zum Beispiel eine Zielzeit von 1 Stunde zur Beantwortung eines Falls und von 72 Stunden zur Lösung desselben festlegen. {link}.",
     "sla.description_link": "Mehr über SLAs erfahren",
@@ -856,7 +851,6 @@
     "brands.edit.dns.check": "DNS-Konfiguration überprüfen",
     "brands.edit.dns.valid": "Sieht von hier aus gut aus!",
     "brands.edit.dns.invalid": "Leider konnten wir nicht überprüfen, ob der Name {alias} korrekt auf {subDomain}.{Domain} umgeleitet wurde. Wenn Sie sich sicher sind, können Sie fortfahren. Wenn nicht, wenden Sie sich bitte für Unterstützung an Ihren Systemadministrator oder an den Kayako-Support.",
-    "brands.edit.ssl.description": "Ihr .kayako.com wird standardmäßig durch SSL (https) gesichert. Weil das SSL-Verschlüsselungszertifikat von Kayako jedoch nicht für Ihren individuellen Domainnamen gültig ist, müssen Sie für Ihren Domainnamen Ihr eigenes SSL-Zertifikat bereitstellen. Wenn Sie das nicht tun, könnten Ihre Kunden Fehlermeldungen der Art „Ungültiges Zertifikat“ erleben.",
     "brands.edit.ssl_certificate_not_set": "SSL-Zertifikat nicht gesetzt",
     "brands.edit.ssl_certificate_set": "SSL-Zertifikat gesetzt",
     "brands.edit.ssl_certificate_replace": "Zertifikat ersetzen",
@@ -869,8 +863,5 @@
     "manage.brands.edit.templates.description": "Sie können Kayakos E-Mail-Vorlagen an das Erscheinungsbild Ihrer Marke anpassen. E-Mail-Vorlagen unterstützen Platzhalter, die mit der Kayako-Vorlagensyntax angepasst werden können.",
     "manage.brands.edit.templates.heading.reply": "Antwort",
     "manage.brands.edit.templates.heading.notification": "Benachrichtigung",
-    "manage.brands.edit.templates.heading.satisfaction_survey": "Zufriedenheitsumfrage",
-    "manage.brands.edit.templates.reply.description": "Die Antwortvorlage wird immer dann verwendet, wenn ein Anfragesteller eines Falls eine E-Mail bekommt (etwa, wenn eine E-Mail-Antwort an einen Fall geschickt wird).",
-    "manage.brands.edit.templates.notification.description": "Die Benachrichtigungs-Vorlage wird für Benachrichtigungs-Mails verwendet, die von Kayako erzeugt werden (zum Beispiel die Kennwort-Zurücksetzungs-Mail) sowie für E-Mail-Benachrichtigungen, die durch eine Automationsregel ausgelöst werden.",
-    "manage.brands.edit.templates.satisfaction_survey.description": "Die Zufriedenheitsumfrage-Vorlage wird immer dann verwendet, wenn eine Zufriedenheitsumfrage-Mail an einen Anfragesteller eines Falls gesendet wird (dies wird durch eine Automationsregel ausgelöst)."
+    "manage.brands.edit.templates.heading.satisfaction_survey": "Zufriedenheitsumfrage"
 }

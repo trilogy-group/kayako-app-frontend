@@ -7,6 +7,7 @@
     "clear": "Limpar",
     "remove": "Remover",
     "add": "Adicionar",
+    "add_to": "Adicionar a",
     "back": "Voltar",
     "done": "Concluído",
     "new": "Novo",
@@ -15,7 +16,9 @@
     "create_link": "Criar Link",
     "helpcenter": "Central de Ajuda",
     "you": "você",
-    "change_brand": "Marca",
+    "change_brand": "Alterar marca",
+    "learn_more": "Saber mais →",
+    "cancel_changes": "Cancelar alterações",
     "datepicker.clear": "Limpar",
     "datepicker.close": "Fechar",
     "datepicker.today": "Hoje",
@@ -31,7 +34,7 @@
     "paginatorof": "de {number, number}",
     "popover.next": "próximo",
     "popover.previous": "anterior",
-    "add_a_note": "Adicionar nota",
+    "add_a_note": "Adicionar uma nota...",
     "attachments": "{count} {count, plural, one {attachment} other {attachments}}",
     "download_all": "Baixar tudo",
     "texteditor.attachment": "Anexo",
@@ -256,5 +259,6 @@
     "pin.case": "Fixar a conversa",
     "pin.user": "Fixar ao usuário",
     "pin.org": "Fixar a organização",
-    "uploading_files": "Enviando arquivos"
+    "uploading_files": "Enviando arquivos",
+    "app_version_out_of_date_call_to_action": "Recarregar"
 }
