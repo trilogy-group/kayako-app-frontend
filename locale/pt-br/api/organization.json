@@ -29,7 +29,7 @@
     "search_members": "Procurando usuários...",
     "add_member": "Adicionar usuário...",
     "member_search": "Procure um usuário por nome ou endereço de e-mail, ou insira um endereço de e-mail para adicionar um novo usuário.",
-    "member_create": "Create a new user for the email address<strong>{email}</strong>. You can add additional contact details once you've created the user.",
+    "member_create": "Crie um novo usuário para o endereço de e-mail <strong>{email}</ strong>. Você pode adicionar detalhes de contato adicionais depois de criar o usuário.",
     "member_create_empty": "Crie um novo usuário para o novo endereço de e-mail. Você pode adicionar detalhes de contato adicionais depois de criar o usuário.",
     "member_missing": "Nenhuma usuário encontrado com o termo <strong>{term}</strong>.",
     "member_already_present": "{fullName} <{email}> já é membro de {orgName}.",

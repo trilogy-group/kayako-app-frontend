@@ -1,1 +1,3 @@
-{}
+{
+    "options_will_be_deselected": "{count, plural, other {}} will be de-selected"
+}
