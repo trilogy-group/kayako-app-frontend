@@ -1,6 +1,7 @@
 {
     "activity": "Actividad",
     "addparticipant": "Añadir participante",
+    "options_will_be_deselected": "{count, plural, one {} other {}} will be de-selected",
     "copy-someone-in.title": "Copiar a alguien en",
     "copy-someone-in.description": "Estas personas se copiarán en tu respuesta.",
     "copy-someone-in.input-placeholder": "Busca al usuario o introduce dirección de correo electrónico",
@@ -9,7 +10,6 @@
     "copy-someone-in.not-found": "No se encontraron usuarios.<br/>Podrías intentar escribir una dirección de correo electrónico para añadirla.",
     "copy-someone-in.help-text": "Estas personas se copiarán en tu respuesta.",
     "copy-someone-in.email-error": "Introduce una dirección de coreo electrónico válida",
-    "contents.placeholder": "Introduce aquí tu respuesta...",
     "linkedCasesInline": "Enlazar un caso",
     "assignee.agent": "Agentes asignados",
     "assignee.team": "Equipo asignado",
@@ -68,7 +68,6 @@
     "requester": "Solicitante",
     "satisfaction-status": "Estado de satisfacción",
     "status": "Estado",
-    "subheader": "{date, date, medium} – {time} {hasChannel, select,\n true {creado mediante {channel}}\n false {}\n } {hasBrand, select,\n true {, {brand}}\n false {}\n }",
     "avatar": "Avatar",
     "subject": "Tema",
     "updating": "Actualizando...",

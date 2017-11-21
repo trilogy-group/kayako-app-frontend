@@ -1,6 +1,7 @@
 {
     "activity": "Attività",
     "addparticipant": "Aggiungi partecipante",
+    "options_will_be_deselected": "{count, plural, one {} other {}} will be de-selected",
     "copy-someone-in.title": "Aggiungi qualcuno in copia",
     "copy-someone-in.description": "Queste persone verranno aggiunte in copia alla tua risposta.",
     "copy-someone-in.input-placeholder": "Trova utente o digita indirizzo email",
@@ -9,7 +10,6 @@
     "copy-someone-in.not-found": "Nessun utente trovato.<br/>Puoi provare a digitare un indirizzo email per aggiungerlo.",
     "copy-someone-in.help-text": "Queste persone verranno aggiunte in copia alla tua risposta.",
     "copy-someone-in.email-error": "Inserisci un indirizzo email valido.",
-    "contents.placeholder": "Inserisci la tua risposta qui...",
     "linkedCasesInline": "Collega un caso",
     "assignee.agent": "Agente assegnato",
     "assignee.team": "Team assegnato",
