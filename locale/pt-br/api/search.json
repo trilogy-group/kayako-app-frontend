@@ -73,7 +73,6 @@
     "help.channel_value": "twitter",
     "help.more_help": "Mais modificadores de pesquisa",
     "and_more_domains": "e {count, plural, =1 {1 domain} other {# domains}} mais",
-    "merge.placeholder": "Procure casos...",
     "list.add_condition": "Adicionar condição",
     "list.remove_condition": "Remover condição",
     "list.collection_AND_logic_operator": "Combine todos",
