@@ -296,6 +296,7 @@
   "post.status.tooltip_with_time.DELIVERED": "Delivered at {time}",
   "post.status.tooltip_with_time.SEEN": "Seen at {time}",
   "post.status.tooltip_with_time.REJECTED": "This message was rejected by the recipient’s mail server at {time}",
+  "post.status.tooltip_with_time_and_error.REJECTED": "This message was rejected by the recipient’s mail server at {time} with the error <br> “<i>{error}</i>”",
   "post.status.tooltip_without_time.CLIENT_WAITING": "Queued",
   "post.status.tooltip_without_time.CLIENT_SENDING": "Sending…",
   "post.status.tooltip_without_time.CLIENT_FAILED": "Failed",
