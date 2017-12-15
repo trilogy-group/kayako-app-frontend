@@ -1,8 +1,6 @@
 {
-    "navigation.apps": "앱",
     "navigation.settings": "설정",
     "navigation.messenger": "메신저",
-    "navigation.manage": "관리",
     "navigation.automation": "자동화",
     "navigation.account": "계정",
     "beta": "베타",
