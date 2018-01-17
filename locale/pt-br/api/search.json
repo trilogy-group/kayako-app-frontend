@@ -4,8 +4,6 @@
     "no_results_found.line1": "Desculpe, nenhum resultado encontrado para <strong>{searchQuery}</strong>",
     "no_results_found.line2": "Tente uma busca diferente",
     "search_box_placeholder": "Buscar",
-    "placeholder": "Pesquisar casos, usuários e organizações",
-    "advanced_search_placeholder": "Pesquisar casos, usuários e organizações",
     "query_validation_error_title": "A pesquisa é muito pequena",
     "query_validation_error": "Por favor, insira pelo menos 3 caracteres para fazer a pesquisa",
     "nopreview": "Passe o mouse sobre o resultado de uma pesquisa para ver uma prévia.",
