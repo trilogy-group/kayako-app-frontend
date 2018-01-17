@@ -197,7 +197,6 @@
     "teams.info.title": "Miembros del equipo",
     "teams.info.content": "Pulsa en los agentes de la siguiente lista para añadirlos o eliminarlos del equipo",
     "roles.title": "Perfiles y permisos",
-    "roles.description": "Cada usuario se asigna a un perfil determinado que control su nivel de acceso en Kayako. Los clientes del plan Empresa pueden crear perfiles personalizados adicionales para permitir un mayor detalle en el control de acceso en Kayako.",
     "roles.description_link": "Más información sobre la personalización de perfiles y permisos",
     "roles.index.add_new_button": "Nuevo perfil",
     "roles.index.deletion_successful_notification": "El perfil se ha borrado correctamente",
