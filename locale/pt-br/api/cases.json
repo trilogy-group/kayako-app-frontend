@@ -167,7 +167,7 @@
     "filter_options.posts_activities": "Mostrar tudo",
     "posts.load_more": "Carregar mais",
     "posts.jump_to_latest": "Pular",
-    "posts.unread_posts": "{num, plural, =1 {1 nova mensagem} other {# novas mensagens}",
+    "posts.unread_posts": "{num, plural, =1 {1 nova mensagem} other {# novas mensagens}}",
     "suspendedMessages.sidebar_title": "Suspenso",
     "suspendedMessages.title": "Mensagens suspensas",
     "suspendedMessages.confirmDeleteAll": "Você quer mesmo excluir essas mensagens? Essa ação não pode ser desfeita.",
