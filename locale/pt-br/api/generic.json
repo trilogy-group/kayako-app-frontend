@@ -112,7 +112,7 @@
     "uploads.not_allowed": "Uh oh! Parece que não pode carregar um arquivo aqui.",
     "confirm.delete": "Você quer mesmo excluir isso?",
     "confirm.trashcases": "Você quer mesmo enviar esses itens para a lixeira?",
-    "confirm.emptytrash.header": "Tem certeza de que deseja remover permanentemente todas as conversas na lixeira do Kayako?",
+    "confirm.emptytrash.header": "Tem certeza de que deseja remover permanentemente todas as conversas da lixeira do Kayako?",
     "confirm.emptytrash.body": "Aviso: você não pode desfazer esta ação.",
     "confirm.emptytrash.confirm": "Esvaziar lixeira",
     "confirm.lose_changes": "Você possui alterações não salvas nessa página. Você quer mesmo descartar essas alterações?",
