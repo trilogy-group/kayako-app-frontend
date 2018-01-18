@@ -267,5 +267,6 @@
   "pin.org": "Pin to organization",
   "uploading_files": "Uploading files",
   "app_version_out_of_date": "Kayako has been updated. Reload to use the latest version.",
-  "app_version_out_of_date_call_to_action": "Reload"
+  "app_version_out_of_date_call_to_action": "Reload",
+  "email_headers": "Email Headers:"
 }
