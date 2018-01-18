@@ -1,0 +1,9 @@
+pipeline:
+  deploy:
+    image: kayako/utilbox
+    commands:
+      - python deploy.py --path $$(pwd) --bucket $${BUCKET_${DRONE_DEPLOY_TO^^}} --prefix frontend
+    when:
+      event: deployment
+    secrets: [ account_number_production, account_number_staging, bucket_production, bucket_staging ]
+
