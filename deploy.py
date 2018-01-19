@@ -90,6 +90,16 @@ def _put_item(client, bucket, file_path, artifact):
 def _show_todo(s, d):
     print(' + Will write {} locale to {}'.format(s, d), flush=True)
 
+def _ensure_error_page(client, bucket):
+    _put_item(client, bucket, 'error.html', dumps({
+            'status': 404,
+            'errors': [{
+                'code': 'RESOURCE_NOT_FOUND',
+                'message': 'Resource does not exist or has been removed',
+                'more_info': 'https://developer.kayako.com/api/v1/reference/errors/RESOURCE_NOT_FOUND'
+            }]
+        }))
+
 
 def publish(bucket: str, prefix: str, artifacts: dict, dryrun: bool):
     s3 = _get_s3_client() if not dryrun else None
@@ -101,6 +111,8 @@ def publish(bucket: str, prefix: str, artifacts: dict, dryrun: bool):
                   bucket,
                   path.join(prefix, k),
                   dumps(content)) if not dryrun else _show_todo(k, path.join(prefix, k))
+
+    _ensure_error_page(s3, bucket)
 
 
 def deploy(source: str, bucket: str, prefix: str, dryrun: bool):
