@@ -197,7 +197,6 @@
     "teams.info.title": "Membros da equipa",
     "teams.info.content": "Clique nos agentes da lista abaixo para adicionar ou remover os mesmos da equipa",
     "roles.title": "Funções e autorizações",
-    "roles.description": "É atribuída uma função específica a cada utilizador, a qual controla o seu nível de acesso na Kayako. Os clientes do plano empresarial podem criar funções personalizadas adicionais, a fim de acrescentarem mais granularidade ao controlo de acessos da Kayako. {link}.",
     "roles.description_link": "Saiba mais sobre como personalizar funções e autorizações",
     "roles.index.add_new_button": "Nova função",
     "roles.index.deletion_successful_notification": "Função eliminada com sucesso",
