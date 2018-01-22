@@ -197,7 +197,6 @@
     "teams.info.title": "Teammitglieder",
     "teams.info.content": "Klicken Sie auf Agenten aus der Liste unten, um sie einem Team hinzuzufügen oder sie daraus zu entfernen.",
     "roles.title": "Rollen und Berechtigungen",
-    "roles.description": "Jedem Benutzer wird eine bestimmte Rolle zugewiesen, die seine Zugriffsberechtigungen in Kayako steuert. Mit dem Enterprise-Tarif können Kunden zusätzliche benutzerdefinierte Rollen erstellen, um die Zugangssteuerung in Kayako feinkörniger gestalten zu können. {link}.",
     "roles.description_link": "Erfahren Sie mehr über das Anpassen von Rollen und Berechtigungen",
     "roles.index.add_new_button": "Neue Rolle",
     "roles.index.deletion_successful_notification": "Rolle erfolgreich gelöscht",
