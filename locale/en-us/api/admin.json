@@ -895,8 +895,6 @@
   "email.settings.heading.sending_email": "Sending email",
   "email.settings.wildcard_email.title": "Wildcard email address",
   "email.settings.wildcard_email.description": "Kayako will catch email sent to any variation of support@{domain} (such as hello@{domain}, marypoppins@{domain}), even if there isn’t a corresponding address for the destination address. This may be useful if you wish to catch email where users mistype your email address, such as suport@{domain}.",
-  "email.settings.html_replies.title": "Show replies in HTML (BETA)",
-  "email.settings.html_replies.description": "Kayako shows replies in plain text by default, turning this setting on will allow the reply through in it's original form. This may include styling, tables, lists etc",
   "email.settings.personalize_replies.title": "Personalize the ‘from’ in email replies",
   "email.settings.personalize_replies.description": "Kayako will use your agent’s personal name as the ‘From’ name for email replies to your customers. For example, if you reply to an email sent to support@{domain}, the ‘From’ email header will look like this: “\\{Current Agent’s Name\\} <support@{domain}>”.",
   "email.settings.custom_dkim.title": "Use DKIM to authenticate emails sent using your custom domain name",
