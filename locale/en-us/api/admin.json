@@ -994,6 +994,8 @@
   "messenger.tabs.options.business_hours.disabled": "-",
   "messenger.tabs.options.business_hours.help_text": "Kayako Messenger will tell your customers when your team is available according to the business hours you set below. Outside of these hours, Messenger will tell customers when you'll be back. Customers will still be able to message you, and your team can get back to them later.",
   "messenger.tabs.options.business_hours.config_link": "You can configure business hours here.",
+  "messenger.tabs.options.hc_suggestions.label": "Help Center article suggestions",
+  "messenger.tabs.options.hc_suggestions.help_text": "Suggest up to three relevant articles that may help your customer after they've started a conversation.",
   "messenger.tabs.options.save_configuration": "Save configuration",
   "messenger.tabs.options.save_success": "Settings saved successfully",
   "messenger.tabs.embed.number": "3.",
