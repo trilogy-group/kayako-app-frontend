@@ -4,6 +4,8 @@
     "no_results_found.line1": "Désolé, aucun résultat trouvé pour <strong>{searchQuery}</strong>",
     "no_results_found.line2": "Essayez une recherche différente",
     "search_box_placeholder": "Recherche",
+    "placeholder": "Rechercher des dossiers, des utilisateurs et des organisations",
+    "advanced_search_placeholder": "Rechercher des dossiers, des utilisateurs et des organisations",
     "query_validation_error_title": "La requête de recherche est trop courte",
     "query_validation_error": "Veuillez entrer au moins 3 caractères pour rechercher",
     "nopreview": "Pointez votre curseur sur un résultat de recherche pour voir un aperçu.",
