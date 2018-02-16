@@ -268,5 +268,6 @@
   "uploading_files": "Uploading files",
   "app_version_out_of_date": "Kayako has been updated. Reload to use the latest version.",
   "app_version_out_of_date_call_to_action": "Reload",
-  "email_headers": "Email Headers:"
+  "email_headers": "Email Headers:",
+  "app_update_received_browser_tab_title": "New update!"
 }
