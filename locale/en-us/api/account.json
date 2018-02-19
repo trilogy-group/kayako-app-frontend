@@ -104,6 +104,6 @@
   "plans.paying.title": "Paying now",
   "plans.upgrade_to_create_new_roles": "Upgrade to create new roles",
   "plans.custom_plan": "Lucky you, you’re on a custom plan! To update or make changes to your plan, please contact <a href=\"mailto:sales@kayako.com\">sales@kayako.com</a>.",
-  "plans.update_message.title": "Update your price plan",
-  "plans.update_message.body": "<p><a href=\"https://www.kayako.com/pricing\" rel=\"noopener noreferrer\" target=\"_blank\">Compare plans</a> and find the best one for you. <a href=\"https://support.kayako.com/conversation/new\" rel=\"noopener noreferrer\" target=\"_blank\">Contact Sales</a> for more information.</p>"
+  "plans.update_message.title": "Update your plan",
+  "plans.update_message.body": "<p><a href=\"https://www.kayako.com/pricing\" rel=\"noopener noreferrer\" target=\"_blank\">Compare plans</a> and find the best one for you. <a href=\"https://support.kayako.com/conversation/new\" rel=\"noopener noreferrer\" target=\"_blank\">Contact sales</a> for more information.</p>"
 }
