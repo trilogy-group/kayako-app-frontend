@@ -1119,7 +1119,7 @@
   "brands.edit.domain.available": ":-) this domain name is available!",
   "brands.edit.domain.not_available": ":-( this domain is not available, try another one",
   "brands.edit.alias.description": "You can map your own domain name to the Kayako domain above for this Brand. This is called <em>host mapping</em> and involves some DNS configuration work. If you aren’t able to do this configuration now, you can always add a custom domain to this Brand later.",
-  "brands.edit.alias.placeholder": "e.g. brewfictus.com",
+  "brands.edit.alias.placeholder": "e.g. support.brewfictus.com",
   "brands.edit.dns.check": "Check DNS configuration",
   "brands.edit.dns.valid": "Looks good from here!",
   "brands.edit.dns.invalid": "Unfortunately we couldn’t validate that {alias} name has been correctly mapped to {subDomain}.{domain}. If you’re sure it has, you can proceed. If not, please contact your system administrator or Kayako support for assistance.",
