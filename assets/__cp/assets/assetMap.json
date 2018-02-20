@@ -5,8 +5,8 @@
     "assets/ace/worker-json.js": "assets/ace/worker-json-c726c1606b491460d2952eb6f4ceb2dd.js",
     "assets/ace/worker-json.map": "assets/ace/worker-json-897c520de415f570147daf0ff6ec1f80.map",
     "assets/frontend-cp.css": "assets/frontend-cp-cabe43a9a3a16b1dd4277f875b223e69.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-ebcbc8b5308d7a247c8a77b9b30c3be2.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-ec4d59e72c272bcaae5e14ceda9a8917.map",
+    "assets/frontend-cp.js": "assets/frontend-cp-503b93c393354eb7e0dd806d0c882899.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-d6922c14a8eefad5992a3b36bc6036a7.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-71cea3a757fffd5ce5bdf79f6c32646a.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-4b666f6788cf7bbcb02e315d0c440058.map",
     "assets/intl/intl.js": "assets/intl/intl-08d9f7d3b3477799aec73c0f4ec438f1.js",
@@ -617,7 +617,10 @@
     "moment/fastboot-moment-timezone.js": "moment/fastboot-moment-timezone-ee832862b03f8d3136f59c1d05684f7d.js",
     "moment/fastboot-moment-timezone.map": "moment/fastboot-moment-timezone-9cf34e9214405a7664f2c5f26b8b094a.map",
     "moment/fastboot-moment.js": "moment/fastboot-moment-c1eaca68017db4e56f389883674d8b3e.js",
-    "moment/fastboot-moment.map": "moment/fastboot-moment-92994caa550f26539ae1e4499469e13d.map"
+    "moment/fastboot-moment.map": "moment/fastboot-moment-92994caa550f26539ae1e4499469e13d.map",
+    "sounds/01a4c70.mp3": "sounds/01a4c70-1aa5e33e12332eb3606f6343865c6320.mp3",
+    "sounds/21c5b96.mp3": "sounds/21c5b96-4c44976c8fa7ca4dfbfb45e09dd20322.mp3",
+    "sounds/alert-01.mp3": "sounds/alert-01-26dc49faa3789617334a7b10b948ab4b.mp3"
   },
   "prepend": "https://assets.kayako.com/"
 }
