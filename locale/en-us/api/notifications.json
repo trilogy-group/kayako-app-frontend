@@ -14,7 +14,6 @@
   "preferences.mobile_description": "When you're away, Kayako notifies your mobile instead. Get Kayako for <a href=\"https://itunes.apple.com/us/app/kayako/id1163593165?mt=8\" target=\"_blank\" rel=\"noopener noreferrer\">iOS</a> and <a href=\"https://play.google.com/store/apps/details?id=com.kayako.android.k5\" target=\"_blank\" rel=\"noopener noreferrer\">Android</a>",
   "preferences.email": "Email",
   "preferences.email_description": "Receive email notifications about important conversations and updates",
-  "preferences.email_unsupported": "Email notification settings are coming soon!",
   "preferences.activities": "Activities",
   "preferences.case_created": "A new conversation is created",
   "preferences.case_assigned_to_agent": "A conversation is assigned to you",
