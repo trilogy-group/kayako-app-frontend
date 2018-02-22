@@ -304,8 +304,6 @@
   "roles.form.cases_split_and_merge_permission_help": "Allows this agent to split conversations into new conversations, and merge two existing conversations into one.",
   "roles.form.cases_trash_permission_label": "Trash conversations",
   "roles.form.cases_trash_permission_help": "Allow this agent to trash conversations and remove individual conversation replies and notes.",
-  "roles.form.chats_accept_permission_label": "Accept new messenger requests and invitations",
-  "roles.form.chats_accept_permission_help": "Enables the agent to sign in to live messenger and make themselves available to accept new messenger requests and transfer invitations.",
   "roles.form.users_and_orgs_group_legend": "Users and organizations",
   "roles.form.users_and_orgs_create_update_permission_label": "Create and update users and organizations",
   "roles.form.users_and_orgs_create_update_permission_help": "Allows an agent to create and update user profiles (such as their name, identities and the values of custom user fields). Regardless of this permission, agents can update their own profile.​",
