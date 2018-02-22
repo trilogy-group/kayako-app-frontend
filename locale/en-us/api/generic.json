@@ -3,6 +3,7 @@
   "home": "Home",
   "validation_errors": "Please check you’ve filled everything in correctly",
   "next": "Next",
+  "previous": "Previous",
   "close": "Close",
   "clear": "Clear",
   "remove": "Remove",
