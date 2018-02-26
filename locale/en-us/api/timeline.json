@@ -47,6 +47,8 @@
   "activity.completed_trashed_or_restored_by_monitor_or_trigger": "the {type} {name}",
   "activity.added_note": "{name} added a note",
   "activity.on_context": "on <b><a class='timeline-link' href='{anchor}'>{name}</a></b>",
+  "activity.article_suggestion": "These articles were suggested to <b>{name}</b> by the <b>{brand}</b> Messenger",
+  "activity.view_suggested_article": "<b>{name}</b> viewed <b>{title}</b> from suggestions offered by <b>{brand}</b> Messenger",
   "avatar_tooltips.system": "The system updated this conversation",
   "avatar_tooltips.rule": "A {type} rule <strong>{name}</strong> updated this conversation",
   "avatar_tooltips.rule_user": "A {type} rule <strong>{name}</strong> updated this user",
