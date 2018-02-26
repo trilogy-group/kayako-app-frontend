@@ -5,8 +5,8 @@
     "assets/ace/worker-json.js": "assets/ace/worker-json-c726c1606b491460d2952eb6f4ceb2dd.js",
     "assets/ace/worker-json.map": "assets/ace/worker-json-897c520de415f570147daf0ff6ec1f80.map",
     "assets/frontend-cp.css": "assets/frontend-cp-29d06fca785cd510a27d96fc4f932eea.css",
-    "assets/frontend-cp.js": "assets/frontend-cp-279e48df196ec9294ed21e4b6d406def.js",
-    "assets/frontend-cp.map": "assets/frontend-cp-06155ad4d1319a2402802a44153ab311.map",
+    "assets/frontend-cp.js": "assets/frontend-cp-0e1bf3908d8eacf3b56391f6a92cbd41.js",
+    "assets/frontend-cp.map": "assets/frontend-cp-476e1f52c6967313b06978c0b0b92302.map",
     "assets/intl/intl.complete.js": "assets/intl/intl.complete-71cea3a757fffd5ce5bdf79f6c32646a.js",
     "assets/intl/intl.complete.map": "assets/intl/intl.complete-4b666f6788cf7bbcb02e315d0c440058.map",
     "assets/intl/intl.js": "assets/intl/intl-08d9f7d3b3477799aec73c0f4ec438f1.js",
@@ -637,7 +637,7 @@
     "moment/fastboot-moment.map": "moment/fastboot-moment-92994caa550f26539ae1e4499469e13d.map",
     "sounds/01a4c70.mp3": "sounds/01a4c70-1aa5e33e12332eb3606f6343865c6320.mp3",
     "sounds/21c5b96.mp3": "sounds/21c5b96-4c44976c8fa7ca4dfbfb45e09dd20322.mp3",
-    "sounds/alert-01.mp3": "sounds/alert-01-26dc49faa3789617334a7b10b948ab4b.mp3"
+    "sounds/donk.mp3": "sounds/donk-26dc49faa3789617334a7b10b948ab4b.mp3"
   },
   "prepend": "https://assets.kayako.com/"
 }
