@@ -24,8 +24,8 @@
   "preferences.save": "Save changes",
   "preferences.success": "Your notification preferences have been updated",
   "text.case_created": "<strong>{name}</strong> created <strong>{subject}</strong>",
-  "text.case_assigned_to_agent": "You've been assigned to <strong>{name}</strong>'s conversation",
-  "text.case_assigned_to_team": "Your team <strong>{team}</strong> has been assigned to <strong>{name}</strong>'s conversation",
+  "text.case_assigned_to_agent": "You were assigned to <strong>{name}</strong>'s conversation",
+  "text.case_assigned_to_team": "Your team <strong>{team}</strong> was assigned to <strong>{name}</strong>'s conversation",
   "text.sla_breached": "SLA <strong>{name}</strong> breached on <strong>{subject}</strong>",
   "text.reply_on_case": "<strong>{name}</strong> replied to <strong>{subject}</strong>",
   "text.mentioned_in_conversation": "<strong>{name}</strong> mentioned you in a note on <strong>{subject}</strong>"
