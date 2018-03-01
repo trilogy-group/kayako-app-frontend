@@ -23,6 +23,8 @@
   "preferences.reply_on_case": "Someone replies to one of your assigned conversations",
   "preferences.save": "Save changes",
   "preferences.success": "Your notification preferences have been updated",
+  "preferences.sound.desktop_sound_alerts": "Play sound for desktop notifications",
+  "preferences.sound.desktop_sound_alerts_realtime_only": "Play sound only when requester is online",
   "text.case_created": "<strong>{name}</strong> created <strong>{subject}</strong>",
   "text.case_assigned_to_agent": "You were assigned to <strong>{name}</strong>'s conversation",
   "text.case_assigned_to_team": "Your team <strong>{team}</strong> was assigned to <strong>{name}</strong>'s conversation",
