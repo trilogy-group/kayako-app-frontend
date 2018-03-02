@@ -237,7 +237,7 @@
     "text_editor.show_controls": "Voir les contrôles",
     "text_editor.link": "Lien",
     "text_editor.insert_image": "Insérer une image",
-    "text_editor.replying_to": "En réponse à",
+    "text_editor.replying_to": "En réponse à:",
     "text_editor.cc.label": "CC",
     "text_editor.cc.placeholder": "Trouver un utilisateur ou écrire l'adresse...",
     "text_editor.cc.add_new_user": "Ajouter un nouvel utilisateur",

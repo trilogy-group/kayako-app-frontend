@@ -65,7 +65,7 @@
     "last_seen": "Vu pour la dernière fois {time}",
     "never_seen": "Pas vu auparavant",
     "online_now": "En ligne maintenant",
-    "timeline.preamble": "<p> Bonjour! C'est le début de votre historique avec {nom}. Ici vous pouvez voir un journal de toutes les actions qu'ils vont entreprendre au sein de Kayako. Vous pouvez également afficher leur activité à partir d'autres programmes, en envoyant des notifications à ce calendrier en utilisant Zapier ou l'API Kayako. </p> <p> Oh, et vous pouvez y ajouter des notes privées, que votre équipe peut voir, mais que le client ne peut pas. 👇 </p>",
+    "timeline.preamble": "<p> Bonjour! C'est le début de votre historique avec {name}. Ici vous pouvez voir un journal de toutes les actions qu'ils vont entreprendre au sein de Kayako. Vous pouvez également afficher leur activité à partir d'autres programmes, en envoyant des notifications à ce calendrier en utilisant Zapier ou l'API Kayako. </p> <p> Oh, et vous pouvez y ajouter des notes privées, que votre équipe peut voir, mais que le client ne peut pas. 👇 </p>",
     "new_conversation": "Nouveau dossier",
     "grant.you_have_not_authorized_apps": "Vous n'avez autorisé aucune application à utiliser votre compte Kayako.",
     "grant.last_used_at": "Dernière utilisation le {date} ",
