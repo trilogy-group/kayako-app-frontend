@@ -267,5 +267,7 @@
     "pin.org": "Fixar a organização",
     "uploading_files": "Enviando arquivos",
     "app_version_out_of_date": "Kayako foi atualizado. Recarregue para usar a versão mais recente.",
-    "app_version_out_of_date_call_to_action": "Recarregar"
+    "app_version_out_of_date_call_to_action": "Recarregar",
+    "email_headers": "Cabeçalhos de e-mail:",
+    "app_update_received_browser_tab_title": "Nova atualização!"
 }
