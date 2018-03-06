@@ -104,6 +104,6 @@
     "plans.paying.title": "Paiement immédiat",
     "plans.upgrade_to_create_new_roles": "Mettez à niveau pour créer de nouveaux rôles",
     "plans.custom_plan": "Quelle chance, vous êtes sur un plan personnalisé! Pour mettre à jour ou apporter des modifications à votre plan, veuillez contacter <a href=\"mailto:sales@kayako.com\">sales@kayako.com</a>.",
-    "plans.update_message.title": "Mettez à jour votre plan tarifaire",
-    "plans.update_message.body": "<p><a href=\"https://www.kayako.com/pricing\" rel=\"noopener noreferrer\" target=\"_blank\">Comparer les forfaits</a> et trouvez le meilleur pour vous. <a href=\"https://support.kayako.com/conversation/new\" rel=\"noopener noreferrer\" target=\"_blank\">Contacter les ventes</a> pour plus d'information.</p>"
+    "plans.update_message.title": "Mettez à jour votre forfait",
+    "plans.update_message.body": "<p><a href=\"https://www.kayako.com/pricing\" rel=\"noopener noreferrer\" target=\"_blank\">Comparez les plans</a> et trouvez le meilleur pour vous. <a href=\"https://support.kayako.com/conversation/new\" rel=\"noopener noreferrer\" target=\"_blank\">Contacter les ventes</a> pour plus d'informations.</p>"
 }
