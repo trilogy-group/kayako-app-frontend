@@ -1,5 +1,6 @@
 {
   "center_title": "My Notifications",
+  "mark_as_read": "Mark as read",
   "mark_all_as_read": "Mark all as read",
   "marked_all_as_read": "Marked as read",
   "load_more": "Load more",
@@ -11,12 +12,23 @@
   "preferences.desktop_description": "Get notifications through your browser when you're on your computer",
   "preferences.mobile": "Mobile",
   "preferences.mobile_description": "When you're away, Kayako notifies your mobile instead. Get Kayako for <a href=\"https://itunes.apple.com/us/app/kayako/id1163593165?mt=8\" target=\"_blank\" rel=\"noopener noreferrer\">iOS</a> and <a href=\"https://play.google.com/store/apps/details?id=com.kayako.android.k5\" target=\"_blank\" rel=\"noopener noreferrer\">Android</a>",
+  "preferences.email": "Email",
+  "preferences.email_description": "Receive email notifications about important conversations and updates",
   "preferences.activities": "Activities",
   "preferences.case_created": "A new conversation is created",
   "preferences.case_assigned_to_agent": "A conversation is assigned to you",
   "preferences.case_assigned_to_team": "A conversation is assigned to one of your teams",
+  "preferences.mentioned_in_conversation": "Someone mentions you in a note",
   "preferences.sla_breached": "One of your assigned conversations breaches its SLA",
   "preferences.reply_on_case": "Someone replies to one of your assigned conversations",
   "preferences.save": "Save changes",
-  "preferences.success": "Your notification preferences have been updated"
+  "preferences.success": "Your notification preferences have been updated",
+  "preferences.sound.desktop_sound_alerts": "Play sound for desktop notifications",
+  "preferences.sound.desktop_sound_alerts_realtime_only": "Play sound only when requester is online",
+  "text.case_created": "<strong>{name}</strong> created <strong>{subject}</strong>",
+  "text.case_assigned_to_agent": "You were assigned to <strong>{name}</strong>'s conversation",
+  "text.case_assigned_to_team": "Your team <strong>{team}</strong> was assigned to <strong>{name}</strong>'s conversation",
+  "text.sla_breached": "SLA <strong>{name}</strong> breached on <strong>{subject}</strong>",
+  "text.reply_on_case": "<strong>{name}</strong> replied to <strong>{subject}</strong>",
+  "text.mentioned_in_conversation": "<strong>{name}</strong> mentioned you in a note on <strong>{subject}</strong>"
 }
