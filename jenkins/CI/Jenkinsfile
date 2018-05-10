@@ -71,32 +71,41 @@ pipeline {
                 dir('kayako/novo'){
                     cloneDependency("kayako-novo")
                 }
+                dir('kayako/novo/__apps'){
+                    cloneDependency("kayako-apps")
+                }
+                dir('kayako/novo/__apps/account'){
+                    cloneDependency("kayako-app-account")
+                }
                 dir('kayako/novo/__apps/base'){
                     cloneDependency("kayako-app-base")
                 }
-                dir('kayako/novo/__apps/search'){
-                    cloneDependency("kayako-app-search")
-                }
-                dir('kayako/novo/__apps/facebook'){
-                    cloneDependency("kayako-app-facebook")
-                }
-                dir('kayako/novo/__apps/twitter'){
-                    cloneDependency("kayako-app-twitter")
+                dir('kayako/novo/__apps/chat'){
+                    cloneDependency("kayako-app-chat")
                 }
                 dir('kayako/novo/__apps/helpcenter'){
                     cloneDependency("kayako-app-helpcenter")
                 }
-                dir('kayako/novo/__apps/chat'){
-                    cloneDependency("kayako-app-chat")
+                dir('kayako/novo/__apps/reports'){
+                    cloneDependency("kayako-app-reports")
+                }
+                dir('kayako/novo/__apps/mailer'){
+                    cloneDependency("kayako-app-mailer")
+                }
+                dir('kayako/novo/__apps/facebook'){
+                    cloneDependency("kayako-app-facebook")
+                }
+                dir('kayako/novo/__apps/search'){
+                    cloneDependency("kayako-app-search")
+                }
+                dir('kayako/novo/__apps/twitter'){
+                    cloneDependency("kayako-app-twitter")
                 }
                 dir('kayako/novo/__apps/widget'){
                     cloneDependency("kayako-app-widget")
                 }
                 dir('kayako/novo/__apps/zapier'){
                     cloneDependency("kayako-app-zapier")
-                }
-                dir('kayako/novo/__apps/insights'){
-                    cloneDependency("kayako-app-insights")
                 }
             }
         }
