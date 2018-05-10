@@ -74,9 +74,6 @@ pipeline {
                 dir('kayako/novo/__apps/base'){
                     cloneDependency("kayako-app-base")
                 }
-                dir('kayako/novo/__apps'){
-                    cloneDependency("kayako-apps")
-                }
                 dir('kayako/novo/__apps/search'){
                     cloneDependency("kayako-app-search")
                 }
