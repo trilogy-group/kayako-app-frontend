@@ -1,0 +1,128 @@
+#!/usr/bin/env groovy
+@Library(['eng-build-utils']) _
+
+/**
+ * Add hostUrl to knownhosts on the system (or container) if necessary so that ssh commands will go through even if the certificate was not previously seen.
+ * @param hostUrl
+ */
+void tryAddKnownHost(String hostUrl){
+    // ssh-keygen -F ${hostUrl} will fail (in bash that means status code != 0) if ${hostUrl} is not yet a known host
+    def statusCode = sh script:"ssh-keygen -F ${hostUrl}", returnStatus:true
+    if(statusCode != 0){
+        sh "mkdir -p ~/.ssh"
+        sh "ssh-keyscan ${hostUrl} >> ~/.ssh/known_hosts"
+    }
+}
+
+
+/**
+* clone dependencies
+**/
+
+void cloneDependency(String repositoryName){
+  try {
+    git branch: "${env.KAYAKO_TRAVIS_CI_BRANCH}", credentialsId: "${env.GITHUB_CREDENTIALS_ID}", url: "git@github.com:trilogy-group/${repositoryName}.git"
+  } catch (error) {
+    println "branch: ${env.KAYAKO_TRAVIS_CI_BRANCH} for repo ${repositoryName} not found"
+    println "falling back to default branch 'master'"
+    git branch: "master", credentialsId: "${env.GITHUB_CREDENTIALS_ID}", url: "git@github.com:trilogy-group/${repositoryName}.git"
+  }
+}
+
+pipeline {
+    agent {
+        node {
+            label "${env.NODE_LABELS}"
+        }
+    }
+    environment {
+        TRAVIS_COMMIT = "${env.GIT_COMMIT}"
+        TRAVIS_BRANCH = "${env.GIT_BRANCH}"
+        TRAVIS_REPO_SLUG = "trilogy-group/kayako-app-frontend"
+        TRAVIS_PULL_REQUEST ="false"
+        TEST_ENV = "${env.TEST_ENV}"
+        TRAVIS_BUILD_DIR ="${env.WORKSPACE}/kayako/frontend"
+        CI_HOME = "${env.WORKSPACE}/kayako"
+        DIR_PACKAGE = "${env.WORKSPACE}/kayako/novo"
+    }
+    options {
+        timestamps()
+    }
+    stages {
+        stage('Provisioning') {
+            steps {
+                tryAddKnownHost("github.com")
+                sh "whoami"
+                sh "printenv"
+            }
+        }
+        stage("Cleanup") {
+            steps {
+                dir("kayako"){
+
+                }
+            }
+        }
+        stage('Checkout') {
+            steps {
+                dir('kayako/travis-ci'){
+                    cloneDependency("kayako-travis-k5")
+                }
+                dir('kayako/novo'){
+                    cloneDependency("kayako-novo")
+                }
+            }
+        }
+        stage('Build') {
+            steps {
+                dir("kayako/novo") {
+                  sh "rm -rf __apps"
+                  sh "mkdir -p __apps"
+                  sh "cp -r ../app-frontend __apps/frontend"
+                  sh "find . -type d -name '*@tmp' -exec rm -r {} +"
+                }
+            }
+        }
+        stage('Test') {
+            steps {
+                 dir("kayako/travis-ci") {
+                     sh "bash install_dependencies.sh"
+                     sh "mysql -e 'DROP DATABASE IF EXISTS novo;'"
+                     sh "mysql -e 'CREATE DATABASE novo;'"
+                     sh "mysql -e 'SET GLOBAL wait_timeout=28800;'"
+                     sh "curl -X DELETE 'http://localhost:9200/_all'"
+                     sh "redis-cli FLUSHALL"
+                     sh "php init.php"
+                 }
+            }
+        }
+        stage("Nexus") {
+            steps {
+              dir("kayako/app-frontend") {
+                sh "mvn versions:set -DnewVersion=${env.BUILD_VERSION}"
+                sh "mvn deploy -P upload -DskipTests -X"
+              }
+            }
+        }
+    }
+    post {
+        always {
+          dir("kayako/app-facebook") {
+            // mailing
+            script {
+                comitterEmail = sh (
+                    script: "git rev-parse HEAD | git show --format='%ae' | grep -m1 ''",
+                    returnStdout: true
+                ).trim()
+            }
+
+
+            step([$class: 'Mailer',
+                recipients: "${comitterEmail}, ${EMAIL_TO}",
+                notifyEveryUnstableBuild: true,
+                sendToIndividuals: true
+            ])
+          }
+        }
+    }
+}
