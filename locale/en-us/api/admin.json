@@ -1060,7 +1060,7 @@
   "privacy.form.choose_locale": "Choose locale of privacy policy",
   "privacy.form.make_default": "Make this default Privacy Polict URL",
   "privacy.privacy_types.cookie": "Cookie",
-  "privacy.privacy_types.register": "Regiser",
+  "privacy.privacy_types.register": "Register",
   "localization.title": "Localization",
   "localization.description": "Deliver a tailored customer experience on a worldwide scale with localization. Support as many languages as your customers need, along with easy translation for your agents. Under Settings, you can select your default language, time zone preferences, and time format for newly created users. Enabling a language makes it available to your customers, and you'll be able to localize your content (such as Help Center articles and custom field titles) into it.",
   "localization.description2": "{link}.",
