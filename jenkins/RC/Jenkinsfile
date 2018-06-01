@@ -107,7 +107,7 @@ pipeline {
     }
     post {
         always {
-          dir("kayako/app-facebook") {
+          dir("kayako/app-frontend") {
             // mailing
             script {
                 comitterEmail = sh (
