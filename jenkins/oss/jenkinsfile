@@ -1,0 +1,42 @@
+pipeline {
+    agent { 
+        node {
+            label "${env.DOCKER_NODE_LABEL}"
+        }
+    }
+    options {
+        timestamps()
+    }
+    stages {
+        stage('Provisioning') {
+            steps {
+                sh "apt-get install --assume-yes build-essential"
+                sh "apt-get install --assume-yes python-dev"
+                sh "pip install --upgrade pip"
+                sh "pip install scancode-toolkit==2.2.1"
+            }
+        }
+        stage('Clean') {
+            steps {
+                sh 'rm -rf ./scancode && mkdir ./scancode'
+            }
+        }
+        stage('Make') {
+            steps {
+                sh "scancode --format html --diag --verbose -n 4 --timeout ${env.SCANCODE_TIMEOUT}  --ignore '*.zip' --ignore '*.log' --ignore '*.jar' --ignore '*.war' --ignore '*.class' --ignore '*.pdf' --ignore '*.jpg' --ignore '*.png' --ignore '*.tmp' --ignore '*.gif' . ./scancode/oss-report.html"
+            }
+        }
+        stage('Publish') {
+            steps {
+                publishHTML (target: [
+                    allowMissing: false,
+                    alwaysLinkToLastBuild: false,
+                    keepAll: true,
+                    reportDir: './scancode',
+                    reportFiles: 'oss-report.html',
+                    reportName: "OSS Report"
+                ])
+            }
+        }     
+    }
+}
