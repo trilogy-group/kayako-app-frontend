@@ -1,8 +1,13 @@
 {
+    "navigation.home": "Home",
     "navigation.settings": "Instellingen",
     "navigation.channels": "Kanalen",
+    "navigation.channels_description": "Beheer de kanalen waarmee je kunt communiceren met de klanten van e-mail en social media",
     "navigation.messenger": "Messenger",
+    "navigation.conversations": "Conversaties",
+    "navigation.team_settings": "Team instellingen",
     "navigation.automation": "Automatisering",
+    "navigation.integrations": "integraties ",
     "navigation.security": "Beveiliging",
     "navigation.account": "Account",
     "administration": "Beheer",
