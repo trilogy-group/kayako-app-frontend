@@ -19,14 +19,12 @@
     "preferences.case_assigned_to_agent": "Un dossier vous a été assigné",
     "preferences.case_assigned_to_team": "Un dossier est assignée à l'une de vos équipes",
     "preferences.mentioned_in_conversation": "Quelqu'un vous mentionne dans une note",
-    "preferences.sla_breached": "Un de vos dossiers assignés viole son SLA",
+    "preferences.sla_breached": "Un de vos dossiers assignés ne respecte pas le SLA",
     "preferences.reply_on_case": "Quelqu'un répond à l'un de vos dossiers assignés",
     "preferences.save": "Enregistrer les changements",
     "preferences.success": "Vos préférences de notification ont été mises à jour",
     "text.case_created": "<strong>{name}</strong> a créé<strong>{subject}</strong>",
-    "text.case_assigned_to_agent": "Vous avez été assigné au dossier de <strong>{name}</strong>",
-    "text.case_assigned_to_team": "Votre équipe <strong>{team}</strong> a été assignée au dossier de <strong>{name}</strong>",
-    "text.sla_breached": "Viol de SLA <strong>{name}</strong> sur <strong>{subject}</strong>",
+    "text.sla_breached": "Non respect de SLA <strong>{name}</strong> sur <strong>{subject}</strong>",
     "text.reply_on_case": "<strong>{name}</strong> a répondu à <strong>{subject}</strong>",
     "text.mentioned_in_conversation": "<strong>{name}</strong> vous a mentionner dans une note dans <strong>{subject}</strong>"
 }
