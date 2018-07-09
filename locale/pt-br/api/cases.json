@@ -273,7 +273,7 @@
     "new_conversation.extra": "Você pode adicionar detalhes de contato adicionais depois de criar o usuário.",
     "new_conversation.user_created": "O usuário foi criado com sucesso.",
     "new_conversation.incomplete_data": "Alguns campos obrigatórios estão faltando.",
-    "new_conversation.current_status": "É atualmente {time} onde {name} está",
+    "new_conversation.current_status": "Atualmente é {time} onde {name} está",
     "new_conversation.last_seen": "Nós vimos pela última vez {name} {duration}.",
     "new_conversation.active_conversation": "Eles têm <a href='{link}'>1 outra conversa ativa</a> que você pode verificar.",
     "new_conversation.active_conversations": "Eles têm <a href='{link}'>{count} outras conversas ativas</a> que você pode verificar verificar.",
