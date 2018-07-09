@@ -70,7 +70,7 @@
     "help.subject_value": "um assunto",
     "help.status": "estado:",
     "help.status_value": "abrir",
-    "help.channel": "channel:",
+    "help.channel": "canal:",
     "help.channel_value": "twitter",
     "help.more_help": "Mais modificadores de pesquisa",
     "and_more_domains": "e {count, plural, =1 {1 domínio} other {# domínios}} mais",
