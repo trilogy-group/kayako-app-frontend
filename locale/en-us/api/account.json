@@ -31,6 +31,8 @@
   "trial.billing.error.postal_code": "Postcode is required",
   "trial.billing.error.country": "Country is required",
   "trial.billing.error.vat_id": "Invalid VAT ID",
+  "trial.billing.iframe.reloading": "Please wait, credit card form is loading",
+  "trial.billing.iframe.failed": "Sorry, we were unable to load the credit card form. Please try again later",
   "trial.vat.help": "Please feel free to leave VAT ID empty, if it is not applicable to your country",
   "trial.upgraded": "Your account has been upgraded successfully",
   "trial.upgrade.inprocess": "Please wait, we are upgrading your account...",
