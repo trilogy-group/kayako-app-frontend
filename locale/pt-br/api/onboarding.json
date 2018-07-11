@@ -1,1 +1,20 @@
-{}
+{
+    "greeting.morning": "Bom dia",
+    "greeting.afternoon": "Boa tarde",
+    "greeting.evening": "Boa noite",
+    "complete": "Completo",
+    "learn.title": "Introdução",
+    "learn.cta": "Assista o vídeo",
+    "learn.video_header": "Bem-vindo {name}, vamos começar.",
+    "setup.popup.messenger.embedCode.embedcode": "Código embutido",
+    "setup.popup.messenger.embedCode.welcomeMessage": "Como podemos ajudar? Adoraríamos saber o que te trouxe para {brand}",
+    "setup.popup.messenger.embedCode.done": "Terminei",
+    "setup.popup.messenger.done.heading": "Tudo pronto!",
+    "setup.popup.conversations.secondary_button": "Depois",
+    "count.1": "1",
+    "count.2": "2",
+    "count.3": "3",
+    "count.4": "4",
+    "count.5": "5",
+    "count.6": "6"
+}
