@@ -1,4 +1,11 @@
 {
+    "greeting.morning": "Bom dia",
+    "greeting.afternoon": "Boa tarde",
+    "greeting.evening": "Boa noite",
+    "complete": "Completo",
+    "learn.title": "Introdução",
+    "learn.cta": "Assista o vídeo",
+    "learn.video_header": "Bem-vindo {name}, vamos começar.",
     "setup.popup.messenger.embedCode.embedcode": "Código embutido",
     "setup.popup.messenger.embedCode.welcomeMessage": "Como podemos ajudar? Adoraríamos saber o que te trouxe para {brand}",
     "setup.popup.messenger.embedCode.done": "Terminei",
