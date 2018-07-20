@@ -23,7 +23,11 @@
     "preferences.reply_on_case": "Alguém respondeu uma das suas conversas atribuídas",
     "preferences.save": "Salvar modificações",
     "preferences.success": "Suas preferências de notificação foram atualizadas",
+    "preferences.sound.desktop_sound_alerts": "Reproduzir som para notificações na área de trabalho",
+    "preferences.sound.desktop_sound_alerts_realtime_only": "Tocar som apenas quando o solicitante está online",
     "text.case_created": "<strong>{name}</strong> criou <strong>{subject}</strong>",
+    "text.case_assigned_to_agent": "Você foi designado para a conversa <strong>{name}</strong>",
+    "text.case_assigned_to_team": "Sua equipe <strong>{team}</strong> foi atribuída a conversa <strong>{name}</strong>",
     "text.sla_breached": "SLA <strong>{name}</strong> foi quebrado em <strong>{subject}</strong>",
     "text.reply_on_case": "<strong>{name}</strong> respondeu <strong>{subject}</strong>",
     "text.mentioned_in_conversation": "<strong>{name}</strong> mencionou você em uma nota sobre <strong>{subject}</strong>"
