@@ -31,6 +31,8 @@
     "trial.billing.error.postal_code": "O código postal é obrigatório",
     "trial.billing.error.country": "País é necessário",
     "trial.billing.error.vat_id": "VAT ID inválido",
+    "trial.billing.iframe.reloading": "Por favor aguarde, o formulário do cartão de crédito está carregando",
+    "trial.billing.iframe.failed": "Desculpe, não foi possível carregar o formulário de cartão de crédito. Por favor, tente novamente mais tarde",
     "trial.vat.help": "Sinta-se à vontade para deixar o ID do VAT vazio se não for aplicável ao seu país",
     "trial.upgraded": "Sua conta foi atualizada com sucesso",
     "trial.upgrade.inprocess": "Por favor aguarde, estamos atualizando sua conta...",
