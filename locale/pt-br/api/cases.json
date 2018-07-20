@@ -20,6 +20,7 @@
     "options_will_be_deselected": "{count, plural, one {Opção} other {Todas opções}} will be de-selected",
     "options_will_be_selected": "{count} {count, plural, one {opção} other {opções}} será selecionada",
     "all_options_will_be_selected": "Todas as opções serão selecionadas",
+    "n_more": "{count} mais",
     "copy-someone-in.title": "Enviar cópia para alguém",
     "copy-someone-in.description": "Uma cópia de sua resposta será enviada para essas pessoas.",
     "copy-someone-in.input-placeholder": "Encontrar usuário ou digitar endereço de e-mail",
@@ -336,5 +337,7 @@
     "email_original_display.errors.500.description1": "Algo deu errado no fim. Nos desculpe por isso!",
     "email_original_display.errors.500.description2": "Espere um momento e tente novamente.",
     "closed_pill_message_content": "+{count} mais {count, plural, one {campo} other {campos}} vazio",
-    "open_pill_message_content": "esconder campos vazios"
+    "open_pill_message_content": "esconder campos vazios",
+    "mailbox_not_allowed_in_cc_title": "Desculpe, você não pode adiciona como CC um e-mail que foi adicionado como um canal.",
+    "mailbox_not_allowed_in_cc_subtitle": "Para notificar alguém da sua equipe, tente mencioná-lo em uma nota."
 }
